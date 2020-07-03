@@ -237,12 +237,12 @@ class SnippetFilter(rest_framework.FilterSet):
         # }
 
 
-class SearchUser(ListCreateAPIView):
-    model = RegisterUser
-    serializer_class = RegisterSerializer
-    filter_backends = (rest_framework.DjangoFilterBackend,)
-    filterset_class = SnippetFilter
-    queryset = RegisterUser.objects.all()
+# class SearchUser(ListCreateAPIView):
+#     model = RegisterUser
+#     serializer_class = RegisterSerializer
+#     filter_backends = (rest_framework.DjangoFilterBackend,)
+#     filterset_class = SnippetFilter
+#     queryset = RegisterUser.objects.all()
 
     # def get_queryset(self):
     #     queryset = RegisterUser.objects.all()
@@ -271,27 +271,33 @@ class SearchUser(ListCreateAPIView):
         # return queryset
 
 
-# class SearchUser(APIView):
-# model = RegisterUser
-# serializer_class = RegisterSerializer
-#
-# def post(self, request, *args, **kwargs):
-#     data = self.request.data
-#     qualification = self.request.data['qualification']
-#     relationship_status = self.request.data['relationship_status']
-#     religion = self.request.data['religion']
-#     body_type = self.request.data['body_type']
-#     gender = self.request.data['gender']
-#     interests = self.request.data['interests']
-#     if data:
-#         qs = RegisterUser.objects.filter(Q(qualification__icontains=qualification) |
-#                                          Q(relationship_status__icontains=relationship_status) |
-#                                          Q(interests__icontains=interests) |
-#                                          Q(gender__icontains=gender) |
-#                                          Q(religion__icontains=religion) |
-#                                          Q(body_type__icontains=body_type)
-#                                          )
-#         return Response(qs, status=HTTP_200_OK)
+class SearchUser(APIView):
+    model = RegisterUser
+    serializer_class = RegisterSerializer
+
+    def post(self, request, *args, **kwargs):
+        data = self.request.data
+        qualification = self.request.data['qualification']
+        relationship_status = self.request.data['relationship_status']
+        religion = self.request.data['religion']
+        body_type = self.request.data['body_type']
+        gender = self.request.data['gender']
+        interests = self.request.data['interests']
+        # qualification = self.request.POST.get('qualification', None)
+        # relationship_status = self.request.POST.get('relationship_status', None)
+        # religion = self.request.POST.get('religion', None)
+        # body_type = self.request.POST.get('body_type', None)
+        # gender = self.request.POST.get('gender', None)
+        # interests = self.request.POST.get('interests', None)
+        if data:
+            qs = RegisterUser.objects.filter(Q(qualification__exact=qualification) |
+                                             Q(relationship_status__exact=relationship_status) |
+                                             Q(interests__exact=interests) |
+                                             Q(gender__exact=gender) |
+                                             Q(religion__exact=religion) |
+                                             Q(body_type__exact=body_type)
+                                             )
+            return Response(qs, status=HTTP_200_OK)
 
 
 class GetMatchesAPIView(ListAPIView):
