@@ -69,9 +69,20 @@ PREFRENCE_FIRST_DATE = (
     ("Whisky", "Whisky")
 )
 
-BOOL_CHOICES = (('Yes', 'Yes'), ('No', 'NO'))
+METTING_STATUS = (('Hold', 'Hold'), ('Accept', 'Accept'), ('Decline', 'Decline'))
+BOOL_CHOICES = (('Yes', 'Yes'), ('No', 'No'))
 
 GENDER = (('Male', 'Male'), ('Female', 'Female'), ('Custom', 'Custom'))
+
+
+class SubscriptionPlans(models.Model):
+    name = models.CharField(default='My subscription', max_length=500)
+    description = models.TextField()
+    feature_name = models.CharField(default='Feature', max_length=200, null=True, blank=True)
+    feature_count = models.IntegerField()
+    amount = models.IntegerField()
+    validity = models.DateTimeField(auto_now=True)
+    active = models.CharField(default='No', choices=BOOL_CHOICES, max_length=100)
 
 
 class RegisterUser(models.Model):
@@ -94,7 +105,6 @@ class RegisterUser(models.Model):
     created_by = models.DateTimeField(auto_now_add=True)
     verified = models.CharField(default='NO', choices=BOOL_CHOICES, max_length=10)
     fb_signup = models.CharField(default='No', choices=BOOL_CHOICES, max_length=10)
-    insta_connect = models.CharField(default='NO', choices=BOOL_CHOICES, max_length=10)
     pic_1 = models.ImageField(null=True, blank=True)
     pic_2 = models.ImageField(null=True, blank=True)
     pic_3 = models.ImageField(null=True, blank=True)
@@ -133,6 +143,7 @@ class UserDetail(models.Model):
     fav_pet = models.CharField(default=None, max_length=100)
     smoke = models.CharField(default='No', choices=BOOL_CHOICES, max_length=10)
     drink = models.CharField(default='No', choices=BOOL_CHOICES, max_length=10)
+    subscription = models.ForeignKey(SubscriptionPlans, on_delete=models.CASCADE, null=True, blank=True)
 
 
 class UserInstagramPic(models.Model):
@@ -149,6 +160,7 @@ class UserInstagramPic(models.Model):
     insta_pic_8 = models.ImageField(null=True, blank=True)
     insta_pic_9 = models.ImageField(null=True, blank=True)
     insta_pic_10 = models.ImageField(null=True, blank=True)
+    insta_connect = models.CharField(default='NO', choices=BOOL_CHOICES, max_length=10)
 
 
 class UserSettings(models.Model):
@@ -164,6 +176,7 @@ class MatchedUser(models.Model):
     super_liked_by = models.ManyToManyField(RegisterUser, default=1, related_name='superliked_by')
     liked_by_me = models.ManyToManyField(RegisterUser, default=1, related_name='liked_by_me')
     super_liked_by_me = models.ManyToManyField(RegisterUser, default=1, related_name='superliked_by_me')
+    matched_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.id)
@@ -171,6 +184,7 @@ class MatchedUser(models.Model):
 
 class RequestMeeting(models.Model):
     phone_number = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
+    status = models.CharField(default='Hold', choices=METTING_STATUS, max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
 
 

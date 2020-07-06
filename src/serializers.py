@@ -42,6 +42,12 @@ class DeleteMatchSerializer(serializers.ModelSerializer):
 class RequestMeetingSerializer(serializers.ModelSerializer):
     class Meta:
         model = RequestMeeting
+        fields = ('phone_number',)
+
+
+class MeetingStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RequestMeeting
         fields = '__all__'
 
 

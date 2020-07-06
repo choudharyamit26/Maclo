@@ -5,8 +5,8 @@ from rest_framework import permissions
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from .views import (UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIView, UserslistAPIView,
-                    UserProfileAPIView, SearchUser, GetMatchesAPIView, CreateMatchesAPIView,
-                    DeleteMatchesAPIView, RequestMeetingAPIView, ScheduleMeetingAPIView, FeedbackApiView,
+                    UserProfileAPIView, SearchUser, GetMatchesAPIView, CreateMatchesAPIView, DeleteMatchesAPIView,
+                    RequestMeetingAPIView, MeetingStatusAPIView, ScheduleMeetingAPIView, FeedbackApiView,
                     ContactUsApiView, AboutUsApiView, FacebookSignupApiView, GoogleSignupView)
 
 app_name = 'src'
@@ -35,6 +35,7 @@ urlpatterns = [
     path('user-creatematches/', CreateMatchesAPIView.as_view(), name='create-matches'),
     path('user-deletematches/', DeleteMatchesAPIView.as_view(), name='delete-match'),
     path('request-meeting/', RequestMeetingAPIView.as_view(), name='request-meeting'),
+    path('meeting-status/<int:pk>/', MeetingStatusAPIView.as_view(), name='meeting-status'),
     path('schedule-meeting/', ScheduleMeetingAPIView.as_view(), name='schedule-meeting'),
     path('feedback/', FeedbackApiView.as_view(), name='feedback'),
     path('contactus/', ContactUsApiView.as_view(), name='contactus'),

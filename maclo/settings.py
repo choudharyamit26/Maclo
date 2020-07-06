@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'storages',
     'channels',
     'chat',
+    'adminpanel',
     'src'
 ]
 
@@ -71,7 +72,6 @@ TEMPLATES = [
         },
     },
 ]
-
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
@@ -142,6 +142,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+AUTH_USER_MODEL = 'adminpanel.User'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
@@ -152,8 +154,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-
-#S3 BUCKETS CONFIG
+# S3 BUCKETS CONFIG
 
 AWS_ACCESS_KEY_ID = 'AKIAU4GHOSL2MLFW3SHZ'
 AWS_SECRET_ACCESS_KEY = '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'
@@ -161,12 +162,10 @@ AWS_STORAGE_BUCKET_NAME = 'maclobucket'
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 AWS_S3_REGION_NAME = "ap-south-1"
-AWS_S3_HOST ="s3.ap-south-1.amazonaws.com"
+AWS_S3_HOST = "s3.ap-south-1.amazonaws.com"
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-
 
 '''
 <?xml version="1.0" encoding="UTF-8"?>

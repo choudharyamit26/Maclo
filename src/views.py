@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django_filters import rest_framework
-from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView, DestroyAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView, DestroyAPIView, UpdateAPIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.views import APIView
@@ -16,7 +16,7 @@ from .models import UserInstagramPic, UserDetail, RegisterUser, MatchedUser, Req
 from .serializers import (UserDetailSerializer, UserInstagramSerializer, RegisterSerializer,
                           MatchedUserSerializer, CreateMatchSerializer, DeleteMatchSerializer,
                           RequestMeetingSerializer, ScheduleMeetingSerializer, FeedbackSerializer, ContactUsSerializer,
-                          AboutUsSerializer)
+                          AboutUsSerializer, MeetingStatusSerializer)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -184,6 +184,7 @@ class UserInstagramPicsAPIView(CreateAPIView):
             insta_pic_8=images[7],
             insta_pic_9=images[8],
             insta_pic_10=images[9],
+            insta_connect=True
 
         )
         if os.path.isdir("Fetched_Posts"):
@@ -244,31 +245,31 @@ class SnippetFilter(rest_framework.FilterSet):
 #     filterset_class = SnippetFilter
 #     queryset = RegisterUser.objects.all()
 
-    # def get_queryset(self):
-    #     queryset = RegisterUser.objects.all()
-    #     print(self.request.data)
-    #     qualification = self.request.GET.get('qualification', None)
-    #     relationship_status = self.request.GET.get('relationship_status', None)
-    #     religion = self.request.GET.get('religion', None)
-    #     body_type = self.request.GET.get('body_type', None)
-    #     gender = self.request.GET.get('gender', None)
-    #     interests = self.request.GET.get('interests', None)
-        # relationship_status = self.request.data['relationship_status']
-        # religion = self.request.data['religion']
-        # body_type = self.request.data['body_type']
-        # gender = self.request.data['gender']
-        # interests = self.request.data['interests']
-        # print('Qualification ', qualification)
-        # if qualification is not None:
-            # queryset = RegisterUser.objects.filter(Q(qualification__exact=qualification) |
-            #                                        Q(relationship_status__exact=relationship_status) |
-            #                                        Q(interests__exact=interests) |
-            #                                        Q(gender__exact=gender) |
-            #                                        Q(religion__exact=religion) |
-            #                                        Q(body_type__exact=body_type)
-            #                                        )
-            # print('>>>>>>>>>>>>>>>>>>>>', queryset)
-        # return queryset
+# def get_queryset(self):
+#     queryset = RegisterUser.objects.all()
+#     print(self.request.data)
+#     qualification = self.request.GET.get('qualification', None)
+#     relationship_status = self.request.GET.get('relationship_status', None)
+#     religion = self.request.GET.get('religion', None)
+#     body_type = self.request.GET.get('body_type', None)
+#     gender = self.request.GET.get('gender', None)
+#     interests = self.request.GET.get('interests', None)
+# relationship_status = self.request.data['relationship_status']
+# religion = self.request.data['religion']
+# body_type = self.request.data['body_type']
+# gender = self.request.data['gender']
+# interests = self.request.data['interests']
+# print('Qualification ', qualification)
+# if qualification is not None:
+# queryset = RegisterUser.objects.filter(Q(qualification__exact=qualification) |
+#                                        Q(relationship_status__exact=relationship_status) |
+#                                        Q(interests__exact=interests) |
+#                                        Q(gender__exact=gender) |
+#                                        Q(religion__exact=religion) |
+#                                        Q(body_type__exact=body_type)
+#                                        )
+# print('>>>>>>>>>>>>>>>>>>>>', queryset)
+# return queryset
 
 
 class SearchUser(APIView):
@@ -305,7 +306,7 @@ class GetMatchesAPIView(ListAPIView):
     serializer_class = MatchedUserSerializer
 
     def get(self, request, *args, **kwargs):
-        liked_by = MatchedUser.objects.filter(liked_by=self.request.user.id)
+        liked_by = MatchedUser.objects.filter(liked_by=self.request.user.id) #id:4 has matches
         super_liked_by = MatchedUser.objects.filter(super_liked_by=self.request.user.id)
         liked_by_me = MatchedUser.objects.filter(liked_by_me=self.request.user.id)
         super_liked_by_me = MatchedUser.objects.filter(super_liked_by_me=self.request.user.id)
@@ -368,7 +369,7 @@ class RequestMeetingAPIView(CreateAPIView):
         liked_by_me = MatchedUser.objects.filter(liked_by_me=self.request.user.id)
         super_liked_by_me = MatchedUser.objects.filter(super_liked_by_me=self.request.user.id)
         liked_by = MatchedUser.objects.filter(liked_by=self.request.user.id)
-        super_liked_by = MatchedUser.objects.filter(super_liked_by=self.request.user)
+        super_liked_by = MatchedUser.objects.filter(super_liked_by=self.request.user.id)
         liked_by_list = [x.id for x in liked_by]
         super_liked_by_list = [x.id for x in super_liked_by]
         liked_by_me_list = [x.id for x in liked_by_me]
@@ -380,6 +381,19 @@ class RequestMeetingAPIView(CreateAPIView):
             return Response({"Request sent sucessfully"}, status=HTTP_200_OK)
         else:
             return Response({"Cannot send request as the user is not a match"}, status=HTTP_400_BAD_REQUEST)
+
+
+class MeetingStatusAPIView(UpdateAPIView):
+    model = RequestMeeting
+    serializer_class = MeetingStatusSerializer
+    queryset = RequestMeeting.objects.all()
+
+    # def get_queryset(self):
+    #     print(self.request.data)
+    #     phone_number = self.request.data['phone_number']
+    #     meeting_id = RequestMeeting.objects.filter(phone_number=phone_number)
+    #     print('>>>>>>>>>>>>>>',phone_number)
+    #     print('<<<<<<<<<<<<<<<<<<<',meeting_id)
 
 
 class ScheduleMeetingAPIView(CreateAPIView):
