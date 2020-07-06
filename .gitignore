@@ -1,0 +1,8 @@
+__pycache__/
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
+.venv
+.venv.example
+.venv.local
+.venv.staging

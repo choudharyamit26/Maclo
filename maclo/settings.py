@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django_filters',
     'drf_yasg',
     'storages',
+    'channels',
+    'chat',
     'src'
 ]
 
@@ -76,6 +78,7 @@ REST_FRAMEWORK = {
 }
 
 WSGI_APPLICATION = 'maclo.wsgi.application'
+ASGI_APPLICATION = 'maclo.routing.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -144,9 +147,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static_root')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 
@@ -157,6 +160,9 @@ AWS_SECRET_ACCESS_KEY = 'FwYjw2jhnQqucyOkUvXDOjKWAB4mAeFfLIrlUud9'
 AWS_STORAGE_BUCKET_NAME = 'maclobucket'
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
+AWS_S3_REGION_NAME = "ap-south-1"
+AWS_S3_HOST ="s3.ap-south-1.amazonaws.com"
+
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
