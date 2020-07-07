@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import UserDetail, UserInstagramPic, RegisterUser, MatchedUser, RequestMeeting, ScheduleMeeting, Feedback, \
-    ContactUs, AboutUs
+    ContactUs, AboutUs, SubscriptionPlans
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -72,4 +72,10 @@ class ContactUsSerializer(serializers.ModelSerializer):
 class AboutUsSerializer(serializers.ModelSerializer):
     class Meta:
         model = AboutUs
+        fields = '__all__'
+
+
+class SubscriptionPlanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubscriptionPlans
         fields = '__all__'

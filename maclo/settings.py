@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'django_filters',
     'drf_yasg',
     'storages',
@@ -60,7 +61,7 @@ ROOT_URLCONF = 'maclo.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -151,8 +152,16 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+DEFAULT_FROM_EMAIL = 'ravichoudhary766@gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'ravichoudhary766@gmail.com'
+EMAIL_HOST_PASSWORD = '8882320571'
+EMAIL_PORT = 587
+SERVER_EMAIL = 'ravichoudhary766@gmail.com'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # S3 BUCKETS CONFIG
 
