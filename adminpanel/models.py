@@ -1,6 +1,10 @@
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.db import models
+
+from src.models import RegisterUser
 from django.urls import reverse
+
+BOOL_CHOICES = (('Yes', 'Yes'), ('No', 'No'))
 
 
 class UserManager(BaseUserManager):
@@ -37,3 +41,20 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
 
 
+class AdminNotification(models.Model):
+    title = models.CharField(default='Admin notification', max_length=300)
+    users = models.ManyToManyField(RegisterUser)
+    description = models.TextField()
+
+
+class Transaction(models.Model):
+    payment_id = models.CharField(default='0000', max_length=100)
+    order_id = models.CharField(default='0000', max_length=100)
+    order_date = models.DateField()
+    order_time = models.TimeField()
+    total_amount = models.IntegerField()
+    payment_mode = models.CharField(default='Visa', max_length=100)
+
+
+class AdminNotificationSetting(models.Model):
+    notification = models.CharField(default='Yes', choices=BOOL_CHOICES, max_length=100)

@@ -7,7 +7,8 @@ from drf_yasg.views import get_schema_view
 from .views import (UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIView, UserslistAPIView,
                     UserProfileAPIView, SearchUser, GetMatchesAPIView, CreateMatchesAPIView, DeleteMatchesAPIView,
                     RequestMeetingAPIView, MeetingStatusAPIView, ScheduleMeetingAPIView, FeedbackApiView,
-                    ContactUsApiView, AboutUsApiView, FacebookSignupApiView, GoogleSignupView)
+                    ContactUsApiView, AboutUsApiView, EditAboutUsAPIView, EditContactUsApiView, FacebookSignupApiView,
+                    GoogleSignupView)
 
 app_name = 'src'
 
@@ -40,6 +41,8 @@ urlpatterns = [
     path('feedback/', FeedbackApiView.as_view(), name='feedback'),
     path('contactus/', ContactUsApiView.as_view(), name='contactus'),
     path('aboutus/', AboutUsApiView.as_view(), name='aboutus'),
+    path('edit-aboutus/', EditAboutUsAPIView.as_view(), name='edit-aboutus'),
+    path('edit-contactus/', EditContactUsApiView.as_view(), name='edit-contactus'),
     path('facebook-signup/', FacebookSignupApiView.as_view(), name='fb-signup'),
     path('google-signup/', GoogleSignupView.as_view(), name='google-signup'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

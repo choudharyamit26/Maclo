@@ -5,6 +5,13 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
 
 from src.models import RegisterUser
+from .models import AdminNotification, Transaction
+
+
+class AdminNotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AdminNotification
+        fields = '__all__'
 
 
 class AdminRegisterSerializer(serializers.ModelSerializer):
@@ -21,6 +28,12 @@ class AdminFilterSerializer(serializers.ModelSerializer):
     class Meta:
         model = RegisterUser
         fields = ('from_date', 'to_date')
+
+
+class TransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transaction
+        fields = '__all__'
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -54,17 +67,22 @@ class AuthTokenSerializer(serializers.Serializer):
         style={'input_type': 'password'},
         trim_whitespace=False
     )
+    remember_me = serializers.BooleanField(required=False)
 
     def validate(self, attrs):
         """Validate and authenticate the user"""
         email = attrs.get('email')
         password = attrs.get('password')
+        remember_me = attrs.get('remember_me')
 
         user = authenticate(
             request=self.context.get('request'),
             username=email,
             password=password
         )
+        if user and remember_me:
+            request = self.context.get('request')
+            request.session.set_expiry(60 * 60 * 24 * 30)
         if not user:
             msg = _('Unable to authenticate with provided credentials')
             raise serializers.ValidationError(msg, code='authentication')

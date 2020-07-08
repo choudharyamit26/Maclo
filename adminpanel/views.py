@@ -1,9 +1,11 @@
+import csv
 from django.conf.global_settings import DEFAULT_FROM_EMAIL
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.db.models import Q
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
@@ -23,7 +25,8 @@ from rest_framework.views import APIView
 from src.models import RegisterUser, SubscriptionPlans, ScheduleMeeting, UserDetail
 from src.serializers import RegisterSerializer, SubscriptionPlanSerializer
 from .serializers import UserSerializer, AuthTokenSerializer, ChangePasswordSerializer, AdminRegisterSerializer, \
-    AdminFilterSerializer
+    AdminFilterSerializer, AdminNotificationSerializer, TransactionSerializer
+from .models import AdminNotification, Transaction
 
 User = get_user_model()
 
@@ -201,33 +204,33 @@ class DashboardHomeAPIView(APIView):
              "revenue": sum(revenue)})
 
 
-class SearchUserApiView(CreateAPIView):
+class SearchUserApiView(APIView):
     model = RegisterUser
     serializer_class = AdminRegisterSerializer
 
     def post(self, request, *args, **kwargs):
         data = self.request.data
-        qualification = self.request.data['qualification']
-        relationship_status = self.request.data['relationship_status']
-        religion = self.request.data['religion']
-        body_type = self.request.data['body_type']
-        gender = self.request.data['gender']
-        interests = self.request.data['interests']
-        email = self.request.data['email']
-        phone_number = self.request.data['phone_number']
-        first_name = self.request.data['first_name']
-        last_name = self.request.data['last_name']
+        # qualification = self.request.data['qualification']
+        # relationship_status = self.request.data['relationship_status']
+        # religion = self.request.data['religion']
+        # body_type = self.request.data['body_type']
+        # gender = self.request.data['gender']
+        # interests = self.request.data['interests']
+        # email = self.request.data['email']
+        # phone_number = self.request.data['phone_number']
+        # first_name = self.request.data['first_name']
+        # last_name = self.request.data['last_name']
         if data:
-            qs = RegisterUser.objects.filter(Q(last_name__exact=last_name) |
-                                             Q(first_name__exact=first_name) |
-                                             Q(qualification__exact=qualification) |
-                                             Q(relationship_status__exact=relationship_status) |
-                                             Q(interests__exact=interests) |
-                                             Q(gender__exact=gender) |
-                                             Q(religion__exact=religion) |
-                                             Q(body_type__exact=body_type) |
-                                             Q(email__exact=email) |
-                                             Q(phone_number__exact=phone_number)
+            qs = RegisterUser.objects.filter(Q(last_name__icontains=data) |
+                                             Q(first_name__icontains=data) |
+                                             Q(qualification__icontains=data) |
+                                             Q(relationship_status__icontains=data) |
+                                             Q(interests__icontains=data) |
+                                             Q(gender__icontains=data) |
+                                             Q(religion__icontains=data) |
+                                             Q(body_type__icontains=data) |
+                                             Q(email__icontains=data) |
+                                             Q(phone_number__icontains=data)
                                              )
             return Response({"Results": qs}, status=HTTP_200_OK)
 
@@ -242,7 +245,7 @@ class AdminFilter(ListAPIView):
         to_date = self.request.data['to_date']
 
         if from_date and to_date:
-            data = RegisterUser.objects.filter(Q(created_at__gte=from_date) |
+            data = RegisterUser.objects.filter(Q(created_at__gte=from_date) &
                                                Q(created_at__lte=to_date))
             return Response({"data": data}, status=HTTP_200_OK)
         else:
@@ -273,3 +276,188 @@ class DeleteUserAPIView(DestroyAPIView):
 
 class CreateSubscriptionPlan(CreateAPIView):
     serializer_class = SubscriptionPlanSerializer
+
+    # def post(self, request, *args, **kwargs):
+    #     name = self.request.data['name']
+    #     description = self.request.data['description']
+    #     feature_likes = self.request.data['feature_likes']
+    #     likes_number = self.request.data['likes_number']
+    #     feature_superlikes = self.request.data['feature_superlikes']
+    #     superlikes_number = self.request.data['superlikes_number']
+    #     feature_rewind = self.request.data['feature_rewind']
+    #     number_rewind = self.request.data['number_rewind']
+    #     ads_comes_or_not = self.request.data['ads_comes_or_not']
+    #     search_filters = self.request.data['search_filters']
+    #     see_likes = self.request.data['see_likes']
+    #     read_recipient = self.request.data['read_recipient']
+    #     feature_count = self.request.data['feature_count']
+    #     amount = self.request.data['amount']
+    #     validity = self.request.data['validity']
+    #     active = self.request.data['active']
+    #     today = datetime.datetime.now()
+
+
+class SubscriptionSearch(APIView):
+
+    def post(self, request, *args, **kwargs):
+        qs = self.request.data['qs']
+        if qs:
+            result = UserDetail.objects.filter(Q(phone_number__first_name__icontains=qs) |
+                                               Q(phone_number__last_name__icontains=qs) |
+                                               Q(subscription__id__icontains=qs) |
+                                               Q(subscription__name__icontains=qs) |
+                                               Q(subscription__validity__icontains=qs) |
+                                               Q(subscription__amount__icontains=qs) |
+                                               Q(phone_number__id__icontains=qs)
+                                               ).values()
+            return Response({"Results": result}, status=HTTP_200_OK)
+
+
+class SubscriptionFilter(APIView):
+
+    def post(self, request, *args, **kwargs):
+        from_date = self.request.data['from_date']
+        to_date = self.request.data['to_date']
+        validity = self.request.data['validity']
+        if from_date or to_date:
+            result = UserDetail.objects.filter(Q(subscription_purchased_at__gte=from_date) &
+                                               Q(subscription_purchased_at__lte=to_date) &
+                                               Q(subscription__validity__icontains=validity)).values()
+            return Response({"Result": result}, status=HTTP_200_OK)
+
+
+class GetSubscriptionPurchasedList(APIView):
+    model = UserDetail
+
+    def get(self, request, *args, **kwargs):
+        qs = UserDetail.objects.filter(subscription_purchased='Yes').values()
+        for x in qs:
+            user_id = x.phone_number.id
+            username = x.phone_number.first_name
+            subscription_plan = x.subscription.id
+            subscription_name = x.subscription.name
+            date_time_purchased = x.subscription_purchased_at
+            amount = x.subscription.amount
+            validity = x.subscription.validity
+            payment_mode = 'NA'
+            details = {
+                'user_id': user_id,
+                'username': username,
+                'subscription_plan': subscription_plan,
+                'subscription_name': subscription_name,
+                'date_time_purchased': date_time_purchased,
+                'amount': amount,
+                'validity': validity,
+                'payment_mode': payment_mode
+
+            }
+            return Response({"Details": details}, status=HTTP_200_OK)
+
+
+class MeetUpSearch(APIView):
+
+    def post(self, request, *args, **kwargs):
+        qs = self.request.data['qs']
+        if qs:
+            result = ScheduleMeeting.objects.filter(Q(scheduled_with__first_name__icontains=qs) |
+                                                    Q(scheduled_by__first_name__icontains=qs) |
+                                                    Q(meeting_date__icontains=qs) |
+                                                    Q(meeting_time__icontains=qs) |
+                                                    Q(venue__icontains=qs) |
+                                                    Q(description__icontains=qs) |
+                                                    Q(status__icontains=qs)
+                                                    )
+            return Response({"Result": result})
+
+
+class MeetUpFilter(APIView):
+
+    def post(self, request, *args, **kwargs):
+        qs = self.request.data['qs']
+        from_date = self.request.data['from_date']
+        to_date = self.request.data['to_date']
+        if qs:
+            result = ScheduleMeeting.objects.filter(Q(meeting_date__gte=from_date) &
+                                                    Q(meeting_date__lte=to_date))
+            return Response({"Result": result}, status=HTTP_200_OK)
+
+
+class AdminNotificationAPIView(CreateAPIView):
+    model = AdminNotification
+    serializer_class = AdminNotificationSerializer
+
+
+class TransactionAPIView(ListAPIView):
+    serializer_class = TransactionSerializer
+    queryset = Transaction.objects.all()
+
+
+class TransactionFilter(APIView):
+
+    def post(self, request, *args, **kwargs):
+        qs = self.request.data['qs']
+        from_date = self.request.data['from_date']
+        to_date = self.request.data['to_date']
+        if qs:
+            result = Transaction.objects.filter(Q(order_date__gte=from_date) &
+                                                Q(order_date__lte=to_date))
+            return Response({"Result": result}, status=HTTP_200_OK)
+
+
+class BillDownloadView(LoginRequiredMixin, APIView):
+    model = Transaction
+
+    def get(self, request, *args, **kwargs):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="bills.csv"'
+        writer = csv.writer(response)
+        writer.writerow(
+            ['Payment Id', 'Order id', 'Order Date', 'Order Time', 'Total Amount', 'Payment Mode'])
+        bills = Transaction.objects.all().values_list('payment_id', 'order_id',
+                                                      'order_date', 'order_time',
+                                                      'total_amount', 'payment_mode')
+        for bill in bills:
+            writer.writerow(bill)
+        return response
+
+    def post(self, request, *args, **kwargs):
+        from_date = self.request.data['from_date']
+        to_date = self.request.data['to_date']
+        response = HttpResponse(content_type='text/csv')
+        if from_date and to_date:
+            response['Content-Disposition'] = 'attachment; filename="bills.csv"'
+            writer = csv.writer(response)
+            writer.writerow(
+                ['Payment Id', 'Order id', 'Order Date', 'Order Time', 'Total Amount', 'Payment Mode'])
+            bills = Transaction.objects.filter(Q(order_date__gte=from_date) &
+                                               Q(order_date__lte=to_date)).values_list('payment_id', 'order_id',
+                                                                                       'order_date', 'order_time',
+                                                                                       'total_amount', 'payment_mode')
+            for bill in bills:
+                writer.writerow(bill)
+            return response
+
+
+class ReportFilter(APIView):
+
+    def get(self, request, *args, **kwargs):
+        users = RegisterUser.objects.all().count()
+        subscription = UserDetail.objects.filter(subscription_purchased='Yes').count()
+        transactions = Transaction.objects.all().count()
+        return Response({"Users Count": users, "Subscription Count": subscription, "Transactions Count": transactions},
+                        status=HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        from_date = self.request.data['from_date']
+        to_date = self.request.data['to_date']
+        users = RegisterUser.objects.filter(Q(created_at__gte=from_date) & Q(created_at__lte=to_date)).count()
+        subscription = UserDetail.objects.filter(
+            Q(subscription_purchased='Yes') & Q(subscription_purchased_at__gte=from_date) & Q(
+                subscription_purchased_at__lte=to_date)).count()
+        transactions = Transaction.objects.filter(Q(order_date__gte=from_date) & Q(order_date_lte=to_date)).count()
+        return Response({"Users Count": users, "Subscription Count": subscription, "Transactions Count": transactions},
+                        status=HTTP_200_OK)
+
+
+class DownloadReportsView(APIView):
+    pass

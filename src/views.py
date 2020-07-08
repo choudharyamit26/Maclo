@@ -117,6 +117,8 @@ class UserProfileAPIView(CreateAPIView):
         drink = drink.capitalize()
         religion = self.request.data['religion']
         body_type = self.request.data['body_type']
+        subscription_purchased = self.request.data['subscription_purchased']
+        subscription_purchased_at = self.request.data['subscription_purchased_at']
         UserDetail.objects.create(
             bio=bio,
             living_in=living_in,
@@ -137,7 +139,9 @@ class UserProfileAPIView(CreateAPIView):
             smoke=smoke,
             drink=drink,
             religion=religion,
-            body_type=body_type
+            body_type=body_type,
+            subscription_purchased=subscription_purchased,
+            subscription_purchased_at=subscription_purchased_at
         )
 
         return Response({"Profile Updated": "Profile updated Successfully"}, status=HTTP_201_CREATED)
@@ -278,12 +282,12 @@ class SearchUser(APIView):
 
     def post(self, request, *args, **kwargs):
         data = self.request.data
-        qualification = self.request.data['qualification']
-        relationship_status = self.request.data['relationship_status']
-        religion = self.request.data['religion']
-        body_type = self.request.data['body_type']
-        gender = self.request.data['gender']
-        interests = self.request.data['interests']
+        # qualification = self.request.data['qualification']
+        # relationship_status = self.request.data['relationship_status']
+        # religion = self.request.data['religion']
+        # body_type = self.request.data['body_type']
+        # gender = self.request.data['gender']
+        # interests = self.request.data['interests']
         # qualification = self.request.POST.get('qualification', None)
         # relationship_status = self.request.POST.get('relationship_status', None)
         # religion = self.request.POST.get('religion', None)
@@ -291,12 +295,12 @@ class SearchUser(APIView):
         # gender = self.request.POST.get('gender', None)
         # interests = self.request.POST.get('interests', None)
         if data:
-            qs = RegisterUser.objects.filter(Q(qualification__exact=qualification) |
-                                             Q(relationship_status__exact=relationship_status) |
-                                             Q(interests__exact=interests) |
-                                             Q(gender__exact=gender) |
-                                             Q(religion__exact=religion) |
-                                             Q(body_type__exact=body_type)
+            qs = RegisterUser.objects.filter(Q(qualification__exact=data) &
+                                             Q(relationship_status__exact=data) &
+                                             Q(interests__exact=data) &
+                                             Q(gender__exact=data) &
+                                             Q(religion__exact=data) &
+                                             Q(body_type__exact=data)
                                              )
             return Response(qs, status=HTTP_200_OK)
 
@@ -306,7 +310,7 @@ class GetMatchesAPIView(ListAPIView):
     serializer_class = MatchedUserSerializer
 
     def get(self, request, *args, **kwargs):
-        liked_by = MatchedUser.objects.filter(liked_by=self.request.user.id) #id:4 has matches
+        liked_by = MatchedUser.objects.filter(liked_by=self.request.user.id)  # id:4 has matches
         super_liked_by = MatchedUser.objects.filter(super_liked_by=self.request.user.id)
         liked_by_me = MatchedUser.objects.filter(liked_by_me=self.request.user.id)
         super_liked_by_me = MatchedUser.objects.filter(super_liked_by_me=self.request.user.id)
@@ -403,17 +407,21 @@ class ScheduleMeetingAPIView(CreateAPIView):
     def post(self, request, *args, **kwargs):
         phone_number = self.request.data['phone_number']
         requested_user = RegisterUser.objects.get(id=phone_number)
+        scheduled_by = RegisterUser.objects.get(id=self.request.user.id)
         meeting_date = self.request.data['meeting_date']
         meeting_time = self.request.data['meeting_time']
         venue = self.request.data['venue']
         description = self.request.data['description']
+        status = self.request.data['status']
         if self.request.user.gender == 'Female':
             ScheduleMeeting.objects.create(
-                phone_number=requested_user,
+                scheduled_with=requested_user,
+                scheduled_by=scheduled_by,
                 meeting_date=meeting_date,
                 meeting_time=meeting_time,
                 venue=venue,
-                description=description
+                description=description,
+                status=status
             )
             return Response({"Meeting request sent sucessfully"}, status=HTTP_200_OK)
         else:
@@ -435,6 +443,18 @@ class AboutUsApiView(ListAPIView):
     model = AboutUs
     serializer_class = AboutUsSerializer
     queryset = AboutUs.objects.all()
+
+
+class EditAboutUsAPIView(UpdateAPIView):
+    model = AboutUs
+    serializer_class = AboutUsSerializer
+    queryset = AboutUs.objects.all()
+
+
+class EditContactUsApiView(UpdateAPIView):
+    model = ContactUs
+    serializer_class = ContactUsSerializer
+    queryset = ContactUs.objects.all()
 
 
 class FacebookSignupApiView(CreateAPIView):

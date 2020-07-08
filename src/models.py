@@ -74,6 +74,8 @@ BOOL_CHOICES = (('Yes', 'Yes'), ('No', 'No'))
 
 GENDER = (('Male', 'Male'), ('Female', 'Female'), ('Custom', 'Custom'))
 
+STATUS = (('Not Completed', 'Not Completed'), ('Completed', 'Completed'))
+
 
 class SubscriptionPlans(models.Model):
     name = models.CharField(default='My subscription', max_length=500)
@@ -81,16 +83,16 @@ class SubscriptionPlans(models.Model):
     feature_likes = models.CharField(default='Feature', max_length=200, null=True, blank=True)
     likes_number = models.IntegerField(null=True, blank=True)
     feature_superlikes = models.CharField(default='super like', max_length=100, null=True, blank=True)
-    superlikes_number = models.IntegerField(null=True,blank=True)
+    superlikes_number = models.IntegerField(null=True, blank=True)
     feature_rewind = models.CharField(default='rewind', max_length=300, null=True, blank=True)
-    number_rewind = models.IntegerField(null=True,blank=True)
+    number_rewind = models.IntegerField(null=True, blank=True)
     ads_comes_or_not = models.CharField(default='ads', max_length=100, null=True, blank=True)
     search_filters = models.CharField(default='search_filter', max_length=100, null=True, blank=True)
     see_likes = models.CharField(default='yes', max_length=100, null=True, blank=True)
     read_recipient = models.CharField(default='yes', max_length=100, null=True, blank=True)
     feature_count = models.IntegerField()
     amount = models.IntegerField()
-    validity = models.DateTimeField(auto_now=True)
+    validity = models.DateField()
     active = models.CharField(default='No', choices=BOOL_CHOICES, max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -113,7 +115,7 @@ class RegisterUser(models.Model):
     religion = models.CharField(default='atheist', max_length=100, null=True, blank=True)
     body_type = models.CharField(default='slim', max_length=100)
     created_at = models.DateField(auto_now_add=True)
-    verified = models.CharField(default='NO', choices=BOOL_CHOICES, max_length=10)
+    verified = models.CharField(default='No', choices=BOOL_CHOICES, max_length=10)
     fb_signup = models.CharField(default='No', choices=BOOL_CHOICES, max_length=10)
     pic_1 = models.ImageField(null=True, blank=True)
     pic_2 = models.ImageField(null=True, blank=True)
@@ -153,6 +155,8 @@ class UserDetail(models.Model):
     fav_pet = models.CharField(default=None, max_length=100)
     smoke = models.CharField(default='No', choices=BOOL_CHOICES, max_length=10)
     drink = models.CharField(default='No', choices=BOOL_CHOICES, max_length=10)
+    subscription_purchased = models.CharField(default='No', choices=BOOL_CHOICES, max_length=100)
+    subscription_purchased_at = models.DateField(null=True, blank=True)
     subscription = models.ForeignKey(SubscriptionPlans, on_delete=models.CASCADE, null=True, blank=True)
 
 
@@ -199,11 +203,13 @@ class RequestMeeting(models.Model):
 
 
 class ScheduleMeeting(models.Model):
-    phone_number = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
+    scheduled_with = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='scheduled_with')
+    scheduled_by = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
     meeting_date = models.DateField()
     meeting_time = models.TimeField()
     venue = models.TextField()
     description = models.TextField()
+    status = models.CharField(default='Not Completed', choices=STATUS, max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
