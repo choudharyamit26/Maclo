@@ -78,4 +78,5 @@ class AboutUsSerializer(serializers.ModelSerializer):
 class SubscriptionPlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = SubscriptionPlans
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ("valid_till",)

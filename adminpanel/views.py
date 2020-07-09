@@ -1,4 +1,5 @@
 import csv
+import datetime
 from django.conf.global_settings import DEFAULT_FROM_EMAIL
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -277,24 +278,268 @@ class DeleteUserAPIView(DestroyAPIView):
 class CreateSubscriptionPlan(CreateAPIView):
     serializer_class = SubscriptionPlanSerializer
 
-    # def post(self, request, *args, **kwargs):
-    #     name = self.request.data['name']
-    #     description = self.request.data['description']
-    #     feature_likes = self.request.data['feature_likes']
-    #     likes_number = self.request.data['likes_number']
-    #     feature_superlikes = self.request.data['feature_superlikes']
-    #     superlikes_number = self.request.data['superlikes_number']
-    #     feature_rewind = self.request.data['feature_rewind']
-    #     number_rewind = self.request.data['number_rewind']
-    #     ads_comes_or_not = self.request.data['ads_comes_or_not']
-    #     search_filters = self.request.data['search_filters']
-    #     see_likes = self.request.data['see_likes']
-    #     read_recipient = self.request.data['read_recipient']
-    #     feature_count = self.request.data['feature_count']
-    #     amount = self.request.data['amount']
-    #     validity = self.request.data['validity']
-    #     active = self.request.data['active']
-    #     today = datetime.datetime.now()
+    def post(self, request, *args, **kwargs):
+        name = self.request.data['name']
+        description = self.request.data['description']
+        feature_likes = self.request.data['feature_likes']
+        likes_number = self.request.data['likes_number']
+        feature_superlikes = self.request.data['feature_superlikes']
+        superlikes_number = self.request.data['superlikes_number']
+        feature_rewind = self.request.data['feature_rewind']
+        number_rewind = self.request.data['number_rewind']
+        ads_comes_or_not = self.request.data['ads_comes_or_not']
+        search_filters = self.request.data['search_filters']
+        see_likes = self.request.data['see_likes']
+        read_recipient = self.request.data['read_recipient']
+        feature_count = self.request.data['feature_count']
+        amount = self.request.data['amount']
+        validity = self.request.data['validity']
+        active = self.request.data['active']
+        today = datetime.datetime.now()
+        x = str(today.date())
+        y = x.split('-')
+        year = today.year
+        month = today.month
+        date_today = y[2]
+        if validity.startswith('1') and validity.endswith('months'):
+            validity_month = 1 + int(month)
+            valid_till = str(year) + '-' + str(validity_month) + '-' + str(date_today)
+            if validity_month > 12:
+                year = 1 + int(today.year)
+                valid_till = str(year) + '-' + str(1) + '-' + str(date_today)
+                SubscriptionPlans.objects.create(
+                    name=name,
+                    description=description,
+                    feature_likes=feature_likes,
+                    likes_number=likes_number,
+                    feature_superlikes=feature_superlikes,
+                    superlikes_number=superlikes_number,
+                    feature_rewind=feature_rewind,
+                    number_rewind=number_rewind,
+                    ads_comes_or_not=ads_comes_or_not,
+                    search_filters=search_filters,
+                    see_likes=see_likes,
+                    read_recipient=read_recipient,
+                    feature_count=feature_count,
+                    amount=amount,
+                    validity=validity,
+                    valid_till=valid_till,
+                    active=active
+                )
+                return Response({"Subscription plan created successfully"}, status=HTTP_200_OK)
+            else:
+                SubscriptionPlans.objects.create(
+                    name=name,
+                    description=description,
+                    feature_likes=feature_likes,
+                    likes_number=likes_number,
+                    feature_superlikes=feature_superlikes,
+                    superlikes_number=superlikes_number,
+                    feature_rewind=feature_rewind,
+                    number_rewind=number_rewind,
+                    ads_comes_or_not=ads_comes_or_not,
+                    search_filters=search_filters,
+                    see_likes=see_likes,
+                    read_recipient=read_recipient,
+                    feature_count=feature_count,
+                    amount=amount,
+                    validity=validity,
+                    valid_till=valid_till,
+                    active=active
+                )
+                return Response({"Subscription plan created successfully"}, status=HTTP_200_OK)
+        elif validity.startswith('2') and validity.endswith('months'):
+            validity_month = 2 + int(month)
+            valid_till = str(year) + '-' + str(validity_month) + '-' + str(date_today)
+            if validity_month > 12:
+                year = 1 + int(today.year)
+                valid_till = str(year) + '-' + str(2) + '-' + str(date_today)
+                SubscriptionPlans.objects.create(
+                    name=name,
+                    description=description,
+                    feature_likes=feature_likes,
+                    likes_number=likes_number,
+                    feature_superlikes=feature_superlikes,
+                    superlikes_number=superlikes_number,
+                    feature_rewind=feature_rewind,
+                    number_rewind=number_rewind,
+                    ads_comes_or_not=ads_comes_or_not,
+                    search_filters=search_filters,
+                    see_likes=see_likes,
+                    read_recipient=read_recipient,
+                    feature_count=feature_count,
+                    amount=amount,
+                    validity=validity,
+                    valid_till=valid_till,
+                    active=active
+                )
+                return Response({"Subscription plan created successfully"}, status=HTTP_200_OK)
+            else:
+                SubscriptionPlans.objects.create(
+                    name=name,
+                    description=description,
+                    feature_likes=feature_likes,
+                    likes_number=likes_number,
+                    feature_superlikes=feature_superlikes,
+                    superlikes_number=superlikes_number,
+                    feature_rewind=feature_rewind,
+                    number_rewind=number_rewind,
+                    ads_comes_or_not=ads_comes_or_not,
+                    search_filters=search_filters,
+                    see_likes=see_likes,
+                    read_recipient=read_recipient,
+                    feature_count=feature_count,
+                    amount=amount,
+                    validity=validity,
+                    valid_till=valid_till,
+                    active=active
+                )
+                return Response({"Subscription plan created successfully"}, status=HTTP_200_OK)
+        elif validity.startswith('3') and validity.endswith('months'):
+            validity_month = 3 + int(month)
+            valid_till = str(year) + '-' + str(validity_month) + '-' + str(date_today)
+            if validity_month > 12:
+                year = 1 + int(today.year)
+                total = 3 + int(month)
+                month = total-12
+                valid_till = str(year) + '-' + str(month) + '-' + str(date_today)
+                SubscriptionPlans.objects.create(
+                    name=name,
+                    description=description,
+                    feature_likes=feature_likes,
+                    likes_number=likes_number,
+                    feature_superlikes=feature_superlikes,
+                    superlikes_number=superlikes_number,
+                    feature_rewind=feature_rewind,
+                    number_rewind=number_rewind,
+                    ads_comes_or_not=ads_comes_or_not,
+                    search_filters=search_filters,
+                    see_likes=see_likes,
+                    read_recipient=read_recipient,
+                    feature_count=feature_count,
+                    amount=amount,
+                    validity=validity,
+                    valid_till=valid_till,
+                    active=active
+                )
+                return Response({"Subscription plan created successfully"}, status=HTTP_200_OK)
+            else:
+                SubscriptionPlans.objects.create(
+                    name=name,
+                    description=description,
+                    feature_likes=feature_likes,
+                    likes_number=likes_number,
+                    feature_superlikes=feature_superlikes,
+                    superlikes_number=superlikes_number,
+                    feature_rewind=feature_rewind,
+                    number_rewind=number_rewind,
+                    ads_comes_or_not=ads_comes_or_not,
+                    search_filters=search_filters,
+                    see_likes=see_likes,
+                    read_recipient=read_recipient,
+                    feature_count=feature_count,
+                    amount=amount,
+                    validity=validity,
+                    valid_till=valid_till,
+                    active=active
+                )
+                return Response({"Subscription plan created successfully"}, status=HTTP_200_OK)
+        elif validity.startswith('6') and validity.endswith('months'):
+            validity_month = 6 + int(month)
+            valid_till = str(year) + '-' + str(validity_month) + '-' + str(date_today)
+            if validity_month > 12:
+                year = 1 + int(today.year)
+                total = 6+int(month)
+                month = total-12
+                valid_till = str(year) + '-' + str(month) + '-' + str(date_today)
+                SubscriptionPlans.objects.create(
+                    name=name,
+                    description=description,
+                    feature_likes=feature_likes,
+                    likes_number=likes_number,
+                    feature_superlikes=feature_superlikes,
+                    superlikes_number=superlikes_number,
+                    feature_rewind=feature_rewind,
+                    number_rewind=number_rewind,
+                    ads_comes_or_not=ads_comes_or_not,
+                    search_filters=search_filters,
+                    see_likes=see_likes,
+                    read_recipient=read_recipient,
+                    feature_count=feature_count,
+                    amount=amount,
+                    validity=validity,
+                    valid_till=valid_till,
+                    active=active
+                )
+                return Response({"Subscription plan created successfully"}, status=HTTP_200_OK)
+            else:
+                SubscriptionPlans.objects.create(
+                    name=name,
+                    description=description,
+                    feature_likes=feature_likes,
+                    likes_number=likes_number,
+                    feature_superlikes=feature_superlikes,
+                    superlikes_number=superlikes_number,
+                    feature_rewind=feature_rewind,
+                    number_rewind=number_rewind,
+                    ads_comes_or_not=ads_comes_or_not,
+                    search_filters=search_filters,
+                    see_likes=see_likes,
+                    read_recipient=read_recipient,
+                    feature_count=feature_count,
+                    amount=amount,
+                    validity=validity,
+                    valid_till=valid_till,
+                    active=active
+                )
+                return Response({"Subscription plan created successfully"}, status=HTTP_200_OK)
+        elif validity.startswith('1') and validity.endswith('year'):
+            validity_year = 1 + int(today.year)
+            valid_till = str(validity_year) + '-' + str(month) + '-' + str(date_today)
+            SubscriptionPlans.objects.create(
+                name=name,
+                description=description,
+                feature_likes=feature_likes,
+                likes_number=likes_number,
+                feature_superlikes=feature_superlikes,
+                superlikes_number=superlikes_number,
+                feature_rewind=feature_rewind,
+                number_rewind=number_rewind,
+                ads_comes_or_not=ads_comes_or_not,
+                search_filters=search_filters,
+                see_likes=see_likes,
+                read_recipient=read_recipient,
+                feature_count=feature_count,
+                amount=amount,
+                validity=validity,
+                valid_till=valid_till,
+                active=active
+            )
+            return Response({"Subscription plan created successfully"}, status=HTTP_200_OK)
+        else:
+            if validity.startswith('2') and validity.endswith('year'):
+                validity_year = 2 + int(today.year)
+                valid_till = str(validity_year) + '-' + str(month) + '-' + str(date_today)
+                SubscriptionPlans.objects.create(
+                    name=name,
+                    description=description,
+                    feature_likes=feature_likes,
+                    likes_number=likes_number,
+                    feature_superlikes=feature_superlikes,
+                    superlikes_number=superlikes_number,
+                    feature_rewind=feature_rewind,
+                    number_rewind=number_rewind,
+                    ads_comes_or_not=ads_comes_or_not,
+                    search_filters=search_filters,
+                    see_likes=see_likes,
+                    read_recipient=read_recipient,
+                    feature_count=feature_count,
+                    amount=amount,
+                    validity=validity,
+                    valid_till=valid_till,
+                    active=active
+                )
+                return Response({"Subscription plan created successfully"}, status=HTTP_200_OK)
 
 
 class SubscriptionSearch(APIView):

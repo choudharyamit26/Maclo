@@ -92,7 +92,8 @@ class SubscriptionPlans(models.Model):
     read_recipient = models.CharField(default='yes', max_length=100, null=True, blank=True)
     feature_count = models.IntegerField()
     amount = models.IntegerField()
-    validity = models.DateField()
+    validity = models.CharField(default='1 month', max_length=100)
+    valid_till = models.CharField(default='2020-07-01', max_length=100, null=True, blank=True)
     active = models.CharField(default='No', choices=BOOL_CHOICES, max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
 
