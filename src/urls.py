@@ -5,10 +5,11 @@ from rest_framework import permissions
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from .views import (UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIView, UserslistAPIView,
-                    UserProfileAPIView, SearchUser, GetMatchesAPIView, CreateMatchesAPIView, DeleteMatchesAPIView,
+                    UserProfileAPIView, SearchUser, GetMatchesAPIView, LikeUserAPIView, DeleteMatchesAPIView,
                     RequestMeetingAPIView, MeetingStatusAPIView, ScheduleMeetingAPIView, FeedbackApiView,
                     ContactUsApiView, AboutUsApiView, EditAboutUsAPIView, EditContactUsApiView, FacebookSignupApiView,
-                    GoogleSignupView)
+                    GoogleSignupView, UserProfileUpdateView, UpdatePhoneNumber, SuperLikeUserAPIView,
+                    PopNotificationAPIView, SubscriptionPlanAPIView)
 
 app_name = 'src'
 
@@ -27,22 +28,27 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('user-create/', UserCreateAPIView.as_view(), name='user-detail'),
+    path('update-phonenumber/<int:pk>', UpdatePhoneNumber.as_view(), name='update-phonenumber'),
     path('user-profile/', UserProfileAPIView.as_view(), name='user-profile'),
+    path('user-profile-update/<int:pk>/', UserProfileUpdateView.as_view(), name='user-profile-update'),
     path('user-insta-pics/', UserInstagramPicsAPIView.as_view(), name='insta-pics'),
     path('users-list/', UserslistAPIView.as_view(), name='users-list'),
     path('users-detail/', UserDetailAPIView.as_view(), name='user-detail'),
     path('user-search/', SearchUser.as_view(), name='user-search'),
     path('user-getmatches/', GetMatchesAPIView.as_view(), name='get-matches'),
-    path('user-creatematches/', CreateMatchesAPIView.as_view(), name='create-matches'),
+    path('like-user/', LikeUserAPIView.as_view(), name='like-user'),
+    path('superlike-user/', SuperLikeUserAPIView.as_view(), name='superlike-user'),
     path('user-deletematches/', DeleteMatchesAPIView.as_view(), name='delete-match'),
     path('request-meeting/', RequestMeetingAPIView.as_view(), name='request-meeting'),
     path('meeting-status/<int:pk>/', MeetingStatusAPIView.as_view(), name='meeting-status'),
     path('schedule-meeting/', ScheduleMeetingAPIView.as_view(), name='schedule-meeting'),
+    path('purchase-subscription/', SubscriptionPlanAPIView.as_view(), name='subscription-purchase'),
     path('feedback/', FeedbackApiView.as_view(), name='feedback'),
     path('contactus/', ContactUsApiView.as_view(), name='contactus'),
     path('aboutus/', AboutUsApiView.as_view(), name='aboutus'),
     path('edit-aboutus/', EditAboutUsAPIView.as_view(), name='edit-aboutus'),
     path('edit-contactus/', EditContactUsApiView.as_view(), name='edit-contactus'),
+    path('popup-notification/', PopNotificationAPIView.as_view(), name='pop-notification'),
     path('facebook-signup/', FacebookSignupApiView.as_view(), name='fb-signup'),
     path('google-signup/', GoogleSignupView.as_view(), name='google-signup'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

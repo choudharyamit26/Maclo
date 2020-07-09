@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import UserDetail, UserInstagramPic, RegisterUser, MatchedUser, RequestMeeting, ScheduleMeeting, Feedback, \
-    ContactUs, AboutUs, SubscriptionPlans
+    ContactUs, AboutUs, SubscriptionPlans, PopNotification
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -80,3 +80,9 @@ class SubscriptionPlanSerializer(serializers.ModelSerializer):
         model = SubscriptionPlans
         # fields = '__all__'
         exclude = ("valid_till",)
+
+
+class PopUpNotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PopNotification
+        fields = '__all__'

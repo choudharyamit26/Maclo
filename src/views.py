@@ -12,11 +12,12 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_2
 from rest_framework.views import APIView
 
 from .models import UserInstagramPic, UserDetail, RegisterUser, MatchedUser, RequestMeeting, ScheduleMeeting, Feedback, \
-    AboutUs, ContactUs
+    AboutUs, ContactUs, InAppNotification, SubscriptionPlans
 from .serializers import (UserDetailSerializer, UserInstagramSerializer, RegisterSerializer,
                           MatchedUserSerializer, CreateMatchSerializer, DeleteMatchSerializer,
                           RequestMeetingSerializer, ScheduleMeetingSerializer, FeedbackSerializer, ContactUsSerializer,
-                          AboutUsSerializer, MeetingStatusSerializer)
+                          AboutUsSerializer, MeetingStatusSerializer, PopUpNotificationSerializer,
+                          SubscriptionPlanSerializer)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -88,6 +89,35 @@ class UserCreateAPIView(CreateAPIView):
                         status=HTTP_201_CREATED)
 
 
+class UpdatePhoneNumber(UpdateAPIView):
+    serializer_class = RegisterSerializer
+    queryset = RegisterUser.objects.all()
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.phone_number = request.data.get('phone_number')
+        instance.save(update_fields=['phone_number'])
+        from_id = self.request.user.id
+        from_user_id = RegisterUser.objects.get(id=from_id)
+        from_user_name = from_user_id.first_name
+        phone_number = self.request.data['phone_number']
+        to_user = RegisterUser.objects.get(id=phone_number)
+        first_name = to_user.first_name
+        to_id = self.request.data['phone_number']
+        to_user_id = RegisterUser.objects.get(id=to_id)
+        InAppNotification.objects.create(
+            from_user_id=from_user_id,
+            from_user_name=from_user_name,
+            to_user_id=to_user_id,
+            to_user_name=first_name,
+            notification_type="Phone Number Update",
+            notification_title="Phone Number",
+            notification_body="Your Phone number has been updated"
+        )
+        return Response({"Your phone number has been update"}, status=HTTP_200_OK)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
 class UserProfileAPIView(CreateAPIView):
     model = UserDetail
     serializer_class = UserDetailSerializer
@@ -147,6 +177,56 @@ class UserProfileAPIView(CreateAPIView):
         return Response({"Profile Updated": "Profile updated Successfully"}, status=HTTP_201_CREATED)
 
 
+class UserProfileUpdateView(UpdateAPIView):
+    serializer_class = UserDetailSerializer
+    queryset = UserDetail.objects.all()
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.bio = request.data.get("bio")
+        instance.living_in = request.data.get("living_in")
+        instance.profession = request.data.get("profession")
+        instance.college_name = request.data.get("college_name")
+        instance.university = request.data.get("university")
+        instance.personality = request.data.get("personality")
+        instance.preference_first_date = request.data.get("preference_first_date")
+        instance.fav_music = request.data.get("fav_music")
+        instance.travelled_place = request.data.get("travelled_place")
+        instance.once_in_life = request.data.get("once_in_life")
+        instance.exercise = request.data.get("exercise")
+        instance.looking_for = request.data.get("looking_for")
+        instance.fav_food = request.data.get("fav_food")
+        instance.fav_pet = request.data.get("fav_pet")
+        instance.smoke = request.data.get("smoke")
+        instance.drink = request.data.get("drink")
+        instance.subscription_purchased = request.data.get("subscription_purchased")
+        instance.subscription_purchased_at = request.data.get("subscription_purchased_at")
+        instance.subscription = request.data.get("subscription")
+        instance.save(update_fields=['bio', 'phone_number', 'living_in', 'profession', 'college_name', 'university',
+                                     'personality', 'preference_first_date', 'fav_music', 'travelled_place',
+                                     'once_in_life', 'exercise', 'looking_for', 'fav_food', 'fav_pet', 'smoke', 'drink',
+                                     'subscription_purchased', 'subscription_purchased_at', 'subscription'])
+        from_id = self.request.user.id
+        from_user_id = RegisterUser.objects.get(id=from_id)
+        from_user_name = from_user_id.first_name
+        phone_number = self.request.data['phone_number']
+        to_user = RegisterUser.objects.get(id=phone_number)
+        first_name = to_user.first_name
+        to_id = self.request.data['phone_number']
+        to_user_id = RegisterUser.objects.get(id=to_id)
+        InAppNotification.objects.create(
+            from_user_id=from_user_id,
+            from_user_name=from_user_name,
+            to_user_id=to_user_id,
+            to_user_name=first_name,
+            notification_type="Profile Update",
+            notification_title="Profile Update",
+            notification_body="Your profile has been updated"
+        )
+
+        return Response({"Profile update successfully"}, status=HTTP_200_OK)
+
+
 @method_decorator(csrf_exempt, name='dispatch')
 class UserInstagramPicsAPIView(CreateAPIView):
     serializer_class = UserInstagramSerializer
@@ -203,11 +283,125 @@ class UserslistAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
         # queryset needed to be filtered
-        queryset = UserDetail.objects.all().exclude(id=self.request.user.id).values()
-        return Response({"Users": queryset}, status=HTTP_200_OK)
+        # queryset1 = UserDetail.objects.all().exclude(id=self.request.user.id).values()
 
-    # def post(self, request, *args, **kwargs):
-    #     return self.create(request, *args, **kwargs)
+        for obj in UserDetail.objects.all():
+            bio = obj.bio
+            first_name = obj.phone_number.first_name
+            last_name = obj.phone_number.last_name
+            email = obj.phone_number.email
+            gender = obj.phone_number.gender
+            date_of_birth = obj.phone_number.date_of_birth
+            job_profile = obj.phone_number.job_profile
+            company_name = obj.phone_number.company_name
+            qualification = obj.phone_number.qualification
+            relationship_status = obj.phone_number.relationship_status
+            interests = obj.phone_number.interests
+            fav_quote = obj.phone_number.fav_quote
+            religion = obj.phone_number.religion
+            body_type = obj.phone_number.body_type
+            verified = obj.phone_number.verified
+            fb_signup = obj.phone_number.fb_signup
+            if obj.phone_number.pic_1:
+                pic_1 = obj.phone_number.pic_1.url
+            else:
+                pic_1 = ''
+            if obj.phone_number.pic_2:
+                pic_2 = obj.phone_number.pic_2.url
+            else:
+                pic_2 = ''
+            if obj.phone_number.pic_3:
+                pic_3 = obj.phone_number.pic_3.url
+            else:
+                pic_3 = ''
+            if obj.phone_number.pic_4:
+                pic_4 = obj.phone_number.pic_4.url
+            else:
+                pic_4 = ''
+            if obj.phone_number.pic_5:
+                pic_5 = obj.phone_number.pic_5.url
+            else:
+                pic_5 = ''
+            if obj.phone_number.pic_6:
+                pic_6 = obj.phone_number.pic_6.url
+            else:
+                pic_6 = ''
+            if obj.phone_number.pic_7:
+                pic_7 = obj.phone_number.pic_7.url
+            else:
+                pic_7 = ''
+            if obj.phone_number.pic_8:
+                pic_8 = obj.phone_number.pic_8.url
+            else:
+                pic_8 = ''
+            if obj.phone_number.pic_9:
+                pic_9 = obj.phone_number.pic_9.url
+            else:
+                pic_9 = ''
+            living_in = obj.living_in
+            profession = obj.profession
+            college_name = obj.college_name
+            university = obj.university
+            personality = obj.personality
+            preference_first_date = obj.preference_first_date
+            fav_music = obj.fav_music
+            travelled_place = obj.travelled_place
+            once_in_life = obj.once_in_life
+            exercise = obj.exercise
+            looking_for = obj.looking_for
+            fav_food = obj.fav_food
+            fav_pet = obj.fav_pet
+            smoke = obj.smoke
+            drink = obj.drink
+            subscription_purchased = obj.subscription_purchased
+            subscription_purchased_at = obj.subscription_purchased_at
+            # subscription = obj.subscription.values()
+            detail = {
+                "bio": bio,
+                "first_name": first_name,
+                "last_name": last_name,
+                "email": email,
+                "gender": gender,
+                "date_of_birth": date_of_birth,
+                "job_profile": job_profile,
+                "company_name": company_name,
+                "qualification": qualification,
+                "relationship_status": relationship_status,
+                "interests": interests,
+                "fav_quote": fav_quote,
+                "religion": religion,
+                "body_type": body_type,
+                "verified": verified,
+                "fb_signup": fb_signup,
+                "pic_1": pic_1,
+                "pic_2": pic_2,
+                "pic_3": pic_3,
+                "pic_4": pic_4,
+                "pic_5": pic_5,
+                "pic_6": pic_6,
+                "pic_7": pic_7,
+                "pic_8": pic_8,
+                "pic_9": pic_9,
+                "living_in": living_in,
+                "profession": profession,
+                "college_name": college_name,
+                "university": university,
+                "personality": personality,
+                "preference_first_date": preference_first_date,
+                "fav_music": fav_music,
+                "travelled_place": travelled_place,
+                "once_in_life": once_in_life,
+                "exercise": exercise,
+                "looking_for": looking_for,
+                "fav_food": fav_food,
+                "fav_pet": fav_pet,
+                "smoke": smoke,
+                "drink": drink,
+                "subscription_purchased": subscription_purchased,
+                "subscription_purchased_at": subscription_purchased_at,
+                # "subscription": subscription
+            }
+            return Response({"Detail": detail}, status=HTTP_200_OK)
 
 
 class UserDetailAPIView(APIView):
@@ -327,9 +521,94 @@ class GetMatchesAPIView(ListAPIView):
         return Response({"Matches": match, "Super Matches": super_match}, status=HTTP_200_OK)
 
 
-class CreateMatchesAPIView(CreateAPIView):
+@method_decorator(csrf_exempt, name='dispatch')
+class LikeUserAPIView(CreateAPIView):
     model = MatchedUser
     serializer_class = CreateMatchSerializer
+
+    def post(self, request, *args, **kwargs):
+        liked_by = MatchedUser.objects.filter(liked_by=1)
+        if liked_by is None:
+            liked_by_me = self.request.data['liked_by_me']
+            register_user = RegisterUser.objects.get(id=self.request.user.id)
+            from_user_name = register_user.first_name
+            user = MatchedUser.objects.create(user=register_user)
+            user.liked_by_me.add(liked_by_me)
+            to_user_id = RegisterUser.objects.get(id=liked_by_me)
+            to_user_name = to_user_id.first_name
+            InAppNotification.objects.create(
+                from_user_id=register_user,
+                from_user_name=from_user_name,
+                to_user_id=to_user_id,
+                to_user_name=to_user_name,
+                notification_type='Like Notification',
+                notification_title='Like Notification',
+                notification_body="You have been liked by " + from_user_name
+            )
+            return Response({"You have liked a user"}, status=HTTP_200_OK)
+        else:
+            liked_by_me = self.request.data['liked_by_me']
+            register_user = RegisterUser.objects.get(id=self.request.user.id)
+            from_user_name = register_user.first_name
+            user = MatchedUser.objects.create(user=register_user)
+            user.liked_by_me.add(liked_by_me)
+            to_user_id = RegisterUser.objects.get(id=liked_by_me)
+            to_user_name = to_user_id.first_name
+            InAppNotification.objects.create(
+                from_user_id=register_user,
+                from_user_name=from_user_name,
+                to_user_id=to_user_id,
+                to_user_name=to_user_name,
+                notification_type='Match Notification',
+                notification_title='Match Notification',
+                notification_body="You have been matched with  " + from_user_name
+            )
+            return Response({"You have matched with a user"}, status=HTTP_200_OK)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class SuperLikeUserAPIView(CreateAPIView):
+    model = MatchedUser
+    serializer_class = CreateMatchSerializer
+
+    def post(self, request, *args, **kwargs):
+        super_liked_by = MatchedUser.objects.filter(super_liked_by=self.request.user.id)
+        if super_liked_by is None:
+            super_liked_by_me = self.request.data['super_liked_by_me']
+            register_user = RegisterUser.objects.get(id=self.request.user.id)
+            from_user_name = register_user.first_name
+            user = MatchedUser.objects.create(user=register_user)
+            user.super_liked_by_me.add(super_liked_by_me)
+            to_user_id = RegisterUser.objects.get(id=super_liked_by_me)
+            to_user_name = to_user_id.first_name
+            InAppNotification.objects.create(
+                from_user_id=register_user,
+                from_user_name=from_user_name,
+                to_user_id=to_user_id,
+                to_user_name=to_user_name,
+                notification_type='Like Notification',
+                notification_title='Like Notification',
+                notification_body="You have been super liked by " + from_user_name
+            )
+            return Response({"You have liked a user"}, status=HTTP_200_OK)
+        else:
+            super_liked_by_me = self.request.data['super_liked_by_me']
+            register_user = RegisterUser.objects.get(id=self.request.user.id)
+            from_user_name = register_user.first_name
+            user = MatchedUser.objects.create(user=register_user)
+            user.super_liked_by_me.add(super_liked_by_me)
+            to_user_id = RegisterUser.objects.get(id=super_liked_by_me)
+            to_user_name = to_user_id.first_name
+            InAppNotification.objects.create(
+                from_user_id=register_user,
+                from_user_name=from_user_name,
+                to_user_id=to_user_id,
+                to_user_name=to_user_name,
+                notification_type='Match Notification',
+                notification_title='Match Notification',
+                notification_body="You have  matched with  " + from_user_name
+            )
+            return Response({"You have super matched with a user"}, status=HTTP_200_OK)
 
 
 class DeleteMatchesAPIView(APIView):
@@ -363,13 +642,23 @@ class DeleteMatchesAPIView(APIView):
         return Response({"User removed successfully"})
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class RequestMeetingAPIView(CreateAPIView):
     model = RequestMeeting
     serializer_class = RequestMeetingSerializer
 
     def post(self, request, *args, **kwargs):
+        print('_____________', self.request.data)
         phone_number = self.request.data['phone_number']
         requested_user = RegisterUser.objects.get(id=phone_number)
+        from_id = self.request.user.id
+        from_user_id = RegisterUser.objects.get(id=from_id)
+        from_user_name = from_user_id.first_name
+        phone_number = self.request.data['phone_number']
+        to_user = RegisterUser.objects.get(id=phone_number)
+        first_name = to_user.first_name
+        to_id = self.request.data['phone_number']
+        to_user_id = RegisterUser.objects.get(id=to_id)
         liked_by_me = MatchedUser.objects.filter(liked_by_me=self.request.user.id)
         super_liked_by_me = MatchedUser.objects.filter(super_liked_by_me=self.request.user.id)
         liked_by = MatchedUser.objects.filter(liked_by=self.request.user.id)
@@ -382,7 +671,17 @@ class RequestMeetingAPIView(CreateAPIView):
             RequestMeeting.objects.create(
                 phone_number=requested_user
             )
-            return Response({"Request sent sucessfully"}, status=HTTP_200_OK)
+            InAppNotification.objects.create(
+                from_user_id=from_user_id,
+                from_user_name=from_user_name,
+                to_user_id=to_user_id,
+                to_user_name=first_name,
+                notification_type="Meeting",
+                notification_title="Meeting request",
+                notification_body="You have a meeting request from " + first_name
+
+            )
+            return Response({"Request sent successfully"}, status=HTTP_200_OK)
         else:
             return Response({"Cannot send request as the user is not a match"}, status=HTTP_400_BAD_REQUEST)
 
@@ -392,12 +691,30 @@ class MeetingStatusAPIView(UpdateAPIView):
     serializer_class = MeetingStatusSerializer
     queryset = RequestMeeting.objects.all()
 
-    # def get_queryset(self):
-    #     print(self.request.data)
-    #     phone_number = self.request.data['phone_number']
-    #     meeting_id = RequestMeeting.objects.filter(phone_number=phone_number)
-    #     print('>>>>>>>>>>>>>>',phone_number)
-    #     print('<<<<<<<<<<<<<<<<<<<',meeting_id)
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.status = request.data.get("status")
+        instance.save(update_fields=['status'])
+        from_id = self.request.user.id
+        from_user_id = RegisterUser.objects.get(id=from_id)
+        from_user_name = from_user_id.first_name
+        phone_number = self.request.data['phone_number']
+        to_user = RegisterUser.objects.get(id=phone_number)
+        first_name = to_user.first_name
+        to_id = self.request.data['phone_number']
+        to_user_id = RegisterUser.objects.get(id=to_id)
+        status = self.request.data['status']
+
+        InAppNotification.objects.create(
+            from_user_id=from_user_id,
+            from_user_name=from_user_name,
+            to_user_id=to_user_id,
+            to_user_name=first_name,
+            notification_type='Meeting Status',
+            notification_title='Meeting Status Update',
+            notification_body='Your meeting request status with ' + from_user_name + ' has changed to  ' + status
+        )
+        return Response({"Meeting status has been updated successfully"}, status=HTTP_200_OK)
 
 
 class ScheduleMeetingAPIView(CreateAPIView):
@@ -413,6 +730,14 @@ class ScheduleMeetingAPIView(CreateAPIView):
         venue = self.request.data['venue']
         description = self.request.data['description']
         status = self.request.data['status']
+        from_id = self.request.user.id
+        from_user_id = RegisterUser.objects.get(id=from_id)
+        from_user_name = from_user_id.first_name
+        phone_number = self.request.data['phone_number']
+        to_user = RegisterUser.objects.get(id=phone_number)
+        first_name = to_user.first_name
+        to_id = self.request.data['phone_number']
+        to_user_id = RegisterUser.objects.get(id=to_id)
         if self.request.user.gender == 'Female':
             ScheduleMeeting.objects.create(
                 scheduled_with=requested_user,
@@ -423,7 +748,16 @@ class ScheduleMeetingAPIView(CreateAPIView):
                 description=description,
                 status=status
             )
-            return Response({"Meeting request sent sucessfully"}, status=HTTP_200_OK)
+            InAppNotification.objects.create(
+                from_user_id=from_user_id,
+                from_user_name=from_user_name,
+                to_user_id=to_user_id,
+                to_user_name=first_name,
+                notification_type='Meeting Schedule',
+                notification_title='Meeting Schedule Request',
+                notification_body='You have a meeting scheduled with ' + from_user_name
+            )
+            return Response({"Meeting schedule sent successfully"}, status=HTTP_200_OK)
         else:
             return Response({"Only females are allowed to sent meeting request"}, status=HTTP_400_BAD_REQUEST)
 
@@ -471,3 +805,22 @@ class GoogleSignupView(CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         return Response({"User created successfully"}, status=HTTP_201_CREATED)
+
+
+class PopNotificationAPIView(CreateAPIView):
+    serializer_class = PopUpNotificationSerializer
+
+    def post(self, request, *args, **kwargs):
+        return Response({"You have updated your meeting request successfully"}, status=HTTP_200_OK)
+
+
+class SubscriptionPlanAPIView(ListAPIView):
+    serializer_class = SubscriptionPlanSerializer
+    queryset = SubscriptionPlans.objects.all()
+
+    # def get(self, request, *args, **kwargs):
+    #     queryset = SubscriptionPlans.objects.all().values()
+    #     return Response(queryset)
+    #
+    # def post(self, request, *args, **kwargs):
+    #     return Response({"You have updated your meeting request successfully"}, status=HTTP_200_OK)

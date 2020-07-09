@@ -77,27 +77,6 @@ GENDER = (('Male', 'Male'), ('Female', 'Female'), ('Custom', 'Custom'))
 STATUS = (('Not Completed', 'Not Completed'), ('Completed', 'Completed'))
 
 
-class SubscriptionPlans(models.Model):
-    name = models.CharField(default='My subscription', max_length=500)
-    description = models.TextField()
-    feature_likes = models.CharField(default='Feature', max_length=200, null=True, blank=True)
-    likes_number = models.IntegerField(null=True, blank=True)
-    feature_superlikes = models.CharField(default='super like', max_length=100, null=True, blank=True)
-    superlikes_number = models.IntegerField(null=True, blank=True)
-    feature_rewind = models.CharField(default='rewind', max_length=300, null=True, blank=True)
-    number_rewind = models.IntegerField(null=True, blank=True)
-    ads_comes_or_not = models.CharField(default='ads', max_length=100, null=True, blank=True)
-    search_filters = models.CharField(default='search_filter', max_length=100, null=True, blank=True)
-    see_likes = models.CharField(default='yes', max_length=100, null=True, blank=True)
-    read_recipient = models.CharField(default='yes', max_length=100, null=True, blank=True)
-    feature_count = models.IntegerField()
-    amount = models.IntegerField()
-    validity = models.CharField(default='1 month', max_length=100)
-    valid_till = models.CharField(default='2020-07-01', max_length=100, null=True, blank=True)
-    active = models.CharField(default='No', choices=BOOL_CHOICES, max_length=100)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-
 class RegisterUser(models.Model):
     email = models.EmailField(default='test@maclo.com')
     phone_number = models.CharField(default='00000', max_length=12)
@@ -130,6 +109,27 @@ class RegisterUser(models.Model):
 
     def __str__(self):
         return self.phone_number
+
+
+class SubscriptionPlans(models.Model):
+    name = models.CharField(default='My subscription', max_length=500)
+    description = models.TextField()
+    feature_likes = models.CharField(default='Feature', max_length=200, null=True, blank=True)
+    likes_number = models.IntegerField(null=True, blank=True)
+    feature_superlikes = models.CharField(default='super like', max_length=100, null=True, blank=True)
+    superlikes_number = models.IntegerField(null=True, blank=True)
+    feature_rewind = models.CharField(default='rewind', max_length=300, null=True, blank=True)
+    number_rewind = models.IntegerField(null=True, blank=True)
+    ads_comes_or_not = models.CharField(default='ads', max_length=100, null=True, blank=True)
+    search_filters = models.CharField(default='search_filter', max_length=100, null=True, blank=True)
+    see_likes = models.CharField(default='yes', max_length=100, null=True, blank=True)
+    read_recipient = models.CharField(default='yes', max_length=100, null=True, blank=True)
+    feature_count = models.IntegerField()
+    amount = models.IntegerField()
+    validity = models.CharField(default='1 month', max_length=100)
+    valid_till = models.CharField(default='2020-07-01', max_length=100, null=True, blank=True)
+    active = models.CharField(default='No', choices=BOOL_CHOICES, max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class UserDetail(models.Model):
@@ -187,6 +187,7 @@ class UserSettings(models.Model):
 
 
 class MatchedUser(models.Model):
+    user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
     liked_by = models.ManyToManyField(RegisterUser, default=1, related_name='liked_by')
     super_liked_by = models.ManyToManyField(RegisterUser, default=1, related_name='superliked_by')
     liked_by_me = models.ManyToManyField(RegisterUser, default=1, related_name='liked_by_me')
@@ -215,9 +216,9 @@ class ScheduleMeeting(models.Model):
 
 
 class InAppNotification(models.Model):
-    from_user_id = models.ForeignKey(UserDetail, on_delete=models.CASCADE, related_name='from_user')
+    from_user_id = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='from_user')
     from_user_name = models.CharField(default='From User', max_length=250)
-    to_user_id = models.ForeignKey(UserDetail, on_delete=models.CASCADE, related_name='to_user')
+    to_user_id = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='to_user')
     to_user_name = models.CharField(default='To user name', max_length=200)
     notification_type = models.CharField(default='Notification type', max_length=200)
     notification_title = models.CharField(default='Notification Title', max_length=200)
@@ -237,3 +238,9 @@ class ContactUs(models.Model):
 
 class AboutUs(models.Model):
     about_us = models.TextField()
+
+
+class PopNotification(models.Model):
+    user1 = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='user1')
+    user2 = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
+    title = models.CharField(default='Met', max_length=100)
