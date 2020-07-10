@@ -9,7 +9,7 @@ from .views import (UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVi
                     RequestMeetingAPIView, MeetingStatusAPIView, ScheduleMeetingAPIView, FeedbackApiView,
                     ContactUsApiView, AboutUsApiView, EditAboutUsAPIView, EditContactUsApiView, FacebookSignupApiView,
                     GoogleSignupView, UserProfileUpdateView, UpdatePhoneNumber, SuperLikeUserAPIView,
-                    PopNotificationAPIView, SubscriptionPlanAPIView)
+                    PopNotificationAPIView, SubscriptionPlanAPIView, DeleteSuperMatchesAPIView)
 
 app_name = 'src'
 
@@ -39,6 +39,7 @@ urlpatterns = [
     path('like-user/', LikeUserAPIView.as_view(), name='like-user'),
     path('superlike-user/', SuperLikeUserAPIView.as_view(), name='superlike-user'),
     path('user-deletematches/', DeleteMatchesAPIView.as_view(), name='delete-match'),
+    path('user-deletesupermatches/', DeleteSuperMatchesAPIView.as_view(), name='delete-supermatch'),
     path('request-meeting/', RequestMeetingAPIView.as_view(), name='request-meeting'),
     path('meeting-status/<int:pk>/', MeetingStatusAPIView.as_view(), name='meeting-status'),
     path('schedule-meeting/', ScheduleMeetingAPIView.as_view(), name='schedule-meeting'),

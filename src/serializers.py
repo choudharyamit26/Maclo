@@ -27,16 +27,28 @@ class MatchedUserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CreateMatchSerializer(serializers.ModelSerializer):
+class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = MatchedUser
-        fields = ('liked_by_me', 'super_liked_by_me')
+        fields = ('liked_by_me',)
+
+
+class SuperLikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MatchedUser
+        fields = ('super_liked_by_me',)
 
 
 class DeleteMatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = MatchedUser
-        fields = ('liked_by_me', 'super_liked_by_me')
+        fields = ('liked_by_me',)
+
+
+class DeleteSuperMatchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MatchedUser
+        fields = ('super_liked_by_me',)
 
 
 class RequestMeetingSerializer(serializers.ModelSerializer):

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'storages',
     'channels',
+    'django_cron',
     'chat',
     'adminpanel',
     'src'
@@ -54,6 +55,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CRON_CLASSES = [
+    "src.cron.MyCronJob",
 ]
 
 ROOT_URLCONF = 'maclo.urls'

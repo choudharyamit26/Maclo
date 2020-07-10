@@ -188,10 +188,8 @@ class UserSettings(models.Model):
 
 class MatchedUser(models.Model):
     user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
-    liked_by = models.ManyToManyField(RegisterUser, default=1, related_name='liked_by')
-    super_liked_by = models.ManyToManyField(RegisterUser, default=1, related_name='superliked_by')
-    liked_by_me = models.ManyToManyField(RegisterUser, default=1, related_name='liked_by_me')
-    super_liked_by_me = models.ManyToManyField(RegisterUser, default=1, related_name='superliked_by_me')
+    liked_by_me = models.ManyToManyField(RegisterUser, default=1, related_name='likedbyme')
+    super_liked_by_me = models.ManyToManyField(RegisterUser, default=1, related_name='superlikedbyme')
     matched_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

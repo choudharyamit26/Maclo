@@ -1,12 +1,12 @@
 import os
-import instaloader
 import shutil
 
+import instaloader
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django_filters import rest_framework
-from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView, DestroyAPIView, UpdateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.views import APIView
@@ -14,10 +14,10 @@ from rest_framework.views import APIView
 from .models import UserInstagramPic, UserDetail, RegisterUser, MatchedUser, RequestMeeting, ScheduleMeeting, Feedback, \
     AboutUs, ContactUs, InAppNotification, SubscriptionPlans
 from .serializers import (UserDetailSerializer, UserInstagramSerializer, RegisterSerializer,
-                          MatchedUserSerializer, CreateMatchSerializer, DeleteMatchSerializer,
+                          MatchedUserSerializer, LikeSerializer, DeleteMatchSerializer, SuperLikeSerializer,
                           RequestMeetingSerializer, ScheduleMeetingSerializer, FeedbackSerializer, ContactUsSerializer,
                           AboutUsSerializer, MeetingStatusSerializer, PopUpNotificationSerializer,
-                          SubscriptionPlanSerializer)
+                          SubscriptionPlanSerializer, DeleteSuperMatchSerializer)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -285,7 +285,7 @@ class UserslistAPIView(APIView):
         # queryset needed to be filtered
         # queryset1 = UserDetail.objects.all().exclude(id=self.request.user.id).values()
 
-        for obj in UserDetail.objects.all():
+        for obj in UserDetail.objects.all().exclude(id=self.request.user.id):
             bio = obj.bio
             first_name = obj.phone_number.first_name
             last_name = obj.phone_number.last_name
@@ -410,8 +410,126 @@ class UserDetailAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
         phone_number = self.request.data['phone_number']
-        queryset = UserDetail.objects.filter(id=phone_number).values()
-        return Response({"User Details": queryset}, status=HTTP_200_OK)
+        # queryset = UserDetail.objects.filter(id=phone_number).values()
+        queryset = UserDetail.objects.filter(id=phone_number)
+        for obj in queryset:
+            bio = obj.bio
+            first_name = obj.phone_number.first_name
+            last_name = obj.phone_number.last_name
+            email = obj.phone_number.email
+            gender = obj.phone_number.gender
+            date_of_birth = obj.phone_number.date_of_birth
+            job_profile = obj.phone_number.job_profile
+            company_name = obj.phone_number.company_name
+            qualification = obj.phone_number.qualification
+            relationship_status = obj.phone_number.relationship_status
+            interests = obj.phone_number.interests
+            fav_quote = obj.phone_number.fav_quote
+            religion = obj.phone_number.religion
+            body_type = obj.phone_number.body_type
+            verified = obj.phone_number.verified
+            fb_signup = obj.phone_number.fb_signup
+            if obj.phone_number.pic_1:
+                pic_1 = obj.phone_number.pic_1.url
+            else:
+                pic_1 = ''
+            if obj.phone_number.pic_2:
+                pic_2 = obj.phone_number.pic_2.url
+            else:
+                pic_2 = ''
+            if obj.phone_number.pic_3:
+                pic_3 = obj.phone_number.pic_3.url
+            else:
+                pic_3 = ''
+            if obj.phone_number.pic_4:
+                pic_4 = obj.phone_number.pic_4.url
+            else:
+                pic_4 = ''
+            if obj.phone_number.pic_5:
+                pic_5 = obj.phone_number.pic_5.url
+            else:
+                pic_5 = ''
+            if obj.phone_number.pic_6:
+                pic_6 = obj.phone_number.pic_6.url
+            else:
+                pic_6 = ''
+            if obj.phone_number.pic_7:
+                pic_7 = obj.phone_number.pic_7.url
+            else:
+                pic_7 = ''
+            if obj.phone_number.pic_8:
+                pic_8 = obj.phone_number.pic_8.url
+            else:
+                pic_8 = ''
+            if obj.phone_number.pic_9:
+                pic_9 = obj.phone_number.pic_9.url
+            else:
+                pic_9 = ''
+            living_in = obj.living_in
+            profession = obj.profession
+            college_name = obj.college_name
+            university = obj.university
+            personality = obj.personality
+            preference_first_date = obj.preference_first_date
+            fav_music = obj.fav_music
+            travelled_place = obj.travelled_place
+            once_in_life = obj.once_in_life
+            exercise = obj.exercise
+            looking_for = obj.looking_for
+            fav_food = obj.fav_food
+            fav_pet = obj.fav_pet
+            smoke = obj.smoke
+            drink = obj.drink
+            subscription_purchased = obj.subscription_purchased
+            subscription_purchased_at = obj.subscription_purchased_at
+            # subscription = obj.subscription.values()
+            detail = {
+                "bio": bio,
+                "first_name": first_name,
+                "last_name": last_name,
+                "email": email,
+                "gender": gender,
+                "date_of_birth": date_of_birth,
+                "job_profile": job_profile,
+                "company_name": company_name,
+                "qualification": qualification,
+                "relationship_status": relationship_status,
+                "interests": interests,
+                "fav_quote": fav_quote,
+                "religion": religion,
+                "body_type": body_type,
+                "verified": verified,
+                "fb_signup": fb_signup,
+                "pic_1": pic_1,
+                "pic_2": pic_2,
+                "pic_3": pic_3,
+                "pic_4": pic_4,
+                "pic_5": pic_5,
+                "pic_6": pic_6,
+                "pic_7": pic_7,
+                "pic_8": pic_8,
+                "pic_9": pic_9,
+                "living_in": living_in,
+                "profession": profession,
+                "college_name": college_name,
+                "university": university,
+                "personality": personality,
+                "preference_first_date": preference_first_date,
+                "fav_music": fav_music,
+                "travelled_place": travelled_place,
+                "once_in_life": once_in_life,
+                "exercise": exercise,
+                "looking_for": looking_for,
+                "fav_food": fav_food,
+                "fav_pet": fav_pet,
+                "smoke": smoke,
+                "drink": drink,
+                "subscription_purchased": subscription_purchased,
+                "subscription_purchased_at": subscription_purchased_at,
+                # "subscription": subscription
+            }
+            return Response({"Details": detail}, status=HTTP_200_OK)
+        return Response({"Details": queryset}, status=HTTP_200_OK)
 
 
 class SnippetFilter(rest_framework.FilterSet):
@@ -476,12 +594,13 @@ class SearchUser(APIView):
 
     def post(self, request, *args, **kwargs):
         data = self.request.data
-        # qualification = self.request.data['qualification']
-        # relationship_status = self.request.data['relationship_status']
-        # religion = self.request.data['religion']
-        # body_type = self.request.data['body_type']
-        # gender = self.request.data['gender']
-        # interests = self.request.data['interests']
+        # print('>>>>>>>>>>>>>>>>>',data)
+        qualification = self.request.data['qualification']
+        relationship_status = self.request.data['relationship_status']
+        religion = self.request.data['religion']
+        body_type = self.request.data['body_type']
+        gender = self.request.data['gender']
+        interests = self.request.data['interests']
         # qualification = self.request.POST.get('qualification', None)
         # relationship_status = self.request.POST.get('relationship_status', None)
         # religion = self.request.POST.get('religion', None)
@@ -489,47 +608,30 @@ class SearchUser(APIView):
         # gender = self.request.POST.get('gender', None)
         # interests = self.request.POST.get('interests', None)
         if data:
-            qs = RegisterUser.objects.filter(Q(qualification__exact=data) &
-                                             Q(relationship_status__exact=data) &
-                                             Q(interests__exact=data) &
-                                             Q(gender__exact=data) &
-                                             Q(religion__exact=data) &
-                                             Q(body_type__exact=data)
-                                             )
+            qs = RegisterUser.objects.filter(Q(qualification__exact=qualification) &
+                                             Q(relationship_status__exact=relationship_status) &
+                                             Q(interests__exact=interests) &
+                                             Q(gender__exact=gender) &
+                                             Q(religion__exact=religion) &
+                                             Q(body_type__exact=body_type)
+                                             ).values()
             return Response(qs, status=HTTP_200_OK)
-
-
-class GetMatchesAPIView(ListAPIView):
-    model = MatchedUser
-    serializer_class = MatchedUserSerializer
-
-    def get(self, request, *args, **kwargs):
-        liked_by = MatchedUser.objects.filter(liked_by=self.request.user.id)  # id:4 has matches
-        super_liked_by = MatchedUser.objects.filter(super_liked_by=self.request.user.id)
-        liked_by_me = MatchedUser.objects.filter(liked_by_me=self.request.user.id)
-        super_liked_by_me = MatchedUser.objects.filter(super_liked_by_me=self.request.user.id)
-        liked_by_list = [x.id for x in liked_by]
-        super_liked_by_list = [x.id for x in super_liked_by]
-        liked_by_me_list = [x.id for x in liked_by_me]
-        super_liked_by_me_list = [x.id for x in super_liked_by_me]
-        match = []
-        super_match = []
-        x = set(liked_by_list) & set(liked_by_me_list)
-        match.append(x)
-        y = set(super_liked_by_list) & set(super_liked_by_me_list)
-        super_match.append(y)
-        return Response({"Matches": match, "Super Matches": super_match}, status=HTTP_200_OK)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
 class LikeUserAPIView(CreateAPIView):
     model = MatchedUser
-    serializer_class = CreateMatchSerializer
+    serializer_class = LikeSerializer
 
     def post(self, request, *args, **kwargs):
-        liked_by = MatchedUser.objects.filter(liked_by=1)
-        if liked_by is None:
-            liked_by_me = self.request.data['liked_by_me']
+        users_liked_by_me = MatchedUser.objects.filter(liked_by_me=self.request.user.id)
+        users_liked_by_me_list = []
+        for obj in users_liked_by_me:
+            y = obj.user.id
+            users_liked_by_me_list.append(y)
+        liked_by_me = self.request.data['liked_by_me']
+
+        if int(liked_by_me) not in users_liked_by_me_list:
             register_user = RegisterUser.objects.get(id=self.request.user.id)
             from_user_name = register_user.first_name
             user = MatchedUser.objects.create(user=register_user)
@@ -569,12 +671,16 @@ class LikeUserAPIView(CreateAPIView):
 @method_decorator(csrf_exempt, name='dispatch')
 class SuperLikeUserAPIView(CreateAPIView):
     model = MatchedUser
-    serializer_class = CreateMatchSerializer
+    serializer_class = SuperLikeSerializer
 
     def post(self, request, *args, **kwargs):
-        super_liked_by = MatchedUser.objects.filter(super_liked_by=self.request.user.id)
-        if super_liked_by is None:
-            super_liked_by_me = self.request.data['super_liked_by_me']
+        users_super_liked_me = MatchedUser.objects.filter(super_liked_by_me=self.request.user.id)
+        users_super_liked_me_list = []
+        for obj in users_super_liked_me:
+            y = obj.user.id
+            users_super_liked_me_list.append(y)
+        super_liked_by_me = self.request.data['super_liked_by_me']
+        if int(super_liked_by_me) not in users_super_liked_me_list:
             register_user = RegisterUser.objects.get(id=self.request.user.id)
             from_user_name = register_user.first_name
             user = MatchedUser.objects.create(user=register_user)
@@ -590,7 +696,7 @@ class SuperLikeUserAPIView(CreateAPIView):
                 notification_title='Like Notification',
                 notification_body="You have been super liked by " + from_user_name
             )
-            return Response({"You have liked a user"}, status=HTTP_200_OK)
+            return Response({"You have super liked a user"}, status=HTTP_200_OK)
         else:
             super_liked_by_me = self.request.data['super_liked_by_me']
             register_user = RegisterUser.objects.get(id=self.request.user.id)
@@ -611,35 +717,86 @@ class SuperLikeUserAPIView(CreateAPIView):
             return Response({"You have super matched with a user"}, status=HTTP_200_OK)
 
 
+class GetMatchesAPIView(ListAPIView):
+    model = MatchedUser
+    serializer_class = MatchedUserSerializer
+
+    def get(self, request, *args, **kwargs):
+        user_id = self.request.data['user_id']
+        liked_me = MatchedUser.objects.filter(liked_by_me=user_id).exclude(user=user_id).distinct()
+        liked_me_list = [obj.user.first_name for obj in liked_me]
+        liked_by_me = MatchedUser.objects.filter(user=user_id).distinct()
+        liked_by_me_list = []
+        for obj in liked_by_me:
+            y = obj.liked_by_me.all()
+            for z in y:
+                liked_by_me_list.append(z.first_name)
+        super_liked_me = MatchedUser.objects.filter(super_liked_by_me=user_id).exclude(user=user_id).distinct()
+        super_liked_by_me = MatchedUser.objects.filter(user=user_id).distinct()
+        super_liked_me_list = [x.user.first_name for x in super_liked_me]
+        super_liked_by_me_list = []
+        for obj in super_liked_by_me:
+            y = obj.super_liked_by_me.all()
+            for z in y:
+                super_liked_by_me_list.append(z.first_name)
+        match = []
+        super_match = []
+        x = set(liked_by_me_list) & set(liked_me_list)
+        match.append(x)
+        y = set(super_liked_me_list) & set(super_liked_by_me_list)
+        super_match.append(y)
+        return Response({"Matches": match, "Super Matches": super_match}, status=HTTP_200_OK)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
 class DeleteMatchesAPIView(APIView):
     model = MatchedUser
     serializer_class = DeleteMatchSerializer
 
     def get(self, request, *args, **kwargs):
-        data = self.request.data
-        liked_by_me = MatchedUser.objects.filter(liked_by_me=self.request.user.id)
-        super_liked_by_me = MatchedUser.objects.filter(super_liked_by_me=self.request.user.id)
-        return Response({"Likedusers": liked_by_me, "Superliked Users": super_liked_by_me}, status=HTTP_200_OK)
+        liked_by_me = MatchedUser.objects.filter(liked_by_me=self.request.user.id).values()
+        return Response({"LikedUsers": liked_by_me}, status=HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
         data = self.request.data
-        print('----------------', data)
-
         liked = self.request.data['liked_by_me']
-        super_liked = self.request.data['super_liked_by_me']
         liked_by_me = MatchedUser.objects.filter(liked_by_me=self.request.user.id)
+        liked = int(liked)
+        x = []
+        for obj in liked_by_me:
+            y = obj.user.id
+            x.append(y)
+        if liked and liked in x:
+            MatchedUser.objects.filter(liked_by_me=liked).delete()
+            return Response({"User removed successfully"}, status=HTTP_200_OK)
+        else:
+            return Response({"Cannot be removed. User is not a match"}, status=HTTP_400_BAD_REQUEST)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class DeleteSuperMatchesAPIView(APIView):
+    model = MatchedUser
+    serializer_class = DeleteSuperMatchSerializer
+
+    def get(self, request, *args, **kwargs):
+        data = self.request.data
+        super_liked_by_me = MatchedUser.objects.filter(super_liked_by_me=self.request.user.id).values()
+        return Response({"SuperLiked Users": super_liked_by_me}, status=HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        data = self.request.data
+        super_liked = self.request.data['super_liked_by_me']
         super_liked_by_me = MatchedUser.objects.filter(super_liked_by_me=self.request.user.id)
-        # print('ME------->>> ', liked_by_me, super_liked_by_me)
-        # print('<<<<<<------', list(liked), list(super_liked))
-        liked = list(liked)
-        super_liked = list(super_liked)
-        x = [str(x.id) for x in liked_by_me]
-        y = [str(y.id) for y in super_liked_by_me]
-        if liked in x:
-            MatchedUser.objects.filter(liked_by_me=self.request.user.id).delete()
-        if super_liked in y:
-            MatchedUser.objects.filter(super_liked_by_me=self.request.user.id).delete()
-        return Response({"User removed successfully"})
+        super_liked = int(super_liked)
+        x = []
+        for obj in super_liked_by_me:
+            y = obj.user.id
+            x.append(y)
+        if super_liked and super_liked in x:
+            MatchedUser.objects.filter(super_liked_by_me=super_liked).delete()
+            return Response({"User removed successfully"}, status=HTTP_200_OK)
+        else:
+            return Response({"User cannot be removed. User is not a super match"}, status=HTTP_400_BAD_REQUEST)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -811,7 +968,7 @@ class PopNotificationAPIView(CreateAPIView):
     serializer_class = PopUpNotificationSerializer
 
     def post(self, request, *args, **kwargs):
-        return Response({"You have updated your meeting request successfully"}, status=HTTP_200_OK)
+        return Response({"You have updated your meeting status successfully"}, status=HTTP_200_OK)
 
 
 class SubscriptionPlanAPIView(ListAPIView):
