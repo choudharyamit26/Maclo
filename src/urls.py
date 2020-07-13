@@ -28,7 +28,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('user-create/', UserCreateAPIView.as_view(), name='user-detail'),
-    path('update-phonenumber/<int:pk>', UpdatePhoneNumber.as_view(), name='update-phonenumber'),
+    path('update-phonenumber/<int:pk>/', UpdatePhoneNumber.as_view(), name='update-phonenumber'),
     path('user-profile/', UserProfileAPIView.as_view(), name='user-profile'),
     path('user-profile-update/<int:pk>/', UserProfileUpdateView.as_view(), name='user-profile-update'),
     path('user-insta-pics/', UserInstagramPicsAPIView.as_view(), name='insta-pics'),
@@ -50,6 +50,7 @@ urlpatterns = [
     path('edit-aboutus/', EditAboutUsAPIView.as_view(), name='edit-aboutus'),
     path('edit-contactus/', EditContactUsApiView.as_view(), name='edit-contactus'),
     path('popup-notification/', PopNotificationAPIView.as_view(), name='pop-notification'),
+    # path('scheduleobject/', GetScheduledMeeting.as_view(), name='schedule-obj'),
     path('facebook-signup/', FacebookSignupApiView.as_view(), name='fb-signup'),
     path('google-signup/', GoogleSignupView.as_view(), name='google-signup'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

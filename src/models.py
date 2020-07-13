@@ -108,7 +108,7 @@ class RegisterUser(models.Model):
     pic_9 = models.ImageField(null=True, blank=True)
 
     def __str__(self):
-        return self.phone_number
+        return str(self.id)
 
 
 class SubscriptionPlans(models.Model):
@@ -190,6 +190,8 @@ class MatchedUser(models.Model):
     user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
     liked_by_me = models.ManyToManyField(RegisterUser, default=1, related_name='likedbyme')
     super_liked_by_me = models.ManyToManyField(RegisterUser, default=1, related_name='superlikedbyme')
+    matched = models.CharField(default='No', choices=BOOL_CHOICES, max_length=100)
+    super_matched = models.CharField(default='No', choices=BOOL_CHOICES, max_length=100)
     matched_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

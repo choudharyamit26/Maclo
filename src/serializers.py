@@ -9,6 +9,12 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class SearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RegisterUser
+        fields = ('qualification', 'relationship_status', 'religion', 'body_type', 'interests', 'gender')
+
+
 class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserDetail

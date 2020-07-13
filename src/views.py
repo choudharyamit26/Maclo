@@ -1,12 +1,13 @@
 import os
 import shutil
+from datetime import date
 
 import instaloader
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django_filters import rest_framework
-from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView, ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.views import APIView
@@ -17,7 +18,7 @@ from .serializers import (UserDetailSerializer, UserInstagramSerializer, Registe
                           MatchedUserSerializer, LikeSerializer, DeleteMatchSerializer, SuperLikeSerializer,
                           RequestMeetingSerializer, ScheduleMeetingSerializer, FeedbackSerializer, ContactUsSerializer,
                           AboutUsSerializer, MeetingStatusSerializer, PopUpNotificationSerializer,
-                          SubscriptionPlanSerializer, DeleteSuperMatchSerializer)
+                          SubscriptionPlanSerializer, DeleteSuperMatchSerializer,SearchSerializer)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -118,9 +119,14 @@ class UpdatePhoneNumber(UpdateAPIView):
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-class UserProfileAPIView(CreateAPIView):
+class UserProfileAPIView(ListCreateAPIView):
     model = UserDetail
     serializer_class = UserDetailSerializer
+
+    def get(self, request, *args, **kwargs):
+        phone_number = self.request.data['phone_number']
+        detail = RegisterUser.objects.filter(id=phone_number).values()
+        return Response({"Detail": detail}, status=HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
         bio = self.request.data['bio']
@@ -588,9 +594,8 @@ class SnippetFilter(rest_framework.FilterSet):
 # return queryset
 
 
-class SearchUser(APIView):
-    model = RegisterUser
-    serializer_class = RegisterSerializer
+class SearchUser(CreateAPIView):
+    serializer_class = SearchSerializer
 
     def post(self, request, *args, **kwargs):
         data = self.request.data
@@ -634,7 +639,7 @@ class LikeUserAPIView(CreateAPIView):
         if int(liked_by_me) not in users_liked_by_me_list:
             register_user = RegisterUser.objects.get(id=self.request.user.id)
             from_user_name = register_user.first_name
-            user = MatchedUser.objects.create(user=register_user)
+            user = MatchedUser.objects.create(user=register_user, matched='No')
             user.liked_by_me.add(liked_by_me)
             to_user_id = RegisterUser.objects.get(id=liked_by_me)
             to_user_name = to_user_id.first_name
@@ -652,7 +657,7 @@ class LikeUserAPIView(CreateAPIView):
             liked_by_me = self.request.data['liked_by_me']
             register_user = RegisterUser.objects.get(id=self.request.user.id)
             from_user_name = register_user.first_name
-            user = MatchedUser.objects.create(user=register_user)
+            user = MatchedUser.objects.create(user=register_user, matched='Yes')
             user.liked_by_me.add(liked_by_me)
             to_user_id = RegisterUser.objects.get(id=liked_by_me)
             to_user_name = to_user_id.first_name
@@ -683,7 +688,7 @@ class SuperLikeUserAPIView(CreateAPIView):
         if int(super_liked_by_me) not in users_super_liked_me_list:
             register_user = RegisterUser.objects.get(id=self.request.user.id)
             from_user_name = register_user.first_name
-            user = MatchedUser.objects.create(user=register_user)
+            user = MatchedUser.objects.create(user=register_user, super_matched='No')
             user.super_liked_by_me.add(super_liked_by_me)
             to_user_id = RegisterUser.objects.get(id=super_liked_by_me)
             to_user_name = to_user_id.first_name
@@ -701,7 +706,7 @@ class SuperLikeUserAPIView(CreateAPIView):
             super_liked_by_me = self.request.data['super_liked_by_me']
             register_user = RegisterUser.objects.get(id=self.request.user.id)
             from_user_name = register_user.first_name
-            user = MatchedUser.objects.create(user=register_user)
+            user = MatchedUser.objects.create(user=register_user, super_matched='Yes')
             user.super_liked_by_me.add(super_liked_by_me)
             to_user_id = RegisterUser.objects.get(id=super_liked_by_me)
             to_user_name = to_user_id.first_name
@@ -924,13 +929,13 @@ class FeedbackApiView(CreateAPIView):
     serializer_class = FeedbackSerializer
 
 
-class ContactUsApiView(ListAPIView):
+class ContactUsApiView(ListCreateAPIView):
     model = ContactUs
     serializer_class = ContactUsSerializer
     queryset = ContactUs.objects.all()
 
 
-class AboutUsApiView(ListAPIView):
+class AboutUsApiView(ListCreateAPIView):
     model = AboutUs
     serializer_class = AboutUsSerializer
     queryset = AboutUs.objects.all()
@@ -981,3 +986,37 @@ class SubscriptionPlanAPIView(ListAPIView):
     #
     # def post(self, request, *args, **kwargs):
     #     return Response({"You have updated your meeting request successfully"}, status=HTTP_200_OK)
+
+# class GetScheduledMeeting(APIView):
+#
+#     def get(self, request, *args, **kwargs):
+#         liked_obj = MatchedUser.objects.filter(matched='Yes')
+#         for obj in liked_obj:
+#             print('<<<<<--------->>>>', obj.user)
+#             print('--------->>>>', obj.liked_by_me.all()[0])
+#             liked_by = RegisterUser.objects.get(id=obj.user.id)
+#             liked_user = RegisterUser.objects.get(id=obj.liked_by_me.all()[0].id)
+#             print('...........................', obj.matched_at.date())
+#             print('>>>>>>>>>>>>>>>', liked_by.first_name)
+#             print('<<<<<<<<<<<<<<<<<<<<<<<<<<<<,', liked_user.first_name)
+#             schedule_obj = ScheduleMeeting.objects.filter(
+#                 Q(scheduled_by__exact=obj.user.id) & Q(scheduled_with__exact=obj.liked_by_me.all()[0].id) & Q(
+#                     status__icontains='Not Completed')).values()
+#             if schedule_obj:
+#                 for s_obj in schedule_obj:
+#                     meeting_at = s_obj['created_at']
+#                     m_date = str(meeting_at.date()).split('-')
+#                     meeting_year = int(m_date[0])
+#                     meeting_month = int(m_date[1])
+#                     meeting_date = int(m_date[2])
+#                     meeting_at = date(meeting_year, meeting_month, meeting_date)
+#                     matched_at = str(obj.matched_at.date()).split('-')
+#                     matched_year = int(matched_at[0])
+#                     matched_month = int(matched_at[1])
+#                     matched_date = int(matched_at[2])
+#                     matched_at = date(matched_year, matched_month, matched_date)
+#                     delta = matched_at - meeting_at
+#                     print(delta.days)
+#                     if delta.days > 30:
+#                         obj.delete()
+#                         return Response({"Objects": schedule_obj}, status=HTTP_200_OK)
