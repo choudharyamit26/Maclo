@@ -29,6 +29,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('user-create/', UserCreateAPIView.as_view(), name='user-detail'),
     path('update-phonenumber/<int:pk>/', UpdatePhoneNumber.as_view(), name='update-phonenumber'),
+    # path('get-token/',GetUserToken.as_view(),name='get-token'),
     path('user-profile/', UserProfileAPIView.as_view(), name='user-profile'),
     path('user-profile-update/<int:pk>/', UserProfileUpdateView.as_view(), name='user-profile-update'),
     path('user-insta-pics/', UserInstagramPicsAPIView.as_view(), name='insta-pics'),

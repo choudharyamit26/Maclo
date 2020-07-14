@@ -1,13 +1,13 @@
-# from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model
 from django.db import models
 from src.models import RegisterUser
 
-User = RegisterUser()
+User = get_user_model()
 
 
 class Contact(models.Model):
     user = models.ForeignKey(
-        RegisterUser, related_name='friends', on_delete=models.CASCADE)
+        User, related_name='friends', on_delete=models.CASCADE)
     friends = models.ManyToManyField('self', blank=True)
 
     def __str__(self):

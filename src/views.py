@@ -1,16 +1,18 @@
 import os
 import shutil
-from datetime import date
 
 import instaloader
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django_filters import rest_framework
+from rest_framework.authtoken.models import Token
 from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView, ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.views import APIView
+from django.contrib.auth import get_user_model
+from rest_framework.authtoken.views import ObtainAuthToken
 
 from .models import UserInstagramPic, UserDetail, RegisterUser, MatchedUser, RequestMeeting, ScheduleMeeting, Feedback, \
     AboutUs, ContactUs, InAppNotification, SubscriptionPlans
@@ -18,12 +20,13 @@ from .serializers import (UserDetailSerializer, UserInstagramSerializer, Registe
                           MatchedUserSerializer, LikeSerializer, DeleteMatchSerializer, SuperLikeSerializer,
                           RequestMeetingSerializer, ScheduleMeetingSerializer, FeedbackSerializer, ContactUsSerializer,
                           AboutUsSerializer, MeetingStatusSerializer, PopUpNotificationSerializer,
-                          SubscriptionPlanSerializer, DeleteSuperMatchSerializer,SearchSerializer)
+                          SubscriptionPlanSerializer, DeleteSuperMatchSerializer, SearchSerializer)
+
+User = get_user_model()
 
 
 @method_decorator(csrf_exempt, name='dispatch')
 class UserCreateAPIView(CreateAPIView):
-    model = RegisterUser
     serializer_class = RegisterSerializer
 
     def post(self, request, *args, **kwargs):
@@ -51,7 +54,8 @@ class UserCreateAPIView(CreateAPIView):
         pic_7 = self.request.data['pic_7']
         pic_8 = self.request.data['pic_8']
         pic_9 = self.request.data['pic_9']
-        user_qs = RegisterUser.objects.filter(phone_number__iexact=phone_number)
+        user_qs = RegisterUser.objects.filter(
+            phone_number__iexact=phone_number)
         if user_qs.exists():
             serializer.is_valid(raise_exception=True)
             return Response({"Phone number": "User with this phone number already exists."},
@@ -90,6 +94,26 @@ class UserCreateAPIView(CreateAPIView):
                         status=HTTP_201_CREATED)
 
 
+# class GetUserToken(ObtainAuthToken):
+#     serializer_class = GetUserTokenSerializer
+
+#     def post(self, request, *args, **kwargs):
+#         phone_number = self.request.data['phone_number']
+#         user = RegisterUser.objects.get(phone_number=phone_number).user
+#         print('--------------->>>>>>',user)
+#         try:
+#             user_with_token = Token.objects.get(user=user)
+#             print('TRY-------------->>>',user_with_token)
+#             if user_with_token:
+#                 print('TRY If-------------->>>',user_with_token)
+#                 return Response({"Token": user_with_token.key})
+#         except Exception as e:
+#             print(e)
+#             token = Token.objects.create(user=user)
+#             print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', token)
+#             return Response({"Token": token.key}, status=HTTP_200_OK)
+
+
 class UpdatePhoneNumber(UpdateAPIView):
     serializer_class = RegisterSerializer
     queryset = RegisterUser.objects.all()
@@ -98,7 +122,7 @@ class UpdatePhoneNumber(UpdateAPIView):
         instance = self.get_object()
         instance.phone_number = request.data.get('phone_number')
         instance.save(update_fields=['phone_number'])
-        from_id = self.request.user.id
+        from_id = 1
         from_user_id = RegisterUser.objects.get(id=from_id)
         from_user_name = from_user_id.first_name
         phone_number = self.request.data['phone_number']
@@ -195,7 +219,8 @@ class UserProfileUpdateView(UpdateAPIView):
         instance.college_name = request.data.get("college_name")
         instance.university = request.data.get("university")
         instance.personality = request.data.get("personality")
-        instance.preference_first_date = request.data.get("preference_first_date")
+        instance.preference_first_date = request.data.get(
+            "preference_first_date")
         instance.fav_music = request.data.get("fav_music")
         instance.travelled_place = request.data.get("travelled_place")
         instance.once_in_life = request.data.get("once_in_life")
@@ -205,14 +230,16 @@ class UserProfileUpdateView(UpdateAPIView):
         instance.fav_pet = request.data.get("fav_pet")
         instance.smoke = request.data.get("smoke")
         instance.drink = request.data.get("drink")
-        instance.subscription_purchased = request.data.get("subscription_purchased")
-        instance.subscription_purchased_at = request.data.get("subscription_purchased_at")
+        instance.subscription_purchased = request.data.get(
+            "subscription_purchased")
+        instance.subscription_purchased_at = request.data.get(
+            "subscription_purchased_at")
         instance.subscription = request.data.get("subscription")
         instance.save(update_fields=['bio', 'phone_number', 'living_in', 'profession', 'college_name', 'university',
                                      'personality', 'preference_first_date', 'fav_music', 'travelled_place',
                                      'once_in_life', 'exercise', 'looking_for', 'fav_food', 'fav_pet', 'smoke', 'drink',
                                      'subscription_purchased', 'subscription_purchased_at', 'subscription'])
-        from_id = self.request.user.id
+        from_id = self.request.data['id']
         from_user_id = RegisterUser.objects.get(id=from_id)
         from_user_name = from_user_id.first_name
         phone_number = self.request.data['phone_number']
@@ -247,7 +274,8 @@ class UserInstagramPicsAPIView(CreateAPIView):
         PASSWORD = password
         DOWNLOADED_POST_DIRECTORY = "Fetched_Posts"
         loader.login(USERNAME, PASSWORD)
-        posts_array = instaloader.Profile.from_username(loader.context, USERNAME).get_posts()
+        posts_array = instaloader.Profile.from_username(
+            loader.context, USERNAME).get_posts()
         count = 0
         images = []
         number_of_posts = 0
@@ -289,9 +317,10 @@ class UserslistAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
         # queryset needed to be filtered
-        # queryset1 = UserDetail.objects.all().exclude(id=self.request.user.id).values()
-
-        for obj in UserDetail.objects.all().exclude(id=self.request.user.id):
+        # logged_in_user_id = self.request.data['id']
+        # queryset1 = UserDetail.objects.all().exclude(id=logged_in_user_id).values()
+        logged_in_user_id = self.request.data['id']
+        for obj in UserDetail.objects.all().exclude(id=logged_in_user_id):
             bio = obj.bio
             first_name = obj.phone_number.first_name
             last_name = obj.phone_number.last_name
@@ -548,7 +577,8 @@ class SnippetFilter(rest_framework.FilterSet):
 
     class Meta:
         model = RegisterUser
-        fields = ['qualification', 'relationship_status', 'religion', 'body_type', 'gender', 'interests']
+        fields = ['qualification', 'relationship_status',
+                  'religion', 'body_type', 'gender', 'interests']
         # fileds = {
         #     'qualification': ['icontains'],
         #     'relationship_status': ['icontains'],
@@ -629,7 +659,9 @@ class LikeUserAPIView(CreateAPIView):
     serializer_class = LikeSerializer
 
     def post(self, request, *args, **kwargs):
-        users_liked_by_me = MatchedUser.objects.filter(liked_by_me=self.request.user.id)
+        logged_in_user_id = self.request.data['id']
+        users_liked_by_me = MatchedUser.objects.filter(
+            liked_by_me=logged_in_user_id)
         users_liked_by_me_list = []
         for obj in users_liked_by_me:
             y = obj.user.id
@@ -637,7 +669,7 @@ class LikeUserAPIView(CreateAPIView):
         liked_by_me = self.request.data['liked_by_me']
 
         if int(liked_by_me) not in users_liked_by_me_list:
-            register_user = RegisterUser.objects.get(id=self.request.user.id)
+            register_user = RegisterUser.objects.get(id=logged_in_user_id)
             from_user_name = register_user.first_name
             user = MatchedUser.objects.create(user=register_user, matched='No')
             user.liked_by_me.add(liked_by_me)
@@ -655,9 +687,10 @@ class LikeUserAPIView(CreateAPIView):
             return Response({"You have liked a user"}, status=HTTP_200_OK)
         else:
             liked_by_me = self.request.data['liked_by_me']
-            register_user = RegisterUser.objects.get(id=self.request.user.id)
+            register_user = RegisterUser.objects.get(id=logged_in_user_id)
             from_user_name = register_user.first_name
-            user = MatchedUser.objects.create(user=register_user, matched='Yes')
+            user = MatchedUser.objects.create(
+                user=register_user, matched='Yes')
             user.liked_by_me.add(liked_by_me)
             to_user_id = RegisterUser.objects.get(id=liked_by_me)
             to_user_name = to_user_id.first_name
@@ -679,16 +712,19 @@ class SuperLikeUserAPIView(CreateAPIView):
     serializer_class = SuperLikeSerializer
 
     def post(self, request, *args, **kwargs):
-        users_super_liked_me = MatchedUser.objects.filter(super_liked_by_me=self.request.user.id)
+        logged_in_user_id = self.request.data['id']
+        users_super_liked_me = MatchedUser.objects.filter(
+            super_liked_by_me=logged_in_user_id)
         users_super_liked_me_list = []
         for obj in users_super_liked_me:
             y = obj.user.id
             users_super_liked_me_list.append(y)
         super_liked_by_me = self.request.data['super_liked_by_me']
         if int(super_liked_by_me) not in users_super_liked_me_list:
-            register_user = RegisterUser.objects.get(id=self.request.user.id)
+            register_user = RegisterUser.objects.get(id=logged_in_user_id)
             from_user_name = register_user.first_name
-            user = MatchedUser.objects.create(user=register_user, super_matched='No')
+            user = MatchedUser.objects.create(
+                user=register_user, super_matched='No')
             user.super_liked_by_me.add(super_liked_by_me)
             to_user_id = RegisterUser.objects.get(id=super_liked_by_me)
             to_user_name = to_user_id.first_name
@@ -704,9 +740,10 @@ class SuperLikeUserAPIView(CreateAPIView):
             return Response({"You have super liked a user"}, status=HTTP_200_OK)
         else:
             super_liked_by_me = self.request.data['super_liked_by_me']
-            register_user = RegisterUser.objects.get(id=self.request.user.id)
+            register_user = RegisterUser.objects.get(id=logged_in_user_id)
             from_user_name = register_user.first_name
-            user = MatchedUser.objects.create(user=register_user, super_matched='Yes')
+            user = MatchedUser.objects.create(
+                user=register_user, super_matched='Yes')
             user.super_liked_by_me.add(super_liked_by_me)
             to_user_id = RegisterUser.objects.get(id=super_liked_by_me)
             to_user_name = to_user_id.first_name
@@ -728,7 +765,8 @@ class GetMatchesAPIView(ListAPIView):
 
     def get(self, request, *args, **kwargs):
         user_id = self.request.data['user_id']
-        liked_me = MatchedUser.objects.filter(liked_by_me=user_id).exclude(user=user_id).distinct()
+        liked_me = MatchedUser.objects.filter(
+            liked_by_me=user_id).exclude(user=user_id).distinct()
         liked_me_list = [obj.user.first_name for obj in liked_me]
         liked_by_me = MatchedUser.objects.filter(user=user_id).distinct()
         liked_by_me_list = []
@@ -736,7 +774,8 @@ class GetMatchesAPIView(ListAPIView):
             y = obj.liked_by_me.all()
             for z in y:
                 liked_by_me_list.append(z.first_name)
-        super_liked_me = MatchedUser.objects.filter(super_liked_by_me=user_id).exclude(user=user_id).distinct()
+        super_liked_me = MatchedUser.objects.filter(
+            super_liked_by_me=user_id).exclude(user=user_id).distinct()
         super_liked_by_me = MatchedUser.objects.filter(user=user_id).distinct()
         super_liked_me_list = [x.user.first_name for x in super_liked_me]
         super_liked_by_me_list = []
@@ -759,13 +798,16 @@ class DeleteMatchesAPIView(APIView):
     serializer_class = DeleteMatchSerializer
 
     def get(self, request, *args, **kwargs):
-        liked_by_me = MatchedUser.objects.filter(liked_by_me=self.request.user.id).values()
+        logged_in_user_id = self.request.data['id']
+        liked_by_me = MatchedUser.objects.filter(
+            liked_by_me=logged_in_user_id).values()
         return Response({"LikedUsers": liked_by_me}, status=HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
         data = self.request.data
         liked = self.request.data['liked_by_me']
-        liked_by_me = MatchedUser.objects.filter(liked_by_me=self.request.user.id)
+        logged_in_user_id = self.request.data['id']
+        liked_by_me = MatchedUser.objects.filter(liked_by_me=logged_in_user_id)
         liked = int(liked)
         x = []
         for obj in liked_by_me:
@@ -785,13 +827,18 @@ class DeleteSuperMatchesAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
         data = self.request.data
-        super_liked_by_me = MatchedUser.objects.filter(super_liked_by_me=self.request.user.id).values()
+        logged_in_user_id = self.request.data['id']
+        super_liked_by_me = MatchedUser.objects.filter(
+            super_liked_by_me=logged_in_user_id).values()
         return Response({"SuperLiked Users": super_liked_by_me}, status=HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
         data = self.request.data
+        # id = self.request.data['id']
+        logged_in_user_id = self.request.data['id']
         super_liked = self.request.data['super_liked_by_me']
-        super_liked_by_me = MatchedUser.objects.filter(super_liked_by_me=self.request.user.id)
+        super_liked_by_me = MatchedUser.objects.filter(
+            super_liked_by_me=logged_in_user_id)
         super_liked = int(super_liked)
         x = []
         for obj in super_liked_by_me:
@@ -812,8 +859,9 @@ class RequestMeetingAPIView(CreateAPIView):
     def post(self, request, *args, **kwargs):
         print('_____________', self.request.data)
         phone_number = self.request.data['phone_number']
+        logged_in_user_id = self.request.data['id']
         requested_user = RegisterUser.objects.get(id=phone_number)
-        from_id = self.request.user.id
+        from_id = logged_in_user_id
         from_user_id = RegisterUser.objects.get(id=from_id)
         from_user_name = from_user_id.first_name
         phone_number = self.request.data['phone_number']
@@ -821,10 +869,12 @@ class RequestMeetingAPIView(CreateAPIView):
         first_name = to_user.first_name
         to_id = self.request.data['phone_number']
         to_user_id = RegisterUser.objects.get(id=to_id)
-        liked_by_me = MatchedUser.objects.filter(liked_by_me=self.request.user.id)
-        super_liked_by_me = MatchedUser.objects.filter(super_liked_by_me=self.request.user.id)
-        liked_by = MatchedUser.objects.filter(liked_by=self.request.user.id)
-        super_liked_by = MatchedUser.objects.filter(super_liked_by=self.request.user.id)
+        liked_by_me = MatchedUser.objects.filter(liked_by_me=logged_in_user_id)
+        super_liked_by_me = MatchedUser.objects.filter(
+            super_liked_by_me=logged_in_user_id)
+        liked_by = MatchedUser.objects.filter(liked_by=logged_in_user_id)
+        super_liked_by = MatchedUser.objects.filter(
+            super_liked_by=logged_in_user_id)
         liked_by_list = [x.id for x in liked_by]
         super_liked_by_list = [x.id for x in super_liked_by]
         liked_by_me_list = [x.id for x in liked_by_me]
@@ -857,7 +907,8 @@ class MeetingStatusAPIView(UpdateAPIView):
         instance = self.get_object()
         instance.status = request.data.get("status")
         instance.save(update_fields=['status'])
-        from_id = self.request.user.id
+        logged_in_user_id = self.request.data['id']
+        from_id = logged_in_user_id
         from_user_id = RegisterUser.objects.get(id=from_id)
         from_user_name = from_user_id.first_name
         phone_number = self.request.data['phone_number']
@@ -874,7 +925,8 @@ class MeetingStatusAPIView(UpdateAPIView):
             to_user_name=first_name,
             notification_type='Meeting Status',
             notification_title='Meeting Status Update',
-            notification_body='Your meeting request status with ' + from_user_name + ' has changed to  ' + status
+            notification_body='Your meeting request status with ' +
+            from_user_name + ' has changed to  ' + status
         )
         return Response({"Meeting status has been updated successfully"}, status=HTTP_200_OK)
 
@@ -885,14 +937,15 @@ class ScheduleMeetingAPIView(CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         phone_number = self.request.data['phone_number']
+        logged_in_user_id = self.request.data['id']
         requested_user = RegisterUser.objects.get(id=phone_number)
-        scheduled_by = RegisterUser.objects.get(id=self.request.user.id)
+        scheduled_by = RegisterUser.objects.get(id=logged_in_user_id)
         meeting_date = self.request.data['meeting_date']
         meeting_time = self.request.data['meeting_time']
         venue = self.request.data['venue']
         description = self.request.data['description']
         status = self.request.data['status']
-        from_id = self.request.user.id
+        from_id = logged_in_user_id
         from_user_id = RegisterUser.objects.get(id=from_id)
         from_user_name = from_user_id.first_name
         phone_number = self.request.data['phone_number']
@@ -900,7 +953,7 @@ class ScheduleMeetingAPIView(CreateAPIView):
         first_name = to_user.first_name
         to_id = self.request.data['phone_number']
         to_user_id = RegisterUser.objects.get(id=to_id)
-        if self.request.user.gender == 'Female':
+        if logged_in_user_id.gender == 'Female':
             ScheduleMeeting.objects.create(
                 scheduled_with=requested_user,
                 scheduled_by=scheduled_by,

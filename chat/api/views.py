@@ -1,4 +1,4 @@
-# from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model
 from rest_framework import permissions
 from rest_framework.generics import (
     ListAPIView,
@@ -12,7 +12,7 @@ from chat.views import get_user_contact
 from .serializers import ChatSerializer
 from src.models import RegisterUser
 
-User = RegisterUser()
+User = get_user_model()
 
 
 class ChatListView(ListAPIView):
