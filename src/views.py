@@ -1,18 +1,17 @@
 import os
 import shutil
-
+import json
 import instaloader
+from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django_filters import rest_framework
-from rest_framework.authtoken.models import Token
 from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView, ListCreateAPIView
+from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.views import APIView
-from django.contrib.auth import get_user_model
-from rest_framework.authtoken.views import ObtainAuthToken
 
 from .models import UserInstagramPic, UserDetail, RegisterUser, MatchedUser, RequestMeeting, ScheduleMeeting, Feedback, \
     AboutUs, ContactUs, InAppNotification, SubscriptionPlans
@@ -20,7 +19,8 @@ from .serializers import (UserDetailSerializer, UserInstagramSerializer, Registe
                           MatchedUserSerializer, LikeSerializer, DeleteMatchSerializer, SuperLikeSerializer,
                           RequestMeetingSerializer, ScheduleMeetingSerializer, FeedbackSerializer, ContactUsSerializer,
                           AboutUsSerializer, MeetingStatusSerializer, PopUpNotificationSerializer,
-                          SubscriptionPlanSerializer, DeleteSuperMatchSerializer, SearchSerializer)
+                          SubscriptionPlanSerializer, DeleteSuperMatchSerializer, SearchSerializer,
+                          GetInstagramPicSerializer)
 
 User = get_user_model()
 
@@ -31,6 +31,7 @@ class UserCreateAPIView(CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = RegisterSerializer(data=self.request.data)
+        print(self.request.data)
         first_name = self.request.data['first_name']
         last_name = self.request.data['last_name']
         phone_number = self.request.data['phone_number']
@@ -122,7 +123,8 @@ class UpdatePhoneNumber(UpdateAPIView):
         instance = self.get_object()
         instance.phone_number = request.data.get('phone_number')
         instance.save(update_fields=['phone_number'])
-        from_id = 1
+        logged_in_user_id = self.request.data['id']
+        from_id = logged_in_user_id
         from_user_id = RegisterUser.objects.get(id=from_id)
         from_user_name = from_user_id.first_name
         phone_number = self.request.data['phone_number']
@@ -260,20 +262,21 @@ class UserProfileUpdateView(UpdateAPIView):
         return Response({"Profile update successfully"}, status=HTTP_200_OK)
 
 
-@method_decorator(csrf_exempt, name='dispatch')
-class UserInstagramPicsAPIView(CreateAPIView):
-    serializer_class = UserInstagramSerializer
+class GetUserInstagramPics(APIView):
+    serializer_class = GetInstagramPicSerializer
 
-    def post(self, request, *args, **kwargs):
-        phone_number = self.request.data['phone_number']
-        p_no = RegisterUser.objects.get(id=phone_number)
+    def get(self, request, *args, **kwargs):
         username = self.request.data['username']
         password = self.request.data['password']
         loader = instaloader.Instaloader()
         USERNAME = username
         PASSWORD = password
         DOWNLOADED_POST_DIRECTORY = "Fetched_Posts"
-        loader.login(USERNAME, PASSWORD)
+        try:
+            loader.login(USERNAME, PASSWORD)
+        except Exception as e:
+            x = {"Error": str(e)}
+            return Response(x["Error"], status=HTTP_400_BAD_REQUEST)
         posts_array = instaloader.Profile.from_username(
             loader.context, USERNAME).get_posts()
         count = 0
@@ -287,28 +290,50 @@ class UserInstagramPicsAPIView(CreateAPIView):
         for f in os.listdir('./Fetched_Posts'):
             if f.endswith('.jpg'):
                 while count < 10:
+                    # x = f.replace(f, 'pic{}.png'.format(count))
                     images.append(f)
                     count += 1
                     break
-        UserInstagramPic.objects.create(
-            phone_number=p_no,
-            insta_pic_1=images[0],
-            insta_pic_2=images[1],
-            insta_pic_3=images[2],
-            insta_pic_4=images[3],
-            insta_pic_5=images[4],
-            insta_pic_6=images[5],
-            insta_pic_7=images[6],
-            insta_pic_8=images[7],
-            insta_pic_9=images[8],
-            insta_pic_10=images[9],
-            insta_connect=True
-
-        )
         if os.path.isdir("Fetched_Posts"):
             shutil.rmtree("Fetched_Posts")
             print("Deleted folder {} successfully".format("Fetched_Posts"))
-        return Response({"Images uploaded from instagram successfully."}, status=HTTP_201_CREATED)
+        return Response({"Success": "Downloaded images from instagram successfully", "Images": images},
+                        status=HTTP_200_OK)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class UserInstagramPicsAPIView(CreateAPIView):
+    serializer_class = UserInstagramSerializer
+
+    def post(self, request, *args, **kwargs):
+        phone_number = self.request.data['phone_number']
+        p_no = RegisterUser.objects.get(id=phone_number)
+        insta_pic_1 = self.request.data['insta_pic_1']
+        insta_pic_2 = self.request.data['insta_pic_2']
+        insta_pic_3 = self.request.data['insta_pic_3']
+        insta_pic_4 = self.request.data['insta_pic_4']
+        insta_pic_5 = self.request.data['insta_pic_5']
+        insta_pic_6 = self.request.data['insta_pic_6']
+        insta_pic_7 = self.request.data['insta_pic_7']
+        insta_pic_8 = self.request.data['insta_pic_8']
+        insta_pic_9 = self.request.data['insta_pic_9']
+        insta_pic_10 = self.request.data['insta_pic_10']
+        UserInstagramPic.objects.create(
+            phone_number=p_no,
+            insta_pic_1=insta_pic_1,
+            insta_pic_2=insta_pic_2,
+            insta_pic_3=insta_pic_3,
+            insta_pic_4=insta_pic_4,
+            insta_pic_5=insta_pic_5,
+            insta_pic_6=insta_pic_6,
+            insta_pic_7=insta_pic_7,
+            insta_pic_8=insta_pic_8,
+            insta_pic_9=insta_pic_9,
+            insta_pic_10=insta_pic_10,
+            insta_connect=True
+        )
+        return Response({"Success": "Images uploaded from instagram successfully"},
+                        status=HTTP_201_CREATED)
 
 
 class UserslistAPIView(APIView):
@@ -926,7 +951,7 @@ class MeetingStatusAPIView(UpdateAPIView):
             notification_type='Meeting Status',
             notification_title='Meeting Status Update',
             notification_body='Your meeting request status with ' +
-            from_user_name + ' has changed to  ' + status
+                              from_user_name + ' has changed to  ' + status
         )
         return Response({"Meeting status has been updated successfully"}, status=HTTP_200_OK)
 

@@ -5,6 +5,7 @@ from .models import UserDetail, UserInstagramPic, RegisterUser, MatchedUser, Req
     ContactUs, AboutUs, SubscriptionPlans, PopNotification
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+
 User = get_user_model()
 
 
@@ -139,7 +140,9 @@ class UserDetailSerializer(serializers.ModelSerializer):
 class UserInstagramSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInstagramPic
-        fields = ('phone_number', 'username', 'password')
+        fields = (
+        'phone_number', 'insta_pic_1', 'insta_pic_2', 'insta_pic_3', 'insta_pic_4', 'insta_pic_5', 'insta_pic_6',
+        'insta_pic_7', 'insta_pic_8', 'insta_pic_9', 'insta_pic_10',)
 
 
 class MatchedUserSerializer(serializers.ModelSerializer):
@@ -219,3 +222,9 @@ class PopUpNotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = PopNotification
         fields = '__all__'
+
+
+class GetInstagramPicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserInstagramPic
+        fields = ('username', 'password')
