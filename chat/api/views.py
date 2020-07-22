@@ -12,7 +12,7 @@ from chat.views import get_user_contact
 from .serializers import ChatSerializer
 from src.models import RegisterUser
 
-User = get_user_model()
+User = RegisterUser()
 
 
 class ChatListView(ListAPIView):

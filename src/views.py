@@ -31,7 +31,6 @@ class UserCreateAPIView(CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = RegisterSerializer(data=self.request.data)
-        print(self.request.data)
         first_name = self.request.data['first_name']
         last_name = self.request.data['last_name']
         phone_number = self.request.data['phone_number']
@@ -61,38 +60,97 @@ class UserCreateAPIView(CreateAPIView):
             serializer.is_valid(raise_exception=True)
             return Response({"Phone number": "User with this phone number already exists."},
                             status=HTTP_400_BAD_REQUEST)
+        if serializer.is_valid():
+            RegisterUser.objects.create(
+                email=email,
+                first_name=first_name,
+                last_name=last_name,
+                phone_number=phone_number,
+                gender=gender,
+                date_of_birth=date_of_birth,
+                job_profile=job_profile,
+                company_name=company_name,
+                qualification=qualification,
+                relationship_status=relationship_status,
+                interests=interests,
+                fav_quote=fav_quote,
+                # liked_by=liked_by,
+                # superliked_by=superliked_by,
+                pic_1=pic_1,
+                pic_2=pic_2,
+                pic_3=pic_3,
+                pic_4=pic_4,
+                pic_5=pic_5,
+                pic_6=pic_6,
+                pic_7=pic_7,
+                pic_8=pic_8,
+                pic_9=pic_9
+            )
 
-        RegisterUser.objects.create(
-            email=email,
-            first_name=first_name,
-            last_name=last_name,
-            phone_number=phone_number,
-            gender=gender,
-            date_of_birth=date_of_birth,
-            job_profile=job_profile,
-            company_name=company_name,
-            qualification=qualification,
-            relationship_status=relationship_status,
-            interests=interests,
-            fav_quote=fav_quote,
-            # liked_by=liked_by,
-            # superliked_by=superliked_by,
-            pic_1=pic_1,
-            pic_2=pic_2,
-            pic_3=pic_3,
-            pic_4=pic_4,
-            pic_5=pic_5,
-            pic_6=pic_6,
-            pic_7=pic_7,
-            pic_8=pic_8,
-            pic_9=pic_9
-        )
-        # for x in liked_by:
-        #     RegisterUser.liked_by.add(x)
-        # for y in superliked_by:
-        #     RegisterUser.superliked_by.add(y)
-        return Response({"User": "User Created sucessfully"},
-                        status=HTTP_201_CREATED)
+            # for x in liked_by:
+            #     RegisterUser.liked_by.add(x)
+            # for y in superliked_by:
+            #     RegisterUser.superliked_by.add(y)
+            user_data = RegisterUser.objects.get(phone_number=phone_number)
+            if user_data.pic_1:
+                pic_1 = user_data.pic_1.url
+            else:
+                pic_1 = ''
+            if user_data.pic_2:
+                pic_2 = user_data.pic_2.url
+            else:
+                pic_2 = ''
+            if user_data.pic_3:
+                pic_3 = user_data.pic_3.url
+            else:
+                pic_3 = ''
+            if user_data.pic_4:
+                pic_4 = user_data.pic_4.url
+            else:
+                pic_4 = ''
+            if user_data.pic_5:
+                pic_5 = user_data.pic_5.url
+            else:
+                pic_5 = ''
+            if user_data.pic_6:
+                pic_6 = user_data.pic_6.url
+            else:
+                pic_7 = ''
+            if user_data.pic_8:
+                pic_8 = user_data.pic_8.url
+            else:
+                pic_8 = ''
+            if user_data.pic_9:
+                pic_9 = user_data.pic_9.url
+            else:
+                pic_9 = ''
+            Data = {
+                "id":user_data.id,
+                "email":user_data.email,
+                "first_name":user_data.first_name,
+                "last_name":user_data.last_name,
+                "phone_number":user_data.phone_number,
+                "gender":user_data.gender,
+                "date_of_birth":user_data.date_of_birth,
+                "job_profile":user_data.job_profile,
+                "company_name":user_data.company_name,
+                "qualification":user_data.qualification,
+                "relationship_status":user_data.relationship_status,
+                "interests":user_data.interests,
+                "fav_quote":user_data.fav_quote,
+                "pic_1":pic_1,
+                "pic_2":pic_2,
+                "pic_3":pic_3,
+                "pic_4":pic_4,
+                "pic_5":pic_5,
+                "pic_6":pic_6,
+                "pic_7":pic_7,
+                "pic_8":pic_8,
+                "pic_9":pic_9,
+            }
+            print(Data)
+            return Response({"User": "User Created sucessfully","Data":Data},
+                            status=HTTP_201_CREATED)
 
 
 # class GetUserToken(ObtainAuthToken):
@@ -290,7 +348,6 @@ class GetUserInstagramPics(APIView):
         for f in os.listdir('./Fetched_Posts'):
             if f.endswith('.jpg'):
                 while count < 10:
-                    # x = f.replace(f, 'pic{}.png'.format(count))
                     images.append(f)
                     count += 1
                     break
@@ -346,6 +403,7 @@ class UserslistAPIView(APIView):
         # queryset1 = UserDetail.objects.all().exclude(id=logged_in_user_id).values()
         logged_in_user_id = self.request.data['id']
         for obj in UserDetail.objects.all().exclude(id=logged_in_user_id):
+            id = obj.id
             bio = obj.bio
             first_name = obj.phone_number.first_name
             last_name = obj.phone_number.last_name
@@ -417,6 +475,7 @@ class UserslistAPIView(APIView):
             subscription_purchased_at = obj.subscription_purchased_at
             # subscription = obj.subscription.values()
             detail = {
+                "id":id,
                 "bio": bio,
                 "first_name": first_name,
                 "last_name": last_name,

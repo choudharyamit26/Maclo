@@ -1,9 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 
-from .models import Chat, Contact
+from .models import Chat, Contact,RegisterUser
 
-User = get_user_model()
+User = RegisterUser()
 
 
 def get_last_10_messages(chatId):
@@ -12,7 +12,7 @@ def get_last_10_messages(chatId):
 
 
 def get_user_contact(username):
-    user = get_object_or_404(User, username=username)
+    user = get_object_or_404(RegisterUser, first_name=username)
     return get_object_or_404(Contact, user=user)
 
 
