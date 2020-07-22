@@ -1094,16 +1094,10 @@ class FacebookSignupApiView(CreateAPIView):
     model = RegisterUser
     serializer_class = RegisterSerializer
 
-    def post(self, request, *args, **kwargs):
-        return Response({"User created successfully"}, status=HTTP_201_CREATED)
-
 
 class GoogleSignupView(CreateAPIView):
     model = RegisterUser
     serializer_class = RegisterSerializer
-
-    def post(self, request, *args, **kwargs):
-        return Response({"User created successfully"}, status=HTTP_201_CREATED)
 
 
 class PopNotificationAPIView(CreateAPIView):
