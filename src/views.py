@@ -125,31 +125,30 @@ class UserCreateAPIView(CreateAPIView):
             else:
                 pic_9 = ''
             Data = {
-                "id":user_data.id,
-                "email":user_data.email,
-                "first_name":user_data.first_name,
-                "last_name":user_data.last_name,
-                "phone_number":user_data.phone_number,
-                "gender":user_data.gender,
-                "date_of_birth":user_data.date_of_birth,
-                "job_profile":user_data.job_profile,
-                "company_name":user_data.company_name,
-                "qualification":user_data.qualification,
-                "relationship_status":user_data.relationship_status,
-                "interests":user_data.interests,
-                "fav_quote":user_data.fav_quote,
-                "pic_1":pic_1,
-                "pic_2":pic_2,
-                "pic_3":pic_3,
-                "pic_4":pic_4,
-                "pic_5":pic_5,
-                "pic_6":pic_6,
-                "pic_7":pic_7,
-                "pic_8":pic_8,
-                "pic_9":pic_9,
+                "id": user_data.id,
+                "email": user_data.email,
+                "first_name": user_data.first_name,
+                "last_name": user_data.last_name,
+                "phone_number": user_data.phone_number,
+                "gender": user_data.gender,
+                "date_of_birth": user_data.date_of_birth,
+                "job_profile": user_data.job_profile,
+                "company_name": user_data.company_name,
+                "qualification": user_data.qualification,
+                "relationship_status": user_data.relationship_status,
+                "interests": user_data.interests,
+                "fav_quote": user_data.fav_quote,
+                "pic_1": pic_1,
+                "pic_2": pic_2,
+                "pic_3": pic_3,
+                "pic_4": pic_4,
+                "pic_5": pic_5,
+                "pic_6": pic_6,
+                "pic_7": pic_7,
+                "pic_8": pic_8,
+                "pic_9": pic_9,
             }
-            print(Data)
-            return Response({"User": "User Created sucessfully","Data":Data},
+            return Response({"User": "User Created sucessfully", "Data": Data},
                             status=HTTP_201_CREATED)
 
 
@@ -475,7 +474,7 @@ class UserslistAPIView(APIView):
             subscription_purchased_at = obj.subscription_purchased_at
             # subscription = obj.subscription.values()
             detail = {
-                "id":id,
+                "id": id,
                 "bio": bio,
                 "first_name": first_name,
                 "last_name": last_name,
@@ -1094,16 +1093,10 @@ class FacebookSignupApiView(CreateAPIView):
     model = RegisterUser
     serializer_class = RegisterSerializer
 
-    def post(self, request, *args, **kwargs):
-        return Response({"User created successfully"}, status=HTTP_201_CREATED)
-
 
 class GoogleSignupView(CreateAPIView):
     model = RegisterUser
     serializer_class = RegisterSerializer
-
-    def post(self, request, *args, **kwargs):
-        return Response({"User created successfully"}, status=HTTP_201_CREATED)
 
 
 class PopNotificationAPIView(CreateAPIView):
