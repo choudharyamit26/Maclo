@@ -325,7 +325,7 @@ class UserProfileUpdateView(UpdateAPIView):
 class GetUserInstagramPics(APIView):
     serializer_class = GetInstagramPicSerializer
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         username = self.request.data['username']
         password = self.request.data['password']
         loader = instaloader.Instaloader()
