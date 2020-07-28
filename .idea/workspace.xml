@@ -20,8 +20,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3174a45b-a532-4d52-8d32-0dbe8f4e1182" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/maclo/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/maclo/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/maclo/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/maclo/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/Screenshot_10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/Screenshot_13.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/Screenshot_5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/Screenshot_8.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/Screenshot_9.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -104,5 +111,16 @@
       <screen x="67" y="27" width="1299" height="741" />
     </state>
     <state x="408" y="261" width="540" height="216" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/67.27.1299.741@67.27.1299.741" timestamp="1594052855137" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/serializers.py</url>
+          <line>168</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

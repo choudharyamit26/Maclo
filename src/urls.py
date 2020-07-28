@@ -8,7 +8,7 @@ from .views import (UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVi
                     UserProfileAPIView, SearchUser, GetMatchesAPIView, LikeUserAPIView, DeleteMatchesAPIView,
                     RequestMeetingAPIView, MeetingStatusAPIView, ScheduleMeetingAPIView, FeedbackApiView,
                     ContactUsApiView, AboutUsApiView, EditAboutUsAPIView, EditContactUsApiView, FacebookSignupApiView,
-                    GoogleSignupView, UserProfileUpdateView, UpdatePhoneNumber, SuperLikeUserAPIView,
+                    GoogleSignupView, UserProfileUpdateView, UpdatePhoneNumber, SuperLikeUserAPIView,GetMediaContent,
                     PopNotificationAPIView, SubscriptionPlanAPIView, DeleteSuperMatchesAPIView,GetUserInstagramPics)
 
 app_name = 'src'
@@ -55,6 +55,7 @@ urlpatterns = [
     # path('scheduleobject/', GetScheduledMeeting.as_view(), name='schedule-obj'),
     path('facebook-signup/', FacebookSignupApiView.as_view(), name='fb-signup'),
     path('google-signup/', GoogleSignupView.as_view(), name='google-signup'),
+    path('content/', GetMediaContent.as_view(), name='media-content'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc')
 

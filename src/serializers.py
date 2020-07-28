@@ -15,6 +15,12 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class SocialUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RegisterUser
+        exclude = ('phone_number',)
+
+
 # class UserCreateSerializer(serializers.ModelSerializer):
 #     email = serializers.EmailField()
 #     phone_number = serializers.CharField()
@@ -141,8 +147,8 @@ class UserInstagramSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInstagramPic
         fields = (
-        'phone_number', 'insta_pic_1', 'insta_pic_2', 'insta_pic_3', 'insta_pic_4', 'insta_pic_5', 'insta_pic_6',
-        'insta_pic_7', 'insta_pic_8', 'insta_pic_9', 'insta_pic_10',)
+            'phone_number', 'insta_pic_1', 'insta_pic_2', 'insta_pic_3', 'insta_pic_4', 'insta_pic_5', 'insta_pic_6',
+            'insta_pic_7', 'insta_pic_8', 'insta_pic_9', 'insta_pic_10',)
 
 
 class MatchedUserSerializer(serializers.ModelSerializer):

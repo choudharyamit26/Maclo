@@ -1,6 +1,7 @@
 import os
 import shutil
 import json
+from PIL import Image
 import instaloader
 from django.contrib.auth import get_user_model
 from django.db.models import Q
@@ -20,7 +21,7 @@ from .serializers import (UserDetailSerializer, UserInstagramSerializer, Registe
                           RequestMeetingSerializer, ScheduleMeetingSerializer, FeedbackSerializer, ContactUsSerializer,
                           AboutUsSerializer, MeetingStatusSerializer, PopUpNotificationSerializer,
                           SubscriptionPlanSerializer, DeleteSuperMatchSerializer, SearchSerializer,
-                          GetInstagramPicSerializer)
+                          GetInstagramPicSerializer,SocialUserSerializer)
 
 User = get_user_model()
 
@@ -31,6 +32,8 @@ class UserCreateAPIView(CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = RegisterSerializer(data=self.request.data)
+        data = self.request.data
+        print(data)
         first_name = self.request.data['first_name']
         last_name = self.request.data['last_name']
         phone_number = self.request.data['phone_number']
@@ -207,63 +210,63 @@ class UserProfileAPIView(ListCreateAPIView):
     serializer_class = UserDetailSerializer
 
     def get(self, request, *args, **kwargs):
-        phone_number = self.request.data['phone_number']
-        detail = RegisterUser.objects.filter(id=phone_number).values()
+        id = self.request.data['id']
+        detail = RegisterUser.objects.filter(id=id).values()
         return Response({"Detail": detail}, status=HTTP_200_OK)
 
-    def post(self, request, *args, **kwargs):
-        bio = self.request.data['bio']
-        living_in = self.request.data['living_in']
-        profession = self.request.data['profession']
-        phone_number = self.request.data['phone_number']
-        p_no = RegisterUser.objects.get(id=phone_number)
-        college_name = self.request.data['college_name']
-        university = self.request.data['university']
-        personality = self.request.data['personality']
-        interest = self.request.data['interest']
-        preference_first_date = self.request.data['preference_first_date']
-        fav_music = self.request.data['fav_music']
-        travelled_place = self.request.data['travelled_place']
-        once_in_life = self.request.data['once_in_life']
-        exercise = self.request.data['exercise']
-        exercise = exercise.capitalize()
-        looking_for = self.request.data['looking_for']
-        fav_food = self.request.data['fav_food']
-        fav_pet = self.request.data['fav_pet']
-        smoke = self.request.data['smoke']
-        smoke = smoke.capitalize()
-        drink = self.request.data['drink']
-        drink = drink.capitalize()
-        religion = self.request.data['religion']
-        body_type = self.request.data['body_type']
-        subscription_purchased = self.request.data['subscription_purchased']
-        subscription_purchased_at = self.request.data['subscription_purchased_at']
-        UserDetail.objects.create(
-            bio=bio,
-            living_in=living_in,
-            profession=profession,
-            phone_number=p_no,
-            college_name=college_name,
-            university=university,
-            personality=personality,
-            interest=interest,
-            preference_first_date=preference_first_date,
-            fav_music=fav_music,
-            travelled_place=travelled_place,
-            once_in_life=once_in_life,
-            exercise=exercise,
-            looking_for=looking_for,
-            fav_food=fav_food,
-            fav_pet=fav_pet,
-            smoke=smoke,
-            drink=drink,
-            religion=religion,
-            body_type=body_type,
-            subscription_purchased=subscription_purchased,
-            subscription_purchased_at=subscription_purchased_at
-        )
-
-        return Response({"Profile Updated": "Profile updated Successfully"}, status=HTTP_201_CREATED)
+    # def post(self, request, *args, **kwargs):
+    #     bio = self.request.data['bio']
+    #     living_in = self.request.data['living_in']
+    #     profession = self.request.data['profession']
+    #     phone_number = self.request.data['phone_number']
+    #     p_no = RegisterUser.objects.get(id=phone_number)
+    #     college_name = self.request.data['college_name']
+    #     university = self.request.data['university']
+    #     personality = self.request.data['personality']
+    #     interest = self.request.data['interest']
+    #     preference_first_date = self.request.data['preference_first_date']
+    #     fav_music = self.request.data['fav_music']
+    #     travelled_place = self.request.data['travelled_place']
+    #     once_in_life = self.request.data['once_in_life']
+    #     exercise = self.request.data['exercise']
+    #     exercise = exercise.capitalize()
+    #     looking_for = self.request.data['looking_for']
+    #     fav_food = self.request.data['fav_food']
+    #     fav_pet = self.request.data['fav_pet']
+    #     smoke = self.request.data['smoke']
+    #     smoke = smoke.capitalize()
+    #     drink = self.request.data['drink']
+    #     drink = drink.capitalize()
+    #     religion = self.request.data['religion']
+    #     body_type = self.request.data['body_type']
+    #     subscription_purchased = self.request.data['subscription_purchased']
+    #     subscription_purchased_at = self.request.data['subscription_purchased_at']
+    #     UserDetail.objects.create(
+    #         bio=bio,
+    #         living_in=living_in,
+    #         profession=profession,
+    #         phone_number=p_no,
+    #         college_name=college_name,
+    #         university=university,
+    #         personality=personality,
+    #         interest=interest,
+    #         preference_first_date=preference_first_date,
+    #         fav_music=fav_music,
+    #         travelled_place=travelled_place,
+    #         once_in_life=once_in_life,
+    #         exercise=exercise,
+    #         looking_for=looking_for,
+    #         fav_food=fav_food,
+    #         fav_pet=fav_pet,
+    #         smoke=smoke,
+    #         drink=drink,
+    #         religion=religion,
+    #         body_type=body_type,
+    #         subscription_purchased=subscription_purchased,
+    #         subscription_purchased_at=subscription_purchased_at
+    #     )
+    #
+    #     return Response({"Profile Updated": "Profile updated Successfully"}, status=HTTP_201_CREATED)
 
 
 class UserProfileUpdateView(UpdateAPIView):
@@ -322,7 +325,7 @@ class UserProfileUpdateView(UpdateAPIView):
 class GetUserInstagramPics(APIView):
     serializer_class = GetInstagramPicSerializer
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         username = self.request.data['username']
         password = self.request.data['password']
         loader = instaloader.Instaloader()
@@ -362,7 +365,7 @@ class UserInstagramPicsAPIView(CreateAPIView):
     serializer_class = UserInstagramSerializer
 
     def post(self, request, *args, **kwargs):
-        phone_number = self.request.data['phone_number']
+        phone_number = self.request.data['id']
         p_no = RegisterUser.objects.get(id=phone_number)
         insta_pic_1 = self.request.data['insta_pic_1']
         insta_pic_2 = self.request.data['insta_pic_2']
@@ -401,125 +404,128 @@ class UserslistAPIView(APIView):
         # logged_in_user_id = self.request.data['id']
         # queryset1 = UserDetail.objects.all().exclude(id=logged_in_user_id).values()
         logged_in_user_id = self.request.data['id']
-        for obj in UserDetail.objects.all().exclude(id=logged_in_user_id):
-            id = obj.id
-            bio = obj.bio
-            first_name = obj.phone_number.first_name
-            last_name = obj.phone_number.last_name
-            email = obj.phone_number.email
-            gender = obj.phone_number.gender
-            date_of_birth = obj.phone_number.date_of_birth
-            job_profile = obj.phone_number.job_profile
-            company_name = obj.phone_number.company_name
-            qualification = obj.phone_number.qualification
-            relationship_status = obj.phone_number.relationship_status
-            interests = obj.phone_number.interests
-            fav_quote = obj.phone_number.fav_quote
-            religion = obj.phone_number.religion
-            body_type = obj.phone_number.body_type
-            verified = obj.phone_number.verified
-            fb_signup = obj.phone_number.fb_signup
-            if obj.phone_number.pic_1:
-                pic_1 = obj.phone_number.pic_1.url
-            else:
-                pic_1 = ''
-            if obj.phone_number.pic_2:
-                pic_2 = obj.phone_number.pic_2.url
-            else:
-                pic_2 = ''
-            if obj.phone_number.pic_3:
-                pic_3 = obj.phone_number.pic_3.url
-            else:
-                pic_3 = ''
-            if obj.phone_number.pic_4:
-                pic_4 = obj.phone_number.pic_4.url
-            else:
-                pic_4 = ''
-            if obj.phone_number.pic_5:
-                pic_5 = obj.phone_number.pic_5.url
-            else:
-                pic_5 = ''
-            if obj.phone_number.pic_6:
-                pic_6 = obj.phone_number.pic_6.url
-            else:
-                pic_6 = ''
-            if obj.phone_number.pic_7:
-                pic_7 = obj.phone_number.pic_7.url
-            else:
-                pic_7 = ''
-            if obj.phone_number.pic_8:
-                pic_8 = obj.phone_number.pic_8.url
-            else:
-                pic_8 = ''
-            if obj.phone_number.pic_9:
-                pic_9 = obj.phone_number.pic_9.url
-            else:
-                pic_9 = ''
-            living_in = obj.living_in
-            profession = obj.profession
-            college_name = obj.college_name
-            university = obj.university
-            personality = obj.personality
-            preference_first_date = obj.preference_first_date
-            fav_music = obj.fav_music
-            travelled_place = obj.travelled_place
-            once_in_life = obj.once_in_life
-            exercise = obj.exercise
-            looking_for = obj.looking_for
-            fav_food = obj.fav_food
-            fav_pet = obj.fav_pet
-            smoke = obj.smoke
-            drink = obj.drink
-            subscription_purchased = obj.subscription_purchased
-            subscription_purchased_at = obj.subscription_purchased_at
-            # subscription = obj.subscription.values()
-            detail = {
-                "id": id,
-                "bio": bio,
-                "first_name": first_name,
-                "last_name": last_name,
-                "email": email,
-                "gender": gender,
-                "date_of_birth": date_of_birth,
-                "job_profile": job_profile,
-                "company_name": company_name,
-                "qualification": qualification,
-                "relationship_status": relationship_status,
-                "interests": interests,
-                "fav_quote": fav_quote,
-                "religion": religion,
-                "body_type": body_type,
-                "verified": verified,
-                "fb_signup": fb_signup,
-                "pic_1": pic_1,
-                "pic_2": pic_2,
-                "pic_3": pic_3,
-                "pic_4": pic_4,
-                "pic_5": pic_5,
-                "pic_6": pic_6,
-                "pic_7": pic_7,
-                "pic_8": pic_8,
-                "pic_9": pic_9,
-                "living_in": living_in,
-                "profession": profession,
-                "college_name": college_name,
-                "university": university,
-                "personality": personality,
-                "preference_first_date": preference_first_date,
-                "fav_music": fav_music,
-                "travelled_place": travelled_place,
-                "once_in_life": once_in_life,
-                "exercise": exercise,
-                "looking_for": looking_for,
-                "fav_food": fav_food,
-                "fav_pet": fav_pet,
-                "smoke": smoke,
-                "drink": drink,
-                "subscription_purchased": subscription_purchased,
-                "subscription_purchased_at": subscription_purchased_at,
-                # "subscription": subscription
-            }
-            return Response({"Detail": detail}, status=HTTP_200_OK)
+        if (UserDetail.objects.all().exclude(id=logged_in_user_id)).count() > 0:
+            for obj in UserDetail.objects.all().exclude(id=logged_in_user_id):
+                id = obj.id
+                bio = obj.bio
+                first_name = obj.phone_number.first_name
+                last_name = obj.phone_number.last_name
+                email = obj.phone_number.email
+                gender = obj.phone_number.gender
+                date_of_birth = obj.phone_number.date_of_birth
+                job_profile = obj.phone_number.job_profile
+                company_name = obj.phone_number.company_name
+                qualification = obj.phone_number.qualification
+                relationship_status = obj.phone_number.relationship_status
+                interests = obj.phone_number.interests
+                fav_quote = obj.phone_number.fav_quote
+                religion = obj.phone_number.religion
+                body_type = obj.phone_number.body_type
+                verified = obj.phone_number.verified
+                fb_signup = obj.phone_number.fb_signup
+                if obj.phone_number.pic_1:
+                    pic_1 = obj.phone_number.pic_1.url
+                else:
+                    pic_1 = ''
+                if obj.phone_number.pic_2:
+                    pic_2 = obj.phone_number.pic_2.url
+                else:
+                    pic_2 = ''
+                if obj.phone_number.pic_3:
+                    pic_3 = obj.phone_number.pic_3.url
+                else:
+                    pic_3 = ''
+                if obj.phone_number.pic_4:
+                    pic_4 = obj.phone_number.pic_4.url
+                else:
+                    pic_4 = ''
+                if obj.phone_number.pic_5:
+                    pic_5 = obj.phone_number.pic_5.url
+                else:
+                    pic_5 = ''
+                if obj.phone_number.pic_6:
+                    pic_6 = obj.phone_number.pic_6.url
+                else:
+                    pic_6 = ''
+                if obj.phone_number.pic_7:
+                    pic_7 = obj.phone_number.pic_7.url
+                else:
+                    pic_7 = ''
+                if obj.phone_number.pic_8:
+                    pic_8 = obj.phone_number.pic_8.url
+                else:
+                    pic_8 = ''
+                if obj.phone_number.pic_9:
+                    pic_9 = obj.phone_number.pic_9.url
+                else:
+                    pic_9 = ''
+                living_in = obj.living_in
+                profession = obj.profession
+                college_name = obj.college_name
+                university = obj.university
+                personality = obj.personality
+                preference_first_date = obj.preference_first_date
+                fav_music = obj.fav_music
+                travelled_place = obj.travelled_place
+                once_in_life = obj.once_in_life
+                exercise = obj.exercise
+                looking_for = obj.looking_for
+                fav_food = obj.fav_food
+                fav_pet = obj.fav_pet
+                smoke = obj.smoke
+                drink = obj.drink
+                subscription_purchased = obj.subscription_purchased
+                subscription_purchased_at = obj.subscription_purchased_at
+                # subscription = obj.subscription.values()
+                detail = {
+                    "id": id,
+                    "bio": bio,
+                    "first_name": first_name,
+                    "last_name": last_name,
+                    "email": email,
+                    "gender": gender,
+                    "date_of_birth": date_of_birth,
+                    "job_profile": job_profile,
+                    "company_name": company_name,
+                    "qualification": qualification,
+                    "relationship_status": relationship_status,
+                    "interests": interests,
+                    "fav_quote": fav_quote,
+                    "religion": religion,
+                    "body_type": body_type,
+                    "verified": verified,
+                    "fb_signup": fb_signup,
+                    "pic_1": pic_1,
+                    "pic_2": pic_2,
+                    "pic_3": pic_3,
+                    "pic_4": pic_4,
+                    "pic_5": pic_5,
+                    "pic_6": pic_6,
+                    "pic_7": pic_7,
+                    "pic_8": pic_8,
+                    "pic_9": pic_9,
+                    "living_in": living_in,
+                    "profession": profession,
+                    "college_name": college_name,
+                    "university": university,
+                    "personality": personality,
+                    "preference_first_date": preference_first_date,
+                    "fav_music": fav_music,
+                    "travelled_place": travelled_place,
+                    "once_in_life": once_in_life,
+                    "exercise": exercise,
+                    "looking_for": looking_for,
+                    "fav_food": fav_food,
+                    "fav_pet": fav_pet,
+                    "smoke": smoke,
+                    "drink": drink,
+                    "subscription_purchased": subscription_purchased,
+                    "subscription_purchased_at": subscription_purchased_at,
+                    # "subscription": subscription
+                }
+                return Response({"Detail": detail}, status=HTTP_200_OK)
+        else:
+            return Response({"There are no users"}, status=HTTP_200_OK)
 
 
 class UserDetailAPIView(APIView):
@@ -1090,13 +1096,11 @@ class EditContactUsApiView(UpdateAPIView):
 
 
 class FacebookSignupApiView(CreateAPIView):
-    model = RegisterUser
-    serializer_class = RegisterSerializer
+    serializer_class = SocialUserSerializer
 
 
 class GoogleSignupView(CreateAPIView):
-    model = RegisterUser
-    serializer_class = RegisterSerializer
+    serializer_class = SocialUserSerializer
 
 
 class PopNotificationAPIView(CreateAPIView):
@@ -1116,6 +1120,7 @@ class SubscriptionPlanAPIView(ListAPIView):
     #
     # def post(self, request, *args, **kwargs):
     #     return Response({"You have updated your meeting request successfully"}, status=HTTP_200_OK)
+
 
 # class GetScheduledMeeting(APIView):
 #
@@ -1150,3 +1155,16 @@ class SubscriptionPlanAPIView(ListAPIView):
 #                     if delta.days > 30:
 #                         obj.delete()
 #                         return Response({"Objects": schedule_obj}, status=HTTP_200_OK)
+
+
+class GetMediaContent(APIView):
+    def get(self, request, *args, **kwargs):
+        # os.path.isdir("media")
+        # os.chdir("media")
+        for path, dirs, files in os.walk("media"):
+            for filename in files:
+                print(os.path.join(path, filename))
+        for f in os.listdir("media"):
+            print('------>>>')
+            print(f)
+            return Response({"sdgfsgjas"})
