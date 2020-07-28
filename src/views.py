@@ -325,7 +325,7 @@ class UserProfileUpdateView(UpdateAPIView):
 class GetUserInstagramPics(APIView):
     serializer_class = GetInstagramPicSerializer
 
-    def post(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         username = self.request.data['username']
         password = self.request.data['password']
         loader = instaloader.Instaloader()
@@ -358,7 +358,6 @@ class GetUserInstagramPics(APIView):
             print("Deleted folder {} successfully".format("Fetched_Posts"))
         return Response({"Success": "Downloaded images from instagram successfully", "Images": images},
                         status=HTTP_200_OK)
-
 
 @method_decorator(csrf_exempt, name='dispatch')
 class UserInstagramPicsAPIView(CreateAPIView):
