@@ -21,7 +21,7 @@ from .serializers import (UserDetailSerializer, UserInstagramSerializer, Registe
                           RequestMeetingSerializer, ScheduleMeetingSerializer, FeedbackSerializer, ContactUsSerializer,
                           AboutUsSerializer, MeetingStatusSerializer, PopUpNotificationSerializer,
                           SubscriptionPlanSerializer, DeleteSuperMatchSerializer, SearchSerializer,
-                          GetInstagramPicSerializer,SocialUserSerializer)
+                          GetInstagramPicSerializer, SocialUserSerializer)
 
 User = get_user_model()
 
@@ -32,8 +32,6 @@ class UserCreateAPIView(CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = RegisterSerializer(data=self.request.data)
-        data = self.request.data
-        print(data)
         first_name = self.request.data['first_name']
         last_name = self.request.data['last_name']
         phone_number = self.request.data['phone_number']
@@ -64,7 +62,7 @@ class UserCreateAPIView(CreateAPIView):
             return Response({"Phone number": "User with this phone number already exists."},
                             status=HTTP_400_BAD_REQUEST)
         if serializer.is_valid():
-            RegisterUser.objects.create(
+            user = RegisterUser.objects.create(
                 email=email,
                 first_name=first_name,
                 last_name=last_name,
@@ -88,6 +86,9 @@ class UserCreateAPIView(CreateAPIView):
                 pic_7=pic_7,
                 pic_8=pic_8,
                 pic_9=pic_9
+            )
+            UserDetail.objects.create(
+                phone_number=user
             )
 
             # for x in liked_by:
@@ -210,63 +211,90 @@ class UserProfileAPIView(ListCreateAPIView):
     serializer_class = UserDetailSerializer
 
     def get(self, request, *args, **kwargs):
-        id = self.request.data['id']
-        detail = RegisterUser.objects.filter(id=id).values()
-        return Response({"Detail": detail}, status=HTTP_200_OK)
-
-    # def post(self, request, *args, **kwargs):
-    #     bio = self.request.data['bio']
-    #     living_in = self.request.data['living_in']
-    #     profession = self.request.data['profession']
-    #     phone_number = self.request.data['phone_number']
-    #     p_no = RegisterUser.objects.get(id=phone_number)
-    #     college_name = self.request.data['college_name']
-    #     university = self.request.data['university']
-    #     personality = self.request.data['personality']
-    #     interest = self.request.data['interest']
-    #     preference_first_date = self.request.data['preference_first_date']
-    #     fav_music = self.request.data['fav_music']
-    #     travelled_place = self.request.data['travelled_place']
-    #     once_in_life = self.request.data['once_in_life']
-    #     exercise = self.request.data['exercise']
-    #     exercise = exercise.capitalize()
-    #     looking_for = self.request.data['looking_for']
-    #     fav_food = self.request.data['fav_food']
-    #     fav_pet = self.request.data['fav_pet']
-    #     smoke = self.request.data['smoke']
-    #     smoke = smoke.capitalize()
-    #     drink = self.request.data['drink']
-    #     drink = drink.capitalize()
-    #     religion = self.request.data['religion']
-    #     body_type = self.request.data['body_type']
-    #     subscription_purchased = self.request.data['subscription_purchased']
-    #     subscription_purchased_at = self.request.data['subscription_purchased_at']
-    #     UserDetail.objects.create(
-    #         bio=bio,
-    #         living_in=living_in,
-    #         profession=profession,
-    #         phone_number=p_no,
-    #         college_name=college_name,
-    #         university=university,
-    #         personality=personality,
-    #         interest=interest,
-    #         preference_first_date=preference_first_date,
-    #         fav_music=fav_music,
-    #         travelled_place=travelled_place,
-    #         once_in_life=once_in_life,
-    #         exercise=exercise,
-    #         looking_for=looking_for,
-    #         fav_food=fav_food,
-    #         fav_pet=fav_pet,
-    #         smoke=smoke,
-    #         drink=drink,
-    #         religion=religion,
-    #         body_type=body_type,
-    #         subscription_purchased=subscription_purchased,
-    #         subscription_purchased_at=subscription_purchased_at
-    #     )
-    #
-    #     return Response({"Profile Updated": "Profile updated Successfully"}, status=HTTP_201_CREATED)
+        id = self.request.GET.get('id')
+        user = UserDetail.objects.get(id=id)
+        if user.phone_number.pic_1:
+            pic_1 = user.phone_number.pic_1.url
+        else:
+            pic_1 = ''
+        if user.phone_number.pic_2:
+            pic_2 = user.phone_number.pic_2.url
+        else:
+            pic_2 = ''
+        if user.phone_number.pic_3:
+            pic_3 = user.phone_number.pic_3.url
+        else:
+            pic_3 = ''
+        if user.phone_number.pic_4:
+            pic_4 = user.phone_number.pic_4.url
+        else:
+            pic_4 = ''
+        if user.phone_number.pic_5:
+            pic_5 = user.phone_number.pic_5.url
+        else:
+            pic_5 = ''
+        if user.phone_number.pic_6:
+            pic_6 = user.phone_number.pic_6.url
+        else:
+            pic_6 = ''
+        if user.phone_number.pic_7:
+            pic_7 = user.phone_number.pic_7.url
+        else:
+            pic_7 = ''
+        if user.phone_number.pic_8:
+            pic_8 = user.phone_number.pic_8.url
+        else:
+            pic_8 = ''
+        if user.phone_number.pic_9:
+            pic_9 = user.phone_number.pic_9.url
+        else:
+            pic_9 = ''
+        detail = {
+            "id": user.id,
+            "bio": user.bio,
+            "first_name": user.phone_number.first_name,
+            "last_name": user.phone_number.last_name,
+            "email": user.phone_number.email,
+            "gender": user.phone_number.gender,
+            "date_of_birth": user.phone_number.date_of_birth,
+            "job_profile": user.phone_number.job_profile,
+            "company_name": user.phone_number.company_name,
+            "qualification": user.phone_number.qualification,
+            "relationship_status": user.phone_number.relationship_status,
+            "interests": user.phone_number.interests,
+            "fav_quote": user.phone_number.fav_quote,
+            "religion": user.phone_number.religion,
+            "body_type": user.phone_number.body_type,
+            "verified": user.phone_number.verified,
+            "fb_signup": user.phone_number.fb_signup,
+            "pic_1": pic_1,
+            "pic_2": pic_2,
+            "pic_3": pic_3,
+            "pic_4": pic_4,
+            "pic_5": pic_5,
+            "pic_6": pic_6,
+            "pic_7": pic_7,
+            "pic_8": pic_8,
+            "pic_9": pic_9,
+            "living_in": user.living_in,
+            "profession": user.profession,
+            "college_name": user.college_name,
+            "university": user.university,
+            "personality": user.personality,
+            "preference_first_date": user.preference_first_date,
+            "fav_music": user.fav_music,
+            "travelled_place": user.travelled_place,
+            "once_in_life": user.once_in_life,
+            "exercise": user.exercise,
+            "looking_for": user.looking_for,
+            "fav_food": user.fav_food,
+            "fav_pet": user.fav_pet,
+            "smoke": user.smoke,
+            "drink": user.drink,
+            "subscription_purchased": user.subscription_purchased,
+            "subscription_purchased_at": user.subscription_purchased_at,
+        }
+        return Response(detail, HTTP_200_OK)
 
 
 class UserProfileUpdateView(UpdateAPIView):
@@ -359,6 +387,7 @@ class GetUserInstagramPics(APIView):
         return Response({"Success": "Downloaded images from instagram successfully", "Images": images},
                         status=HTTP_200_OK)
 
+
 @method_decorator(csrf_exempt, name='dispatch')
 class UserInstagramPicsAPIView(CreateAPIView):
     serializer_class = UserInstagramSerializer
@@ -400,11 +429,15 @@ class UserslistAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
         # queryset needed to be filtered
-        # logged_in_user_id = self.request.data['id']
-        # queryset1 = UserDetail.objects.all().exclude(id=logged_in_user_id).values()
-        logged_in_user_id = self.request.data['id']
+        logged_in_user_id = self.request.GET.get('id')
+        # queryset1 = RegisterUser.objects.all().exclude(id=logged_in_user_id).values()
+        users = []
+        # for obj in queryset1:
+        #     users.append(obj)
+        # return Response({"Users":users}, HTTP_200_OK)
         if (UserDetail.objects.all().exclude(id=logged_in_user_id)).count() > 0:
             for obj in UserDetail.objects.all().exclude(id=logged_in_user_id):
+                print(obj.id)
                 id = obj.id
                 bio = obj.bio
                 first_name = obj.phone_number.first_name
@@ -522,7 +555,8 @@ class UserslistAPIView(APIView):
                     "subscription_purchased_at": subscription_purchased_at,
                     # "subscription": subscription
                 }
-                return Response({"Detail": detail}, status=HTTP_200_OK)
+                users.append(detail)
+            return Response(users, HTTP_200_OK)
         else:
             return Response({"There are no users"}, status=HTTP_200_OK)
 
@@ -532,7 +566,7 @@ class UserDetailAPIView(APIView):
     serializer_class = UserDetailSerializer
 
     def get(self, request, *args, **kwargs):
-        phone_number = self.request.data['phone_number']
+        phone_number = self.request.GET.get('id')
         # queryset = UserDetail.objects.filter(id=phone_number).values()
         queryset = UserDetail.objects.filter(id=phone_number)
         for obj in queryset:

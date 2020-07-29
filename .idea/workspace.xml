@@ -20,7 +20,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3174a45b-a532-4d52-8d32-0dbe8f4e1182" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/maclo/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/maclo/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +54,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Snapic" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -86,9 +90,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="499" y="154" width="424" height="484" key="FileChooserDialogImpl" timestamp="1594013028605">
-      <screen x="67" y="27" width="1299" height="741" />
+    <state x="454" y="125" width="424" height="484" key="FileChooserDialogImpl" timestamp="1595935176896">
+      <screen x="0" y="0" width="1366" height="728" />
     </state>
+    <state x="454" y="125" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1595935176896" />
     <state x="499" y="154" width="424" height="484" key="FileChooserDialogImpl/67.27.1299.741@67.27.1299.741" timestamp="1594013028605" />
     <state x="205" y="31" key="SettingsEditor" timestamp="1594013246570">
       <screen x="67" y="27" width="1299" height="741" />

@@ -1,8 +1,13 @@
 from django.db import models
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
+# from rest_framework.response import Response
+# from rest_framework.status import HTTP_200_OK
+
 RELATIONSHIP_STATUS = (
     ("Single", "Single"),
     ("Commited", "Commited"),
@@ -134,27 +139,27 @@ class SubscriptionPlans(models.Model):
 
 
 class UserDetail(models.Model):
-    bio = models.CharField(default='sdjhkfsjh', max_length=600)
+    bio = models.CharField(default='', max_length=600)
     phone_number = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, null=True, blank=True)
     living_in = models.CharField(
-        default='Delhi', choices=LOCATION, max_length=100)
+        default='', choices=LOCATION, max_length=100)
     profession = models.CharField(
-        default="Model", choices=PROFESSION, max_length=100)
+        default="", choices=PROFESSION, max_length=100)
     college_name = models.CharField(
-        default='IIT', choices=COLLEGES, max_length=100)
+        default='', choices=COLLEGES, max_length=100)
     university = models.CharField(
-        default='DU', choices=UNIVERSITY, max_length=200)
-    personality = models.CharField(default=None, max_length=500)
+        default='', choices=UNIVERSITY, max_length=200)
+    personality = models.CharField(default='', max_length=500)
 
     preference_first_date = models.CharField(
-        default='Tea', choices=PREFRENCE_FIRST_DATE, max_length=150)
-    fav_music = models.CharField(default=None, max_length=500)
-    travelled_place = models.CharField(default=None, max_length=500)
-    once_in_life = models.CharField(default=None, max_length=500)
+        default='', choices=PREFRENCE_FIRST_DATE, max_length=150)
+    fav_music = models.CharField(default='', max_length=500)
+    travelled_place = models.CharField(default='', max_length=500)
+    once_in_life = models.CharField(default='', max_length=500)
     exercise = models.CharField(default='NO', choices=BOOL_CHOICES, max_length=10)
-    looking_for = models.CharField(default="relationship", max_length=500)
-    fav_food = models.CharField(default=None, max_length=500)
-    fav_pet = models.CharField(default=None, max_length=100)
+    looking_for = models.CharField(default="", max_length=500)
+    fav_food = models.CharField(default='', max_length=500)
+    fav_pet = models.CharField(default='', max_length=100)
     smoke = models.CharField(default='No', choices=BOOL_CHOICES, max_length=10)
     drink = models.CharField(default='No', choices=BOOL_CHOICES, max_length=10)
     subscription_purchased = models.CharField(default='No', choices=BOOL_CHOICES, max_length=100)
@@ -245,3 +250,4 @@ class PopNotification(models.Model):
     user1 = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='user1')
     user2 = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
     title = models.CharField(default='Met', max_length=100)
+
