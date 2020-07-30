@@ -143,6 +143,7 @@ class UserDetail(models.Model):
     phone_number = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, null=True, blank=True)
     living_in = models.CharField(
         default='', choices=LOCATION, max_length=100)
+    hometown = models.CharField(default='', max_length=300)
     profession = models.CharField(
         default="", choices=PROFESSION, max_length=100)
     college_name = models.CharField(
@@ -250,4 +251,3 @@ class PopNotification(models.Model):
     user1 = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='user1')
     user2 = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
     title = models.CharField(default='Met', max_length=100)
-

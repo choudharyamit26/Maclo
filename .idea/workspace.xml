@@ -54,7 +54,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Snapic" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -90,10 +90,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="454" y="125" width="424" height="484" key="FileChooserDialogImpl" timestamp="1595935176896">
+    <state x="454" y="125" width="424" height="484" key="FileChooserDialogImpl" timestamp="1596083838838">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="454" y="125" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1595935176896" />
+    <state x="454" y="125" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1596083838838" />
     <state x="499" y="154" width="424" height="484" key="FileChooserDialogImpl/67.27.1299.741@67.27.1299.741" timestamp="1594013028605" />
     <state x="205" y="31" key="SettingsEditor" timestamp="1594013246570">
       <screen x="67" y="27" width="1299" height="741" />

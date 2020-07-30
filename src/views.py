@@ -1,15 +1,14 @@
 import os
 import shutil
-import json
-from PIL import Image
+
 import instaloader
 from django.contrib.auth import get_user_model
 from django.db.models import Q
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django_filters import rest_framework
 from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView, ListCreateAPIView
-from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.views import APIView
@@ -277,6 +276,7 @@ class UserProfileAPIView(ListCreateAPIView):
             "pic_8": pic_8,
             "pic_9": pic_9,
             "living_in": user.living_in,
+            "hometown": user.hometown,
             "profession": user.profession,
             "college_name": user.college_name,
             "university": user.university,
@@ -305,6 +305,7 @@ class UserProfileUpdateView(UpdateAPIView):
         instance = self.get_object()
         instance.bio = request.data.get("bio")
         instance.living_in = request.data.get("living_in")
+        instance.hometown = request.data.get("hometown")
         instance.profession = request.data.get("profession")
         instance.college_name = request.data.get("college_name")
         instance.university = request.data.get("university")
@@ -325,7 +326,7 @@ class UserProfileUpdateView(UpdateAPIView):
         instance.subscription_purchased_at = request.data.get(
             "subscription_purchased_at")
         instance.subscription = request.data.get("subscription")
-        instance.save(update_fields=['bio', 'phone_number', 'living_in', 'profession', 'college_name', 'university',
+        instance.save(update_fields=['bio', 'phone_number', 'living_in', 'hometown','profession', 'college_name', 'university',
                                      'personality', 'preference_first_date', 'fav_music', 'travelled_place',
                                      'once_in_life', 'exercise', 'looking_for', 'fav_food', 'fav_pet', 'smoke', 'drink',
                                      'subscription_purchased', 'subscription_purchased_at', 'subscription'])
@@ -437,7 +438,6 @@ class UserslistAPIView(APIView):
         # return Response({"Users":users}, HTTP_200_OK)
         if (UserDetail.objects.all().exclude(id=logged_in_user_id)).count() > 0:
             for obj in UserDetail.objects.all().exclude(id=logged_in_user_id):
-                print(obj.id)
                 id = obj.id
                 bio = obj.bio
                 first_name = obj.phone_number.first_name
@@ -492,6 +492,7 @@ class UserslistAPIView(APIView):
                 else:
                     pic_9 = ''
                 living_in = obj.living_in
+                hometown = obj.hometown
                 profession = obj.profession
                 college_name = obj.college_name
                 university = obj.university
@@ -537,6 +538,7 @@ class UserslistAPIView(APIView):
                     "pic_8": pic_8,
                     "pic_9": pic_9,
                     "living_in": living_in,
+                    "hometown": hometown,
                     "profession": profession,
                     "college_name": college_name,
                     "university": university,
@@ -576,6 +578,11 @@ class UserDetailAPIView(APIView):
             email = obj.phone_number.email
             gender = obj.phone_number.gender
             date_of_birth = obj.phone_number.date_of_birth
+            dob = str(date_of_birth)
+            x = dob.split('-')
+            y = str(timezone.now().date())
+            current_year = y.split('-')
+            age = int(current_year[0]) - int(x[0])
             job_profile = obj.phone_number.job_profile
             company_name = obj.phone_number.company_name
             qualification = obj.phone_number.qualification
@@ -623,6 +630,7 @@ class UserDetailAPIView(APIView):
             else:
                 pic_9 = ''
             living_in = obj.living_in
+            hometown = obj.hometown
             profession = obj.profession
             college_name = obj.college_name
             university = obj.university
@@ -647,6 +655,7 @@ class UserDetailAPIView(APIView):
                 "email": email,
                 "gender": gender,
                 "date_of_birth": date_of_birth,
+                "age": age,
                 "job_profile": job_profile,
                 "company_name": company_name,
                 "qualification": qualification,
@@ -667,6 +676,7 @@ class UserDetailAPIView(APIView):
                 "pic_8": pic_8,
                 "pic_9": pic_9,
                 "living_in": living_in,
+                "hometown": hometown,
                 "profession": profession,
                 "college_name": college_name,
                 "university": university,
