@@ -21,9 +21,22 @@
   <component name="ChangeListManager">
     <list default="true" id="3174a45b-a532-4d52-8d32-0dbe8f4e1182" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adminpanel/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/adminpanel/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/adminpanel/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/adminpanel/serializers.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/adminpanel/templates/password_reset.html" beforeDir="false" afterPath="$PROJECT_DIR$/adminpanel/templates/password_reset.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adminpanel/templates/password_reset_complete.html" beforeDir="false" afterPath="$PROJECT_DIR$/adminpanel/templates/password_reset_complete.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adminpanel/templates/password_reset_confirm.html" beforeDir="false" afterPath="$PROJECT_DIR$/adminpanel/templates/password_reset_confirm.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adminpanel/templates/password_reset_done.html" beforeDir="false" afterPath="$PROJECT_DIR$/adminpanel/templates/password_reset_done.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adminpanel/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/adminpanel/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/adminpanel/views.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/maclo/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/maclo/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maclo/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/maclo/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -34,6 +47,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="HTML File" />
         <option value="Python Script" />
       </list>
     </option>
@@ -50,6 +64,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
@@ -58,7 +73,11 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Choudhary's\Desktop\Maclo-dating-app\adminpanel\api" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Choudhary's\Desktop\Maclo-dating-app\static\adminpanel" />
       <recent name="C:\Users\Choudhary's\Desktop\Maclo-dating-app\adminpanel\templates" />
       <recent name="C:\Users\Choudhary's\Desktop\Maclo-dating-app\static" />
       <recent name="$PROJECT_DIR$" />
@@ -90,10 +109,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="454" y="125" width="424" height="484" key="FileChooserDialogImpl" timestamp="1596083838838">
+    <state x="454" y="125" width="424" height="484" key="FileChooserDialogImpl" timestamp="1596450423799">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="454" y="125" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1596083838838" />
+    <state x="454" y="125" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1596450423799" />
     <state x="499" y="154" width="424" height="484" key="FileChooserDialogImpl/67.27.1299.741@67.27.1299.741" timestamp="1594013028605" />
     <state x="205" y="31" key="SettingsEditor" timestamp="1594013246570">
       <screen x="67" y="27" width="1299" height="741" />
@@ -113,7 +132,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/serializers.py</url>
-          <line>174</line>
+          <line>180</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>

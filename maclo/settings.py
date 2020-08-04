@@ -96,7 +96,6 @@ ASGI_APPLICATION = 'maclo.routing.application'
 #     }
 # }
 
-
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
@@ -157,16 +156,17 @@ AUTH_USER_MODEL = 'adminpanel.User'
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-DEFAULT_FROM_EMAIL = 'ravichoudhary766@gmail.com'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+LOGIN_REDIRECT_URL = 'adminpanel:dashboard'
+LOGOUT_REDIRECT_URL = 'adminpanel:login'
+DEFAULT_FROM_EMAIL = 'XXXXXXXXXX'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'ravichoudhary766@gmail.com'
-EMAIL_HOST_PASSWORD = '8882320571'
+EMAIL_HOST_USER = 'XXXXXXX'
+EMAIL_HOST_PASSWORD = 'XXXXXXXXX'
 EMAIL_PORT = 587
-SERVER_EMAIL = 'ravichoudhary766@gmail.com'
+SERVER_EMAIL = 'XXXXXXXX'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # S3 BUCKETS CONFIG

@@ -1,0 +1,114 @@
+{% load static %}
+<html lang="en-us">
+
+<head>
+    <title>Maclo | Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link type="text/css" rel="stylesheet" href="{% static 'adminpanel/css/style.css'%}">
+</head>
+
+<body>
+
+<div class="Header">
+    <div class="Logo">
+        <img src="{% static 'adminpanel/images/inner-Logo.png' %}">
+    </div>
+    <div class="Navigation">
+        <div class="Avater">
+            <a href="javascript:void(0);">
+                <figure><img src="{% static 'adminpanel/images/profile.jpg' %}"></figure>
+                {{user}} </a>
+            <ul>
+                <li>
+                    <figure><img src="{% static 'adminpanel/images/profile.jpg' %}"></figure>
+                    <h4> Bob Hyden <span>Administrator</span></h4>
+                </li>
+                <li><a href="login.html"><span><i class="fa fa-sign-out"></i></span> Logout</a></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="SidenavBar">
+    <ul>
+
+        <li class="active">
+            <a href="{% url 'adminpanel:dashboard' %}">
+                <span><i class="fa fa-tachometer"></i></span> Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="user-management.html">
+                <span><i class="fa fa-user"></i></span> User Management
+            </a>
+        </li>
+
+        <li>
+            <a href="Subscription-management.html">
+                <span><i class="fa fa-money"></i></span> Subscription Management
+            </a>
+        </li>
+
+        <li>
+            <a href="Subscription-Purchase-management.html">
+                <span><i class="fa fa-money"></i></span> Subscription Purchase Management
+            </a>
+        </li>
+
+        <li>
+            <a href="meet-management.html">
+                <span><i class="fa fa-product-hunt"></i></span> Meet up Management
+            </a>
+        </li>
+
+        <li>
+            <a href="notification.html">
+                <span><i class="fa fa-cubes"></i></span> Push Notifications
+            </a>
+        </li>
+
+        <li>
+            <a href="Transaction-management.html">
+                <span><i class="fa fa-database"></i></span> Transactions Management
+            </a>
+        </li>
+
+        <li>
+            <a href="Report-management.html">
+                <span><i class="fa fa-shopping-cart"></i></span> Reports Management
+            </a>
+        </li>
+
+        <li>
+            <a href="content-management.html">
+                <span><i class="fa fa-font"></i></span> Static content Management
+            </a>
+        </li>
+
+        <li>
+            <a href="setting.html">
+                <span><i class="fa fa-cog"></i></span> Settings
+            </a>
+        </li>
+
+        <li>
+            <a href="login.html">
+                <span><i class="fa fa-sign-out"></i></span> Logout
+            </a>
+        </li>
+    </ul>
+</div>
+
+{% block body %}
+{% endblock body %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+
+</body>
+</html>

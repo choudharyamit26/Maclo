@@ -21,6 +21,12 @@ class SocialUserSerializer(serializers.ModelSerializer):
         exclude = ('phone_number',)
 
 
+class ShowInstaPics(serializers.ModelSerializer):
+    class Meta:
+        model = UserInstagramPic
+        fields = ('phone_number',)
+
+
 # class UserCreateSerializer(serializers.ModelSerializer):
 #     email = serializers.EmailField()
 #     phone_number = serializers.CharField()

@@ -55,7 +55,8 @@ COLLEGES = (("IIT", "IIT"),
             ("AIIMS", "AIIMS"),
             ("IIM", "IIM")
             )
-
+FOOD_TYPE = (("Veg", "Veg"), ("Non-Veg", "Non-Veg"))
+VEHICLES = (("Car", "Car"), ("Bike", "Bike"), ("Both", "Both"))
 UNIVERSITY = (
     ("DU", "DU"),
     ("JNU", "JNU"),
@@ -139,31 +140,32 @@ class SubscriptionPlans(models.Model):
 
 
 class UserDetail(models.Model):
-    bio = models.CharField(default='', max_length=600)
+    bio = models.CharField(default='', max_length=600, null=True, blank=True)
     phone_number = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, null=True, blank=True)
     living_in = models.CharField(
-        default='', choices=LOCATION, max_length=100)
-    hometown = models.CharField(default='', max_length=300)
+        default='', choices=LOCATION, max_length=100, null=True, blank=True)
+    hometown = models.CharField(default='', max_length=300, null=True, blank=True)
     profession = models.CharField(
-        default="", choices=PROFESSION, max_length=100)
+        default="", choices=PROFESSION, max_length=100, null=True, blank=True)
     college_name = models.CharField(
-        default='', choices=COLLEGES, max_length=100)
+        default='', choices=COLLEGES, max_length=100, null=True, blank=True)
     university = models.CharField(
-        default='', choices=UNIVERSITY, max_length=200)
-    personality = models.CharField(default='', max_length=500)
-
+        default='', choices=UNIVERSITY, max_length=200, null=True, blank=True)
+    personality = models.CharField(default='', max_length=500, null=True, blank=True)
+    food_type = models.CharField(choices=FOOD_TYPE, default='', max_length=100, null=True, blank=True)
+    owns = models.CharField(choices=VEHICLES, default='', max_length=200, null=True, blank=True)
     preference_first_date = models.CharField(
-        default='', choices=PREFRENCE_FIRST_DATE, max_length=150)
-    fav_music = models.CharField(default='', max_length=500)
-    travelled_place = models.CharField(default='', max_length=500)
-    once_in_life = models.CharField(default='', max_length=500)
-    exercise = models.CharField(default='NO', choices=BOOL_CHOICES, max_length=10)
-    looking_for = models.CharField(default="", max_length=500)
-    fav_food = models.CharField(default='', max_length=500)
-    fav_pet = models.CharField(default='', max_length=100)
-    smoke = models.CharField(default='No', choices=BOOL_CHOICES, max_length=10)
-    drink = models.CharField(default='No', choices=BOOL_CHOICES, max_length=10)
-    subscription_purchased = models.CharField(default='No', choices=BOOL_CHOICES, max_length=100)
+        default='', choices=PREFRENCE_FIRST_DATE, max_length=150, null=True, blank=True)
+    fav_music = models.CharField(default='', max_length=500, null=True, blank=True)
+    travelled_place = models.CharField(default='', max_length=500, null=True, blank=True)
+    once_in_life = models.CharField(default='', max_length=500, null=True, blank=True)
+    exercise = models.CharField(default='NO', choices=BOOL_CHOICES, max_length=10, null=True, blank=True)
+    looking_for = models.CharField(default="", max_length=500, null=True, blank=True)
+    fav_food = models.CharField(default='', max_length=500, null=True, blank=True)
+    fav_pet = models.CharField(default='', max_length=100, null=True, blank=True)
+    smoke = models.CharField(default='No', choices=BOOL_CHOICES, max_length=10, null=True, blank=True)
+    drink = models.CharField(default='No', choices=BOOL_CHOICES, max_length=10, null=True, blank=True)
+    subscription_purchased = models.CharField(default='No', choices=BOOL_CHOICES, max_length=100, null=True, blank=True)
     subscription_purchased_at = models.DateField(null=True, blank=True)
     subscription = models.ForeignKey(SubscriptionPlans, on_delete=models.CASCADE, null=True, blank=True)
 

@@ -20,7 +20,7 @@ from .serializers import (UserDetailSerializer, UserInstagramSerializer, Registe
                           RequestMeetingSerializer, ScheduleMeetingSerializer, FeedbackSerializer, ContactUsSerializer,
                           AboutUsSerializer, MeetingStatusSerializer, PopUpNotificationSerializer,
                           SubscriptionPlanSerializer, DeleteSuperMatchSerializer, SearchSerializer,
-                          GetInstagramPicSerializer, SocialUserSerializer)
+                          GetInstagramPicSerializer, SocialUserSerializer, ShowInstaPics)
 
 User = get_user_model()
 
@@ -283,6 +283,8 @@ class UserProfileAPIView(ListCreateAPIView):
             "personality": user.personality,
             "preference_first_date": user.preference_first_date,
             "fav_music": user.fav_music,
+            "food_type": user.food_type,
+            "owns": user.owns,
             "travelled_place": user.travelled_place,
             "once_in_life": user.once_in_life,
             "exercise": user.exercise,
@@ -313,6 +315,8 @@ class UserProfileUpdateView(UpdateAPIView):
         instance.preference_first_date = request.data.get(
             "preference_first_date")
         instance.fav_music = request.data.get("fav_music")
+        instance.food_type = request.data.get("food_type")
+        instance.owns = request.data.get("owns")
         instance.travelled_place = request.data.get("travelled_place")
         instance.once_in_life = request.data.get("once_in_life")
         instance.exercise = request.data.get("exercise")
@@ -325,12 +329,17 @@ class UserProfileUpdateView(UpdateAPIView):
             "subscription_purchased")
         instance.subscription_purchased_at = request.data.get(
             "subscription_purchased_at")
-        instance.subscription = request.data.get("subscription")
-        instance.save(update_fields=['bio', 'phone_number', 'living_in', 'hometown','profession', 'college_name', 'university',
-                                     'personality', 'preference_first_date', 'fav_music', 'travelled_place',
-                                     'once_in_life', 'exercise', 'looking_for', 'fav_food', 'fav_pet', 'smoke', 'drink',
-                                     'subscription_purchased', 'subscription_purchased_at', 'subscription'])
-        from_id = self.request.data['id']
+        id = request.data.get("subscription")
+        id = int(id)
+        subscription = SubscriptionPlans.objects.get(id=id)
+        instance.subscription = subscription
+        instance.save(
+            update_fields=['bio', 'phone_number', 'living_in', 'hometown', 'profession', 'college_name', 'university',
+                           'personality', 'preference_first_date', 'fav_music', 'travelled_place',
+                           'once_in_life', 'exercise', 'looking_for', 'fav_food', 'owns', 'food_type', 'fav_pet',
+                           'smoke', 'drink',
+                           'subscription_purchased', 'subscription_purchased_at', 'subscription'])
+        from_id = User.objects.filter(is_superuser=True)[0].id
         from_user_id = RegisterUser.objects.get(id=from_id)
         from_user_name = from_user_id.first_name
         phone_number = self.request.data['phone_number']
@@ -422,6 +431,41 @@ class UserInstagramPicsAPIView(CreateAPIView):
         )
         return Response({"Success": "Images uploaded from instagram successfully"},
                         status=HTTP_201_CREATED)
+
+
+class ShowInstagramPics(ListAPIView):
+    serializer_class = ShowInstaPics
+
+    def get(self, request, *args, **kwargs):
+        id = self.request.GET.get('phone_number')
+        try:
+            pics = UserInstagramPic.objects.get(phone_number=id)
+            if pics:
+                insta_pic_1 = pics.insta_pic_1
+                insta_pic_2 = pics.insta_pic_2
+                insta_pic_3 = pics.insta_pic_3
+                insta_pic_4 = pics.insta_pic_4
+                insta_pic_5 = pics.insta_pic_5
+                insta_pic_6 = pics.insta_pic_6
+                insta_pic_7 = pics.insta_pic_7
+                insta_pic_8 = pics.insta_pic_8
+                insta_pic_9 = pics.insta_pic_9
+                insta_pic_10 = pics.insta_pic_10
+                pics = {
+                    "insta_pic_1": insta_pic_1,
+                    "insta_pic_2": insta_pic_2,
+                    "insta_pic_3": insta_pic_3,
+                    "insta_pic_4": insta_pic_4,
+                    "insta_pic_5": insta_pic_5,
+                    "insta_pic_6": insta_pic_6,
+                    "insta_pic_7": insta_pic_7,
+                    "insta_pic_8": insta_pic_8,
+                    "insta_pic_9": insta_pic_9,
+                    "insta_pic_10": insta_pic_10,
+                }
+            return Response({"pics": pics}, status=HTTP_200_OK)
+        except:
+            return Response({"No instagram pics"}, status=HTTP_400_BAD_REQUEST)
 
 
 class UserslistAPIView(APIView):
@@ -1141,9 +1185,217 @@ class EditContactUsApiView(UpdateAPIView):
 class FacebookSignupApiView(CreateAPIView):
     serializer_class = SocialUserSerializer
 
+    def post(self, request, *args, **kwargs):
+        email = self.request.POST.get('email' or None)
+        phone_number = self.request.POST.get('phone_number' or None)
+        first_name = self.request.data['first_name']
+        last_name = self.request.data['last_name']
+        gender = self.request.data['gender']
+        date_of_birth = self.request.data['date_of_birth']
+        pic_1 = self.request.POST.get('pic_1' or None)
+        pic_2 = self.request.POST.get('pic_2' or None)
+        pic_3 = self.request.POST.get('pic_3' or None)
+        pic_4 = self.request.POST.get('pic_4' or None)
+        pic_5 = self.request.POST.get('pic_5' or None)
+        pic_6 = self.request.POST.get('pic_6' or None)
+        pic_7 = self.request.POST.get('pic_7' or None)
+        pic_8 = self.request.POST.get('pic_8' or None)
+        pic_9 = self.request.POST.get('pic_9' or None)
+        user_email = RegisterUser.objets.get(email=email)
+        user_phone_number = RegisterUser.objects.get(phone_number=phone_number)
+        if user_email:
+            return Response(
+                {"message": "User with this email already exists", "flag": 2, "status": HTTP_400_BAD_REQUEST})
+        elif user_phone_number:
+            return Response(
+                {"message": "User with this phone number already exists", "flag": 2, "status": HTTP_400_BAD_REQUEST})
+        else:
+            user = RegisterUser.objects.create(
+                email=email,
+                phone_number=phone_number,
+                first_name=first_name,
+                last_name=last_name,
+                gender=gender,
+                date_of_birth=date_of_birth,
+                pic_1=pic_1,
+                pic_2=pic_2,
+                pic_3=pic_3,
+                pic_4=pic_4,
+                pic_5=pic_5,
+                pic_6=pic_6,
+                pic_7=pic_7,
+                pic_8=pic_8,
+                pic_9=pic_9,
+            )
+            user_detail = UserDetail.objects.create(
+                phone_number=user
+            )
+            user_data = RegisterUser.objects.get(phone_number=phone_number)
+            if user_data.pic_1:
+                pic_1 = user_data.pic_1.url
+            else:
+                pic_1 = ''
+            if user_data.pic_2:
+                pic_2 = user_data.pic_2.url
+            else:
+                pic_2 = ''
+            if user_data.pic_3:
+                pic_3 = user_data.pic_3.url
+            else:
+                pic_3 = ''
+            if user_data.pic_4:
+                pic_4 = user_data.pic_4.url
+            else:
+                pic_4 = ''
+            if user_data.pic_5:
+                pic_5 = user_data.pic_5.url
+            else:
+                pic_5 = ''
+            if user_data.pic_6:
+                pic_6 = user_data.pic_6.url
+            else:
+                pic_7 = ''
+            if user_data.pic_8:
+                pic_8 = user_data.pic_8.url
+            else:
+                pic_8 = ''
+            if user_data.pic_9:
+                pic_9 = user_data.pic_9.url
+            else:
+                pic_9 = ''
+            Data = {
+                "id": user_data.id,
+                "email": user_data.email,
+                "first_name": user_data.first_name,
+                "last_name": user_data.last_name,
+                "phone_number": user_data.phone_number,
+                "gender": user_data.gender,
+                "date_of_birth": user_data.date_of_birth,
+                "job_profile": user_data.job_profile,
+                "company_name": user_data.company_name,
+                "qualification": user_data.qualification,
+                "relationship_status": user_data.relationship_status,
+                "interests": user_data.interests,
+                "fav_quote": user_data.fav_quote,
+                "pic_1": pic_1,
+                "pic_2": pic_2,
+                "pic_3": pic_3,
+                "pic_4": pic_4,
+                "pic_5": pic_5,
+                "pic_6": pic_6,
+                "pic_7": pic_7,
+                "pic_8": pic_8,
+                "pic_9": pic_9,
+            }
+            return Response({"User": "User Created successfully", "Data": Data, "status": HTTP_200_OK, "flag": 1})
+
 
 class GoogleSignupView(CreateAPIView):
     serializer_class = SocialUserSerializer
+
+    def post(self, request, *args, **kwargs):
+        email = self.request.POST.get('email' or None)
+        phone_number = self.request.POST.get('phone_number' or None)
+        first_name = self.request.data['first_name']
+        last_name = self.request.data['last_name']
+        gender = self.request.data['gender']
+        date_of_birth = self.request.data['date_of_birth']
+        pic_1 = self.request.POST.get('pic_1' or None)
+        pic_2 = self.request.POST.get('pic_2' or None)
+        pic_3 = self.request.POST.get('pic_3' or None)
+        pic_4 = self.request.POST.get('pic_4' or None)
+        pic_5 = self.request.POST.get('pic_5' or None)
+        pic_6 = self.request.POST.get('pic_6' or None)
+        pic_7 = self.request.POST.get('pic_7' or None)
+        pic_8 = self.request.POST.get('pic_8' or None)
+        pic_9 = self.request.POST.get('pic_9' or None)
+        user_email = RegisterUser.objets.get(email=email)
+        user_phone_number = RegisterUser.objects.get(phone_number=phone_number)
+        if user_email:
+            return Response(
+                {"message": "User with this email already exists", "flag": 2, "status": HTTP_400_BAD_REQUEST})
+        elif user_phone_number:
+            return Response(
+                {"message": "User with this phone number already exists", "flag": 2, "status": HTTP_400_BAD_REQUEST})
+        else:
+            user = RegisterUser.objects.create(
+                email=email,
+                phone_number=phone_number,
+                first_name=first_name,
+                last_name=last_name,
+                gender=gender,
+                date_of_birth=date_of_birth,
+                pic_1=pic_1,
+                pic_2=pic_2,
+                pic_3=pic_3,
+                pic_4=pic_4,
+                pic_5=pic_5,
+                pic_6=pic_6,
+                pic_7=pic_7,
+                pic_8=pic_8,
+                pic_9=pic_9,
+            )
+            user_detail = UserDetail.objects.create(
+                phone_number=user
+            )
+            user_data = RegisterUser.objects.get(phone_number=phone_number)
+            if user_data.pic_1:
+                pic_1 = user_data.pic_1.url
+            else:
+                pic_1 = ''
+            if user_data.pic_2:
+                pic_2 = user_data.pic_2.url
+            else:
+                pic_2 = ''
+            if user_data.pic_3:
+                pic_3 = user_data.pic_3.url
+            else:
+                pic_3 = ''
+            if user_data.pic_4:
+                pic_4 = user_data.pic_4.url
+            else:
+                pic_4 = ''
+            if user_data.pic_5:
+                pic_5 = user_data.pic_5.url
+            else:
+                pic_5 = ''
+            if user_data.pic_6:
+                pic_6 = user_data.pic_6.url
+            else:
+                pic_7 = ''
+            if user_data.pic_8:
+                pic_8 = user_data.pic_8.url
+            else:
+                pic_8 = ''
+            if user_data.pic_9:
+                pic_9 = user_data.pic_9.url
+            else:
+                pic_9 = ''
+            Data = {
+                "id": user_data.id,
+                "email": user_data.email,
+                "first_name": user_data.first_name,
+                "last_name": user_data.last_name,
+                "phone_number": user_data.phone_number,
+                "gender": user_data.gender,
+                "date_of_birth": user_data.date_of_birth,
+                "job_profile": user_data.job_profile,
+                "company_name": user_data.company_name,
+                "qualification": user_data.qualification,
+                "relationship_status": user_data.relationship_status,
+                "interests": user_data.interests,
+                "fav_quote": user_data.fav_quote,
+                "pic_1": pic_1,
+                "pic_2": pic_2,
+                "pic_3": pic_3,
+                "pic_4": pic_4,
+                "pic_5": pic_5,
+                "pic_6": pic_6,
+                "pic_7": pic_7,
+                "pic_8": pic_8,
+                "pic_9": pic_9,
+            }
+            return Response({"User": "User Created successfully", "Data": Data, "status": HTTP_200_OK, "flag": 1})
 
 
 class PopNotificationAPIView(CreateAPIView):

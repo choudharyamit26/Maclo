@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="WrapperArea">
+    <div class="WrapperBox">
+        <div class="Small-Wrapper">
+            <h4 class="Title">Dashboard</h4>
+
+            <div class="DashboardArea">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <aside>
+                            <h4>Active users on the platform</h4>
+                            <h2>{{users_count}}</h2>
+                            <h5><span>Total Active users on the platform :</span>{{users_count}}</h5>
+                        </aside>
+                    </div>
+                    <div class="col-sm-4">
+                        <aside>
+                            <h4>Active meetups on the platform</h4>
+                            <h2>{{meetups}}</h2>
+                            <h5><span>Total Active meetups on the platform :</span> {{meetups}}</h5>
+                        </aside>
+                    </div>
+                    <div class="col-sm-4">
+                        <aside>
+                            <h4>Subscription purchases</h4>
+                            <h2>{{subscription_count}}</h2>
+                            <h5><span>Total Subscription purchases :</span> {{subscription_count}}</h5>
+                        </aside>
+                    </div>
+                    {% if revenue %}
+                    <div class="col-sm-4">
+                        <aside>
+                            <h4>revenue </h4>
+                            <h2>{{revenue}}</h2>
+                            <h5><span>Total revenue  :</span> {{revenue}}</h5>
+                        </aside>
+                    </div>
+                    {% else %}
+                    <div class="col-sm-4">
+                        <aside>
+                            <h4>revenue </h4>
+                            <h2>0</h2>
+                            <h5><span>Total revenue  :</span>0</h5>
+                        </aside>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock body %}

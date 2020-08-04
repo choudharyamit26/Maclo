@@ -9,7 +9,7 @@ from .views import (UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVi
                     RequestMeetingAPIView, MeetingStatusAPIView, ScheduleMeetingAPIView, FeedbackApiView,
                     ContactUsApiView, AboutUsApiView, EditAboutUsAPIView, EditContactUsApiView, FacebookSignupApiView,
                     GoogleSignupView, UserProfileUpdateView, UpdatePhoneNumber, SuperLikeUserAPIView,GetMediaContent,
-                    PopNotificationAPIView, SubscriptionPlanAPIView, DeleteSuperMatchesAPIView,GetUserInstagramPics)
+                    PopNotificationAPIView, SubscriptionPlanAPIView, DeleteSuperMatchesAPIView,GetUserInstagramPics,ShowInstagramPics)
 
 app_name = 'src'
 
@@ -34,6 +34,7 @@ urlpatterns = [
     path('user-profile-update/<int:pk>/', UserProfileUpdateView.as_view(), name='user-profile-update'),
     path('get-insta-pics/', GetUserInstagramPics.as_view(), name='get-insta-pics'),
     path('user-insta-pics/', UserInstagramPicsAPIView.as_view(), name='insta-pics'),
+    path('show-user-insta-pics/', ShowInstagramPics.as_view(), name='show-insta-pics'),
     path('users-list/', UserslistAPIView.as_view(), name='users-list'),
     path('users-detail/', UserDetailAPIView.as_view(), name='user-detail'),
     path('user-search/', SearchUser.as_view(), name='user-search'),

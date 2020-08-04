@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <title>Maclo | Meet up Management</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> 
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="Header">
+        <div class="Logo">
+            <img src="images/Inner-Logo.png">
+        </div>
+        <div class="Navigation">
+            <div class="Avater">
+                <a href="javascript:void(0);">
+                    <figure><img src="images/profile.jpg"></figure> Bob Hyden </a>
+                <ul>
+                    <li>
+                        <figure><img src="images/profile.jpg"></figure>
+                        <h4> Bob Hyden <span>Administrator</span></h4>
+                    </li> 
+                    <li><a href="login.html"><span><i class="fa fa-sign-out"></i></span> Logout</a></li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <div class="SidenavBar">
+        <ul>
+            <li>
+                <a href="dashboard.html">
+                    <span><i class="fa fa-tachometer"></i></span> Dashboard
+                </a>
+            </li>
+            
+            <li>
+                <a href="user-management.html">
+                    <span><i class="fa fa-user"></i></span> User Management
+                </a>
+            </li>
+            
+            <li>
+                <a href="Subscription-management.html">
+                    <span><i class="fa fa-money"></i></span> Subscription Management
+                </a>
+            </li>
+            
+            <li>
+                <a href="Subscription-Purchase-management.html">
+                    <span><i class="fa fa-money"></i></span> Subscription Purchase Management 
+                </a>
+            </li>
+            
+            <li class="active">
+                <a href="meet-management.html">
+                    <span><i class="fa fa-product-hunt"></i></span> Meet up Management
+                </a>
+            </li>                                               
+            
+            <li>
+                <a href="notification.html">
+                    <span><i class="fa fa-cubes" ></i></span> Push Notifications
+                </a>
+            </li>
+            
+            <li>
+                <a href="Transaction-management.html">
+                    <span><i class="fa fa-database"></i></span> Transactions Management 
+                </a>
+            </li>
+            
+            <li>
+                <a href="Report-management.html">
+                    <span><i class="fa fa-shopping-cart"></i></span> Reports Management 
+                </a>
+            </li>
+            
+            <li>
+                <a href="content-management.html">
+                    <span><i class="fa fa-font"></i></span> Static content Management 
+                </a>
+            </li> 
+            
+            <li>
+                <a href="setting.html">
+                    <span><i class="fa fa-cog"></i></span> Settings
+                </a>    
+            </li>
+            
+            <li>
+                <a href="login.html">
+                    <span><i class="fa fa-sign-out"></i></span> Logout
+                </a>
+            </li> 
+        </ul>
+    </div>
+     
+    <div class="WrapperArea">
+        <div class="WrapperBox">
+
+            <div class="Small-Wrapper">
+                <div class="SearchBox">
+                    <form action="">
+                        <input type="text" placeholder="Enter Key">
+                        <button>Apply</button>
+                    </form> 
+                </div>
+
+                <h4 class="Title">Meet up Management</h4>          
+
+                <div class="Filter"> 
+                    <div class="form-group">
+                        <label>From Date</label>
+                        <input type="date" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>To Date</label>
+                        <input type="date" class="form-control">
+                    </div>  
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <button class="Button">Apply</button>
+                    </div>
+                </div>
+
+                <div class="TableList">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>S.No</th>  
+                                <th>Date & time of the meeting </th> 
+                                <th>User id of male user</th>
+                                <th>User id of female user </th>
+                                <th>Name of the male user </th> 
+                                <th>Name of the female user  </th> 
+                                <th>Venue </th>
+                                <th>Description </th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody> 
+                            <tr>
+                                <td>1</td> 
+                                <td>01 July 2020 & <br> 02:30 P.M</td>
+                                <td>USER 35467</td>
+                                <td>USER 32153</td>
+                                <td>Lauren Molive</td>
+                                <td>Marsha Mello</td>
+                                <td></td>
+                                <td></td>
+                                <td><span class="red">Not Completed</span></td>     
+                            </tr> 
+                        </tbody>
+                    </table>  
+                </div> 
+
+            </div> 
+        </div>
+    </div>  
+
+ 
+ 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+ 
+</body>
+</html>
