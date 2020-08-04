@@ -685,6 +685,8 @@ class UserDetailAPIView(APIView):
             once_in_life = obj.once_in_life
             exercise = obj.exercise
             looking_for = obj.looking_for
+            food_type = obj.food_type
+            owns = obj.owns
             fav_food = obj.fav_food
             fav_pet = obj.fav_pet
             smoke = obj.smoke
@@ -731,6 +733,8 @@ class UserDetailAPIView(APIView):
                 "once_in_life": once_in_life,
                 "exercise": exercise,
                 "looking_for": looking_for,
+                "food_type":food_type,
+                "owns":owns,
                 "fav_food": fav_food,
                 "fav_pet": fav_pet,
                 "smoke": smoke,
