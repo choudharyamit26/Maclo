@@ -18,22 +18,21 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
-from adminpanel.views import PasswordResetView,PasswordResetConfirmView
-# from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, \
-#     PasswordResetCompleteView, PasswordChangeDoneView, PasswordChangeView
+from adminpanel.views import PasswordResetView, PasswordResetConfirmView
+from django.contrib.auth.views import PasswordResetDoneView, \
+    PasswordResetCompleteView, PasswordChangeDoneView, PasswordChangeView,LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('src.urls', namespace='api')),
     path('chat/', include('chat.api.urls', namespace='chat')),
     path('adminpanel/', include('adminpanel.urls', namespace='adminpanel')),
-    path('password-reset/',PasswordResetView.as_view(), name='password_reset'),
-    path('password-reset-confirm/<uidb64>/<token>/',PasswordResetConfirmView.as_view(),
+    path('password-reset/', PasswordResetView.as_view(), name='password_reset'),
+    path('password-reset-confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(),
          name='password_reset_confirm'),
-    path('password-reset-done/', auth_views.PasswordResetDoneView.as_view(template_name='password_reset_done.html'),
+    path('password-reset-done/', PasswordResetDoneView.as_view(template_name='password_reset_done.html'),
          name='password_reset_done'),
-    path('password-reset-complete/',
-         auth_views.PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'),
+    path('password-reset-complete/', PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'),
          name='password_reset_complete'),
     # path('change-password/', PasswordChangeView.as_view(template_name='change_password.html'), name='change-password'),
     # path('password-change-done', PasswordChangeDoneView.as_view(template_name='change_password_done.html'),

@@ -25,7 +25,7 @@
                     <figure><img src="{% static 'adminpanel/images/profile.jpg' %}"></figure>
                     <h4> Bob Hyden <span>Administrator</span></h4>
                 </li>
-                <li><a href="login.html"><span><i class="fa fa-sign-out"></i></span> Logout</a></li>
+                <li><a href="{% url 'adminpanel:login' %}"><span><i class="fa fa-sign-out"></i></span> Logout</a></li>
             </ul>
         </div>
         <div class="clear"></div>
@@ -42,7 +42,7 @@
         </li>
 
         <li>
-            <a href="user-management.html">
+            <a href="{% url 'adminpanel:users-list' %}">
                 <span><i class="fa fa-user"></i></span> User Management
             </a>
         </li>
@@ -96,7 +96,7 @@
         </li>
 
         <li>
-            <a href="login.html">
+            <a href="{% url 'adminpanel:login' %}">
                 <span><i class="fa fa-sign-out"></i></span> Logout
             </a>
         </li>

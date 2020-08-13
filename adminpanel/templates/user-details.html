@@ -1,252 +1,156 @@
- <!DOCTYPE html>
-<html lang="en-us">
+{% extends 'base.html' %}
+{% block body %}
+<div class="WrapperArea">
+    <div class="WrapperBox">
+        <div class="Small-Wrapper">
+            <h4 class="Title">User Details</h4>
 
-<head>
-    <title>Maclo | User Management</title>
-    <meta charset="UTF-8">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> 
-    <link type="text/css" rel="stylesheet" href="css/style.css">
-</head>
-
-<body>
-
-    <div class="Header">
-        <div class="Logo">
-            <img src="images/Inner-Logo.png">
-        </div>
-        <div class="Navigation">
-            <div class="Avater">
-                <a href="javascript:void(0);">
-                    <figure><img src="images/profile.jpg"></figure> Bob Hyden </a>
+            <div class="DetailsArea">
+                {% if object.pic_1 %}
+                <div class="DetailsProfile">
+                    <figure><img src="{{object.pic_1.url}}"></figure>
+                </div>
+                {% else %}
+                <div class="DetailsProfile">
+                    <figure><img src="'adminpanel/images/profile.jpeg'"></figure>
+                </div>
+                {% endif %}
                 <ul>
                     <li>
-                        <figure><img src="images/profile.jpg"></figure>
-                        <h4> Bob Hyden <span>Administrator</span></h4>
-                    </li> 
-                    <li><a href="login.html"><span><i class="fa fa-sign-out"></i></span> Logout</a></li>
+                        <span>User id</span>{{object.id}}
+                    </li>
+
+                    <li>
+                        <span>Name of the user</span>{{object.first_name}} {{object.last_name}}
+                    </li>
+
+                    <li>
+                        <span>Phone Number</span>{{object.phone_number}}
+                    </li>
+
+                    <li>
+                        <span>Email id </span>{{object.email}}
+                    </li>
+
+                    <li>
+                        <span>Date of Birth</span>{{object.date_of_birth}}
+                    </li>
+
+                    <li>
+                        <span>Verified</span>{{object.verified}}
+                    </li>
+
+                    <li>
+                        <span>Sexual Orientation</span>{{object.gender}}
+                    </li>
+                    {% if object.pic_1 %}
+                    <li>
+
+                        <span>favourite pictures</span>{{object.pic_1.url}}
+                    </li>
+                    {% else %}
+                    <li>
+
+                        <span>favourite pictures</span>N/A
+                    </li>
+                    {% endif %}
+                    <li>
+                        <span>Living in</span>{{detail.living_in}}
+                    </li>
+
+                    <li>
+                        <span>Hometown</span>{{detail.hometown}}
+                    </li>
+
+                    <li>
+                        <span>Work / Job title</span>{{object.job_profile}}
+                    </li>
+
+                    <li>
+                        <span>Qualification </span>{{object.qualification}}
+                    </li>
+
+                    <li>
+                        <span>College name </span>{{detail.college_name}}
+                    </li>
+
+                    <li>
+                        <span>University name</span>{{detail.university}}
+                    </li>
+
+                    <li>
+                        <span>Relationship status</span>{{object.relationship_status}}
+                    </li>
+
+                    <li>
+                        <span>Interest</span>{{object.interests}}
+                    </li>
+
+                    <li>
+                        <span>Personality</span>{{object.personality}}
+                    </li>
+
+                    <li>
+                        <span>Body Type</span>{{object.body_type}}
+                    </li>
+
+                    <li>
+                        <span>Religion</span>{{object.religion}}
+                    </li>
+
+                    <li>
+                        <span>favourite quote </span>{{object.fav_quote}}
+                    </li>
+
+                    <li>
+                        <span>Favourite Music & Movie </span>{{detail.fav_music}}
+                    </li>
+
+                    <li>
+                        <span>Bio</span>{{detail.bio}}
+                    </li>
+
+                    <li>
+                        <span>Places Travelled </span>{{detail.travelled_place}}
+                    </li>
+
+                    <li>
+                        <div class="Flex">
+                            <span>Things I want to do at least once in my lifetime</span>{{detail.once_in_life}}
+                        </div>
+                    </li>
+
+                    <li>
+                        <span>I Exercise</span>{{detail.exercise}}
+                    </li>
+
+                    <li>
+                        <span>I am looking for</span>{{detail.looking_for}}
+                    </li>
+
+                    <li>
+                        <span>Favourite Food</span>{{detail.fav_food}}
+                    </li>
+
+                    <li>
+                        <span>Favourite pets</span>{{detail.fav_pet}}
+                    </li>
+
+                    <li>
+                        <span>I drank</span>{{detail.drink}}
+                    </li>
+
+                    <li>
+                        <span>I Smoke</span>{{detail.smoke}}
+                    </li>
+
+                    <li>
+                        <span>I am</span>{{object.gender}}
+                    </li>
                 </ul>
             </div>
-            <div class="clear"></div>
+
         </div>
     </div>
-
-    <div class="SidenavBar">
-        <ul>
-            <li>
-                <a href="dashboard.html">
-                    <span><i class="fa fa-tachometer"></i></span> Dashboard
-                </a>
-            </li>
-            
-            <li class="active">
-                <a href="user-management.html">
-                    <span><i class="fa fa-user"></i></span> User Management
-                </a>
-            </li>
-            
-            <li>
-                <a href="Subscription-management.html">
-                    <span><i class="fa fa-money"></i></span> Subscription Management
-                </a>
-            </li>
-            
-            <li>
-                <a href="Subscription-Purchase-management.html">
-                    <span><i class="fa fa-money"></i></span> Subscription Purchase Management 
-                </a>
-            </li>
-            
-            <li>
-                <a href="meet-management.html">
-                    <span><i class="fa fa-product-hunt"></i></span> Meet up Management
-                </a>
-            </li>
-            
-            <li>
-                <a href="notification.html">
-                    <span><i class="fa fa-cubes" ></i></span> Push Notifications
-                </a>
-            </li>
-            
-            <li>
-                <a href="Transaction-management.html">
-                    <span><i class="fa fa-database"></i></span> Transactions Management 
-                </a>
-            </li>
-            
-            <li>
-                <a href="Report-management.html">
-                    <span><i class="fa fa-shopping-cart"></i></span> Reports Management 
-                </a>
-            </li>
-            
-            <li>
-                <a href="content-management.html">
-                    <span><i class="fa fa-font"></i></span> Static content Management 
-                </a>
-            </li> 
-            
-            <li>
-                <a href="setting.html">
-                    <span><i class="fa fa-cog"></i></span> Settings
-                </a>    
-            </li>
-            
-            <li>
-                <a href="login.html">
-                    <span><i class="fa fa-sign-out"></i></span> Logout
-                </a>
-            </li> 
-        </ul>
-    </div>
-     
-    <div class="WrapperArea">
-        <div class="WrapperBox">
-            <div class="Small-Wrapper">
-                <h4 class="Title">User Details</h4>
-                                          
-                <div class="DetailsArea"> 
-                    <div class="DetailsProfile">
-                        <figure><img src="images/profile.jpg"></figure>
-                    </div>
-                    <ul>
-                        <li>
-                            <span>User id</span>
-                        </li>
-
-                        <li>
-                            <span>Name of the user</span>
-                        </li> 
-
-                        <li>
-                            <span>Phone Number</span>
-                        </li> 
-
-                        <li>
-                            <span>Email id </span>
-                        </li> 
-
-                        <li>
-                            <span>Date of Birth</span>
-                        </li> 
-
-                        <li>
-                            <span>Status</span>
-                        </li> 
-
-                        <li> 
-                            <span>Sexual Orientation</span>
-                        </li> 
-
-                        <li>
-                            <span>favourite pictures</span>
-                        </li> 
-
-                        <li>
-                            <span>Living in</span>
-                        </li> 
-
-                        <li>
-                            <span>Hometown</span>
-                        </li> 
-
-                        <li>
-                            <span>Work / Job title</span>
-                        </li> 
-
-                        <li>
-                            <span>Qualification </span>
-                        </li> 
-
-                        <li>
-                            <span>College name </span>
-                        </li> 
-
-                        <li>
-                            <span>University name</span>
-                        </li>
-
-                        <li>
-                            <span>Relationship status</span>
-                        </li>
-
-                        <li>
-                            <span>Interest</span>
-                        </li>
-
-                        <li>
-                            <span>Personality</span>
-                        </li>
-
-                        <li>
-                            <span>Body Type</span>
-                        </li>
-
-                        <li>
-                            <span>Religion</span>
-                        </li>
-
-                        <li>
-                            <span>favourite quote </span>
-                        </li>
-
-                        <li>
-                            <span>Favourite Music & Movie </span>
-                        </li>
-
-                        <li>
-                            <span>Bio</span>
-                        </li>
-
-                        <li>
-                            <span>Places Travelled </span>
-                        </li>
-
-                        <li>
-                            <div class="Flex">
-                                <span>Things I want to do at least once in my lifetime</span> 
-                            </div>
-                        </li>
-
-                        <li>
-                            <span>I Exercise</span>
-                        </li>
-
-                        <li>
-                            <span>I am looking for</span>
-                        </li>
-
-                        <li>
-                            <span>Favourite Food</span>
-                        </li>
-
-                        <li>
-                            <span>Favourite pets</span>
-                        </li>
-
-                        <li>
-                            <span>I drank</span>
-                        </li>
-
-                        <li>
-                            <span>I Smoke</span>
-                        </li>
-
-                        <li>
-                            <span>I am</span>
-                        </li>                    
-                    </ul>
-                </div>               
-                                 
-            </div>
-        </div>
-    </div>
-
- 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    
-     
-</body>
-</html>
+</div>
+{% endblock body %}

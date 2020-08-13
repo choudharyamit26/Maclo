@@ -1,5 +1,19 @@
 {% extends 'base.html' %}
 {% block body %}
+<div class="content-wrapper">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% block content %}
+    {% endblock content %}
+</div>
 <div class="WrapperArea">
     <div class="WrapperBox">
         <div class="Small-Wrapper">

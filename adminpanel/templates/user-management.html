@@ -1,359 +1,178 @@
-<!DOCTYPE html>
-<html lang="en-us">
+{% extends 'base.html' %}
+{% block body %}
+<div class="WrapperArea">
+    <div class="WrapperBox">
+        <div class="Small-Wrapper">
+            <div class="SearchBox">
+                <form action="">
+                    <input type="text" name="qs" placeholder="Enter Key">
+                    <button>Apply</button>
+                </form>
+            </div>
 
-<head>
-    <title>Maclo | User Management</title>
-    <meta charset="UTF-8">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> 
-    <link type="text/css" rel="stylesheet" href="css/style.css">
-</head>
+            <h4 class="Title">User Management</h4>
 
-<body>
+            <div class="Filter">
+                <div class="form-group">
+                    <label>From Date</label>
+                    <input type="date" name="from_date" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>To Date</label>
+                    <input type="date" name="to_date" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <button class="Button">Apply</button>
+                </div>
+            </div>
+            {% if search %}
+            <div class="TableList">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>User ID</th>
+                        <th>Name of the user</th>
+                        <th>Email id</th>
+                        <th>Phone Number</th>
+                        <th>Date of Birth</th>
+                        <th>Verified</th>
+                        <th>action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for object in search %}
+                    <tr>
+                        <td>{{forloop.counter }}</td>
+                        <td>USER {{object.id}}</td>
+                        <td>{{object.first_name}} {{object.last_name}}</td>
+                        <td>{{object.email}}</td>
+                        <td>{{object.phone_number}}</td>
+                        <td>{{object.date_of_birth}}</td>
+                        <td><span class="red">{{object.verified}}</span></td>
+                        <td>
+                            <a class="Blue" href="user-details.html">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                            <a class="Red" href="JavaScript:Void(0);" data-toggle="modal" data-target="#DeleteModal">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% elif pages %}
+            <div class="TableList">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>User ID</th>
+                        <th>Name of the user</th>
+                        <th>Email id</th>
+                        <th>Phone Number</th>
+                        <th>Date of Birth</th>
+                        <th>Verified</th>
+                        <th>action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for object in pages %}
+                    <tr>
+                        <td>{{forloop.counter }}</td>
+                        <td>USER {{object.id}}</td>
+                        <td>{{object.first_name}} {{object.last_name}}</td>
+                        <td>{{object.email}}</td>
+                        <td>{{object.phone_number}}</td>
+                        <td>{{object.date_of_birth}}</td>
+                        <td><span class="red">{{object.verified}}</span></td>
+                        <td>
+                            <a class="Blue" href="{% url 'adminpanel:users-detail' object.id %}">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                            <a class="Red" href="JavaScript:Void(0);" data-toggle="modal" data-target="#DeleteModal">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="TableList">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>User ID</th>
+                        <th>Name of the user</th>
+                        <th>Email id</th>
+                        <th>Phone Number</th>
+                        <th>Date of Birth</th>
+                        <th>Verified</th>
+                        <th>action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for object in object_list %}
+                    <tr>
+                        <td>{{forloop.counter }}</td>
+                        <td>USER {{object.id}}</td>
+                        <td>{{object.first_name}} {{object.last_name}}</td>
+                        <td>{{object.email}}</td>
+                        <td>{{object.phone_number}}</td>
+                        <td>{{object.date_of_birth}}</td>
+                        <td><span class="red">{{object.verified}}</span></td>
+                        <td>
+                            <a class="Blue" href="user-details.html">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                            <a class="Red" href="JavaScript:Void(0);" data-toggle="modal" data-target="#DeleteModal">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
 
-    <div class="Header">
-        <div class="Logo">
-            <img src="images/Inner-Logo.png">
-        </div>
-        <div class="Navigation">
-            <div class="Avater">
-                <a href="javascript:void(0);">
-                    <figure><img src="images/profile.jpg"></figure> Bob Hyden </a>
+            <div class="Pagination">
                 <ul>
-                    <li>
-                        <figure><img src="images/profile.jpg"></figure>
-                        <h4> Bob Hyden <span>Administrator</span></h4>
-                    </li> 
-                    <li><a href="login.html"><span><i class="fa fa-sign-out"></i></span> Logout</a></li>
+                    <li><a href="#">Previous</a></li>
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">Next</a></li>
                 </ul>
             </div>
-            <div class="clear"></div>
+
         </div>
     </div>
+</div>
 
-    <div class="SidenavBar">
-        <ul>
-            <li>
-                <a href="dashboard.html">
-                    <span><i class="fa fa-tachometer"></i></span> Dashboard
-                </a>
-            </li>
-            
-            <li class="active">
-                <a href="user-management.html">
-                    <span><i class="fa fa-user"></i></span> User Management
-                </a>
-            </li>
-            
-            <li>
-                <a href="Subscription-management.html">
-                    <span><i class="fa fa-money"></i></span> Subscription Management
-                </a>
-            </li>
-            
-            <li>
-                <a href="Subscription-Purchase-management.html">
-                    <span><i class="fa fa-money"></i></span> Subscription Purchase Management 
-                </a>
-            </li>
-            
-            <li>
-                <a href="meet-management.html">
-                    <span><i class="fa fa-product-hunt"></i></span> Meet up Management
-                </a>
-            </li>
-            
-            <li>
-                <a href="notification.html">
-                    <span><i class="fa fa-cubes" ></i></span> Push Notifications
-                </a>
-            </li>
-            
-            <li>
-                <a href="Transaction-management.html">
-                    <span><i class="fa fa-database"></i></span> Transactions Management 
-                </a>
-            </li>
-            
-            <li>
-                <a href="Report-management.html">
-                    <span><i class="fa fa-shopping-cart"></i></span> Reports Management 
-                </a>
-            </li>
-            
-            <li>
-                <a href="content-management.html">
-                    <span><i class="fa fa-font"></i></span> Static content Management 
-                </a>
-            </li> 
-            
-            <li>
-                <a href="setting.html">
-                    <span><i class="fa fa-cog"></i></span> Settings
-                </a>    
-            </li>
-            
-            <li>
-                <a href="login.html">
-                    <span><i class="fa fa-sign-out"></i></span> Logout
-                </a>
-            </li> 
-        </ul>
-    </div>
-     
-    <div class="WrapperArea">
-        <div class="WrapperBox">
-            <div class="Small-Wrapper">
-                <div class="SearchBox">
-                    <form action="">
-                        <input type="text" placeholder="Enter Key">
-                        <button>Apply</button>
-                    </form> 
-                </div>
-
-                <h4 class="Title">User Management</h4>          
-
-                <div class="Filter"> 
-                    <div class="form-group">
-                        <label>From Date</label>
-                        <input type="date" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>To Date</label>
-                        <input type="date" class="form-control">
-                    </div>  
-                    <div class="form-group">
-                        <label>&nbsp;</label>
-                        <button class="Button">Apply</button>
+<div class="ModalBox">
+    <div id="DeleteModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="Decline">
+                        <a href="JavaScript:Void(0);" class="CloseModal" data-dismiss="modal">×</a>
+                        <h3>Delete</h3>
+                        <p>Are you sure you want to delete this Member ?</p>
+                        <h4>
+                            <a href="JavaScript:Void(0);" data-dismiss="modal">no</a>
+                            <a href="JavaScript:Void(0);" data-dismiss="modal">Yes</a>
+                        </h4>
                     </div>
                 </div>
-
-                <div class="TableList">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>S.No</th>  
-                                <th>User ID</th> 
-                                <th>Name of the user </th> 
-                                <th>Email id </th>
-                                <th>Phone Number</th>
-                                <th>Date of Birth</th> 
-                                <th>Status </th> 
-                                <th>action</th>
-                            </tr>
-                        </thead>
-                        <tbody> 
-                            <tr>
-                                <td>1</td> 
-                                <td>USER 9575</td> 
-                                <td>Lauren Molive</td>
-                                <td>lauren@gmail.com</td>
-                                <td>+91 9876543210</td>
-                                <td>25 Aug 1996</td>
-                                <td><span class="red">Not Verified</span></td>
-                                <td> 
-                                    <a class="Blue" href="user-details.html">
-                                        <i class="fa fa-eye"></i>
-                                    </a> 
-                                    <a class="Red" href="JavaScript:Void(0);" data-toggle="modal" data-target="#DeleteModal">
-                                        <i class="fa fa-trash"></i>
-                                    </a>                                 
-                                </td>     
-                            </tr>
-                            <tr>
-                                <td>2</td> 
-                                <td>USER 5975</td> 
-                                <td>Jaques Amole</td>
-                                <td>Jaques@gmail.com</td>
-                                <td>+91 9876543210</td>
-                                <td>25 Aug 1996</td>
-                                <td><span class="green">Verified</span></td>
-                                <td> 
-                                    <a class="Blue" href="user-details.html">
-                                        <i class="fa fa-eye"></i>
-                                    </a> 
-                                    <a class="Red" href="JavaScript:Void(0);" data-toggle="modal" data-target="#DeleteModal">
-                                        <i class="fa fa-trash"></i>
-                                    </a>                                 
-                                </td>     
-                            </tr>
-                            <tr>
-                                <td>3</td> 
-                                <td>USER 2245</td> 
-                                <td>Val Adictorian</td>
-                                <td>Adictorian@gmail.com</td>
-                                <td>+91 9876543210</td>
-                                <td>25 Aug 1996</td>
-                                <td><span class="red">Not Verified</span></td>
-                                <td> 
-                                    <a class="Blue" href="user-details.html">
-                                        <i class="fa fa-eye"></i>
-                                    </a> 
-                                    <a class="Red" href="JavaScript:Void(0);" data-toggle="modal" data-target="#DeleteModal">
-                                        <i class="fa fa-trash"></i>
-                                    </a>                                 
-                                </td>     
-                            </tr>
-                            <tr>
-                                <td>4</td> 
-                                <td>USER 5542</td> 
-                                <td>Marsha Mello</td>
-                                <td>Marsha@gmail.com</td>
-                                <td>+91 9876543210</td>
-                                <td>25 Aug 1996</td>
-                                <td><span class="green">Verified</span></td>
-                                <td> 
-                                    <a class="Blue" href="user-details.html">
-                                        <i class="fa fa-eye"></i>
-                                    </a> 
-                                    <a class="Red" href="JavaScript:Void(0);" data-toggle="modal" data-target="#DeleteModal">
-                                        <i class="fa fa-trash"></i>
-                                    </a>                                 
-                                </td>     
-                            </tr>
-                            <tr>
-                                <td>5</td> 
-                                <td>USER 6685</td> 
-                                <td>Carol Sell</td>
-                                <td>Carol@gmail.com</td>
-                                <td>+91 9876543210</td>
-                                <td>25 Aug 1996</td>
-                                <td><span class="red">Not Verified</span></td>
-                                <td> 
-                                    <a class="Blue" href="user-details.html">
-                                        <i class="fa fa-eye"></i>
-                                    </a> 
-                                    <a class="Red" href="JavaScript:Void(0);" data-toggle="modal" data-target="#DeleteModal">
-                                        <i class="fa fa-trash"></i>
-                                    </a>                                 
-                                </td>     
-                            </tr>
-                            <tr>
-                                <td>6</td> 
-                                <td>USER 7236</td> 
-                                <td>Minnie Strone</td>
-                                <td>Minnie@gmail.com</td>
-                                <td>+91 9876543210</td>
-                                <td>25 Aug 1996</td>
-                                <td><span class="green">Verified</span></td>
-                                <td> 
-                                    <a class="Blue" href="user-details.html">
-                                        <i class="fa fa-eye"></i>
-                                    </a> 
-                                    <a class="Red" href="JavaScript:Void(0);" data-toggle="modal" data-target="#DeleteModal">
-                                        <i class="fa fa-trash"></i>
-                                    </a>                                 
-                                </td>     
-                            </tr>
-                            <tr>
-                                <td>7</td> 
-                                <td>USER 5867</td> 
-                                <td>Cody Pendant</td>
-                                <td>Pendant@gmail.com</td>
-                                <td>+91 9876543210</td>
-                                <td>25 Aug 1996</td>
-                                <td><span class="green">Verified</span></td>
-                                <td> 
-                                    <a class="Blue" href="user-details.html">
-                                        <i class="fa fa-eye"></i>
-                                    </a> 
-                                    <a class="Red" href="JavaScript:Void(0);" data-toggle="modal" data-target="#DeleteModal">
-                                        <i class="fa fa-trash"></i>
-                                    </a>                                 
-                                </td>     
-                            </tr>
-                            <tr>
-                                <td>8</td> 
-                                <td>USER 4235</td> 
-                                <td>Genie Inabottle</td>
-                                <td>Inabottle@gmail.com</td>
-                                <td>+91 9876543210</td>
-                                <td>25 Aug 1996</td>
-                                <td><span class="green">Verified</span></td>
-                                <td> 
-                                    <a class="Blue" href="user-details.html">
-                                        <i class="fa fa-eye"></i>
-                                    </a> 
-                                    <a class="Red" href="JavaScript:Void(0);" data-toggle="modal" data-target="#DeleteModal">
-                                        <i class="fa fa-trash"></i>
-                                    </a>                                 
-                                </td>     
-                            </tr>
-                            <tr>
-                                <td>9</td> 
-                                <td>USER 7854</td> 
-                                <td>Cathy Derr</td>
-                                <td>Cathy@gmail.com</td>
-                                <td>+91 9876543210</td>
-                                <td>25 Aug 1996</td>
-                                <td><span class="red">Not Verified</span></td>
-                                <td> 
-                                    <a class="Blue" href="user-details.html">
-                                        <i class="fa fa-eye"></i>
-                                    </a> 
-                                    <a class="Red" href="JavaScript:Void(0);" data-toggle="modal" data-target="#DeleteModal">
-                                        <i class="fa fa-trash"></i>
-                                    </a>                                 
-                                </td>     
-                            </tr>
-                            <tr>
-                                <td>10</td> 
-                                <td>USER 2547</td> 
-                                <td>Mack Adamiae</td>
-                                <td>Mack@gmail.com</td>
-                                <td>+91 9876543210</td>
-                                <td>25 Aug 1996</td>
-                                <td><span class="red">Not Verified</span></td>
-                                <td> 
-                                    <a class="Blue" href="user-details.html">
-                                        <i class="fa fa-eye"></i>
-                                    </a> 
-                                    <a class="Red" href="JavaScript:Void(0);" data-toggle="modal" data-target="#DeleteModal">
-                                        <i class="fa fa-trash"></i>
-                                    </a>                                  
-                                </td>     
-                            </tr>
-                        </tbody>
-                    </table>  
-                </div>
-                
-                <div class="Pagination">
-                    <ul>
-                        <li><a href="#">Previous</a></li>
-                        <li class="active"><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">Next</a></li>
-                    </ul>
-                </div>
-
             </div>
         </div>
     </div>
-
-    <div class="ModalBox">
-        <div id="DeleteModal" class="modal fade" role="dialog">
-            <div class="modal-dialog"> 
-                <div class="modal-content"> 
-                    <div class="modal-body"> 
-                        <div class="Decline">
-                            <a href="JavaScript:Void(0);" class="CloseModal" data-dismiss="modal">×</a>                       
-                            <h3>Delete</h3>
-                            <p>Are you sure you want to delete this Member ?</p>
-                            <h4>
-                                <a href="JavaScript:Void(0);" data-dismiss="modal">no</a>
-                                <a href="JavaScript:Void(0);" data-dismiss="modal">Yes</a>
-                            </h4>
-                        </div>
-                    </div> 
-                </div>
-            </div>
-        </div> 
-    </div>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    
-     
-</body>
-</html>
+</div>
+{% endblock body %}

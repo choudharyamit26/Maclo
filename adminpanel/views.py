@@ -9,13 +9,14 @@ from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.views.generic import View, CreateView, UpdateView, DeleteView, ListView
+from django.views.generic import View, CreateView, UpdateView, DeleteView, ListView, DetailView
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.conf.global_settings import DEFAULT_FROM_EMAIL
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import LoginForm
-from src.models import RegisterUser, SubscriptionPlans, ScheduleMeeting
+from src.models import RegisterUser, SubscriptionPlans, ScheduleMeeting, UserDetail
+from .filters import UserFilter
 
 user = get_user_model()
 
@@ -197,7 +198,7 @@ class Dashboard(LoginRequiredMixin, ListView):
         return render(self.request, "dashboard.html", context)
 
 
-class UserLists(LoginRequiredMixin,ListView):
+class UsersList(LoginRequiredMixin, ListView):
     paginate_by = 1
     model = RegisterUser
     template_name = 'user-management.html'
@@ -206,10 +207,10 @@ class UserLists(LoginRequiredMixin,ListView):
         qs = self.request.GET.get('qs')
         if qs:
             search = RegisterUser.objects.filter(Q(first_name__icontains=qs) |
-                                         Q(last_name__icontains=qs) |
-                                         Q(email__icontains=qs) |
-                                         Q(phone_number__icontains=qs) |
-                                         Q(promocode__icontains=qs))
+                                                 Q(last_name__icontains=qs) |
+                                                 Q(email__icontains=qs) |
+                                                 Q(phone_number__icontains=qs) |
+                                                 Q(promocode__icontains=qs))
 
             search_count = len(search)
             context = {
@@ -235,3 +236,22 @@ class UserLists(LoginRequiredMixin,ListView):
                 'pages': page_obj
             }
             return render(self.request, "user-management.html", context)
+
+
+class UserDetailView(DetailView):
+    model = RegisterUser
+    template_name = 'user-details.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = RegisterUser.objects.get(id=self.kwargs.get('pk'))
+        # print(UserDetail.objects.get(phone_number=user))
+        print(user)
+        try:
+
+            context['detail'] = UserDetail.objects.get(phone_number=user)
+            x = UserDetail.objects.get(phone_number=user)
+            print(x.living_in)
+        except Exception as e:
+            print(e)
+        return context
