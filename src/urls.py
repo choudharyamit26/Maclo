@@ -4,12 +4,12 @@ from django.urls import path
 from rest_framework import permissions
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
-from .views import (UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIView, UserslistAPIView,
-                    UserProfileAPIView, SearchUser, GetMatchesAPIView, LikeUserAPIView, DeleteMatchesAPIView,
-                    RequestMeetingAPIView, MeetingStatusAPIView, ScheduleMeetingAPIView, FeedbackApiView,
-                    ContactUsApiView, AboutUsApiView, EditAboutUsAPIView, EditContactUsApiView, FacebookSignupApiView,
-                    GoogleSignupView, UserProfileUpdateView, UpdatePhoneNumber, SuperLikeUserAPIView,GetMediaContent,
-                    PopNotificationAPIView, SubscriptionPlanAPIView, DeleteSuperMatchesAPIView,GetUserInstagramPics,ShowInstagramPics)
+from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIView, UserslistAPIView, UserProfileAPIView, \
+    SearchUser, GetMatchesAPIView, LikeUserAPIView, DeleteMatchesAPIView, RequestMeetingAPIView, MeetingStatusAPIView, \
+    ScheduleMeetingAPIView, FeedbackApiView, ContactUsApiView, AboutUsApiView, EditAboutUsAPIView, EditContactUsApiView, \
+    FacebookSignupApiView, GoogleSignupView, UserProfileUpdateView, UpdatePhoneNumber, SuperLikeUserAPIView, \
+    GetMediaContent, PopNotificationAPIView, SubscriptionPlanAPIView, DeleteSuperMatchesAPIView, GetUserInstagramPics, \
+    ShowInstagramPics, LoginView
 
 app_name = 'src'
 
@@ -28,6 +28,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('user-create/', UserCreateAPIView.as_view(), name='user-detail'),
+    path('login/', LoginView.as_view(), name='login'),
     path('update-phonenumber/<int:pk>/', UpdatePhoneNumber.as_view(), name='update-phonenumber'),
     # path('get-token/',GetUserToken.as_view(),name='get-token'),
     path('user-profile/', UserProfileAPIView.as_view(), name='user-profile'),

@@ -3,7 +3,7 @@ from rest_framework.status import HTTP_400_BAD_REQUEST
 from rest_framework.response import Response
 from .models import UserDetail, UserInstagramPic, RegisterUser, MatchedUser, RequestMeeting, ScheduleMeeting, Feedback, \
     ContactUs, AboutUs, SubscriptionPlans, PopNotification
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate
 from django.utils import timezone
 
 User = get_user_model()
@@ -240,3 +240,50 @@ class GetInstagramPicSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInstagramPic
         fields = ('username', 'password')
+
+
+class AuthTokenSerializer(serializers.Serializer):
+    """Serializer for the user authentication object"""
+    phone_number = serializers.IntegerField()
+
+    # password = serializers.CharField(
+    #     style={'input_type': 'password'},
+    #     trim_whitespace=False
+    # )
+
+    def validate(self, attrs):
+        """Validate and authenticate the user using phone number or email in email field"""
+        phone_number = attrs.get('phone_number')
+        # password = attrs.get('password')
+        try:
+            user = User.objects.get(phone_number=phone_number)
+            email = user.email
+            user = authenticate(
+                request=self.context.get('request'),
+                username=email,
+                password=phone_number
+            )
+            if user:
+                attrs['user'] = user
+                return attrs
+            else:
+                return Response("User does not exists", HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            print('---->>>', e)
+            x = {'Error': str(e)}
+            return Response(x['Error'], HTTP_400_BAD_REQUEST)
+
+
+class FacebookSerializer(serializers.ModelSerializer):
+    """Serializer for facebook """
+
+    class Meta:
+        model = User
+        fields = ('name', 'email', 'social_type', 'social_id')
+
+class GmailSerializer(serializers.ModelSerializer):
+    """Serializer for google """
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email', 'country_code', 'phone_number', 'profile_pic')

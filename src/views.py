@@ -9,10 +9,14 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django_filters import rest_framework
 from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView, ListCreateAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.settings import api_settings
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.views import APIView
-
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
 from .models import UserInstagramPic, UserDetail, RegisterUser, MatchedUser, RequestMeeting, ScheduleMeeting, Feedback, \
     AboutUs, ContactUs, InAppNotification, SubscriptionPlans
 from .serializers import (UserDetailSerializer, UserInstagramSerializer, RegisterSerializer,
@@ -20,9 +24,30 @@ from .serializers import (UserDetailSerializer, UserInstagramSerializer, Registe
                           RequestMeetingSerializer, ScheduleMeetingSerializer, FeedbackSerializer, ContactUsSerializer,
                           AboutUsSerializer, MeetingStatusSerializer, PopUpNotificationSerializer,
                           SubscriptionPlanSerializer, DeleteSuperMatchSerializer, SearchSerializer,
-                          GetInstagramPicSerializer, SocialUserSerializer, ShowInstaPics)
+                          GetInstagramPicSerializer, SocialUserSerializer, ShowInstaPics, AuthTokenSerializer,
+                          FacebookSerializer, GmailSerializer)
 
 User = get_user_model()
+
+
+class LoginView(ObtainAuthToken):
+    serializer_class = AuthTokenSerializer
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+
+    def post(self, request, *args, **kwargs):
+        phone_number = self.request.data['phone_number']
+        x = {}
+        try:
+            user = User.objects.get(phone_number=phone_number)
+            if user:
+                token = Token.objects.get_or_create(user=user)
+                print(token)
+                print(token[0].key)
+                return Response({'token': token[0].key, 'status': HTTP_200_OK})
+        except Exception as e:
+            x = {"Error": str(e)}
+            return Response({'message': x['Error'], "status": HTTP_400_BAD_REQUEST})
+        return Response({'message': x['Error'], "status": HTTP_400_BAD_REQUEST})
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -89,7 +114,12 @@ class UserCreateAPIView(CreateAPIView):
             UserDetail.objects.create(
                 phone_number=user
             )
-
+            us_obj = User.objects.create(
+                email=email,
+                phone_number=phone_number
+            )
+            us_obj.set_password(phone_number)
+            us_obj.save()
             # for x in liked_by:
             #     RegisterUser.liked_by.add(x)
             # for y in superliked_by:
@@ -174,8 +204,9 @@ class UserCreateAPIView(CreateAPIView):
 #             print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', token)
 #             return Response({"Token": token.key}, status=HTTP_200_OK)
 
-
 class UpdatePhoneNumber(UpdateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = RegisterSerializer
     queryset = RegisterUser.objects.all()
 
@@ -300,6 +331,8 @@ class UserProfileAPIView(ListCreateAPIView):
 
 
 class UserProfileUpdateView(UpdateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = UserDetailSerializer
     queryset = UserDetail.objects.all()
 
@@ -334,7 +367,8 @@ class UserProfileUpdateView(UpdateAPIView):
         subscription = SubscriptionPlans.objects.get(id=id)
         instance.subscription = subscription
         instance.save(
-            update_fields=['bio', 'phone_number', 'living_in', 'hometown', 'profession', 'college_name', 'university',
+            update_fields=['bio', 'phone_number', 'living_in', 'hometown', 'profession', 'college_name',
+                           'university',
                            'personality', 'preference_first_date', 'fav_music', 'travelled_place',
                            'once_in_life', 'exercise', 'looking_for', 'fav_food', 'owns', 'food_type', 'fav_pet',
                            'smoke', 'drink',
@@ -400,6 +434,8 @@ class GetUserInstagramPics(APIView):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class UserInstagramPicsAPIView(CreateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated)
     serializer_class = UserInstagramSerializer
 
     def post(self, request, *args, **kwargs):
@@ -434,6 +470,8 @@ class UserInstagramPicsAPIView(CreateAPIView):
 
 
 class ShowInstagramPics(ListAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = ShowInstaPics
 
     def get(self, request, *args, **kwargs):
@@ -469,6 +507,8 @@ class ShowInstagramPics(ListAPIView):
 
 
 class UserslistAPIView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     model = UserDetail
     serializer_class = UserDetailSerializer
 
@@ -608,6 +648,8 @@ class UserslistAPIView(APIView):
 
 
 class UserDetailAPIView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     model = UserDetail
     serializer_class = UserDetailSerializer
 
@@ -803,8 +845,9 @@ class SnippetFilter(rest_framework.FilterSet):
 # print('>>>>>>>>>>>>>>>>>>>>', queryset)
 # return queryset
 
-
 class SearchUser(CreateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = SearchSerializer
 
     def post(self, request, *args, **kwargs):
@@ -835,6 +878,8 @@ class SearchUser(CreateAPIView):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class LikeUserAPIView(CreateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     model = MatchedUser
     serializer_class = LikeSerializer
 
@@ -888,6 +933,8 @@ class LikeUserAPIView(CreateAPIView):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class SuperLikeUserAPIView(CreateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     model = MatchedUser
     serializer_class = SuperLikeSerializer
 
@@ -940,6 +987,8 @@ class SuperLikeUserAPIView(CreateAPIView):
 
 
 class GetMatchesAPIView(ListAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     model = MatchedUser
     serializer_class = MatchedUserSerializer
 
@@ -974,6 +1023,8 @@ class GetMatchesAPIView(ListAPIView):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class DeleteMatchesAPIView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     model = MatchedUser
     serializer_class = DeleteMatchSerializer
 
@@ -1002,6 +1053,8 @@ class DeleteMatchesAPIView(APIView):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class DeleteSuperMatchesAPIView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     model = MatchedUser
     serializer_class = DeleteSuperMatchSerializer
 
@@ -1033,6 +1086,8 @@ class DeleteSuperMatchesAPIView(APIView):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class RequestMeetingAPIView(CreateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     model = RequestMeeting
     serializer_class = RequestMeetingSerializer
 
@@ -1079,6 +1134,8 @@ class RequestMeetingAPIView(CreateAPIView):
 
 
 class MeetingStatusAPIView(UpdateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     model = RequestMeeting
     serializer_class = MeetingStatusSerializer
     queryset = RequestMeeting.objects.all()
@@ -1112,6 +1169,8 @@ class MeetingStatusAPIView(UpdateAPIView):
 
 
 class ScheduleMeetingAPIView(CreateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     model = ScheduleMeeting
     serializer_class = ScheduleMeetingSerializer
 
@@ -1158,17 +1217,23 @@ class ScheduleMeetingAPIView(CreateAPIView):
 
 
 class FeedbackApiView(CreateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     model = Feedback
     serializer_class = FeedbackSerializer
 
 
 class ContactUsApiView(ListCreateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     model = ContactUs
     serializer_class = ContactUsSerializer
     queryset = ContactUs.objects.all()
 
 
 class AboutUsApiView(ListCreateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     model = AboutUs
     serializer_class = AboutUsSerializer
     queryset = AboutUs.objects.all()
@@ -1187,219 +1252,98 @@ class EditContactUsApiView(UpdateAPIView):
 
 
 class FacebookSignupApiView(CreateAPIView):
-    serializer_class = SocialUserSerializer
+    serializer_class = FacebookSerializer
 
     def post(self, request, *args, **kwargs):
+        name = self.request.POST.get('name' or None)
+        # last_name = self.request.POST.get('last_name' or None)
         email = self.request.POST.get('email' or None)
-        phone_number = self.request.POST.get('phone_number' or None)
-        first_name = self.request.data['first_name']
-        last_name = self.request.data['last_name']
-        gender = self.request.data['gender']
-        date_of_birth = self.request.data['date_of_birth']
-        pic_1 = self.request.POST.get('pic_1' or None)
-        pic_2 = self.request.POST.get('pic_2' or None)
-        pic_3 = self.request.POST.get('pic_3' or None)
-        pic_4 = self.request.POST.get('pic_4' or None)
-        pic_5 = self.request.POST.get('pic_5' or None)
-        pic_6 = self.request.POST.get('pic_6' or None)
-        pic_7 = self.request.POST.get('pic_7' or None)
-        pic_8 = self.request.POST.get('pic_8' or None)
-        pic_9 = self.request.POST.get('pic_9' or None)
-        user_email = RegisterUser.objets.get(email=email)
-        user_phone_number = RegisterUser.objects.get(phone_number=phone_number)
-        if user_email:
-            return Response(
-                {"message": "User with this email already exists", "flag": 2, "status": HTTP_400_BAD_REQUEST})
-        elif user_phone_number:
-            return Response(
-                {"message": "User with this phone number already exists", "flag": 2, "status": HTTP_400_BAD_REQUEST})
-        else:
-            user = RegisterUser.objects.create(
-                email=email,
-                phone_number=phone_number,
-                first_name=first_name,
-                last_name=last_name,
-                gender=gender,
-                date_of_birth=date_of_birth,
-                pic_1=pic_1,
-                pic_2=pic_2,
-                pic_3=pic_3,
-                pic_4=pic_4,
-                pic_5=pic_5,
-                pic_6=pic_6,
-                pic_7=pic_7,
-                pic_8=pic_8,
-                pic_9=pic_9,
-            )
-            user_detail = UserDetail.objects.create(
-                phone_number=user
-            )
-            user_data = RegisterUser.objects.get(phone_number=phone_number)
-            if user_data.pic_1:
-                pic_1 = user_data.pic_1.url
+        social_id = self.request.POST.get('social_id' or None)
+        social_type = self.request.POST.get('social_type' or None)
+        # profile_pic = self.request.POST.get('profile_pic' or None)
+        device_token = self.request.POST.get('device_token' or None)
+        # print('>>>>>>>>>>>>>>', device_token)
+        print('before try')
+        try:
+            print('inside try')
+            print('Email------------>>>', email)
+            print('Email fb try------------>>>', self.request.data)
+            user = User.objects.get(social_id=social_id)
+            print('user', user)
+            if user:
+                user_with_token = Token.objects.get_or_create(user=user)
+                print('token-->>', user_with_token)
+                user.device_token = device_token
+                print('from fb sign in device token ', device_token)
+                user.save(update_fields=['device_token'])
+                user_with_token = user_with_token[0]
+                print(user_with_token)
+                return Response({"Token": user_with_token.key, "user id": user.id, "status": HTTP_200_OK})
+        except:
+            print('inside except')
+            print('Email fb except------------>>>', self.request.data)
+            serializer = FacebookSerializer(data=request.data)
+            if serializer.is_valid():
+                reg_usr = RegisterUser.objects.create(
+                    email=email,
+                    first_name=name
+                )
+                user = User.objects.create(
+                    first_name=name,
+                    # last_name=last_name,
+                    email=email,
+                    social_id=social_id,
+                    social_type=social_type,
+                    # profile_pic=profile_pic,
+                    device_token=device_token,
+                )
+                token = Token.objects.create(user=user)
+                return Response({"Token": token.key, "user id": user.id, "status": HTTP_200_OK})
             else:
-                pic_1 = ''
-            if user_data.pic_2:
-                pic_2 = user_data.pic_2.url
-            else:
-                pic_2 = ''
-            if user_data.pic_3:
-                pic_3 = user_data.pic_3.url
-            else:
-                pic_3 = ''
-            if user_data.pic_4:
-                pic_4 = user_data.pic_4.url
-            else:
-                pic_4 = ''
-            if user_data.pic_5:
-                pic_5 = user_data.pic_5.url
-            else:
-                pic_5 = ''
-            if user_data.pic_6:
-                pic_6 = user_data.pic_6.url
-            else:
-                pic_7 = ''
-            if user_data.pic_8:
-                pic_8 = user_data.pic_8.url
-            else:
-                pic_8 = ''
-            if user_data.pic_9:
-                pic_9 = user_data.pic_9.url
-            else:
-                pic_9 = ''
-            Data = {
-                "id": user_data.id,
-                "email": user_data.email,
-                "first_name": user_data.first_name,
-                "last_name": user_data.last_name,
-                "phone_number": user_data.phone_number,
-                "gender": user_data.gender,
-                "date_of_birth": user_data.date_of_birth,
-                "job_profile": user_data.job_profile,
-                "company_name": user_data.company_name,
-                "qualification": user_data.qualification,
-                "relationship_status": user_data.relationship_status,
-                "interests": user_data.interests,
-                "fav_quote": user_data.fav_quote,
-                "pic_1": pic_1,
-                "pic_2": pic_2,
-                "pic_3": pic_3,
-                "pic_4": pic_4,
-                "pic_5": pic_5,
-                "pic_6": pic_6,
-                "pic_7": pic_7,
-                "pic_8": pic_8,
-                "pic_9": pic_9,
-            }
-            return Response({"User": "User Created successfully", "Data": Data, "status": HTTP_200_OK, "flag": 1})
+                return Response({"message": serializer.errors, "status": HTTP_400_BAD_REQUEST})
 
 
 class GoogleSignupView(CreateAPIView):
-    serializer_class = SocialUserSerializer
+    serializer_class = GmailSerializer
 
     def post(self, request, *args, **kwargs):
+        name = self.request.POST.get('name' or None)
+        # last_name = self.request.POST.get('last_name' or None)
         email = self.request.POST.get('email' or None)
-        phone_number = self.request.POST.get('phone_number' or None)
-        first_name = self.request.data['first_name']
-        last_name = self.request.data['last_name']
-        gender = self.request.data['gender']
-        date_of_birth = self.request.data['date_of_birth']
-        pic_1 = self.request.POST.get('pic_1' or None)
-        pic_2 = self.request.POST.get('pic_2' or None)
-        pic_3 = self.request.POST.get('pic_3' or None)
-        pic_4 = self.request.POST.get('pic_4' or None)
-        pic_5 = self.request.POST.get('pic_5' or None)
-        pic_6 = self.request.POST.get('pic_6' or None)
-        pic_7 = self.request.POST.get('pic_7' or None)
-        pic_8 = self.request.POST.get('pic_8' or None)
-        pic_9 = self.request.POST.get('pic_9' or None)
-        user_email = RegisterUser.objets.get(email=email)
-        user_phone_number = RegisterUser.objects.get(phone_number=phone_number)
-        if user_email:
-            return Response(
-                {"message": "User with this email already exists", "flag": 2, "status": HTTP_400_BAD_REQUEST})
-        elif user_phone_number:
-            return Response(
-                {"message": "User with this phone number already exists", "flag": 2, "status": HTTP_400_BAD_REQUEST})
-        else:
-            user = RegisterUser.objects.create(
-                email=email,
-                phone_number=phone_number,
-                first_name=first_name,
-                last_name=last_name,
-                gender=gender,
-                date_of_birth=date_of_birth,
-                pic_1=pic_1,
-                pic_2=pic_2,
-                pic_3=pic_3,
-                pic_4=pic_4,
-                pic_5=pic_5,
-                pic_6=pic_6,
-                pic_7=pic_7,
-                pic_8=pic_8,
-                pic_9=pic_9,
-            )
-            user_detail = UserDetail.objects.create(
-                phone_number=user
-            )
-            user_data = RegisterUser.objects.get(phone_number=phone_number)
-            if user_data.pic_1:
-                pic_1 = user_data.pic_1.url
+        social_id = self.request.POST.get('social_id' or None)
+        social_type = self.request.POST.get('social_type' or None)
+        device_token = self.request.POST.get('device_token' or None)
+        profile_pic = self.request.POST.get('profile_pic' or None)
+        try:
+            print('Gmail try---------------->', self.request.data)
+            existing_user = User.objects.get(social_id=social_id)
+            if existing_user:
+                user_with_token = Token.objects.get_or_create(
+                    user=existing_user)
+                print('token-->>', user_with_token)
+                existing_user.device_token = device_token
+                print('from google sign in device token ', device_token)
+                existing_user.save(update_fields=['device_token'])
+                user_with_token = user_with_token[0]
+                print(user_with_token)
+                return Response({"Token": user_with_token.key, "user id": existing_user.id, "status": HTTP_200_OK})
+        except:
+            print('Gmail except ----------------->>>>>>>>>>>', self.request.data)
+            serializer = GmailSerializer(data=request.data)
+            if serializer.is_valid():
+                user = User.objects.create(
+                    first_name=name,
+                    # last_name=last_name,
+                    email=email,
+                    social_id=social_id,
+                    social_type=social_type,
+                    device_token=device_token,
+                    # profile_pic=profile_pic
+                )
+                token = Token.objects.create(user=user)
+                return Response({"Token": token.key, "user id": user.id, "status": HTTP_200_OK})
             else:
-                pic_1 = ''
-            if user_data.pic_2:
-                pic_2 = user_data.pic_2.url
-            else:
-                pic_2 = ''
-            if user_data.pic_3:
-                pic_3 = user_data.pic_3.url
-            else:
-                pic_3 = ''
-            if user_data.pic_4:
-                pic_4 = user_data.pic_4.url
-            else:
-                pic_4 = ''
-            if user_data.pic_5:
-                pic_5 = user_data.pic_5.url
-            else:
-                pic_5 = ''
-            if user_data.pic_6:
-                pic_6 = user_data.pic_6.url
-            else:
-                pic_7 = ''
-            if user_data.pic_8:
-                pic_8 = user_data.pic_8.url
-            else:
-                pic_8 = ''
-            if user_data.pic_9:
-                pic_9 = user_data.pic_9.url
-            else:
-                pic_9 = ''
-            Data = {
-                "id": user_data.id,
-                "email": user_data.email,
-                "first_name": user_data.first_name,
-                "last_name": user_data.last_name,
-                "phone_number": user_data.phone_number,
-                "gender": user_data.gender,
-                "date_of_birth": user_data.date_of_birth,
-                "job_profile": user_data.job_profile,
-                "company_name": user_data.company_name,
-                "qualification": user_data.qualification,
-                "relationship_status": user_data.relationship_status,
-                "interests": user_data.interests,
-                "fav_quote": user_data.fav_quote,
-                "pic_1": pic_1,
-                "pic_2": pic_2,
-                "pic_3": pic_3,
-                "pic_4": pic_4,
-                "pic_5": pic_5,
-                "pic_6": pic_6,
-                "pic_7": pic_7,
-                "pic_8": pic_8,
-                "pic_9": pic_9,
-            }
-            return Response({"User": "User Created successfully", "Data": Data, "status": HTTP_200_OK, "flag": 1})
+                return Response({"message": serializer.errors, "status": HTTP_400_BAD_REQUEST})
 
 
 class PopNotificationAPIView(CreateAPIView):
@@ -1454,7 +1398,6 @@ class SubscriptionPlanAPIView(ListAPIView):
 #                     if delta.days > 30:
 #                         obj.delete()
 #                         return Response({"Objects": schedule_obj}, status=HTTP_200_OK)
-
 
 class GetMediaContent(APIView):
     def get(self, request, *args, **kwargs):

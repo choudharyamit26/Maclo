@@ -29,6 +29,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'adminpanel',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,7 +44,6 @@ INSTALLED_APPS = [
     'channels',
     'django_cron',
     'chat',
-    'adminpanel',
     'src'
 ]
 
@@ -79,9 +79,9 @@ TEMPLATES = [
     },
 ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
-}
+# REST_FRAMEWORK = {
+#     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+# }
 
 WSGI_APPLICATION = 'maclo.wsgi.application'
 ASGI_APPLICATION = 'maclo.routing.application'
@@ -95,7 +95,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 CHANNEL_LAYERS = {
     'default': {
@@ -168,7 +167,14 @@ EMAIL_HOST_PASSWORD = 'mahirkashyap'
 EMAIL_PORT = 587
 SERVER_EMAIL = 'maclodatingapp@gmail.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        # 'src.CustomTokenAuthentication.CustomTokenAuthentication'
+    ),
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated',)
+}
 # S3 BUCKETS CONFIG
 
 # AWS_ACCESS_KEY_ID = 'AKIAU4GHOSL2MLFW3SHZ'
