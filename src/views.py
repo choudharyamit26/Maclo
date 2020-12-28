@@ -83,8 +83,8 @@ class UserCreateAPIView(CreateAPIView):
             phone_number__iexact=phone_number)
         if user_qs.exists():
             serializer.is_valid(raise_exception=True)
-            return Response({"Phone number": "User with this phone number already exists."},
-                            status=HTTP_400_BAD_REQUEST)
+            return Response(
+                {"Phone number": "User with this phone number already exists.", "status": HTTP_400_BAD_REQUEST})
         if serializer.is_valid():
             user = RegisterUser.objects.create(
                 email=email,
@@ -125,6 +125,15 @@ class UserCreateAPIView(CreateAPIView):
             # for y in superliked_by:
             #     RegisterUser.superliked_by.add(y)
             user_data = RegisterUser.objects.get(phone_number=phone_number)
+            pic_1 = ''
+            pic_2 = ''
+            pic_3 = ''
+            pic_4 = ''
+            pic_5 = ''
+            pic_6 = ''
+            pic_7 = ''
+            pic_8 = ''
+            pic_9 = ''
             if user_data.pic_1:
                 pic_1 = user_data.pic_1.url
             else:
@@ -147,6 +156,10 @@ class UserCreateAPIView(CreateAPIView):
                 pic_5 = ''
             if user_data.pic_6:
                 pic_6 = user_data.pic_6.url
+            else:
+                pic_6 = ''
+            if user_data.pic_7:
+                pic_7 = user_data.pic_8.url
             else:
                 pic_7 = ''
             if user_data.pic_8:
@@ -181,8 +194,7 @@ class UserCreateAPIView(CreateAPIView):
                 "pic_8": pic_8,
                 "pic_9": pic_9,
             }
-            return Response({"User": "User Created sucessfully", "Data": Data},
-                            status=HTTP_201_CREATED)
+            return Response({"User": "User Created sucessfully", "Data": Data, "status": HTTP_201_CREATED})
 
 
 # class GetUserToken(ObtainAuthToken):
