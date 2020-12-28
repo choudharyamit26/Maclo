@@ -1330,6 +1330,9 @@ class FacebookSignupApiView(CreateAPIView):
                     # profile_pic=profile_pic,
                     device_token=device_token,
                 )
+                UserDetail.objects.create(
+                    phone_number=reg_usr
+                )
                 token = Token.objects.create(user=user)
                 return Response({"Token": token.key, "user id": user.id, "status": HTTP_200_OK})
             else:
@@ -1364,6 +1367,10 @@ class GoogleSignupView(CreateAPIView):
             print('Gmail except ----------------->>>>>>>>>>>', self.request.data)
             serializer = GmailSerializer(data=request.data)
             if serializer.is_valid():
+                reg_usr = RegisterUser.objects.create(
+                    email=email,
+                    first_name=name
+                )
                 user = User.objects.create(
                     name=name,
                     # last_name=last_name,
@@ -1372,6 +1379,9 @@ class GoogleSignupView(CreateAPIView):
                     social_type=social_type,
                     device_token=device_token,
                     # profile_pic=profile_pic
+                )
+                UserDetail.objects.create(
+                    phone_number=reg_usr
                 )
                 token = Token.objects.create(user=user)
                 return Response({"Token": token.key, "user id": user.id, "status": HTTP_200_OK})
