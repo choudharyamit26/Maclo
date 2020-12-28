@@ -1433,7 +1433,7 @@ class CheckNumber(APIView):
                 return Response({'message': 'User not found', 'user_exists': False, "status": HTTP_400_BAD_REQUEST})
         except Exception as e:
             x = {'error': str(e)}
-            return Response({'message': x['error'], "status": HTTP_400_BAD_REQUEST})
+            return Response({'message': x['error'],'user_exists':False, "status": HTTP_400_BAD_REQUEST})
 
 
 class PopNotificationAPIView(CreateAPIView):
