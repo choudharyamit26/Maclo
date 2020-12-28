@@ -61,13 +61,13 @@ class UserCreateAPIView(CreateAPIView):
         phone_number = self.request.data['phone_number']
         gender = self.request.data['gender']
         date_of_birth = self.request.data['date_of_birth']
-        job_profile = self.request.data['job_profile']
-        company_name = self.request.data['company_name']
+        # job_profile = self.request.data['job_profile']
+        # company_name = self.request.data['company_name']
         email = self.request.data['email']
-        qualification = self.request.data['qualification']
-        relationship_status = self.request.data['relationship_status']
-        interests = self.request.data['interests']
-        fav_quote = self.request.data['fav_quote']
+        # qualification = self.request.data['qualification']
+        # relationship_status = self.request.data['relationship_status']
+        # interests = self.request.data['interests']
+        # fav_quote = self.request.data['fav_quote']
         # liked_by = RegisterUser.objects.filter(id=phone_number)
         # superliked_by = RegisterUser.objects.filter(id=phone_number)
         pic_1 = self.request.data['pic_1']
@@ -93,12 +93,12 @@ class UserCreateAPIView(CreateAPIView):
                 phone_number=phone_number,
                 gender=gender,
                 date_of_birth=date_of_birth,
-                job_profile=job_profile,
-                company_name=company_name,
-                qualification=qualification,
-                relationship_status=relationship_status,
-                interests=interests,
-                fav_quote=fav_quote,
+                # job_profile=job_profile,
+                # company_name=company_name,
+                # qualification=qualification,
+                # relationship_status=relationship_status,
+                # interests=interests,
+                # fav_quote=fav_quote,
                 # liked_by=liked_by,
                 # superliked_by=superliked_by,
                 pic_1=pic_1,
@@ -178,12 +178,12 @@ class UserCreateAPIView(CreateAPIView):
                 "phone_number": user_data.phone_number,
                 "gender": user_data.gender,
                 "date_of_birth": user_data.date_of_birth,
-                "job_profile": user_data.job_profile,
-                "company_name": user_data.company_name,
-                "qualification": user_data.qualification,
-                "relationship_status": user_data.relationship_status,
-                "interests": user_data.interests,
-                "fav_quote": user_data.fav_quote,
+                # "job_profile": user_data.job_profile,
+                # "company_name": user_data.company_name,
+                # "qualification": user_data.qualification,
+                # "relationship_status": user_data.relationship_status,
+                # "interests": user_data.interests,
+                # "fav_quote": user_data.fav_quote,
                 "pic_1": pic_1,
                 "pic_2": pic_2,
                 "pic_3": pic_3,
@@ -194,7 +194,7 @@ class UserCreateAPIView(CreateAPIView):
                 "pic_8": pic_8,
                 "pic_9": pic_9,
             }
-            return Response({"User": "User Created sucessfully", "Data": Data, "status": HTTP_201_CREATED})
+            return Response({"User": "User Created successfully", "Data": Data, "status": HTTP_201_CREATED})
 
 
 # class GetUserToken(ObtainAuthToken):
