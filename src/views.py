@@ -321,7 +321,7 @@ class UserProfileAPIView(ListCreateAPIView):
                 "company_name": user.phone_number.company_name,
                 "qualification": user.phone_number.qualification,
                 "relationship_status": user.phone_number.relationship_status,
-                "interests": user.phone_number.interests,
+                "height": user.phone_number.height,
                 "fav_quote": user.phone_number.fav_quote,
                 "religion": user.phone_number.religion,
                 "body_type": user.phone_number.body_type,
@@ -370,61 +370,65 @@ class UserProfileUpdateView(UpdateAPIView):
     queryset = UserDetail.objects.all()
 
     def update(self, request, *args, **kwargs):
-        instance = self.get_object()
-        instance.bio = request.data.get("bio")
-        instance.living_in = request.data.get("living_in")
-        instance.hometown = request.data.get("hometown")
-        instance.profession = request.data.get("profession")
-        instance.college_name = request.data.get("college_name")
-        instance.university = request.data.get("university")
-        instance.personality = request.data.get("personality")
-        instance.preference_first_date = request.data.get(
-            "preference_first_date")
-        instance.fav_music = request.data.get("fav_music")
-        instance.food_type = request.data.get("food_type")
-        instance.owns = request.data.get("owns")
-        instance.travelled_place = request.data.get("travelled_place")
-        instance.once_in_life = request.data.get("once_in_life")
-        instance.exercise = request.data.get("exercise")
-        instance.looking_for = request.data.get("looking_for")
-        instance.fav_food = request.data.get("fav_food")
-        instance.fav_pet = request.data.get("fav_pet")
-        instance.smoke = request.data.get("smoke")
-        instance.drink = request.data.get("drink")
-        instance.subscription_purchased = request.data.get(
-            "subscription_purchased")
-        instance.subscription_purchased_at = request.data.get(
-            "subscription_purchased_at")
-        id = request.data.get("subscription")
-        id = int(id)
-        subscription = SubscriptionPlans.objects.get(id=id)
-        instance.subscription = subscription
-        instance.save(
+        user = self.request.user
+        print(user)
+        register_id = RegisterUser.objects.get(email=user.email)
+        print(register_id)
+        userdetail_obj = UserDetail.objects.get(phone_number=register_id)
+        # instance = self.get_object()
+        userdetail_obj.bio = request.data.get("bio")
+        userdetail_obj.living_in = request.data.get("living_in")
+        userdetail_obj.hometown = request.data.get("hometown")
+        userdetail_obj.profession = request.data.get("profession")
+        userdetail_obj.college_name = request.data.get("college_name")
+        userdetail_obj.university = request.data.get("university")
+        userdetail_obj.personality = request.data.get("personality")
+        userdetail_obj.preference_first_date = request.data.get("preference_first_date")
+        userdetail_obj.fav_music = request.data.get("fav_music")
+        userdetail_obj.food_type = request.data.get("food_type")
+        userdetail_obj.owns = request.data.get("owns")
+        userdetail_obj.travelled_place = request.data.get("travelled_place")
+        userdetail_obj.once_in_life = request.data.get("once_in_life")
+        userdetail_obj.exercise = request.data.get("exercise")
+        userdetail_obj.looking_for = request.data.get("looking_for")
+        userdetail_obj.fav_food = request.data.get("fav_food")
+        userdetail_obj.fav_pet = request.data.get("fav_pet")
+        userdetail_obj.smoke = request.data.get("smoke")
+        userdetail_obj.drink = request.data.get("drink")
+        # userdetail_obj.height = request.data.get("height")
+        # instance.subscription_purchased = request.data.get(
+        #     "subscription_purchased")
+        # instance.subscription_purchased_at = request.data.get(
+        #     "subscription_purchased_at")
+        # id = request.data.get("subscription")
+        # id = int(id)
+        # subscription = SubscriptionPlans.objects.get(id=id)
+        # instance.subscription = subscription
+        userdetail_obj.save(
             update_fields=['bio', 'phone_number', 'living_in', 'hometown', 'profession', 'college_name',
                            'university',
                            'personality', 'preference_first_date', 'fav_music', 'travelled_place',
                            'once_in_life', 'exercise', 'looking_for', 'fav_food', 'owns', 'food_type', 'fav_pet',
-                           'smoke', 'drink',
-                           'subscription_purchased', 'subscription_purchased_at', 'subscription'])
-        from_id = User.objects.filter(is_superuser=True)[0].id
-        from_user_id = RegisterUser.objects.get(id=from_id)
-        from_user_name = from_user_id.first_name
-        phone_number = self.request.data['phone_number']
-        to_user = RegisterUser.objects.get(id=phone_number)
-        first_name = to_user.first_name
-        to_id = self.request.data['phone_number']
-        to_user_id = RegisterUser.objects.get(id=to_id)
-        InAppNotification.objects.create(
-            from_user_id=from_user_id,
-            from_user_name=from_user_name,
-            to_user_id=to_user_id,
-            to_user_name=first_name,
-            notification_type="Profile Update",
-            notification_title="Profile Update",
-            notification_body="Your profile has been updated"
-        )
+                           'smoke', 'drink'])
+        # from_id = User.objects.filter(is_superuser=True)[0].id
+        # from_user_id = RegisterUser.objects.get(id=from_id)
+        # from_user_name = from_user_id.first_name
+        # phone_number = self.request.data['phone_number']
+        # to_user = RegisterUser.objects.get(id=phone_number)
+        # first_name = to_user.first_name
+        # to_id = self.request.data['phone_number']
+        # to_user_id = RegisterUser.objects.get(id=to_id)
+        # InAppNotification.objects.create(
+        #     from_user_id=from_user_id,
+        #     from_user_name=from_user_name,
+        #     to_user_id=to_user_id,
+        #     to_user_name=first_name,
+        #     notification_type="Profile Update",
+        #     notification_title="Profile Update",
+        #     notification_body="Your profile has been updated"
+        # )
 
-        return Response({"Profile update successfully"}, status=HTTP_200_OK)
+        return Response({"message": "Profile updated successfully", "status": HTTP_200_OK})
 
 
 class GetUserInstagramPics(APIView):
