@@ -547,14 +547,25 @@ class UserslistAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
         # queryset needed to be filtered
-        logged_in_user_id = self.request.GET.get('id')
+        # logged_in_user_id = self.request.GET.get('id')
+        logged_in_user_id = self.request.user
+        print('Logged in user email ', logged_in_user_id.email)
+        registr_user = RegisterUser.objects.get(email=logged_in_user_id.email)
+        print('Register user instance email ', registr_user.email)
+
+        print('Email after excluding logged in user ',
+              [x.phone_number.email for x in UserDetail.objects.all().exclude(phone_number=registr_user.id)])
+        print('All users email ', [x.phone_number.email for x in UserDetail.objects.all()])
+        print([x.id for x in UserDetail.objects.all()])
+        print([UserDetail.objects.get(id=registr_user.id).phone_number.email])
+        # user = UserDetail.objects.get(phone_number=registr_user)
         # queryset1 = RegisterUser.objects.all().exclude(id=logged_in_user_id).values()
         users = []
         # for obj in queryset1:
         #     users.append(obj)
         # return Response({"Users":users}, HTTP_200_OK)
-        if (UserDetail.objects.all().exclude(id=logged_in_user_id)).count() > 0:
-            for obj in UserDetail.objects.all().exclude(id=logged_in_user_id):
+        if (UserDetail.objects.all().exclude(phone_number=registr_user.id)).count() > 0:
+            for obj in (UserDetail.objects.all().exclude(phone_number=registr_user.id)):
                 id = obj.id
                 bio = obj.bio
                 first_name = obj.phone_number.first_name
@@ -566,12 +577,18 @@ class UserslistAPIView(APIView):
                 company_name = obj.phone_number.company_name
                 qualification = obj.phone_number.qualification
                 relationship_status = obj.phone_number.relationship_status
-                interests = obj.phone_number.interests
+                height = obj.phone_number.height
                 fav_quote = obj.phone_number.fav_quote
                 religion = obj.phone_number.religion
                 body_type = obj.phone_number.body_type
                 verified = obj.phone_number.verified
                 fb_signup = obj.phone_number.fb_signup
+                pic_1 = ''
+                pic_2 = ''
+                pic_3 = ''
+                pic_4 = ''
+                pic_5 = ''
+                pic_6 = ''
                 if obj.phone_number.pic_1:
                     pic_1 = obj.phone_number.pic_1.url
                 else:
@@ -596,18 +613,18 @@ class UserslistAPIView(APIView):
                     pic_6 = obj.phone_number.pic_6.url
                 else:
                     pic_6 = ''
-                if obj.phone_number.pic_7:
-                    pic_7 = obj.phone_number.pic_7.url
-                else:
-                    pic_7 = ''
-                if obj.phone_number.pic_8:
-                    pic_8 = obj.phone_number.pic_8.url
-                else:
-                    pic_8 = ''
-                if obj.phone_number.pic_9:
-                    pic_9 = obj.phone_number.pic_9.url
-                else:
-                    pic_9 = ''
+                # if obj.phone_number.pic_7:
+                #     pic_7 = obj.phone_number.pic_7.url
+                # else:
+                #     pic_7 = ''
+                # if obj.phone_number.pic_8:
+                #     pic_8 = obj.phone_number.pic_8.url
+                # else:
+                #     pic_8 = ''
+                # if obj.phone_number.pic_9:
+                #     pic_9 = obj.phone_number.pic_9.url
+                # else:
+                #     pic_9 = ''
                 living_in = obj.living_in
                 hometown = obj.hometown
                 profession = obj.profession
@@ -639,7 +656,7 @@ class UserslistAPIView(APIView):
                     "company_name": company_name,
                     "qualification": qualification,
                     "relationship_status": relationship_status,
-                    "interests": interests,
+                    "height": height,
                     "fav_quote": fav_quote,
                     "religion": religion,
                     "body_type": body_type,
@@ -651,9 +668,9 @@ class UserslistAPIView(APIView):
                     "pic_4": pic_4,
                     "pic_5": pic_5,
                     "pic_6": pic_6,
-                    "pic_7": pic_7,
-                    "pic_8": pic_8,
-                    "pic_9": pic_9,
+                    # "pic_7": pic_7,
+                    # "pic_8": pic_8,
+                    # "pic_9": pic_9,
                     "living_in": living_in,
                     "hometown": hometown,
                     "profession": profession,
@@ -677,7 +694,7 @@ class UserslistAPIView(APIView):
                 users.append(detail)
             return Response(users, HTTP_200_OK)
         else:
-            return Response({"There are no users"}, status=HTTP_200_OK)
+            return Response({"message": "No users found", "status": HTTP_200_OK})
 
 
 class UserDetailAPIView(APIView):
