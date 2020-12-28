@@ -55,6 +55,7 @@ class UserCreateAPIView(CreateAPIView):
     serializer_class = RegisterSerializer
 
     def post(self, request, *args, **kwargs):
+        print(self.request.POST)
         serializer = RegisterSerializer(data=self.request.data)
         first_name = self.request.data['first_name']
         last_name = self.request.data['last_name']
@@ -195,6 +196,8 @@ class UserCreateAPIView(CreateAPIView):
                 "pic_9": pic_9,
             }
             return Response({"User": "User Created successfully", "Data": Data, "status": HTTP_201_CREATED})
+        else:
+            return Response({"message": serializer.errors, "status": HTTP_400_BAD_REQUEST})
 
 
 # class GetUserToken(ObtainAuthToken):
