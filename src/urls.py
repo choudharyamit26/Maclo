@@ -9,7 +9,7 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     ScheduleMeetingAPIView, FeedbackApiView, ContactUsApiView, AboutUsApiView, EditAboutUsAPIView, EditContactUsApiView, \
     FacebookSignupApiView, GoogleSignupView, UserProfileUpdateView, UpdatePhoneNumber, SuperLikeUserAPIView, \
     GetMediaContent, PopNotificationAPIView, SubscriptionPlanAPIView, DeleteSuperMatchesAPIView, GetUserInstagramPics, \
-    ShowInstagramPics, LoginView
+    ShowInstagramPics, LoginView, CheckNumber
 
 app_name = 'src'
 
@@ -59,7 +59,8 @@ urlpatterns = [
     path('google-signup/', GoogleSignupView.as_view(), name='google-signup'),
     path('content/', GetMediaContent.as_view(), name='media-content'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc')
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('check-number/', CheckNumber.as_view(), name='check-number')
 
 ]
 if settings.DEBUG:

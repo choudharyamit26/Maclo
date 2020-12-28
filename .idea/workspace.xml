@@ -21,68 +21,9 @@
   <component name="ChangeListManager">
     <list default="true" id="3174a45b-a532-4d52-8d32-0dbe8f4e1182" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screenshot_from_2020-11-06_12-42-36.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screenshot_from_2020-11-06_12-42-36_AUiknos.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screenshot_from_2020-11-06_12-42-36_FcuALXz.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screenshot_from_2020-11-06_12-42-36_S5eQk8u.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screenshot_from_2020-11-06_12-42-36_z7NWbFU.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/adminpanel/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/adminpanel/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goku.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/goku_EjIVSn5.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/goku_GFDtZbo.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/goku_R0TXQly.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/goku_Ys9CRy9.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hindustan.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hindustan_7310gad.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hindustan_733WK2n.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hindustan_7S2HSvE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hindustan_EKJh5yS.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hindustan_JTkBHlZ.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hindustan_SkihJtQ.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hindustan_mhr6Xhw.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hindustan_nqU9UM6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hindustan_qdSJesD.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hindustan_z8Ky8K2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hindustan_z8Ky8K2_DxDUO0F.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hindustan_z8Ky8K2_VJIO3GT.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hindustan_z8Ky8K2_nkkZjbr.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hindustan_z8Ky8K2_wUkYKZM.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ironman.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ironman_DZfOvj1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ironman_MMLxUgt.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ironman_Y3jSdD8.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ironman_aGTNkDj.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/Screenshot_1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/Screenshot_10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/Screenshot_13.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/Screenshot_15.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/Screenshot_2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/Screenshot_5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/Screenshot_5_6V2QTFG.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/Screenshot_5_weiOrO3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/Screenshot_7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/Screenshot_8.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/Screenshot_8_RsO8gyN.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/Screenshot_8_u7pi7Fu.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/Screenshot_9.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nbt.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nbt_TZduQQ3.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nbt_UJsJ1KA.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nbt_WYqNIyd.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nbt_WYqNIyd_Aoyjp4k.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nbt_WYqNIyd_K1fmG6I.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nbt_WYqNIyd_SHilav4.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nbt_WYqNIyd_bg6w6rj.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nbt_eYu3DTY.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nbt_mfVYWTE.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/times.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/times_0OKLx63.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/times_KEcqZlx.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/times_iFYlItt.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/times_jjZxRuP.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,6 +40,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="ProjectId" id="1eIdE9sCsMC27UA3e7bh1e0M9J7" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">

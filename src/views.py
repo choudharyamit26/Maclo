@@ -249,97 +249,118 @@ class UpdatePhoneNumber(UpdateAPIView):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class UserProfileAPIView(ListCreateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     model = UserDetail
     serializer_class = UserDetailSerializer
 
     def get(self, request, *args, **kwargs):
-        id = self.request.GET.get('id')
-        user = UserDetail.objects.get(id=id)
-        if user.phone_number.pic_1:
-            pic_1 = user.phone_number.pic_1.url
-        else:
+        # id = self.request.GET.get('id')
+        try:
+            logged_in_user = self.request.user
+            print(logged_in_user)
+            print(logged_in_user.phone_number)
+            register_id = RegisterUser.objects.get(email=logged_in_user.email)
+            print(register_id)
+            user = UserDetail.objects.get(phone_number=register_id)
+            print(user)
             pic_1 = ''
-        if user.phone_number.pic_2:
-            pic_2 = user.phone_number.pic_2.url
-        else:
             pic_2 = ''
-        if user.phone_number.pic_3:
-            pic_3 = user.phone_number.pic_3.url
-        else:
             pic_3 = ''
-        if user.phone_number.pic_4:
-            pic_4 = user.phone_number.pic_4.url
-        else:
             pic_4 = ''
-        if user.phone_number.pic_5:
-            pic_5 = user.phone_number.pic_5.url
-        else:
             pic_5 = ''
-        if user.phone_number.pic_6:
-            pic_6 = user.phone_number.pic_6.url
-        else:
             pic_6 = ''
-        if user.phone_number.pic_7:
-            pic_7 = user.phone_number.pic_7.url
-        else:
             pic_7 = ''
-        if user.phone_number.pic_8:
-            pic_8 = user.phone_number.pic_8.url
-        else:
             pic_8 = ''
-        if user.phone_number.pic_9:
-            pic_9 = user.phone_number.pic_9.url
-        else:
             pic_9 = ''
-        detail = {
-            "id": user.id,
-            "bio": user.bio,
-            "first_name": user.phone_number.first_name,
-            "last_name": user.phone_number.last_name,
-            "email": user.phone_number.email,
-            "gender": user.phone_number.gender,
-            "date_of_birth": user.phone_number.date_of_birth,
-            "job_profile": user.phone_number.job_profile,
-            "company_name": user.phone_number.company_name,
-            "qualification": user.phone_number.qualification,
-            "relationship_status": user.phone_number.relationship_status,
-            "interests": user.phone_number.interests,
-            "fav_quote": user.phone_number.fav_quote,
-            "religion": user.phone_number.religion,
-            "body_type": user.phone_number.body_type,
-            "verified": user.phone_number.verified,
-            "fb_signup": user.phone_number.fb_signup,
-            "pic_1": pic_1,
-            "pic_2": pic_2,
-            "pic_3": pic_3,
-            "pic_4": pic_4,
-            "pic_5": pic_5,
-            "pic_6": pic_6,
-            "pic_7": pic_7,
-            "pic_8": pic_8,
-            "pic_9": pic_9,
-            "living_in": user.living_in,
-            "hometown": user.hometown,
-            "profession": user.profession,
-            "college_name": user.college_name,
-            "university": user.university,
-            "personality": user.personality,
-            "preference_first_date": user.preference_first_date,
-            "fav_music": user.fav_music,
-            "food_type": user.food_type,
-            "owns": user.owns,
-            "travelled_place": user.travelled_place,
-            "once_in_life": user.once_in_life,
-            "exercise": user.exercise,
-            "looking_for": user.looking_for,
-            "fav_food": user.fav_food,
-            "fav_pet": user.fav_pet,
-            "smoke": user.smoke,
-            "drink": user.drink,
-            "subscription_purchased": user.subscription_purchased,
-            "subscription_purchased_at": user.subscription_purchased_at,
-        }
-        return Response(detail, HTTP_200_OK)
+            if user.phone_number.pic_1:
+                pic_1 = user.phone_number.pic_1.url
+            else:
+                pic_1 = ''
+            if user.phone_number.pic_2:
+                pic_2 = user.phone_number.pic_2.url
+            else:
+                pic_2 = ''
+            if user.phone_number.pic_3:
+                pic_3 = user.phone_number.pic_3.url
+            else:
+                pic_3 = ''
+            if user.phone_number.pic_4:
+                pic_4 = user.phone_number.pic_4.url
+            else:
+                pic_4 = ''
+            if user.phone_number.pic_5:
+                pic_5 = user.phone_number.pic_5.url
+            else:
+                pic_5 = ''
+            if user.phone_number.pic_6:
+                pic_6 = user.phone_number.pic_6.url
+            else:
+                pic_6 = ''
+            if user.phone_number.pic_7:
+                pic_7 = user.phone_number.pic_7.url
+            else:
+                pic_7 = ''
+            if user.phone_number.pic_8:
+                pic_8 = user.phone_number.pic_8.url
+            else:
+                pic_8 = ''
+            if user.phone_number.pic_9:
+                pic_9 = user.phone_number.pic_9.url
+            else:
+                pic_9 = ''
+            detail = {
+                "id": user.id,
+                "bio": user.bio,
+                "first_name": user.phone_number.first_name,
+                "last_name": user.phone_number.last_name,
+                "email": user.phone_number.email,
+                "gender": user.phone_number.gender,
+                "date_of_birth": user.phone_number.date_of_birth,
+                "job_profile": user.phone_number.job_profile,
+                "company_name": user.phone_number.company_name,
+                "qualification": user.phone_number.qualification,
+                "relationship_status": user.phone_number.relationship_status,
+                "interests": user.phone_number.interests,
+                "fav_quote": user.phone_number.fav_quote,
+                "religion": user.phone_number.religion,
+                "body_type": user.phone_number.body_type,
+                "verified": user.phone_number.verified,
+                "fb_signup": user.phone_number.fb_signup,
+                "pic_1": pic_1,
+                "pic_2": pic_2,
+                "pic_3": pic_3,
+                "pic_4": pic_4,
+                "pic_5": pic_5,
+                "pic_6": pic_6,
+                "pic_7": pic_7,
+                "pic_8": pic_8,
+                "pic_9": pic_9,
+                "living_in": user.living_in,
+                "hometown": user.hometown,
+                "profession": user.profession,
+                "college_name": user.college_name,
+                "university": user.university,
+                "personality": user.personality,
+                "preference_first_date": user.preference_first_date,
+                "fav_music": user.fav_music,
+                "food_type": user.food_type,
+                "owns": user.owns,
+                "travelled_place": user.travelled_place,
+                "once_in_life": user.once_in_life,
+                "exercise": user.exercise,
+                "looking_for": user.looking_for,
+                "fav_food": user.fav_food,
+                "fav_pet": user.fav_pet,
+                "smoke": user.smoke,
+                "drink": user.drink,
+                "subscription_purchased": user.subscription_purchased,
+                "subscription_purchased_at": user.subscription_purchased_at,
+            }
+            return Response({"data": detail, "status": HTTP_200_OK})
+        except Exception as e:
+            x = {'error': str(e)}
+            return Response({'message': x['error'], "status": HTTP_400_BAD_REQUEST})
 
 
 class UserProfileUpdateView(UpdateAPIView):
@@ -1356,6 +1377,22 @@ class GoogleSignupView(CreateAPIView):
                 return Response({"Token": token.key, "user id": user.id, "status": HTTP_200_OK})
             else:
                 return Response({"message": serializer.errors, "status": HTTP_400_BAD_REQUEST})
+
+
+class CheckNumber(APIView):
+    model = User
+
+    def get(self, request, *args, **kwargs):
+        phone_number = self.request.GET.get('phone_number')
+        try:
+            user = User.objects.get(phone_number=phone_number)
+            if user:
+                return Response({'message': 'User already registered with this number', "status": HTTP_200_OK})
+            else:
+                return Response({'message': 'User not found', "status": HTTP_400_BAD_REQUEST})
+        except Exception as e:
+            x = {'error': str(e)}
+            return Response({'message': x['error'], "status": HTTP_400_BAD_REQUEST})
 
 
 class PopNotificationAPIView(CreateAPIView):
