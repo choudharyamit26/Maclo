@@ -97,10 +97,12 @@ class RegisterUser(models.Model):
         default="Bachelor's", choices=QUALIFICATION, max_length=100, null=True, blank=True)
     relationship_status = models.CharField(
         default='Single', choices=RELATIONSHIP_STATUS, max_length=100, null=True, blank=True)
-    interests = models.CharField(default='Reading Books', max_length=500)
+    height = models.IntegerField()
     fav_quote = models.CharField(default='MY Fav QUOTE', max_length=1000)
     religion = models.CharField(default='atheist', max_length=100, null=True, blank=True)
     body_type = models.CharField(default='slim', max_length=100)
+    zodiac_sign = models.CharField(default='', max_length=100)
+    taste = models.CharField(default='', max_length=100)
     created_at = models.DateField(auto_now_add=True)
     verified = models.CharField(default='No', choices=BOOL_CHOICES, max_length=10)
     fb_signup = models.CharField(default='No', choices=BOOL_CHOICES, max_length=10)
@@ -110,9 +112,9 @@ class RegisterUser(models.Model):
     pic_4 = models.ImageField(upload_to='media', null=True, blank=True)
     pic_5 = models.ImageField(upload_to='media', null=True, blank=True)
     pic_6 = models.ImageField(upload_to='media', null=True, blank=True)
-    pic_7 = models.ImageField(upload_to='media', null=True, blank=True)
-    pic_8 = models.ImageField(upload_to='media', null=True, blank=True)
-    pic_9 = models.ImageField(upload_to='media', null=True, blank=True)
+    # pic_7 = models.ImageField(upload_to='media', null=True, blank=True)
+    # pic_8 = models.ImageField(upload_to='media', null=True, blank=True)
+    # pic_9 = models.ImageField(upload_to='media', null=True, blank=True)
 
     def __str__(self):
         return str(self.id)

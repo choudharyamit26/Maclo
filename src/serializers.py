@@ -140,7 +140,7 @@ class SearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = RegisterUser
         fields = ('qualification', 'relationship_status',
-                  'religion', 'body_type', 'interests', 'gender')
+                  'religion', 'body_type', 'interests', 'gender', 'zodiac_sign', 'taste')
 
 
 class UserDetailSerializer(serializers.ModelSerializer):

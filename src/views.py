@@ -76,9 +76,9 @@ class UserCreateAPIView(CreateAPIView):
         pic_4 = self.request.data['pic_4']
         pic_5 = self.request.data['pic_5']
         pic_6 = self.request.data['pic_6']
-        pic_7 = self.request.data['pic_7']
-        pic_8 = self.request.data['pic_8']
-        pic_9 = self.request.data['pic_9']
+        # pic_7 = self.request.data['pic_7']
+        # pic_8 = self.request.data['pic_8']
+        # pic_9 = self.request.data['pic_9']
         user_qs = RegisterUser.objects.filter(
             phone_number__iexact=phone_number)
         if user_qs.exists():
@@ -107,9 +107,9 @@ class UserCreateAPIView(CreateAPIView):
                 pic_4=pic_4,
                 pic_5=pic_5,
                 pic_6=pic_6,
-                pic_7=pic_7,
-                pic_8=pic_8,
-                pic_9=pic_9
+                # pic_7=pic_7,
+                # pic_8=pic_8,
+                # pic_9=pic_9
             )
             UserDetail.objects.create(
                 phone_number=user
@@ -270,9 +270,9 @@ class UserProfileAPIView(ListCreateAPIView):
             pic_4 = ''
             pic_5 = ''
             pic_6 = ''
-            pic_7 = ''
-            pic_8 = ''
-            pic_9 = ''
+            # pic_7 = ''
+            # pic_8 = ''
+            # pic_9 = ''
             if user.phone_number.pic_1:
                 pic_1 = user.phone_number.pic_1.url
             else:
@@ -297,18 +297,18 @@ class UserProfileAPIView(ListCreateAPIView):
                 pic_6 = user.phone_number.pic_6.url
             else:
                 pic_6 = ''
-            if user.phone_number.pic_7:
-                pic_7 = user.phone_number.pic_7.url
-            else:
-                pic_7 = ''
-            if user.phone_number.pic_8:
-                pic_8 = user.phone_number.pic_8.url
-            else:
-                pic_8 = ''
-            if user.phone_number.pic_9:
-                pic_9 = user.phone_number.pic_9.url
-            else:
-                pic_9 = ''
+            # if user.phone_number.pic_7:
+            #     pic_7 = user.phone_number.pic_7.url
+            # else:
+            #     pic_7 = ''
+            # if user.phone_number.pic_8:
+            #     pic_8 = user.phone_number.pic_8.url
+            # else:
+            #     pic_8 = ''
+            # if user.phone_number.pic_9:
+            #     pic_9 = user.phone_number.pic_9.url
+            # else:
+            #     pic_9 = ''
             detail = {
                 "id": user.id,
                 "bio": user.bio,
@@ -333,9 +333,9 @@ class UserProfileAPIView(ListCreateAPIView):
                 "pic_4": pic_4,
                 "pic_5": pic_5,
                 "pic_6": pic_6,
-                "pic_7": pic_7,
-                "pic_8": pic_8,
-                "pic_9": pic_9,
+                # "pic_7": pic_7,
+                # "pic_8": pic_8,
+                # "pic_9": pic_9,
                 "living_in": user.living_in,
                 "hometown": user.hometown,
                 "profession": user.profession,
@@ -891,7 +891,9 @@ class SearchUser(CreateAPIView):
         religion = self.request.data['religion']
         body_type = self.request.data['body_type']
         gender = self.request.data['gender']
-        interests = self.request.data['interests']
+        height = self.request.data['height']
+        zodiac_sign = self.request.data['zodiac_sign']
+        taste = self.request.data['taste']
         # qualification = self.request.POST.get('qualification', None)
         # relationship_status = self.request.POST.get('relationship_status', None)
         # religion = self.request.POST.get('religion', None)
@@ -899,14 +901,16 @@ class SearchUser(CreateAPIView):
         # gender = self.request.POST.get('gender', None)
         # interests = self.request.POST.get('interests', None)
         if data:
-            qs = RegisterUser.objects.filter(Q(qualification__exact=qualification) &
-                                             Q(relationship_status__exact=relationship_status) &
-                                             Q(interests__exact=interests) &
-                                             Q(gender__exact=gender) &
-                                             Q(religion__exact=religion) &
-                                             Q(body_type__exact=body_type)
+            qs = RegisterUser.objects.filter(Q(qualification__exact=qualification) |
+                                             Q(relationship_status__exact=relationship_status) |
+                                             Q(height__exact=height) |
+                                             Q(gender__exact=gender) |
+                                             Q(religion__exact=religion) |
+                                             Q(zodiac_sign__exact=zodiac_sign) |
+                                             Q(body_type__exact=body_type) |
+                                             Q(taste__exact=taste)
                                              ).values()
-            return Response(qs, status=HTTP_200_OK)
+            return Response({"data": qs, "status": HTTP_200_OK})
 
 
 @method_decorator(csrf_exempt, name='dispatch')
