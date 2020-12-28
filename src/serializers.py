@@ -281,9 +281,10 @@ class FacebookSerializer(serializers.ModelSerializer):
         model = User
         fields = ('name', 'email', 'social_type', 'social_id')
 
+
 class GmailSerializer(serializers.ModelSerializer):
     """Serializer for google """
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'email', 'country_code', 'phone_number', 'profile_pic')
+        fields = ('name', 'email', 'phone_number', 'device_token')

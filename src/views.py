@@ -1301,7 +1301,7 @@ class FacebookSignupApiView(CreateAPIView):
                     first_name=name
                 )
                 user = User.objects.create(
-                    first_name=name,
+                    name=name,
                     # last_name=last_name,
                     email=email,
                     social_id=social_id,
@@ -1344,7 +1344,7 @@ class GoogleSignupView(CreateAPIView):
             serializer = GmailSerializer(data=request.data)
             if serializer.is_valid():
                 user = User.objects.create(
-                    first_name=name,
+                    name=name,
                     # last_name=last_name,
                     email=email,
                     social_id=social_id,
