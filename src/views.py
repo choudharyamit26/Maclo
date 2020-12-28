@@ -65,6 +65,7 @@ class UserCreateAPIView(CreateAPIView):
         # job_profile = self.request.data['job_profile']
         # company_name = self.request.data['company_name']
         email = self.request.data['email']
+        height = self.request.data['height']
         # qualification = self.request.data['qualification']
         # relationship_status = self.request.data['relationship_status']
         # interests = self.request.data['interests']
@@ -94,6 +95,7 @@ class UserCreateAPIView(CreateAPIView):
                 phone_number=phone_number,
                 gender=gender,
                 date_of_birth=date_of_birth,
+                height=height,
                 # job_profile=job_profile,
                 # company_name=company_name,
                 # qualification=qualification,
@@ -159,18 +161,18 @@ class UserCreateAPIView(CreateAPIView):
                 pic_6 = user_data.pic_6.url
             else:
                 pic_6 = ''
-            if user_data.pic_7:
-                pic_7 = user_data.pic_8.url
-            else:
-                pic_7 = ''
-            if user_data.pic_8:
-                pic_8 = user_data.pic_8.url
-            else:
-                pic_8 = ''
-            if user_data.pic_9:
-                pic_9 = user_data.pic_9.url
-            else:
-                pic_9 = ''
+            # if user_data.pic_7:
+            #     pic_7 = user_data.pic_8.url
+            # else:
+            #     pic_7 = ''
+            # if user_data.pic_8:
+            #     pic_8 = user_data.pic_8.url
+            # else:
+            #     pic_8 = ''
+            # if user_data.pic_9:
+            #     pic_9 = user_data.pic_9.url
+            # else:
+            #     pic_9 = ''
             Data = {
                 "id": user_data.id,
                 "email": user_data.email,
@@ -191,9 +193,9 @@ class UserCreateAPIView(CreateAPIView):
                 "pic_4": pic_4,
                 "pic_5": pic_5,
                 "pic_6": pic_6,
-                "pic_7": pic_7,
-                "pic_8": pic_8,
-                "pic_9": pic_9,
+                # "pic_7": pic_7,
+                # "pic_8": pic_8,
+                # "pic_9": pic_9,
             }
             return Response({"User": "User Created successfully", "Data": Data, "status": HTTP_201_CREATED})
         else:
@@ -1425,9 +1427,10 @@ class CheckNumber(APIView):
         try:
             user = User.objects.get(phone_number=phone_number)
             if user:
-                return Response({'message': 'User already registered with this number', "status": HTTP_200_OK})
+                return Response(
+                    {'message': 'User already registered with this number', 'user_exists': True, "status": HTTP_200_OK})
             else:
-                return Response({'message': 'User not found', "status": HTTP_400_BAD_REQUEST})
+                return Response({'message': 'User not found', 'user_exists': False, "status": HTTP_400_BAD_REQUEST})
         except Exception as e:
             x = {'error': str(e)}
             return Response({'message': x['error'], "status": HTTP_400_BAD_REQUEST})
