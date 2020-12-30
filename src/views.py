@@ -703,7 +703,7 @@ class UserslistAPIView(APIView):
                     # "subscription": subscription
                 }
                 users.append(detail)
-            return Response(users, HTTP_200_OK)
+            return Response({"data": users, "status": HTTP_200_OK})
         else:
             return Response({"message": "No users found", "status": HTTP_200_OK})
 
