@@ -199,7 +199,7 @@ class UserCreateAPIView(CreateAPIView):
             }
             token = Token.objects.get_or_create(user=us_obj)
             return Response(
-                {"User": "User Created successfully", "Data": Data, 'token': token[0].key, "status": HTTP_201_CREATED})
+                {"message": "User Created successfully", "Data": Data, 'token': token[0].key, "status": HTTP_200_OK})
         else:
             return Response({"message": serializer.errors, "status": HTTP_400_BAD_REQUEST})
 
@@ -251,7 +251,7 @@ class UpdatePhoneNumber(UpdateAPIView):
             notification_title="Phone Number",
             notification_body="Your Phone number has been updated"
         )
-        return Response({"Your phone number has been update"}, status=HTTP_200_OK)
+        return Response({"message": "Your phone number has been update", "status": HTTP_200_OK})
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -568,7 +568,7 @@ class UserslistAPIView(APIView):
               [x.phone_number.email for x in UserDetail.objects.all().exclude(phone_number=registr_user.id)])
         print('All users email ', [x.phone_number.email for x in UserDetail.objects.all()])
         print([x.id for x in UserDetail.objects.all()])
-        print([UserDetail.objects.get(id=registr_user.id).phone_number.email])
+        # print([UserDetail.objects.get(id=registr_user.id).phone_number.email])
         # user = UserDetail.objects.get(phone_number=registr_user)
         # queryset1 = RegisterUser.objects.all().exclude(id=logged_in_user_id).values()
         users = []
