@@ -43,7 +43,7 @@ class LoginView(ObtainAuthToken):
                 token = Token.objects.get_or_create(user=user)
                 print(token)
                 print(token[0].key)
-                return Response({'token': token[0].key, 'status': HTTP_200_OK})
+                return Response({'token': token[0].key, 'id': user.id, 'status': HTTP_200_OK})
         except Exception as e:
             x = {"Error": str(e)}
             return Response({'message': x['Error'], "status": HTTP_400_BAD_REQUEST})
@@ -197,7 +197,9 @@ class UserCreateAPIView(CreateAPIView):
                 # "pic_8": pic_8,
                 # "pic_9": pic_9,
             }
-            return Response({"User": "User Created successfully", "Data": Data, "status": HTTP_201_CREATED})
+            token = Token.objects.get_or_create(user=us_obj)
+            return Response(
+                {"User": "User Created successfully", "Data": Data, 'token': token[0].key, "status": HTTP_201_CREATED})
         else:
             return Response({"message": serializer.errors, "status": HTTP_400_BAD_REQUEST})
 
@@ -1433,7 +1435,7 @@ class CheckNumber(APIView):
                 return Response({'message': 'User not found', 'user_exists': False, "status": HTTP_400_BAD_REQUEST})
         except Exception as e:
             x = {'error': str(e)}
-            return Response({'message': x['error'],'user_exists':False, "status": HTTP_400_BAD_REQUEST})
+            return Response({'message': x['error'], 'user_exists': False, "status": HTTP_400_BAD_REQUEST})
 
 
 class PopNotificationAPIView(CreateAPIView):
