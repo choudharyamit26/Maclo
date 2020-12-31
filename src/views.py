@@ -18,7 +18,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from .models import UserInstagramPic, UserDetail, RegisterUser, MatchedUser, RequestMeeting, ScheduleMeeting, Feedback, \
-    AboutUs, ContactUs, SubscriptionPlans
+    AboutUs, ContactUs, SubscriptionPlans, ContactUsQuery
 from .serializers import (UserDetailSerializer, UserInstagramSerializer, RegisterSerializer,
                           MatchedUserSerializer, LikeSerializer, DeleteMatchSerializer, SuperLikeSerializer,
                           RequestMeetingSerializer, ScheduleMeetingSerializer, FeedbackSerializer, ContactUsSerializer,
@@ -434,7 +434,7 @@ class UserProfileUpdateView(UpdateAPIView):
                            'university',
                            'personality', 'preference_first_date', 'fav_music', 'travelled_place',
                            'once_in_life', 'exercise', 'looking_for', 'fav_food', 'owns', 'food_type', 'fav_pet',
-                           'smoke', 'drink','interest'])
+                           'smoke', 'drink', 'interest'])
         # from_id = User.objects.filter(is_superuser=True)[0].id
         # from_user_id = RegisterUser.objects.get(id=from_id)
         # from_user_name = from_user_id.first_name
@@ -1307,13 +1307,47 @@ class FeedbackApiView(CreateAPIView):
     model = Feedback
     serializer_class = FeedbackSerializer
 
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        reg_obj = RegisterUser.objects.get(email=user.email)
+        serializer = FeedbackSerializer(data=self.request.data)
+        if serializer.is_valid():
+            stars = serializer.validated_data['stars']
+            feedback = serializer.validated_data['feedback']
+            Feedback.objects.create(
+                phone_number=reg_obj,
+                stars=stars,
+                feedback=feedback
+            )
+            return Response({'message': 'Feedback submitted successfully', 'status': HTTP_200_OK})
+        else:
+            return Response({'error': serializer.errors, 'status': HTTP_400_BAD_REQUEST})
 
-class ContactUsApiView(ListCreateAPIView):
+
+class ContactUsApiView(ListAPIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     model = ContactUs
     serializer_class = ContactUsSerializer
     queryset = ContactUs.objects.all()
+
+
+class ContactUsQueryForm(CreateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    model = ContactUsQuery
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        reg_obj = RegisterUser.objects.get(email=user.email)
+        reason = self.request.POST['reason']
+        description = self.request.POST['description']
+        ContactUsQuery.objects.create(
+            user=reg_obj,
+            reason=reason,
+            description=description
+        )
+        return Response({"message": "Query submitted successfully", "status": HTTP_200_OK})
 
 
 class AboutUsApiView(ListCreateAPIView):
@@ -1450,7 +1484,8 @@ class CheckNumber(APIView):
             user = User.objects.get(phone_number=phone_number)
             if user:
                 return Response(
-                    {'message': 'User already registered with this number', 'user_exists': True, "status": HTTP_200_OK})
+                    {'message': 'User already registered with this number', 'user_exists': True,
+                     "status": HTTP_200_OK})
             else:
                 return Response({'message': 'User not found', 'user_exists': False, "status": HTTP_400_BAD_REQUEST})
         except Exception as e:
@@ -1507,7 +1542,8 @@ class DeleteNotification(APIView):
             return Response({"message": "Notification deleted successfully", "status": HTTP_200_OK})
         except Exception as e:
             print(e)
-            return Response({"message": "Notification with this id does not exists", "status": HTTP_400_BAD_REQUEST})
+            return Response(
+                {"message": "Notification with this id does not exists", "status": HTTP_400_BAD_REQUEST})
 
 
 class GetUnreadMessageCount(APIView):

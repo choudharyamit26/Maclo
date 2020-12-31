@@ -208,7 +208,7 @@ class ScheduleMeetingSerializer(serializers.ModelSerializer):
 class FeedbackSerializer(serializers.ModelSerializer):
     class Meta:
         model = Feedback
-        fields = ('phone_number', 'feedback')
+        fields = ('feedback', 'stars')
 
 
 class ContactUsSerializer(serializers.ModelSerializer):

@@ -252,12 +252,19 @@ class ScheduleMeeting(models.Model):
 class Feedback(models.Model):
     phone_number = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
     feedback = models.TextField()
+    stars = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class ContactUs(models.Model):
     phone_number = models.BigIntegerField(default='+9199999')
     email = models.EmailField(default='support@maclo.com', max_length=100)
+
+
+class ContactUsQuery(models.Model):
+    user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, null=True, blank=True)
+    reason = models.CharField(default='', max_length=1000)
+    description = models.TextField(default='')
 
 
 class AboutUs(models.Model):

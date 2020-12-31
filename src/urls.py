@@ -10,7 +10,7 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     FacebookSignupApiView, GoogleSignupView, UserProfileUpdateView, UpdatePhoneNumber, SuperLikeUserAPIView, \
     GetMediaContent, PopNotificationAPIView, SubscriptionPlanAPIView, DeleteSuperMatchesAPIView, GetUserInstagramPics, \
     ShowInstagramPics, LoginView, CheckNumber, GetNotificationList, UpdateNotification, DeleteNotification, \
-    GetUnreadMessageCount
+    GetUnreadMessageCount, ContactUsQueryForm
 
 app_name = 'src'
 
@@ -51,6 +51,7 @@ urlpatterns = [
     path('purchase-subscription/', SubscriptionPlanAPIView.as_view(), name='subscription-purchase'),
     path('feedback/', FeedbackApiView.as_view(), name='feedback'),
     path('contactus/', ContactUsApiView.as_view(), name='contactus'),
+    path('contactus-form/', ContactUsQueryForm.as_view(), name='contactus-form'),
     path('notification-list/', GetNotificationList.as_view(), name='notification-list'),
     path('delete-user-notification/', DeleteNotification.as_view(),
          name='delete-user-notification'),
