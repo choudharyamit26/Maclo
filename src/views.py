@@ -296,6 +296,16 @@ class UpdateProfilePic(UpdateAPIView):
         return Response({"message": "Your profile pic has been updated", "status": HTTP_200_OK})
 
 
+class Logout(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        # user = self.request.user
+        request.user.auth_token.delete()
+        return Response({"msg": "Logged out successfully", "status": HTTP_200_OK})
+
+
 @method_decorator(csrf_exempt, name='dispatch')
 class UserProfileAPIView(ListCreateAPIView):
     authentication_classes = (TokenAuthentication,)
