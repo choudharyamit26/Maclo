@@ -10,7 +10,7 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     FacebookSignupApiView, GoogleSignupView, UserProfileUpdateView, UpdatePhoneNumber, SuperLikeUserAPIView, \
     GetMediaContent, PopNotificationAPIView, SubscriptionPlanAPIView, DeleteSuperMatchesAPIView, GetUserInstagramPics, \
     ShowInstagramPics, LoginView, CheckNumber, GetNotificationList, UpdateNotification, DeleteNotification, \
-    GetUnreadMessageCount, ContactUsQueryForm
+    GetUnreadMessageCount, ContactUsQueryForm, UpdateEmail, UpdateProfilePic
 
 app_name = 'src'
 
@@ -30,7 +30,9 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('user-create/', UserCreateAPIView.as_view(), name='user-detail'),
     path('login/', LoginView.as_view(), name='login'),
-    path('update-phonenumber/<int:pk>/', UpdatePhoneNumber.as_view(), name='update-phonenumber'),
+    path('update-phonenumber/', UpdatePhoneNumber.as_view(), name='update-phonenumber'),
+    path('update-email/', UpdateEmail.as_view(), name='update-email'),
+    path('update-profile-pic/', UpdateProfilePic.as_view(), name='update-profile-pic'),
     # path('get-token/',GetUserToken.as_view(),name='get-token'),
     path('user-profile/', UserProfileAPIView.as_view(), name='user-profile'),
     path('user-profile-update/', UserProfileUpdateView.as_view(), name='user-profile-update'),

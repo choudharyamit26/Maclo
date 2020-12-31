@@ -230,29 +230,70 @@ class UpdatePhoneNumber(UpdateAPIView):
     serializer_class = RegisterSerializer
     queryset = RegisterUser.objects.all()
 
-    def update(self, request, *args, **kwargs):
-        instance = self.get_object()
-        instance.phone_number = request.data.get('phone_number')
-        instance.save(update_fields=['phone_number'])
-        logged_in_user_id = self.request.data['id']
-        from_id = logged_in_user_id
-        from_user_id = RegisterUser.objects.get(id=from_id)
-        from_user_name = from_user_id.first_name
-        phone_number = self.request.data['phone_number']
-        to_user = RegisterUser.objects.get(id=phone_number)
-        first_name = to_user.first_name
-        to_id = self.request.data['phone_number']
-        to_user_id = RegisterUser.objects.get(id=to_id)
+    def patch(self, request, *args, **kwargs):
+        user = self.request.user
+        # instance = self.get_object()
+        # instance.phone_number = request.data.get('phone_number')
+        # instance.save(update_fields=['phone_number'])
+        user_obj = RegisterUser.objects.get(email=user.email)
+        user.phone_number = request.data.get('phone_number')
+        user.save()
+        user_obj.phone_number = request.data.get('phone_number')
+        user_obj.save()
         InAppNotification.objects.create(
-            from_user_id=from_user_id,
-            from_user_name=from_user_name,
-            to_user_id=to_user_id,
-            to_user_name=first_name,
-            notification_type="Phone Number Update",
-            notification_title="Phone Number",
-            notification_body="Your Phone number has been updated"
+            to=user,
+            title='Mobile Number Update',
+            body='Your mobile number has been updated successfully',
         )
-        return Response({"message": "Your phone number has been update", "status": HTTP_200_OK})
+        return Response({"message": "Your phone number has been updated", "status": HTTP_200_OK})
+
+
+class UpdateEmail(UpdateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = RegisterSerializer
+    queryset = RegisterUser.objects.all()
+
+    def patch(self, request, *args, **kwargs):
+        user = self.request.user
+        # instance = self.get_object()
+        # instance.phone_number = request.data.get('phone_number')
+        # instance.save(update_fields=['phone_number'])
+        user_obj = RegisterUser.objects.get(email=user.email)
+        user.email = request.data.get('email')
+        user.save()
+        user_obj.email = request.data.get('email')
+        user_obj.save()
+        InAppNotification.objects.create(
+            to=user,
+            title='Email Update',
+            body='Your email has been updated successfully',
+        )
+        return Response({"message": "Your email has been updated", "status": HTTP_200_OK})
+
+
+class UpdateProfilePic(UpdateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = RegisterSerializer
+    queryset = RegisterUser.objects.all()
+
+    def patch(self, request, *args, **kwargs):
+        user = self.request.user
+        # instance = self.get_object()
+        # instance.phone_number = request.data.get('phone_number')
+        # instance.save(update_fields=['phone_number'])
+        user_obj = RegisterUser.objects.get(email=user.email)
+        user.pic_1 = request.data.get('pic_1')
+        user.save()
+        user_obj.pic_1 = request.data.get('pic_1')
+        user_obj.save()
+        InAppNotification.objects.create(
+            to=user,
+            title='Profile pic Update',
+            body='Your profile pic been updated successfully',
+        )
+        return Response({"message": "Your profile pic has been updated", "status": HTTP_200_OK})
 
 
 @method_decorator(csrf_exempt, name='dispatch')
