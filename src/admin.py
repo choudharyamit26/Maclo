@@ -1,8 +1,7 @@
 from django.contrib import admin
 from .models import (UserDetail, UserInstagramPic, RegisterUser,
                      MatchedUser, RequestMeeting, ScheduleMeeting,
-                     Feedback, ContactUs, AboutUs, SubscriptionPlans,InAppNotification
-                     )
+                     Feedback, ContactUs, AboutUs, SubscriptionPlans)
 
 admin.site.register(UserDetail)
 admin.site.register(RegisterUser)
@@ -14,4 +13,3 @@ admin.site.register(Feedback)
 admin.site.register(ContactUs)
 admin.site.register(AboutUs)
 admin.site.register(SubscriptionPlans)
-admin.site.register(InAppNotification)

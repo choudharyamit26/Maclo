@@ -18,7 +18,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from .models import UserInstagramPic, UserDetail, RegisterUser, MatchedUser, RequestMeeting, ScheduleMeeting, Feedback, \
-    AboutUs, ContactUs, InAppNotification, SubscriptionPlans
+    AboutUs, ContactUs, SubscriptionPlans
 from .serializers import (UserDetailSerializer, UserInstagramSerializer, RegisterSerializer,
                           MatchedUserSerializer, LikeSerializer, DeleteMatchSerializer, SuperLikeSerializer,
                           RequestMeetingSerializer, ScheduleMeetingSerializer, FeedbackSerializer, ContactUsSerializer,
@@ -26,6 +26,7 @@ from .serializers import (UserDetailSerializer, UserInstagramSerializer, Registe
                           SubscriptionPlanSerializer, DeleteSuperMatchSerializer, SearchSerializer,
                           GetInstagramPicSerializer, SocialUserSerializer, ShowInstaPics, AuthTokenSerializer,
                           FacebookSerializer, GmailSerializer)
+from adminpanel.models import InAppNotification
 
 User = get_user_model()
 
@@ -1436,6 +1437,69 @@ class CheckNumber(APIView):
         except Exception as e:
             x = {'error': str(e)}
             return Response({'message': x['error'], 'user_exists': False, "status": HTTP_400_BAD_REQUEST})
+
+
+class GetNotificationList(APIView):
+    model = InAppNotification
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        notifications = InAppNotification.objects.filter(to=user)
+        return Response({"data": notifications.values(), "status": HTTP_200_OK})
+
+
+class UpdateNotification(APIView):
+    model = InAppNotification
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    queryset = InAppNotification.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        # serializer = NotificationSerializer(data=request.data)
+        # instance = self.get_object()
+        # instance.read = True
+        # if serializer.is_valid():
+        #     instance.save(update_fields=['read'])
+        user = self.request.user
+        # user = User.objects.get(to=user.id)
+        notifications = InAppNotification.objects.filter(
+            to=user.id).filter(read=False)
+        for obj in notifications:
+            obj.read = True
+            obj.save()
+        return Response({"message": "Notification read successfully", "status": HTTP_200_OK})
+
+
+class DeleteNotification(APIView):
+    model = InAppNotification
+    # serializer_class = NotificationSerializer
+    queryset = InAppNotification.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        id = self.request.data['id']
+        obj = InAppNotification.objects.get(id=id)
+        if obj:
+            obj.delete()
+            return Response({"message": "Notification deleted successfully", "status": HTTP_200_OK})
+        else:
+            return Response(
+                {"message": "Notification with this id does not exists", "status": HTTP_400_BAD_REQUEST})
+
+
+class GetUnreadMessageCount(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        count = InAppNotification.objects.filter(to=user.id).filter(read=False).count()
+        print(count)
+        return Response({"count": count, "status": HTTP_200_OK})
 
 
 class PopNotificationAPIView(CreateAPIView):

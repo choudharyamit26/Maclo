@@ -61,3 +61,17 @@ class Transaction(models.Model):
 
 class AdminNotificationSetting(models.Model):
     notification = models.CharField(default='Yes', choices=BOOL_CHOICES, max_length=100)
+
+
+class InAppNotification(models.Model):
+    """Notification model"""
+    to = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(default='title', max_length=200)
+    # title_in_arabic = models.CharField(default='title', max_length=200)
+    body = models.CharField(default='body', max_length=200)
+    # body_in_arabic = models.CharField(default='body', max_length=200)
+    read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('-created_at',)
