@@ -1483,12 +1483,12 @@ class DeleteNotification(APIView):
         user = self.request.user
         id = self.request.data['id']
         obj = InAppNotification.objects.get(id=id)
-        if obj:
+        try:
             obj.delete()
             return Response({"message": "Notification deleted successfully", "status": HTTP_200_OK})
-        else:
-            return Response(
-                {"message": "Notification with this id does not exists", "status": HTTP_400_BAD_REQUEST})
+        except Exception as e:
+            print(e)
+            return Response({"message": "Notification with this id does not exists", "status": HTTP_400_BAD_REQUEST})
 
 
 class GetUnreadMessageCount(APIView):
