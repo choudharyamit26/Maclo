@@ -1482,8 +1482,8 @@ class DeleteNotification(APIView):
     def post(self, request, *args, **kwargs):
         user = self.request.user
         id = self.request.data['id']
-        obj = InAppNotification.objects.get(id=id)
         try:
+            obj = InAppNotification.objects.get(id=id)
             obj.delete()
             return Response({"message": "Notification deleted successfully", "status": HTTP_200_OK})
         except Exception as e:
