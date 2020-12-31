@@ -164,6 +164,7 @@ class UserDetail(models.Model):
     once_in_life = models.CharField(default='', max_length=500, null=True, blank=True)
     exercise = models.CharField(default='NO', choices=BOOL_CHOICES, max_length=10, null=True, blank=True)
     looking_for = models.CharField(default="", max_length=500, null=True, blank=True)
+    interest = models.CharField(default="", max_length=500, null=True, blank=True)
     fav_food = models.CharField(default='', max_length=500, null=True, blank=True)
     fav_pet = models.CharField(default='', max_length=100, null=True, blank=True)
     smoke = models.CharField(default='No', choices=BOOL_CHOICES, max_length=10, null=True, blank=True)
@@ -228,24 +229,24 @@ class ScheduleMeeting(models.Model):
 
 
 # class InAppNotification(models.Model):
-    # from_user_id = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='from_user')
-    # from_user_name = models.CharField(default='From User', max_length=250)
-    # to_user_id = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='to_user')
-    # to_user_name = models.CharField(default='To user name', max_length=200)
-    # notification_type = models.CharField(default='Notification type', max_length=200)
-    # notification_title = models.CharField(default='Notification Title', max_length=200)
-    # notification_body = models.TextField()
-    # """Notification model"""
-    # to = models.ForeignKey(User, on_delete=models.CASCADE)
-    # title = models.CharField(default='title', max_length=200)
-    # title_in_arabic = models.CharField(default='title', max_length=200)
-    # body = models.CharField(default='body', max_length=200)
-    # body_in_arabic = models.CharField(default='body', max_length=200)
-    # read = models.BooleanField(default=False)
-    # created_at = models.DateTimeField(auto_now_add=True)
-    #
-    # class Meta:
-    #     ordering = ('-created_at',)
+# from_user_id = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='from_user')
+# from_user_name = models.CharField(default='From User', max_length=250)
+# to_user_id = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='to_user')
+# to_user_name = models.CharField(default='To user name', max_length=200)
+# notification_type = models.CharField(default='Notification type', max_length=200)
+# notification_title = models.CharField(default='Notification Title', max_length=200)
+# notification_body = models.TextField()
+# """Notification model"""
+# to = models.ForeignKey(User, on_delete=models.CASCADE)
+# title = models.CharField(default='title', max_length=200)
+# title_in_arabic = models.CharField(default='title', max_length=200)
+# body = models.CharField(default='body', max_length=200)
+# body_in_arabic = models.CharField(default='body', max_length=200)
+# read = models.BooleanField(default=False)
+# created_at = models.DateTimeField(auto_now_add=True)
+#
+# class Meta:
+#     ordering = ('-created_at',)
 
 
 class Feedback(models.Model):

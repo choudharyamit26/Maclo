@@ -352,6 +352,7 @@ class UserProfileAPIView(ListCreateAPIView):
                 "personality": user.personality,
                 "preference_first_date": user.preference_first_date,
                 "fav_music": user.fav_music,
+                "interest": user.interest,
                 "food_type": user.food_type,
                 "owns": user.owns,
                 "travelled_place": user.travelled_place,
@@ -381,6 +382,21 @@ class UserProfileUpdateView(UpdateAPIView):
         user = self.request.user
         print(user)
         register_id = RegisterUser.objects.get(email=user.email)
+        register_id.date_of_birth = request.data.get("date_of_birth")
+        register_id.qualification = request.data.get("qualification")
+        register_id.religion = request.data.get("religion")
+        register_id.body_type = request.data.get("body_type")
+        register_id.relationship_status = request.data.get("relationship_status")
+        register_id.fav_quote = request.data.get("fav_quote")
+        register_id.pic_1 = request.data.get("pic_1")
+        register_id.pic_2 = request.data.get("pic_2")
+        register_id.pic_3 = request.data.get("pic_3")
+        register_id.pic_4 = request.data.get("pic_4")
+        register_id.pic_5 = request.data.get("pic_5")
+        register_id.pic_6 = request.data.get("pic_6")
+        register_id.save(
+            update_fields=['date_of_birth', 'qualification', 'religion', 'body_type', 'relationship_status',
+                           'fav_quote', 'pic_1', 'pic_2', 'pic_3', 'pic_4', 'pic_5', 'pic_6'])
         print(register_id)
         userdetail_obj = UserDetail.objects.get(phone_number=register_id)
         # instance = self.get_object()
@@ -403,6 +419,7 @@ class UserProfileUpdateView(UpdateAPIView):
         userdetail_obj.fav_pet = request.data.get("fav_pet")
         userdetail_obj.smoke = request.data.get("smoke")
         userdetail_obj.drink = request.data.get("drink")
+        userdetail_obj.interest = request.data.get("interest")
         # userdetail_obj.height = request.data.get("height")
         # instance.subscription_purchased = request.data.get(
         #     "subscription_purchased")
@@ -417,7 +434,7 @@ class UserProfileUpdateView(UpdateAPIView):
                            'university',
                            'personality', 'preference_first_date', 'fav_music', 'travelled_place',
                            'once_in_life', 'exercise', 'looking_for', 'fav_food', 'owns', 'food_type', 'fav_pet',
-                           'smoke', 'drink'])
+                           'smoke', 'drink','interest'])
         # from_id = User.objects.filter(is_superuser=True)[0].id
         # from_user_id = RegisterUser.objects.get(id=from_id)
         # from_user_name = from_user_id.first_name
@@ -650,6 +667,7 @@ class UserslistAPIView(APIView):
                 exercise = obj.exercise
                 looking_for = obj.looking_for
                 fav_food = obj.fav_food
+                interest = obj.interest
                 fav_pet = obj.fav_pet
                 smoke = obj.smoke
                 drink = obj.drink
@@ -696,6 +714,7 @@ class UserslistAPIView(APIView):
                     "exercise": exercise,
                     "looking_for": looking_for,
                     "fav_food": fav_food,
+                    "interest": interest,
                     "fav_pet": fav_pet,
                     "smoke": smoke,
                     "drink": drink,
