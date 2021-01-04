@@ -1480,15 +1480,24 @@ class GoogleSignupView(CreateAPIView):
     serializer_class = GmailSerializer
 
     def post(self, request, *args, **kwargs):
-        name = self.request.POST.get('name' or None)
+        print(self.request.data)
+        # name = self.request.POST.get('name' or None)
+        name = self.request.data['name']
         # last_name = self.request.POST.get('last_name' or None)
-        email = self.request.POST.get('email' or None)
-        social_id = self.request.POST.get('social_id' or None)
-        social_type = self.request.POST.get('social_type' or None)
-        device_token = self.request.POST.get('device_token' or None)
+        # email = self.request.data.POST['email']
+        email = self.request.data['email']
+        # email = self.request.POST.get('email' or None)
+        print('>>>>>>>>>>>>>>', email)
+        # social_id = self.request.POST.get('social_id' or None)
+        social_id = self.request.data['social_id']
+        # social_type = self.request.POST.get('social_type' or None)
+        social_type = self.request.data['social_type']
+        # device_token = self.request.POST.get('device_token' or None)
+        device_token = self.request.data['device_token']
         profile_pic = self.request.POST.get('profile_pic' or None)
         try:
             print('Gmail try---------------->', self.request.data)
+            # print('>>>>>>>>>>>>>>', email)
             existing_user = User.objects.get(social_id=social_id)
             if existing_user:
                 user_with_token = Token.objects.get_or_create(
@@ -1502,6 +1511,7 @@ class GoogleSignupView(CreateAPIView):
                 return Response({"Token": user_with_token.key, "user id": existing_user.id, "status": HTTP_200_OK})
         except:
             print('Gmail except ----------------->>>>>>>>>>>', self.request.data)
+            # print('>>>>>>>>>>>>>>', self.request.data.POST('email'))
             serializer = GmailSerializer(data=request.data)
             if serializer.is_valid():
                 reg_usr = RegisterUser.objects.create(
