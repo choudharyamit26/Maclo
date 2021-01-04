@@ -97,7 +97,7 @@ class RegisterUser(models.Model):
         default="Bachelor's", choices=QUALIFICATION, max_length=100, null=True, blank=True)
     relationship_status = models.CharField(
         default='Single', choices=RELATIONSHIP_STATUS, max_length=100, null=True, blank=True)
-    height = models.IntegerField()
+    height = models.IntegerField(null=True,blank=True)
     fav_quote = models.CharField(default='MY Fav QUOTE', max_length=1000)
     religion = models.CharField(default='atheist', max_length=100, null=True, blank=True)
     body_type = models.CharField(default='slim', max_length=100)
