@@ -86,7 +86,7 @@ STATUS = (('Not Completed', 'Not Completed'), ('Completed', 'Completed'))
 class RegisterUser(models.Model):
     # user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     email = models.EmailField(default='test@maclo.com')
-    phone_number = models.CharField(default='00000', max_length=12)
+    phone_number = models.CharField(default='00000', max_length=13)
     first_name = models.CharField(default='maclo', max_length=100)
     last_name = models.CharField(default='app', max_length=100)
     gender = models.CharField(choices=GENDER, default='Male', max_length=20, null=True, blank=True)

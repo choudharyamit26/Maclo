@@ -279,7 +279,10 @@ class UpdateProfilePic(UpdateAPIView):
     queryset = RegisterUser.objects.all()
 
     def patch(self, request, *args, **kwargs):
+        print(self.request.data)
+        print(self.request.META)
         user = self.request.user
+        print(user)
         # instance = self.get_object()
         # instance.phone_number = request.data.get('phone_number')
         # instance.save(update_fields=['phone_number'])
