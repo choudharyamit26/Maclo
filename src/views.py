@@ -435,6 +435,7 @@ class UserProfileUpdateView(UpdateAPIView):
     def update(self, request, *args, **kwargs):
         user = self.request.user
         print(user)
+        print(self.request.data)
         register_id = RegisterUser.objects.get(email=user.email)
         register_id.date_of_birth = request.data.get("date_of_birth")
         register_id.qualification = request.data.get("qualification")
@@ -451,7 +452,12 @@ class UserProfileUpdateView(UpdateAPIView):
         register_id.save(
             update_fields=['date_of_birth', 'qualification', 'religion', 'body_type', 'relationship_status',
                            'fav_quote', 'pic_1', 'pic_2', 'pic_3', 'pic_4', 'pic_5', 'pic_6'])
-        print(register_id)
+        print(register_id.pic_1)
+        print(register_id.pic_2)
+        print(register_id.pic_3)
+        print(register_id.pic_4)
+        print(register_id.pic_5)
+        print(register_id.pic_6)
         userdetail_obj = UserDetail.objects.get(phone_number=register_id)
         # instance = self.get_object()
         userdetail_obj.bio = request.data.get("bio")
@@ -1451,7 +1457,7 @@ class FacebookSignupApiView(CreateAPIView):
                 user.save(update_fields=['device_token'])
                 user_with_token = user_with_token[0]
                 print(user_with_token)
-                return Response({"Token": user_with_token.key, "user id": user.id, "status": HTTP_200_OK})
+                return Response({"Token": user_with_token.key, "user_id": user.id, "status": HTTP_200_OK})
         except:
             print('inside except')
             print('Email fb except------------>>>', self.request.data)
@@ -1474,7 +1480,7 @@ class FacebookSignupApiView(CreateAPIView):
                     phone_number=reg_usr
                 )
                 token = Token.objects.create(user=user)
-                return Response({"Token": token.key, "user id": user.id, "status": HTTP_200_OK})
+                return Response({"Token": token.key, "user_id": user.id, "status": HTTP_200_OK})
             else:
                 return Response({"message": serializer.errors, "status": HTTP_400_BAD_REQUEST})
 
