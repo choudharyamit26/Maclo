@@ -1,22 +1,32 @@
 from django.contrib import messages
-from django.contrib.auth import get_user_model, login
+from django.contrib.auth import get_user_model, login, update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.views import PasswordContextMixin
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.views.generic import View, CreateView, UpdateView, DeleteView, ListView, DetailView
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.debug import sensitive_post_parameters
+from django.views.generic import View, CreateView, UpdateView, DeleteView, ListView, DetailView, FormView, TemplateView
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.conf.global_settings import DEFAULT_FROM_EMAIL
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import LoginForm
+from .forms import LoginForm, UserNotificationForm
 from src.models import RegisterUser, SubscriptionPlans, ScheduleMeeting, UserDetail
 from .filters import UserFilter
+from src.fcm_notification import send_to_one, send_another
+from django.utils.translation import gettext_lazy as _
+
+from .models import UserNotification
 
 user = get_user_model()
 
@@ -199,7 +209,7 @@ class Dashboard(LoginRequiredMixin, ListView):
 
 
 class UsersList(LoginRequiredMixin, ListView):
-    paginate_by = 1
+    paginate_by = 5
     model = RegisterUser
     template_name = 'user-management.html'
 
@@ -209,8 +219,7 @@ class UsersList(LoginRequiredMixin, ListView):
             search = RegisterUser.objects.filter(Q(first_name__icontains=qs) |
                                                  Q(last_name__icontains=qs) |
                                                  Q(email__icontains=qs) |
-                                                 Q(phone_number__icontains=qs) |
-                                                 Q(promocode__icontains=qs))
+                                                 Q(phone_number__icontains=qs))
 
             search_count = len(search)
             context = {
@@ -227,6 +236,7 @@ class UsersList(LoginRequiredMixin, ListView):
             users = RegisterUser.objects.all()
             myfilter = UserFilter(self.request.GET, queryset=users)
             users = myfilter.qs
+            print(users)
             paginator = Paginator(users, self.paginate_by)
             page_number = self.request.GET.get('page')
             page_obj = paginator.get_page(page_number)
@@ -248,10 +258,113 @@ class UserDetailView(DetailView):
         # print(UserDetail.objects.get(phone_number=user))
         print(user)
         try:
-
             context['detail'] = UserDetail.objects.get(phone_number=user)
             x = UserDetail.objects.get(phone_number=user)
             print(x.living_in)
         except Exception as e:
             print(e)
         return context
+
+
+class UserDelete(LoginRequiredMixin, DeleteView):
+    login_url = 'adminpanel:login'
+
+    def get(self, request, *args, **kwargs):
+        request_kwargs = kwargs
+        object_id = request_kwargs['pk']
+        UserObj = RegisterUser.objects.get(id=object_id)
+        UserObj.delete()
+        app_user = user.objects.get(email=UserObj.email)
+        app_user.delete()
+        messages.success(self.request, "User deleted successfully")
+        return HttpResponseRedirect('/adminpanel/users-list/')
+
+
+class PasswordChangeView(PasswordContextMixin, FormView):
+    form_class = PasswordChangeForm
+    success_url = reverse_lazy('adminpanel:dashboard')
+    login_url = 'adminpanel:login'
+    # template_name = 'registration/password_change_form.html'
+    title = _('Password change')
+
+    @method_decorator(sensitive_post_parameters())
+    @method_decorator(csrf_protect)
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        # Updating the password logs out all other sessions for the user
+        # except the current one.
+        update_session_auth_hash(self.request, form.user)
+        messages.success(self.request, 'Password changed successfully')
+        return super().form_valid(form)
+
+
+class PasswordChangeDoneView(PasswordContextMixin, TemplateView):
+    # template_name = 'registration/password_change_done.html'
+    title = _('Password change successful')
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+
+class SendNotification(LoginRequiredMixin, View):
+    model = UserNotification
+    form_class = UserNotificationForm
+    login_url = 'adminpanel:login'
+
+    def get(self, request, *args, **kwargs):
+        # users = User.objects.all().exclude(is_superuser=True)
+        users = RegisterUser.objects.all()
+        context = {
+            "users": users
+        }
+        return render(self.request, 'send-notification.html', context)
+
+    def post(self, request, *args, **kwargs):
+        users_list = self.request.POST.getlist('to')
+        print('From send notification --->>> ', users_list)
+        title = self.request.POST['title']
+        print(title)
+        message = self.request.POST['body']
+        print(message)
+        for i in users_list:
+            # user = User.objects.get(id=i)
+            user = RegisterUser.objects.get(id=i)
+            fcm_token = user.device_token
+            print(fcm_token)
+            UserNotification.objects.create(
+                to=user,
+                title=title,
+                body=message,
+                read=False
+            )
+            try:
+                # title = title
+                # body = message
+                # respo = send_to_one(fcm_token, title, body)
+                # print("FCM Response===============>0", respo)
+                data_message = {"data": {"title": title,
+                                         "body": message, "type": "adminNOtification"}}
+                print(title)
+                print(message)
+                respo = send_to_one(fcm_token, data_message)
+                print("FCM Response===============>0", respo)
+                message_type = "adminNOtification"
+                respo = send_another(fcm_token, title, message, message_type)
+                print(title)
+                print(message)
+                # fcm_token.send_message(data)
+                print("FCM Response===============>0", respo)
+            except:
+                pass
+        messages.success(self.request, "Notification sent successfully")
+        return HttpResponseRedirect(self.request.path_info)

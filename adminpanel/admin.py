@@ -1,6 +1,6 @@
-from .models import User, InAppNotification
+from .models import User, UserNotification
 
 from django.contrib import admin
 
 admin.site.register(User)
-admin.site.register(InAppNotification)
+admin.site.register(UserNotification)

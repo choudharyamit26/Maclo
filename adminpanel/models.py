@@ -63,7 +63,7 @@ class AdminNotificationSetting(models.Model):
     notification = models.CharField(default='Yes', choices=BOOL_CHOICES, max_length=100)
 
 
-class InAppNotification(models.Model):
+class UserNotification(models.Model):
     """Notification model"""
     to = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(default='title', max_length=200)

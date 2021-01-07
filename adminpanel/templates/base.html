@@ -7,13 +7,16 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link type="text/css" rel="stylesheet" href="{% static 'adminpanel/css/style.css'%}">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
 </head>
 
 <body>
 
 <div class="Header">
     <div class="Logo">
-        <img src="{% static 'adminpanel/images/inner-Logo.png' %}">
+        <img src="{% static 'adminpanel/images/Inner-Logo.png' %}">
     </div>
     <div class="Navigation">
         <div class="Avater">
@@ -23,7 +26,7 @@
             <ul>
                 <li>
                     <figure><img src="{% static 'adminpanel/images/profile.jpg' %}"></figure>
-                    <h4> Bob Hyden <span>Administrator</span></h4>
+                    <h4> {{user}} <span>Administrator</span></h4>
                 </li>
                 <li><a href="{% url 'adminpanel:login' %}"><span><i class="fa fa-sign-out"></i></span> Logout</a></li>
             </ul>
@@ -66,7 +69,7 @@
         </li>
 
         <li>
-            <a href="notification.html">
+            <a href="{% url 'adminpanel:send-notification' %}">
                 <span><i class="fa fa-cubes"></i></span> Push Notifications
             </a>
         </li>
@@ -90,7 +93,7 @@
         </li>
 
         <li>
-            <a href="setting.html">
+            <a href="{% url 'adminpanel:change_password' %}">
                 <span><i class="fa fa-cog"></i></span> Settings
             </a>
         </li>
@@ -107,7 +110,8 @@
 {% endblock body %}
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'adminpanel/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'adminpanel/js/delete-script.js' %}"></script>
 
 
 </body>

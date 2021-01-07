@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_cron',
     'chat',
     'src',
+    'fcm_django',
     'django_celery_beat'
 ]
 

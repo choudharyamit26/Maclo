@@ -10,21 +10,21 @@
 </head>
 
 <body>
-<div class="content-wrapper">
-    {% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-danger alert-dismissible" role="alert">
-        {{ message }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    {% endfor %}
-    {% endif %}
-    {% block content %}
-    {% endblock content %}
-</div>
 <div class="LoginArea" style="background-image: url('images/pattern.png');">
+    <div class="content-wrapper">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% block content %}
+        {% endblock content %}
+    </div>
     <div class="LoginBox">
         <figure><img src="{% static 'adminpanel/images/Logo.png' %}"></figure>
         <h5>Let's Started Maclo</h5>
@@ -51,7 +51,7 @@
                 </label>
             </div>
 
-            <button class="Login" type="submit" >Log In <i class="fa fa-sign-in"></i></button>
+            <button class="Login" type="submit">Log In <i class="fa fa-sign-in"></i></button>
             <!-- <button>Log In <i class="fa fa-sign-in"></i></button> -->
         </form>
     </div>

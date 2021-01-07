@@ -17,6 +17,8 @@ from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
+
+from adminpanel.models import UserNotification
 from .models import UserInstagramPic, UserDetail, RegisterUser, MatchedUser, RequestMeeting, ScheduleMeeting, Feedback, \
     AboutUs, ContactUs, SubscriptionPlans, ContactUsQuery
 from .serializers import (UserDetailSerializer, UserInstagramSerializer, RegisterSerializer,
@@ -26,7 +28,7 @@ from .serializers import (UserDetailSerializer, UserInstagramSerializer, Registe
                           SubscriptionPlanSerializer, DeleteSuperMatchSerializer, SearchSerializer,
                           GetInstagramPicSerializer, SocialUserSerializer, ShowInstaPics, AuthTokenSerializer,
                           FacebookSerializer, GmailSerializer)
-from adminpanel.models import InAppNotification
+# from adminpanel.models import UserNotification
 
 User = get_user_model()
 
@@ -240,7 +242,7 @@ class UpdatePhoneNumber(UpdateAPIView):
         user.save()
         user_obj.phone_number = request.data.get('phone_number')
         user_obj.save()
-        InAppNotification.objects.create(
+        UserNotification.objects.create(
             to=user,
             title='Mobile Number Update',
             body='Your mobile number has been updated successfully',
@@ -264,7 +266,7 @@ class UpdateEmail(UpdateAPIView):
         user.save()
         user_obj.email = request.data.get('email')
         user_obj.save()
-        InAppNotification.objects.create(
+        UserNotification.objects.create(
             to=user,
             title='Email Update',
             body='Your email has been updated successfully',
@@ -291,7 +293,7 @@ class UpdateProfilePic(UpdateAPIView):
         user.save()
         user_obj.pic_1 = request.data.get('pic_1')
         user_obj.save()
-        InAppNotification.objects.create(
+        UserNotification.objects.create(
             to=user,
             title='Profile pic Update',
             body='Your profile pic been updated successfully',
@@ -503,7 +505,7 @@ class UserProfileUpdateView(UpdateAPIView):
         # first_name = to_user.first_name
         # to_id = self.request.data['phone_number']
         # to_user_id = RegisterUser.objects.get(id=to_id)
-        # InAppNotification.objects.create(
+        # UserNotification.objects.create(
         #     from_user_id=from_user_id,
         #     from_user_name=from_user_name,
         #     to_user_id=to_user_id,
@@ -1045,7 +1047,7 @@ class LikeUserAPIView(CreateAPIView):
             user.liked_by_me.add(liked_by_me)
             to_user_id = RegisterUser.objects.get(id=liked_by_me)
             to_user_name = to_user_id.first_name
-            InAppNotification.objects.create(
+            UserNotification.objects.create(
                 from_user_id=register_user,
                 from_user_name=from_user_name,
                 to_user_id=to_user_id,
@@ -1064,7 +1066,7 @@ class LikeUserAPIView(CreateAPIView):
             user.liked_by_me.add(liked_by_me)
             to_user_id = RegisterUser.objects.get(id=liked_by_me)
             to_user_name = to_user_id.first_name
-            InAppNotification.objects.create(
+            UserNotification.objects.create(
                 from_user_id=register_user,
                 from_user_name=from_user_name,
                 to_user_id=to_user_id,
@@ -1100,7 +1102,7 @@ class SuperLikeUserAPIView(CreateAPIView):
             user.super_liked_by_me.add(super_liked_by_me)
             to_user_id = RegisterUser.objects.get(id=super_liked_by_me)
             to_user_name = to_user_id.first_name
-            InAppNotification.objects.create(
+            UserNotification.objects.create(
                 from_user_id=register_user,
                 from_user_name=from_user_name,
                 to_user_id=to_user_id,
@@ -1119,7 +1121,7 @@ class SuperLikeUserAPIView(CreateAPIView):
             user.super_liked_by_me.add(super_liked_by_me)
             to_user_id = RegisterUser.objects.get(id=super_liked_by_me)
             to_user_name = to_user_id.first_name
-            InAppNotification.objects.create(
+            UserNotification.objects.create(
                 from_user_id=register_user,
                 from_user_name=from_user_name,
                 to_user_id=to_user_id,
@@ -1263,7 +1265,7 @@ class RequestMeetingAPIView(CreateAPIView):
             RequestMeeting.objects.create(
                 phone_number=requested_user
             )
-            InAppNotification.objects.create(
+            UserNotification.objects.create(
                 from_user_id=from_user_id,
                 from_user_name=from_user_name,
                 to_user_id=to_user_id,
@@ -1300,7 +1302,7 @@ class MeetingStatusAPIView(UpdateAPIView):
         to_user_id = RegisterUser.objects.get(id=to_id)
         status = self.request.data['status']
 
-        InAppNotification.objects.create(
+        UserNotification.objects.create(
             from_user_id=from_user_id,
             from_user_name=from_user_name,
             to_user_id=to_user_id,
@@ -1347,7 +1349,7 @@ class ScheduleMeetingAPIView(CreateAPIView):
                 description=description,
                 status=status
             )
-            InAppNotification.objects.create(
+            UserNotification.objects.create(
                 from_user_id=from_user_id,
                 from_user_name=from_user_name,
                 to_user_id=to_user_id,
@@ -1552,7 +1554,8 @@ class CheckNumber(APIView):
         phone_number = self.request.GET.get('phone_number')
         try:
             user = User.objects.get(phone_number=phone_number)
-            if user:
+            app_user =RegisterUser.objects.get(phone_number=phone_number)
+            if user or app_user:
                 return Response(
                     {'message': 'User already registered with this number', 'user_exists': True,
                      "status": HTTP_200_OK})
@@ -1564,21 +1567,21 @@ class CheckNumber(APIView):
 
 
 class GetNotificationList(APIView):
-    model = InAppNotification
+    model = UserNotification
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
         user = self.request.user
-        notifications = InAppNotification.objects.filter(to=user)
+        notifications = UserNotification.objects.filter(to=user)
         return Response({"data": notifications.values(), "status": HTTP_200_OK})
 
 
 class UpdateNotification(APIView):
-    model = InAppNotification
+    model = UserNotification
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
-    queryset = InAppNotification.objects.all()
+    queryset = UserNotification.objects.all()
 
     def get(self, request, *args, **kwargs):
         # serializer = NotificationSerializer(data=request.data)
@@ -1588,7 +1591,7 @@ class UpdateNotification(APIView):
         #     instance.save(update_fields=['read'])
         user = self.request.user
         # user = User.objects.get(to=user.id)
-        notifications = InAppNotification.objects.filter(
+        notifications = UserNotification.objects.filter(
             to=user.id).filter(read=False)
         for obj in notifications:
             obj.read = True
@@ -1597,9 +1600,9 @@ class UpdateNotification(APIView):
 
 
 class DeleteNotification(APIView):
-    model = InAppNotification
+    model = UserNotification
     # serializer_class = NotificationSerializer
-    queryset = InAppNotification.objects.all()
+    queryset = UserNotification.objects.all()
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
@@ -1607,7 +1610,7 @@ class DeleteNotification(APIView):
         user = self.request.user
         id = self.request.data['id']
         try:
-            obj = InAppNotification.objects.get(id=id)
+            obj = UserNotification.objects.get(id=id)
             obj.delete()
             return Response({"message": "Notification deleted successfully", "status": HTTP_200_OK})
         except Exception as e:
@@ -1622,7 +1625,7 @@ class GetUnreadMessageCount(APIView):
 
     def get(self, request, *args, **kwargs):
         user = self.request.user
-        count = InAppNotification.objects.filter(to=user.id).filter(read=False).count()
+        count = UserNotification.objects.filter(to=user.id).filter(read=False).count()
         print(count)
         return Response({"count": count, "status": HTTP_200_OK})
 
