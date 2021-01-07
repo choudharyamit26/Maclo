@@ -608,44 +608,9 @@ class UserProfileUpdateView(UpdateAPIView):
         register_id.body_type = request.data.get("body_type")
         register_id.relationship_status = request.data.get("relationship_status")
         register_id.fav_quote = request.data.get("fav_quote")
-        register_id.pic_1 = request.data.get("pic_1")
-        register_id.pic_2 = request.data.get("pic_2")
-        register_id.pic_3 = request.data.get("pic_3")
-        register_id.pic_4 = request.data.get("pic_4")
-        register_id.pic_5 = request.data.get("pic_5")
-        register_id.pic_6 = request.data.get("pic_6")
-        if type(request.data.get("pic_1")) is str:
-            pass
-        else:
-            register_id.pic_1 = request.data.get("pic_1")
-
-        if type(request.data.get("pic_2")) is str:
-            pass
-        else:
-            register_id.pic_2 = request.data.get("pic_2")
-
-        if type(request.data.get("pic_3")) is str:
-            pass
-        else:
-            register_id.pic_3 = request.data.get("pic_3")
-
-        if type(request.data.get("pic_4")) is str:
-            pass
-        else:
-            register_id.pic_4 = request.data.get("pic_4")
-
-        if type(request.data.get("pic_5")) is str:
-            pass
-        else:
-            register_id.pic_5 = request.data.get("pic_5")
-
-        if type(request.data.get("pic_6")) is str:
-            pass
-        else:
-            register_id.pic_6 = request.data.get("pic_6")
         register_id.save(
             update_fields=['date_of_birth', 'qualification', 'religion', 'body_type', 'relationship_status',
-                           'fav_quote', 'pic_1', 'pic_2', 'pic_3', 'pic_4', 'pic_5', 'pic_6'])
+                           'fav_quote'])
         print(register_id.pic_1)
         print(register_id.pic_2)
         print(register_id.pic_3)
