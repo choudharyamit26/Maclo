@@ -28,6 +28,7 @@ from .serializers import (UserDetailSerializer, UserInstagramSerializer, Registe
                           SubscriptionPlanSerializer, DeleteSuperMatchSerializer, SearchSerializer,
                           GetInstagramPicSerializer, SocialUserSerializer, ShowInstaPics, AuthTokenSerializer,
                           FacebookSerializer, GmailSerializer)
+
 # from adminpanel.models import UserNotification
 
 User = get_user_model()
@@ -301,6 +302,168 @@ class UpdateProfilePic(UpdateAPIView):
         return Response({"message": "Your profile pic has been updated", "status": HTTP_200_OK})
 
 
+class UpdateProfilePic_1(UpdateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = RegisterSerializer
+    queryset = RegisterUser.objects.all()
+
+    def patch(self, request, *args, **kwargs):
+        print(self.request.data)
+        print(self.request.META)
+        user = self.request.user
+        print(user)
+        # instance = self.get_object()
+        # instance.phone_number = request.data.get('phone_number')
+        # instance.save(update_fields=['phone_number'])
+        user_obj = RegisterUser.objects.get(email=user.email)
+        user.pic_1 = request.data.get('pic_1')
+        user.save()
+        user_obj.pic_1 = request.data.get('pic_1')
+        user_obj.save()
+        # UserNotification.objects.create(
+        #     to=user,
+        #     title='Profile pic Update',
+        #     body='Your profile pic been updated successfully',
+        # )
+        return Response({"message": "Your profile pic has been updated", "status": HTTP_200_OK})
+
+
+class UpdateProfilePic_2(UpdateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = RegisterSerializer
+    queryset = RegisterUser.objects.all()
+
+    def patch(self, request, *args, **kwargs):
+        print(self.request.data)
+        print(self.request.META)
+        user = self.request.user
+        print(user)
+        # instance = self.get_object()
+        # instance.phone_number = request.data.get('phone_number')
+        # instance.save(update_fields=['phone_number'])
+        user_obj = RegisterUser.objects.get(email=user.email)
+        user.pic_2 = request.data.get('pic_2')
+        user.save()
+        user_obj.pic_2 = request.data.get('pic_2')
+        user_obj.save()
+        # UserNotification.objects.create(
+        #     to=user,
+        #     title='Profile pic Update',
+        #     body='Your profile pic been updated successfully',
+        # )
+        return Response({"message": "Your profile pic has been updated", "status": HTTP_200_OK})
+
+
+class UpdateProfilePic_3(UpdateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = RegisterSerializer
+    queryset = RegisterUser.objects.all()
+
+    def patch(self, request, *args, **kwargs):
+        print(self.request.data)
+        print(self.request.META)
+        user = self.request.user
+        print(user)
+        # instance = self.get_object()
+        # instance.phone_number = request.data.get('phone_number')
+        # instance.save(update_fields=['phone_number'])
+        user_obj = RegisterUser.objects.get(email=user.email)
+        user.pic_3 = request.data.get('pic_3')
+        user.save()
+        user_obj.pic_3 = request.data.get('pic_3')
+        user_obj.save()
+        # UserNotification.objects.create(
+        #     to=user,
+        #     title='Profile pic Update',
+        #     body='Your profile pic been updated successfully',
+        # )
+        return Response({"message": "Your profile pic has been updated", "status": HTTP_200_OK})
+
+
+class UpdateProfilePic_4(UpdateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = RegisterSerializer
+    queryset = RegisterUser.objects.all()
+
+    def patch(self, request, *args, **kwargs):
+        print(self.request.data)
+        print(self.request.META)
+        user = self.request.user
+        print(user)
+        # instance = self.get_object()
+        # instance.phone_number = request.data.get('phone_number')
+        # instance.save(update_fields=['phone_number'])
+        user_obj = RegisterUser.objects.get(email=user.email)
+        user.pic_4 = request.data.get('pic_4')
+        user.save()
+        user_obj.pic_4 = request.data.get('pic_4')
+        user_obj.save()
+        # UserNotification.objects.create(
+        #     to=user,
+        #     title='Profile pic Update',
+        #     body='Your profile pic been updated successfully',
+        # )
+        return Response({"message": "Your profile pic has been updated", "status": HTTP_200_OK})
+
+
+class UpdateProfilePic_5(UpdateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = RegisterSerializer
+    queryset = RegisterUser.objects.all()
+
+    def patch(self, request, *args, **kwargs):
+        print(self.request.data)
+        print(self.request.META)
+        user = self.request.user
+        print(user)
+        # instance = self.get_object()
+        # instance.phone_number = request.data.get('phone_number')
+        # instance.save(update_fields=['phone_number'])
+        user_obj = RegisterUser.objects.get(email=user.email)
+        user.pic_5 = request.data.get('pic_5')
+        user.save()
+        user_obj.pic_5 = request.data.get('pic_5')
+        user_obj.save()
+        # UserNotification.objects.create(
+        #     to=user,
+        #     title='Profile pic Update',
+        #     body='Your profile pic been updated successfully',
+        # )
+        return Response({"message": "Your profile pic has been updated", "status": HTTP_200_OK})
+
+
+class UpdateProfilePic_6(UpdateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = RegisterSerializer
+    queryset = RegisterUser.objects.all()
+
+    def patch(self, request, *args, **kwargs):
+        print(self.request.data)
+        print(self.request.META)
+        user = self.request.user
+        print(user)
+        # instance = self.get_object()
+        # instance.phone_number = request.data.get('phone_number')
+        # instance.save(update_fields=['phone_number'])
+        user_obj = RegisterUser.objects.get(email=user.email)
+        user.pic_6 = request.data.get('pic_6')
+        user.save()
+        user_obj.pic_6 = request.data.get('pic_6')
+        user_obj.save()
+        # UserNotification.objects.create(
+        #     to=user,
+        #     title='Profile pic Update',
+        #     body='Your profile pic been updated successfully',
+        # )
+        return Response({"message": "Your profile pic has been updated", "status": HTTP_200_OK})
+
+
 class Logout(APIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
@@ -451,6 +614,35 @@ class UserProfileUpdateView(UpdateAPIView):
         register_id.pic_4 = request.data.get("pic_4")
         register_id.pic_5 = request.data.get("pic_5")
         register_id.pic_6 = request.data.get("pic_6")
+        if type(request.data.get("pic_1")) is str:
+            pass
+        else:
+            register_id.pic_1 = request.data.get("pic_1")
+
+        if type(request.data.get("pic_2")) is str:
+            pass
+        else:
+            register_id.pic_2 = request.data.get("pic_2")
+
+        if type(request.data.get("pic_3")) is str:
+            pass
+        else:
+            register_id.pic_3 = request.data.get("pic_3")
+
+        if type(request.data.get("pic_4")) is str:
+            pass
+        else:
+            register_id.pic_4 = request.data.get("pic_4")
+
+        if type(request.data.get("pic_5")) is str:
+            pass
+        else:
+            register_id.pic_5 = request.data.get("pic_5")
+
+        if type(request.data.get("pic_6")) is str:
+            pass
+        else:
+            register_id.pic_6 = request.data.get("pic_6")
         register_id.save(
             update_fields=['date_of_birth', 'qualification', 'religion', 'body_type', 'relationship_status',
                            'fav_quote', 'pic_1', 'pic_2', 'pic_3', 'pic_4', 'pic_5', 'pic_6'])
@@ -1554,7 +1746,7 @@ class CheckNumber(APIView):
         phone_number = self.request.GET.get('phone_number')
         try:
             user = User.objects.get(phone_number=phone_number)
-            app_user =RegisterUser.objects.get(phone_number=phone_number)
+            app_user = RegisterUser.objects.get(phone_number=phone_number)
             if user or app_user:
                 return Response(
                     {'message': 'User already registered with this number', 'user_exists': True,

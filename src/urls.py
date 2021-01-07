@@ -10,7 +10,8 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     FacebookSignupApiView, GoogleSignupView, UserProfileUpdateView, UpdatePhoneNumber, SuperLikeUserAPIView, \
     GetMediaContent, PopNotificationAPIView, SubscriptionPlanAPIView, DeleteSuperMatchesAPIView, GetUserInstagramPics, \
     ShowInstagramPics, LoginView, CheckNumber, GetNotificationList, UpdateNotification, DeleteNotification, \
-    GetUnreadMessageCount, ContactUsQueryForm, UpdateEmail, UpdateProfilePic, Logout
+    GetUnreadMessageCount, ContactUsQueryForm, UpdateEmail, UpdateProfilePic, Logout, UpdateProfilePic_1, \
+    UpdateProfilePic_2, UpdateProfilePic_3, UpdateProfilePic_4, UpdateProfilePic_5, UpdateProfilePic_6
 
 app_name = 'src'
 
@@ -34,6 +35,12 @@ urlpatterns = [
     path('update-phonenumber/', UpdatePhoneNumber.as_view(), name='update-phonenumber'),
     path('update-email/', UpdateEmail.as_view(), name='update-email'),
     path('update-profile-pic/', UpdateProfilePic.as_view(), name='update-profile-pic'),
+    path('update-profile-pic-1/', UpdateProfilePic_1.as_view(), name='update-profile-pic-1'),
+    path('update-profile-pic-2/', UpdateProfilePic_2.as_view(), name='update-profile-pic-2'),
+    path('update-profile-pic-3/', UpdateProfilePic_3.as_view(), name='update-profile-pic-3'),
+    path('update-profile-pic-4/', UpdateProfilePic_4.as_view(), name='update-profile-pic-4'),
+    path('update-profile-pic-5/', UpdateProfilePic_5.as_view(), name='update-profile-pic-5'),
+    path('update-profile-pic-6/', UpdateProfilePic_6.as_view(), name='update-profile-pic-6'),
     # path('get-token/',GetUserToken.as_view(),name='get-token'),
     path('user-profile/', UserProfileAPIView.as_view(), name='user-profile'),
     path('user-profile-update/', UserProfileUpdateView.as_view(), name='user-profile-update'),
