@@ -1540,7 +1540,7 @@ class GoogleSignupView(CreateAPIView):
                     phone_number=reg_usr
                 )
                 token = Token.objects.create(user=user)
-                return Response({"Token": token.key, "user id": user.id, "status": HTTP_200_OK})
+                return Response({"Token": token.key, "user_id": user.id, "status": HTTP_200_OK})
             else:
                 return Response({"message": serializer.errors, "status": HTTP_400_BAD_REQUEST})
 
