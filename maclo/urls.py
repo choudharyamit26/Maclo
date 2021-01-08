@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from adminpanel.views import PasswordResetView, PasswordResetConfirmView
 from django.contrib.auth.views import PasswordResetDoneView, \
-    PasswordResetCompleteView, PasswordChangeDoneView, PasswordChangeView,LogoutView
+    PasswordResetCompleteView, PasswordChangeDoneView, PasswordChangeView, LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),

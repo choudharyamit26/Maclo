@@ -45,9 +45,79 @@ class LoginView(ObtainAuthToken):
             user = User.objects.get(phone_number=phone_number)
             if user:
                 token = Token.objects.get_or_create(user=user)
+                user_data = RegisterUser.objects.get(phone_number=phone_number)
+                pic_1 = ''
+                pic_2 = ''
+                pic_3 = ''
+                pic_4 = ''
+                pic_5 = ''
+                pic_6 = ''
+                pic_7 = ''
+                pic_8 = ''
+                pic_9 = ''
+                if user_data.pic_1:
+                    pic_1 = user_data.pic_1.url
+                else:
+                    pic_1 = ''
+                if user_data.pic_2:
+                    pic_2 = user_data.pic_2.url
+                else:
+                    pic_2 = ''
+                if user_data.pic_3:
+                    pic_3 = user_data.pic_3.url
+                else:
+                    pic_3 = ''
+                if user_data.pic_4:
+                    pic_4 = user_data.pic_4.url
+                else:
+                    pic_4 = ''
+                if user_data.pic_5:
+                    pic_5 = user_data.pic_5.url
+                else:
+                    pic_5 = ''
+                if user_data.pic_6:
+                    pic_6 = user_data.pic_6.url
+                else:
+                    pic_6 = ''
+                # if user_data.pic_7:
+                #     pic_7 = user_data.pic_8.url
+                # else:
+                #     pic_7 = ''
+                # if user_data.pic_8:
+                #     pic_8 = user_data.pic_8.url
+                # else:
+                #     pic_8 = ''
+                # if user_data.pic_9:
+                #     pic_9 = user_data.pic_9.url
+                # else:
+                #     pic_9 = ''
+                Data = {
+                    "id": user_data.id,
+                    "email": user_data.email,
+                    "first_name": user_data.first_name,
+                    "last_name": user_data.last_name,
+                    "phone_number": user_data.phone_number,
+                    "gender": user_data.gender,
+                    "date_of_birth": user_data.date_of_birth,
+                    # "job_profile": user_data.job_profile,
+                    # "company_name": user_data.company_name,
+                    # "qualification": user_data.qualification,
+                    # "relationship_status": user_data.relationship_status,
+                    # "interests": user_data.interests,
+                    # "fav_quote": user_data.fav_quote,
+                    "pic_1": pic_1,
+                    "pic_2": pic_2,
+                    "pic_3": pic_3,
+                    "pic_4": pic_4,
+                    "pic_5": pic_5,
+                    "pic_6": pic_6,
+                    # "pic_7": pic_7,
+                    # "pic_8": pic_8,
+                    # "pic_9": pic_9,
+                }
                 print(token)
                 print(token[0].key)
-                return Response({'token': token[0].key, 'id': user.id, 'status': HTTP_200_OK})
+                return Response({'token': token[0].key, 'id': user.id,'data':Data, 'status': HTTP_200_OK})
         except Exception as e:
             x = {"Error": str(e)}
             return Response({'message': x['Error'], "status": HTTP_400_BAD_REQUEST})
