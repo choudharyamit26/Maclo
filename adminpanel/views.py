@@ -21,12 +21,12 @@ from django.utils import timezone
 from django.conf.global_settings import DEFAULT_FROM_EMAIL
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import LoginForm, UserNotificationForm
-from src.models import RegisterUser, SubscriptionPlans, ScheduleMeeting, UserDetail
+from src.models import RegisterUser, SubscriptionPlans, ScheduleMeeting, UserDetail, ContactUs
 from .filters import UserFilter
 from src.fcm_notification import send_to_one, send_another
 from django.utils.translation import gettext_lazy as _
 
-from .models import UserNotification
+from .models import UserNotification, Transaction
 
 user = get_user_model()
 
@@ -368,3 +368,54 @@ class SendNotification(LoginRequiredMixin, View):
                 pass
         messages.success(self.request, "Notification sent successfully")
         return HttpResponseRedirect(self.request.path_info)
+
+
+class CreateSubscriptionPlan(LoginRequiredMixin, CreateView):
+    model = SubscriptionPlans
+    template_name = 'Subscription-management.html'
+    login_url = 'adminpanel:login'
+
+    def post(self, request, *args, **kwargs):
+        return redirect('adminpanel:subscription-plans-list')
+
+
+class SubscriptionsPlansList(LoginRequiredMixin, ListView):
+    model = SubscriptionPlans
+    template_name = 'Subscription-management.html'
+    login_url = 'adminpanel:login'
+
+    # def get(self, request, *args, **kwargs):
+    #     return render(self.request,'')
+
+
+class PurchasedSubscriptionList(LoginRequiredMixin, ListView):
+    model = SubscriptionPlans
+    template_name = 'Subscription-Purchase-management.html'
+    login_url = 'adminpanel:login'
+
+
+class MeetupList(LoginRequiredMixin, ListView):
+    model = ScheduleMeeting
+    template_name = 'meet-management.html'
+    login_url = 'adminpanel:login'
+
+
+class TransactionsList(LoginRequiredMixin, ListView):
+    model = Transaction
+    template_name = 'Transaction-management.html'
+    login_url = 'adminpanel:login'
+
+
+class ReportsView(LoginRequiredMixin, ListView):
+    model = Transaction
+    template_name = 'Report-management.html'
+    login_url = 'adminpanel:login'
+
+
+class StaticContentView(LoginRequiredMixin, ListView):
+    model = ContactUs
+    template_name = 'content-management.html'
+    login_url = 'adminpanel:login'
+
+    # def get(self, request, *args, **kwargs):
+    #     return render(self.request, 'content-management.html')

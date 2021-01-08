@@ -38,67 +38,67 @@
 <div class="SidenavBar">
     <ul>
 
-        <li class="active">
+        <li class="nav-item nav-link {% if request.resolver_match.view_name  == 'adminpanel:dashboard' %}active{% endif %}">
             <a href="{% url 'adminpanel:dashboard' %}">
                 <span><i class="fa fa-tachometer"></i></span> Dashboard
             </a>
         </li>
 
-        <li>
+        <li class="nav-item nav-link {% if request.resolver_match.view_name  == 'adminpanel:users-list' %}active{% endif %}">
             <a href="{% url 'adminpanel:users-list' %}">
                 <span><i class="fa fa-user"></i></span> User Management
             </a>
         </li>
 
-        <li>
-            <a href="Subscription-management.html">
+        <li class="nav-item nav-link {% if request.resolver_match.view_name  == 'adminpanel:subscription-plans-list' %}active{% endif %}">
+            <a href="{% url 'adminpanel:subscription-plans-list' %}">
                 <span><i class="fa fa-money"></i></span> Subscription Management
             </a>
         </li>
 
-        <li>
-            <a href="Subscription-Purchase-management.html">
+        <li class="nav-item nav-link {% if request.resolver_match.view_name  == 'adminpanel:purchased-subscription-plans-list' %}active{% endif %}">
+            <a href="{% url 'adminpanel:purchased-subscription-plans-list' %}">
                 <span><i class="fa fa-money"></i></span> Subscription Purchase Management
             </a>
         </li>
 
-        <li>
-            <a href="meet-management.html">
+        <li class="nav-item nav-link {% if request.resolver_match.view_name  == 'adminpanel:meetup-list' %}active{% endif %}">
+            <a href="{% url 'adminpanel:meetup-list' %}">
                 <span><i class="fa fa-product-hunt"></i></span> Meet up Management
             </a>
         </li>
 
-        <li>
+        <li class="nav-item nav-link {% if request.resolver_match.view_name  == 'adminpanel:send-notification' %}active{% endif %}">
             <a href="{% url 'adminpanel:send-notification' %}">
                 <span><i class="fa fa-cubes"></i></span> Push Notifications
             </a>
         </li>
 
-        <li>
-            <a href="Transaction-management.html">
+        <li class="nav-item nav-link {% if request.resolver_match.view_name  == 'adminpanel:transactions-list' %}active{% endif %}">
+            <a href="{% url 'adminpanel:transactions-list' %}">
                 <span><i class="fa fa-database"></i></span> Transactions Management
             </a>
         </li>
 
-        <li>
-            <a href="Report-management.html">
+        <li class="nav-item nav-link {% if request.resolver_match.view_name  == 'adminpanel:reports' %}active{% endif %}">
+            <a href="{%url 'adminpanel:reports' %}">
                 <span><i class="fa fa-shopping-cart"></i></span> Reports Management
             </a>
         </li>
 
-        <li>
-            <a href="content-management.html">
+        <li class="nav-item nav-link {% if request.resolver_match.view_name  == 'adminpanel:static-content' %}active{% endif %}">
+            <a href="{% url 'adminpanel:static-content' %}">
                 <span><i class="fa fa-font"></i></span> Static content Management
             </a>
         </li>
 
-        <li>
+        <li class="nav-item nav-link {% if request.resolver_match.view_name  == 'adminpanel:change_password' %}active{% endif %}">
             <a href="{% url 'adminpanel:change_password' %}">
                 <span><i class="fa fa-cog"></i></span> Settings
             </a>
         </li>
 
-        <li>
+        <li class="nav-item nav-link {% if request.resolver_match.view_name  == 'adminpanel:login' %}active{% endif %}">
             <a href="{% url 'adminpanel:login' %}">
                 <span><i class="fa fa-sign-out"></i></span> Logout
             </a>

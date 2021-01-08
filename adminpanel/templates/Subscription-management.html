@@ -1,406 +1,322 @@
-<!DOCTYPE html>
-<html lang="en-us">
-
-<head>
-    <title>Maclo | Subscription Management</title>
-    <meta charset="UTF-8">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> 
-    <link type="text/css" rel="stylesheet" href="css/style.css">
-</head>
-
-<body>
-
-    <div class="Header">
-        <div class="Logo">
-            <img src="images/Inner-Logo.png">
-        </div>
-        <div class="Navigation">
-            <div class="Avater">
-                <a href="javascript:void(0);">
-                    <figure><img src="images/profile.jpg"></figure> Bob Hyden </a>
-                <ul>
-                    <li>
-                        <figure><img src="images/profile.jpg"></figure>
-                        <h4> Bob Hyden <span>Administrator</span></h4>
-                    </li> 
-                    <li><a href="login.html"><span><i class="fa fa-sign-out"></i></span> Logout</a></li>
-                </ul>
+{% extends 'base.html' %}
+{% block body %}
+<div class="WrapperArea">
+    <div class="WrapperBox">
+        <div class="Small-Wrapper">
+            <div class="SearchBox">
+                <a data-target="#AddModal" data-toggle="modal" href="JavaScript:Void(0);">Add Subscription</a>
             </div>
-            <div class="clear"></div>
-        </div>
-    </div>
 
-    <div class="SidenavBar">
-        <ul>
-            <li>
-                <a href="dashboard.html">
-                    <span><i class="fa fa-tachometer"></i></span> Dashboard
-                </a>
-            </li>
-            
-            <li>
-                <a href="user-management.html">
-                    <span><i class="fa fa-user"></i></span> User Management
-                </a>
-            </li>
-            
-            <li class="active">
-                <a href="Subscription-management.html">
-                    <span><i class="fa fa-money"></i></span> Subscription Management
-                </a>
-            </li>
-            
-            <li>
-                <a href="Subscription-Purchase-management.html">
-                    <span><i class="fa fa-money"></i></span> Subscription Purchase Management 
-                </a>
-            </li>
-            
-            <li>
-                <a href="meet-management.html">
-                    <span><i class="fa fa-product-hunt"></i></span> Meet up Management
-                </a>
-            </li>
-            
-            <li>
-                <a href="notification.html">
-                    <span><i class="fa fa-cubes" ></i></span> Push Notifications
-                </a>
-            </li>
-            
-            <li>
-                <a href="Transaction-management.html">
-                    <span><i class="fa fa-database"></i></span> Transactions Management 
-                </a>
-            </li>
-            
-            <li>
-                <a href="Report-management.html">
-                    <span><i class="fa fa-shopping-cart"></i></span> Reports Management 
-                </a>
-            </li>
-            
-            <li>
-                <a href="content-management.html">
-                    <span><i class="fa fa-font"></i></span> Static content Management 
-                </a>
-            </li> 
-            
-            <li>
-                <a href="setting.html">
-                    <span><i class="fa fa-cog"></i></span> Settings
-                </a>    
-            </li>
-            
-            <li>
-                <a href="login.html">
-                    <span><i class="fa fa-sign-out"></i></span> Logout
-                </a>
-            </li> 
-        </ul>
-    </div>
-     
-    <div class="WrapperArea">
-        <div class="WrapperBox">
-            <div class="Small-Wrapper">
-                <div class="SearchBox"> 
-                    <a data-target="#AddModal" data-toggle="modal" href="JavaScript:Void(0);">Add Subscription</a>
-                </div>
-                
-                <h4 class="Title">Subscription  Management</h4>    
-    
-                <div class="TableList">
-                    <div class="dragscroll">
-                        <table style="width: 150vw">
-                            <thead>
-                                <tr>
-                                    <th>S.No</th>  
-                                    <th>Subscription plan id </th> 
-                                    <th>Subscription plans </th>
-                                    <th>Amount to be charged </th>
-                                    <th>Number of Likes per day</th> 
-                                    <th>Number of Super likes per day </th> 
-                                    <th>Number of Rewinds </th>
-                                    <th>Adds (No adds)</th>
-                                    <th>Search Filters</th>
-                                    <th>See your likes </th>
-                                    <th>Read Recipients </th>
-                                    <th>Time Travel </th>
-                                    <th>Validity of Subscription </th>
-                                    <th>Description of subscription plan</th>
-                                    <th>action</th> 
-                                </tr>
-                            </thead>
-                            <tbody> 
-                                <tr>
-                                    <td>1</td> 
-                                    <td>PLAN 53571</td>
-                                    <td>Diamond</td>
-                                    <td>500</td>
-                                    <td>150</td>
-                                    <td>100</td>
-                                    <td>100</td>
-                                    <td>No Adds</td>
-                                    <td>Yes</td>
-                                    <td>Yes</td>
-                                    <td>Yes</td>
-                                    <td>No</td>
-                                    <td>5 Months</td> 
-                                    <td></td>
-                                    <td> 
-                                        <a class="Green" href="JavaScript:Void(0);" data-toggle="modal" data-target="#EditModal">
-                                            <i class="fa fa-pencil"></i>
-                                        </a> 
-                                        <a class="Red" href="JavaScript:Void(0);" data-toggle="modal" data-target="#DeleteModal">
-                                            <i class="fa fa-trash"></i>
-                                        </a>                                 
-                                    </td>     
-                                </tr> 
-                            </tbody>
-                        </table>  
-                    </div>
-                </div> 
-            </div>
-        </div>
-    </div> 
+            <h4 class="Title">Subscription Management</h4>
 
-    <div class="ModalBox">
-        <div id="DeleteModal" class="modal fade" role="dialog">
-            <div class="modal-dialog"> 
-                <div class="modal-content"> 
-                    <div class="modal-body"> 
-                        <div class="Decline">
-                            <a href="JavaScript:Void(0);" class="CloseModal" data-dismiss="modal">×</a>                       
-                            <h3>Delete</h3>
-                            <p>Are you sure you want to delete this Subscription ?</p>
-                            <h4>
-                                <a href="JavaScript:Void(0);" data-dismiss="modal">no</a>
-                                <a href="JavaScript:Void(0);" data-dismiss="modal">Yes</a>
-                            </h4>
-                        </div>
-                    </div> 
+            <div class="TableList">
+                <div class="dragscroll">
+                    <table style="width: 150vw">
+                        <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Subscription plan id</th>
+                            <th>Subscription plans</th>
+                            <th>Amount to be charged</th>
+                            <th>Number of Likes per day</th>
+                            <th>Number of Super likes per day</th>
+                            <th>Number of Rewinds</th>
+                            <th>Adds (No adds)</th>
+                            <th>Search Filters</th>
+                            <th>See your likes</th>
+                            <th>Read Recipients</th>
+                            <th>Time Travel</th>
+                            <th>Validity of Subscription</th>
+                            <th>Description of subscription plan</th>
+                            <th>action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>PLAN 53571</td>
+                            <td>Diamond</td>
+                            <td>500</td>
+                            <td>150</td>
+                            <td>100</td>
+                            <td>100</td>
+                            <td>No Adds</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>No</td>
+                            <td>5 Months</td>
+                            <td></td>
+                            <td>
+                                <a class="Green" href="JavaScript:Void(0);" data-toggle="modal"
+                                   data-target="#EditModal">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                                <a class="Red" href="JavaScript:Void(0);" data-toggle="modal"
+                                   data-target="#DeleteModal">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div> 
-        
-        <div id="AddModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body">                    
+        </div>
+    </div>
+</div>
+
+<div class="ModalBox">
+    <div id="DeleteModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="Decline">
                         <a href="JavaScript:Void(0);" class="CloseModal" data-dismiss="modal">×</a>
-                        <div class="Category">
-                            <h3>Add Subscription  </h3>
-                            <div class="form-group">
-                                <label>Subscription Plan  Name</label>
-                                <input type="text" class="form-control" placeholder="Enter Subscription Plan Name">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label>Amount </label>
-                                <input type="text" class="form-control" placeholder="Enter Amount ">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label>Select Features  </label>
-                                <ul>
-                                    <li>
-                                        <label class="CheckBox">Likes  
-                                            <input type="checkbox">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <span class="Numbers"><input type="text" class="form-control" placeholder="Enter Number"> </span>
-                                    </li>
-
-                                    <li>
-                                        <label class="CheckBox">Super likes  
-                                            <input type="checkbox">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <span class="Numbers"><input type="text" class="form-control" placeholder="Enter Number"> </span>
-                                    </li>
-
-                                    <li>
-                                        <label class="CheckBox">Rewind 
-                                            <input type="checkbox">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <span class="Numbers"><input type="text" class="form-control" placeholder="Enter Number"> </span>
-                                    </li>
-
-                                    <li>
-                                        <label class="CheckBox">Adds comes or not  
-                                            <input type="checkbox">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <span class="Numbers"><input type="text" class="form-control" placeholder="Enter Number"> </span>
-                                    </li>
-
-                                    <li>
-                                        <label class="CheckBox">Search Filter  
-                                            <input type="checkbox">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <span class="Numbers"><input type="text" class="form-control" placeholder="Enter Number"> </span>
-                                    </li>
-
-                                    <li>
-                                        <label class="CheckBox">See Likes  
-                                            <input type="checkbox">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <span class="Numbers"><input type="text" class="form-control" placeholder="Enter Number"> </span>
-                                    </li>
-
-                                    <li>
-                                        <label class="CheckBox">Read Recipients   
-                                            <input type="checkbox">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <span class="Numbers"><input type="text" class="form-control" placeholder="Enter Number"> </span>
-                                    </li>
-
-                                </ul>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Validity of the subscription plan</label>
-                                <select class="form-control">
-                                    <option> ----- Select Option ------ </option>
-                                    <option>15 Days</option>
-                                    <option>1 Months</option>
-                                    <option>2 Months</option>
-                                    <option>3 Months</option>
-                                    <option>6 Months</option>
-                                    <option>1 Year</option>
-                                    <option>2 Year</option> 
-                                </select>
-                            </div>
-                            
-                             
-                            <div class="form-group">
-                                <label>Description</label>
-                                <textarea rows="5" class="form-control" placeholder="Typing ...."></textarea>
-                            </div>
-     
-                            <button>Submit</button>
-                        </div>
+                        <h3>Delete</h3>
+                        <p>Are you sure you want to delete this Subscription ?</p>
+                        <h4>
+                            <a href="JavaScript:Void(0);" data-dismiss="modal">no</a>
+                            <a href="JavaScript:Void(0);" data-dismiss="modal">Yes</a>
+                        </h4>
                     </div>
                 </div>
             </div>
         </div>
- 
-        <div id="EditModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body">                    
-                        <a href="JavaScript:Void(0);" class="CloseModal" data-dismiss="modal">×</a>
-                        <div class="Category">
-                            <h3>Edit Subscription  </h3>
-                            <div class="form-group">
-                                <label>Subscription Plan  Name</label>
-                                <input type="text" class="form-control" placeholder="Enter Subscription Plan Name" value="Diamond">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label>Amount </label>
-                                <input type="text" class="form-control" placeholder="Enter Amount" value="1,000">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label>Select Features  </label>
-                                <ul>
-                                    <li>
-                                        <label class="CheckBox">Likes  
-                                            <input type="checkbox">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <span class="Numbers"><input type="text" class="form-control" placeholder="Enter Number"> </span>
-                                    </li>
-
-                                    <li>
-                                        <label class="CheckBox">Super likes  
-                                            <input type="checkbox">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <span class="Numbers"><input type="text" class="form-control" placeholder="Enter Number"> </span>
-                                    </li>
-
-                                    <li>
-                                        <label class="CheckBox">Rewind 
-                                            <input type="checkbox">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <span class="Numbers"><input type="text" class="form-control" placeholder="Enter Number"> </span>
-                                    </li>
-
-                                    <li>
-                                        <label class="CheckBox">Adds comes or not  
-                                            <input type="checkbox">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <span class="Numbers"><input type="text" class="form-control" placeholder="Enter Number"> </span>
-                                    </li>
-
-                                    <li>
-                                        <label class="CheckBox">Search Filter  
-                                            <input type="checkbox">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <span class="Numbers"><input type="text" class="form-control" placeholder="Enter Number"> </span>
-                                    </li>
-
-                                    <li>
-                                        <label class="CheckBox">See Likes  
-                                            <input type="checkbox">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <span class="Numbers"><input type="text" class="form-control" placeholder="Enter Number"> </span>
-                                    </li>
-
-                                    <li>
-                                        <label class="CheckBox">Read Recipients   
-                                            <input type="checkbox">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <span class="Numbers"><input type="text" class="form-control" placeholder="Enter Number"> </span>
-                                    </li>
-
-                                </ul>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Validity of the subscription plan</label>
-                                <select class="form-control"> 
-                                    <option>1 Months</option>
-                                    <option>2 Months</option>
-                                    <option>3 Months</option>
-                                    <option>6 Months</option>
-                                    <option>1 Year</option>
-                                    <option>2 Year</option> 
-                                    <option>15 Days</option>
-                                </select>
-                            </div>
-                            
-                             
-                            <div class="form-group">
-                                <label>Description</label>
-                                <textarea rows="5" class="form-control" placeholder="Typing ...."></textarea>
-                            </div>
-     
-                            <button>Submit</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="https://cdn.rawgit.com/asvd/dragscroll/master/dragscroll.js"></script> 
-    <script>
+    <div id="AddModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <a href="JavaScript:Void(0);" class="CloseModal" data-dismiss="modal">×</a>
+                    <div class="Category">
+                        <h3>Add Subscription </h3>
+                        <div class="form-group">
+                            <label>Subscription Plan Name</label>
+                            <input type="text" class="form-control" placeholder="Enter Subscription Plan Name">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Amount </label>
+                            <input type="text" class="form-control" placeholder="Enter Amount ">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Select Features </label>
+                            <ul>
+                                <li>
+                                    <label class="CheckBox">Likes
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <span class="Numbers"><input type="text" class="form-control"
+                                                                 placeholder="Enter Number"> </span>
+                                </li>
+
+                                <li>
+                                    <label class="CheckBox">Super likes
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <span class="Numbers"><input type="text" class="form-control"
+                                                                 placeholder="Enter Number"> </span>
+                                </li>
+
+                                <li>
+                                    <label class="CheckBox">Rewind
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <span class="Numbers"><input type="text" class="form-control"
+                                                                 placeholder="Enter Number"> </span>
+                                </li>
+
+                                <li>
+                                    <label class="CheckBox">Adds comes or not
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <span class="Numbers"><input type="text" class="form-control"
+                                                                 placeholder="Enter Number"> </span>
+                                </li>
+
+                                <li>
+                                    <label class="CheckBox">Search Filter
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <span class="Numbers"><input type="text" class="form-control"
+                                                                 placeholder="Enter Number"> </span>
+                                </li>
+
+                                <li>
+                                    <label class="CheckBox">See Likes
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <span class="Numbers"><input type="text" class="form-control"
+                                                                 placeholder="Enter Number"> </span>
+                                </li>
+
+                                <li>
+                                    <label class="CheckBox">Read Recipients
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <span class="Numbers"><input type="text" class="form-control"
+                                                                 placeholder="Enter Number"> </span>
+                                </li>
+
+                            </ul>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Validity of the subscription plan</label>
+                            <select class="form-control">
+                                <option> ----- Select Option ------</option>
+                                <option>15 Days</option>
+                                <option>1 Months</option>
+                                <option>2 Months</option>
+                                <option>3 Months</option>
+                                <option>6 Months</option>
+                                <option>1 Year</option>
+                                <option>2 Year</option>
+                            </select>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea rows="5" class="form-control" placeholder="Typing ...."></textarea>
+                        </div>
+
+                        <button>Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="EditModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <a href="JavaScript:Void(0);" class="CloseModal" data-dismiss="modal">×</a>
+                    <div class="Category">
+                        <h3>Edit Subscription </h3>
+                        <div class="form-group">
+                            <label>Subscription Plan Name</label>
+                            <input type="text" class="form-control" placeholder="Enter Subscription Plan Name"
+                                   value="Diamond">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Amount </label>
+                            <input type="text" class="form-control" placeholder="Enter Amount" value="1,000">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Select Features </label>
+                            <ul>
+                                <li>
+                                    <label class="CheckBox">Likes
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <span class="Numbers"><input type="text" class="form-control"
+                                                                 placeholder="Enter Number"> </span>
+                                </li>
+
+                                <li>
+                                    <label class="CheckBox">Super likes
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <span class="Numbers"><input type="text" class="form-control"
+                                                                 placeholder="Enter Number"> </span>
+                                </li>
+
+                                <li>
+                                    <label class="CheckBox">Rewind
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <span class="Numbers"><input type="text" class="form-control"
+                                                                 placeholder="Enter Number"> </span>
+                                </li>
+
+                                <li>
+                                    <label class="CheckBox">Adds comes or not
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <span class="Numbers"><input type="text" class="form-control"
+                                                                 placeholder="Enter Number"> </span>
+                                </li>
+
+                                <li>
+                                    <label class="CheckBox">Search Filter
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <span class="Numbers"><input type="text" class="form-control"
+                                                                 placeholder="Enter Number"> </span>
+                                </li>
+
+                                <li>
+                                    <label class="CheckBox">See Likes
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <span class="Numbers"><input type="text" class="form-control"
+                                                                 placeholder="Enter Number"> </span>
+                                </li>
+
+                                <li>
+                                    <label class="CheckBox">Read Recipients
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <span class="Numbers"><input type="text" class="form-control"
+                                                                 placeholder="Enter Number"> </span>
+                                </li>
+
+                            </ul>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Validity of the subscription plan</label>
+                            <select class="form-control">
+                                <option>1 Months</option>
+                                <option>2 Months</option>
+                                <option>3 Months</option>
+                                <option>6 Months</option>
+                                <option>1 Year</option>
+                                <option>2 Year</option>
+                                <option>15 Days</option>
+                            </select>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea rows="5" class="form-control" placeholder="Typing ...."></textarea>
+                        </div>
+
+                        <button>Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!--<script src="js/bootstrap.min.js"></script>-->
+<!--<script src="https://cdn.rawgit.com/asvd/dragscroll/master/dragscroll.js"></script>-->
+<script>
         $(document).ready(function(){
             $('.CheckBox').on("click", function(e){
                 $(this).next('.Numbers').toggle();
@@ -409,7 +325,7 @@
                 e.preventDefault();
             });
         });
-    </script>
 
-</body>
-</html>
+</script>
+
+{% endblock body %}

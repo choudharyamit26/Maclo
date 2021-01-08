@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import Login, Dashboard, UsersList, UserDetailView, UserDelete, PasswordChangeView, PasswordChangeDoneView, \
-    SendNotification
+    SendNotification, CreateSubscriptionPlan, SubscriptionsPlansList, PurchasedSubscriptionList, MeetupList, \
+    TransactionsList, ReportsView,StaticContentView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -16,6 +17,14 @@ urlpatterns = [
          name='password_change_done'),
     path('send-notification/', SendNotification.as_view(),
          name='send-notification'),
+    path('create-subscription-plan/', CreateSubscriptionPlan.as_view(), name='create-subscription-plan'),
+    path('subscription-plans-list/', SubscriptionsPlansList.as_view(), name='subscription-plans-list'),
+    path('meetup-list/', MeetupList.as_view(), name='meetup-list'),
+    path('transactions-list/', TransactionsList.as_view(), name='transactions-list'),
+    path('reports/', ReportsView.as_view(), name='reports'),
+    path('static-content/', StaticContentView.as_view(), name='static-content'),
+    path('purchased-subscription-plans-list/', PurchasedSubscriptionList.as_view(),
+         name='purchased-subscription-plans-list'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

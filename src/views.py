@@ -1130,7 +1130,8 @@ class SnippetFilter(rest_framework.FilterSet):
 #     interests = self.request.GET.get('interests', None)
 # relationship_status = self.request.data['relationship_status']
 # religion = self.request.data['religion']
-# body_type = self.request.data['body_type']
+# body_type = se
+# lf.request.data['body_type']
 # gender = self.request.data['gender']
 # interests = self.request.data['interests']
 # print('Qualification ', qualification)
@@ -1717,8 +1718,8 @@ class CheckNumber(APIView):
         try:
             user = User.objects.get(phone_number=phone_number)
             app_user = RegisterUser.objects.get(phone_number=phone_number)
-            print('>>>>>>>>>>>>>>>>',user)
-            print('<<<<<<<<<<<',app_user)
+            print('>>>>>>>>>>>>>>>>', user)
+            print('<<<<<<<<<<<', app_user)
             if user or app_user:
                 return Response(
                     {'message': 'User already registered with this number', 'user_exists': True,
@@ -1781,6 +1782,19 @@ class DeleteNotification(APIView):
             print(e)
             return Response(
                 {"message": "Notification with this id does not exists", "status": HTTP_400_BAD_REQUEST})
+
+
+class UpdateInterest(UpdateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    queryset = RegisterUser.objects.all()
+
+    def patch(self, request, *args, **kwargs):
+        user = self.request.user
+        user_obj = RegisterUser.objects.get(email=user.email)
+        user_obj.interest = request.data.get('interest')
+        user_obj.save()
+        return Response({"message": "Your interest has been updated", "status": HTTP_200_OK})
 
 
 class GetUnreadMessageCount(APIView):
