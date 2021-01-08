@@ -1709,9 +1709,16 @@ class CheckNumber(APIView):
 
     def get(self, request, *args, **kwargs):
         phone_number = self.request.GET.get('phone_number')
+        # print('<<<<<<<<<<<<<<<<<<<<<<<<<<<',phone_number)
+        # user = User.objects.get(phone_number=phone_number)
+        # app_user = RegisterUser.objects.get(phone_number=phone_number)
+        # print('>>>>>>>>>>>>>>>>', user)
+        # print('<<<<<<<<<<<', app_user)
         try:
             user = User.objects.get(phone_number=phone_number)
             app_user = RegisterUser.objects.get(phone_number=phone_number)
+            print('>>>>>>>>>>>>>>>>',user)
+            print('<<<<<<<<<<<',app_user)
             if user or app_user:
                 return Response(
                     {'message': 'User already registered with this number', 'user_exists': True,
