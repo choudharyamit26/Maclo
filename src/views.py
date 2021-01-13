@@ -1778,8 +1778,9 @@ class GoogleSignupView(CreateAPIView):
 class CheckNumber(APIView):
     model = User
 
-    def get(self, request, *args, **kwargs):
-        phone_number = self.request.GET.get('phone_number')
+    def post(self, request, *args, **kwargs):
+        # phone_number = self.request.GET.get('phone_number')
+        phone_number = self.request.POST['phone_number']
         # print('<<<<<<<<<<<<<<<<<<<<<<<<<<<',phone_number)
         # user = User.objects.get(phone_number=phone_number)
         # app_user = RegisterUser.objects.get(phone_number=phone_number)
