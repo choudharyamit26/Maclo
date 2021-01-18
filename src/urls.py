@@ -11,7 +11,7 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     GetMediaContent, PopNotificationAPIView, SubscriptionPlanAPIView, DeleteSuperMatchesAPIView, GetUserInstagramPics, \
     ShowInstagramPics, LoginView, CheckNumber, GetNotificationList, UpdateNotification, DeleteNotification, \
     GetUnreadMessageCount, ContactUsQueryForm, UpdateEmail, UpdateProfilePic, Logout, UpdateProfilePic_1, \
-    UpdateProfilePic_2, UpdateProfilePic_3, UpdateProfilePic_4, UpdateProfilePic_5, UpdateProfilePic_6, UpdateInterest
+    UpdateProfilePic_2, UpdateProfilePic_3, UpdateProfilePic_4, UpdateProfilePic_5, UpdateProfilePic_6, UpdateInterest,UserLikedList
 
 app_name = 'src'
 
@@ -64,6 +64,7 @@ urlpatterns = [
     path('contactus/', ContactUsApiView.as_view(), name='contactus'),
     path('contactus-form/', ContactUsQueryForm.as_view(), name='contactus-form'),
     path('notification-list/', GetNotificationList.as_view(), name='notification-list'),
+    path('users-liked-list/', UserLikedList.as_view(), name='users-liked-list'),
     path('delete-user-notification/', DeleteNotification.as_view(),
          name='delete-user-notification'),
     path('update-user-notification/',

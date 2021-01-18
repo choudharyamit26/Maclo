@@ -117,7 +117,7 @@ class LoginView(ObtainAuthToken):
                 }
                 print(token)
                 print(token[0].key)
-                return Response({'token': token[0].key, 'id': user.id,'data':Data, 'status': HTTP_200_OK})
+                return Response({'token': token[0].key, 'id': user.id, 'data': Data, 'status': HTTP_200_OK})
         except Exception as e:
             x = {"Error": str(e)}
             return Response({'message': x['Error'], "status": HTTP_400_BAD_REQUEST})
@@ -1259,51 +1259,56 @@ class LikeUserAPIView(CreateAPIView):
     serializer_class = LikeSerializer
 
     def post(self, request, *args, **kwargs):
-        logged_in_user_id = self.request.data['id']
-        users_liked_by_me = MatchedUser.objects.filter(
-            liked_by_me=logged_in_user_id)
-        users_liked_by_me_list = []
-        for obj in users_liked_by_me:
-            y = obj.user.id
-            users_liked_by_me_list.append(y)
+        user = self.request.user
+        logged_in_user_id = RegisterUser.objects.get(email=user.email)
         liked_by_me = self.request.data['liked_by_me']
-
-        if int(liked_by_me) not in users_liked_by_me_list:
-            register_user = RegisterUser.objects.get(id=logged_in_user_id)
-            from_user_name = register_user.first_name
-            user = MatchedUser.objects.create(user=register_user, matched='No')
-            user.liked_by_me.add(liked_by_me)
-            to_user_id = RegisterUser.objects.get(id=liked_by_me)
-            to_user_name = to_user_id.first_name
-            UserNotification.objects.create(
-                from_user_id=register_user,
-                from_user_name=from_user_name,
-                to_user_id=to_user_id,
-                to_user_name=to_user_name,
-                notification_type='Like Notification',
-                notification_title='Like Notification',
-                notification_body="You have been liked by " + from_user_name
-            )
-            return Response({"You have liked a user"}, status=HTTP_200_OK)
-        else:
-            liked_by_me = self.request.data['liked_by_me']
-            register_user = RegisterUser.objects.get(id=logged_in_user_id)
-            from_user_name = register_user.first_name
-            user = MatchedUser.objects.create(
-                user=register_user, matched='Yes')
-            user.liked_by_me.add(liked_by_me)
-            to_user_id = RegisterUser.objects.get(id=liked_by_me)
-            to_user_name = to_user_id.first_name
-            UserNotification.objects.create(
-                from_user_id=register_user,
-                from_user_name=from_user_name,
-                to_user_id=to_user_id,
-                to_user_name=to_user_name,
-                notification_type='Match Notification',
-                notification_title='Match Notification',
-                notification_body="You have been matched with  " + from_user_name
-            )
-            return Response({"You have matched with a user"}, status=HTTP_200_OK)
+        try:
+            users_liked_by_me = MatchedUser.objects.filter(
+                liked_by_me=logged_in_user_id)
+            users_liked_by_me_list = []
+            for obj in users_liked_by_me:
+                y = obj.user.id
+                users_liked_by_me_list.append(y)
+            print(liked_by_me)
+            if int(liked_by_me) not in users_liked_by_me_list:
+                print('inside if case')
+                register_user = RegisterUser.objects.get(id=logged_in_user_id.id)
+                from_user_name = register_user.first_name
+                user = MatchedUser.objects.create(user=register_user, matched='No')
+                user.liked_by_me.add(RegisterUser.objects.get(id=int(liked_by_me)))
+                to_user_id = RegisterUser.objects.get(id=int(liked_by_me))
+                # to_user_name = to_user_id.first_name
+                UserNotification.objects.create(
+                    to=User.objects.get(email=to_user_id.email),
+                    title='Like Notification',
+                    body="You have been liked by " + from_user_name
+                    # from_user_id=register_user,
+                    # from_user_name=from_user_name,
+                    # to_user_id=to_user_id,
+                    # to_user_name=to_user_name,
+                    # notification_type='Like Notification',
+                    # notification_title='Like Notification',
+                    # notification_body="You have been liked by " + from_user_name
+                )
+                return Response({"message": "You have liked a user", "status": HTTP_200_OK})
+            else:
+                register_user = RegisterUser.objects.get(id=logged_in_user_id.id)
+                from_user_name = register_user.first_name
+                user = MatchedUser.objects.create(
+                    user=register_user, matched='Yes')
+                user.liked_by_me.add(RegisterUser.objects.get(id=int(liked_by_me)))
+                to_user_id = RegisterUser.objects.get(id=int(liked_by_me))
+                # to_user_name = to_user_id.first_name
+                UserNotification.objects.create(
+                    to=User.objects.get(email=to_user_id.email),
+                    title='Match Notification',
+                    body="You have been matched by " + from_user_name
+                )
+                return Response({"message": "You have matched with a user", "status": HTTP_200_OK})
+        except Exception as e:
+            print(e)
+            x = {'error': str(e)}
+            return Response({'error': x['error'], 'status': HTTP_400_BAD_REQUEST})
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -1314,51 +1319,63 @@ class SuperLikeUserAPIView(CreateAPIView):
     serializer_class = SuperLikeSerializer
 
     def post(self, request, *args, **kwargs):
-        logged_in_user_id = self.request.data['id']
-        users_super_liked_me = MatchedUser.objects.filter(
-            super_liked_by_me=logged_in_user_id)
-        users_super_liked_me_list = []
-        for obj in users_super_liked_me:
-            y = obj.user.id
-            users_super_liked_me_list.append(y)
+        user = self.request.user
+        logged_in_user_id = RegisterUser.objects.get(email=user.email)
         super_liked_by_me = self.request.data['super_liked_by_me']
-        if int(super_liked_by_me) not in users_super_liked_me_list:
-            register_user = RegisterUser.objects.get(id=logged_in_user_id)
-            from_user_name = register_user.first_name
-            user = MatchedUser.objects.create(
-                user=register_user, super_matched='No')
-            user.super_liked_by_me.add(super_liked_by_me)
-            to_user_id = RegisterUser.objects.get(id=super_liked_by_me)
-            to_user_name = to_user_id.first_name
-            UserNotification.objects.create(
-                from_user_id=register_user,
-                from_user_name=from_user_name,
-                to_user_id=to_user_id,
-                to_user_name=to_user_name,
-                notification_type='Like Notification',
-                notification_title='Like Notification',
-                notification_body="You have been super liked by " + from_user_name
-            )
-            return Response({"You have super liked a user"}, status=HTTP_200_OK)
-        else:
-            super_liked_by_me = self.request.data['super_liked_by_me']
-            register_user = RegisterUser.objects.get(id=logged_in_user_id)
-            from_user_name = register_user.first_name
-            user = MatchedUser.objects.create(
-                user=register_user, super_matched='Yes')
-            user.super_liked_by_me.add(super_liked_by_me)
-            to_user_id = RegisterUser.objects.get(id=super_liked_by_me)
-            to_user_name = to_user_id.first_name
-            UserNotification.objects.create(
-                from_user_id=register_user,
-                from_user_name=from_user_name,
-                to_user_id=to_user_id,
-                to_user_name=to_user_name,
-                notification_type='Match Notification',
-                notification_title='Match Notification',
-                notification_body="You have  matched with  " + from_user_name
-            )
-            return Response({"You have super matched with a user"}, status=HTTP_200_OK)
+        # logged_in_user_id = self.request.data['id']
+        try:
+            users_super_liked_me = MatchedUser.objects.filter(
+                super_liked_by_me=logged_in_user_id)
+            users_super_liked_me_list = []
+            for obj in users_super_liked_me:
+                y = obj.user.id
+                users_super_liked_me_list.append(y)
+            if int(super_liked_by_me) not in users_super_liked_me_list:
+                register_user = RegisterUser.objects.get(id=logged_in_user_id.id)
+                from_user_name = register_user.first_name
+                user = MatchedUser.objects.create(
+                    user=register_user, super_matched='No')
+                user.super_liked_by_me.add(super_liked_by_me)
+                to_user_id = RegisterUser.objects.get(id=int(super_liked_by_me))
+                to_user_name = to_user_id.first_name
+                UserNotification.objects.create(
+                    to=User.objects.get(email=to_user_id.email),
+                    title='Super Like Notification',
+                    body="You have been super liked by " + from_user_name
+                    # from_user_id=register_user,
+                    # from_user_name=from_user_name,
+                    # to_user_id=to_user_id,
+                    # to_user_name=to_user_name,
+                    # notification_type='Like Notification',
+                    # notification_title='Like Notification',
+                    # notification_body="You have been super liked by " + from_user_name
+                )
+                return Response({"message": "You have super liked a user", "status": HTTP_200_OK})
+            else:
+                # super_liked_by_me = self.request.data['super_liked_by_me']
+                register_user = RegisterUser.objects.get(id=logged_in_user_id.id)
+                from_user_name = register_user.first_name
+                user = MatchedUser.objects.create(
+                    user=register_user, super_matched='Yes')
+                user.super_liked_by_me.add(RegisterUser.objects.get(id=int(super_liked_by_me)))
+                to_user_id = RegisterUser.objects.get(id=int(super_liked_by_me))
+                to_user_name = to_user_id.first_name
+                UserNotification.objects.create(
+                    to=User.objects.get(email=to_user_id.email),
+                    title='Super Match Notification',
+                    body="You have been super matched with " + from_user_name
+                    # from_user_id=register_user,
+                    # from_user_name=from_user_name,
+                    # to_user_id=to_user_id,
+                    # to_user_name=to_user_name,
+                    # notification_type='Super Match Notification',
+                    # notification_title='Super Match Notification',
+                    # notification_body="You have  matched with  " + from_user_name
+                )
+                return Response({"message": "You have super matched with a user", "status": HTTP_200_OK})
+        except Exception as e:
+            x = {'error': str(e)}
+            return Response({'error': x['error'], 'status': HTTP_400_BAD_REQUEST})
 
 
 class GetMatchesAPIView(ListAPIView):
@@ -1368,20 +1385,29 @@ class GetMatchesAPIView(ListAPIView):
     serializer_class = MatchedUserSerializer
 
     def get(self, request, *args, **kwargs):
-        user_id = self.request.data['user_id']
+        # user_id = self.request.data['user_id']
+        user_id = self.request.user
+        r_user = RegisterUser.objects.get(email=user_id.email)
+        print('------', r_user)
+        print('------>>>', r_user.id)
         liked_me = MatchedUser.objects.filter(
-            liked_by_me=user_id).exclude(user=user_id).distinct()
+            liked_by_me=r_user).exclude(user=r_user).distinct()
         liked_me_list = [obj.user.first_name for obj in liked_me]
-        liked_by_me = MatchedUser.objects.filter(user=user_id).distinct()
+        liked_by_me = MatchedUser.objects.filter(user=r_user).distinct()
+        print('>>>>>>>>>> liked_by_me ', [obj.user.first_name for obj in liked_by_me])
+        # print('>>>>>>>>>> liked_by_me id', [obj.user.id for obj in liked_by_me])
+        # print('>>>>>>>>>>  liked_me_list ', liked_me_list)
+        # print('>>>>>>>>>>  liked_me_list ', liked_me_list)
         liked_by_me_list = []
         for obj in liked_by_me:
             y = obj.liked_by_me.all()
             for z in y:
                 liked_by_me_list.append(z.first_name)
         super_liked_me = MatchedUser.objects.filter(
-            super_liked_by_me=user_id).exclude(user=user_id).distinct()
-        super_liked_by_me = MatchedUser.objects.filter(user=user_id).distinct()
+            super_liked_by_me=r_user).exclude(user=r_user).distinct()
+        super_liked_by_me = MatchedUser.objects.filter(user=r_user).distinct()
         super_liked_me_list = [x.user.first_name for x in super_liked_me]
+        # print('<<<<<<<<<<<<', super_liked_me_list)
         super_liked_by_me_list = []
         for obj in super_liked_by_me:
             y = obj.super_liked_by_me.all()
@@ -1390,10 +1416,34 @@ class GetMatchesAPIView(ListAPIView):
         match = []
         super_match = []
         x = set(liked_by_me_list) & set(liked_me_list)
+        print(x)
         match.append(x)
         y = set(super_liked_me_list) & set(super_liked_by_me_list)
+        print(y)
         super_match.append(y)
         return Response({"Matches": match, "Super Matches": super_match}, status=HTTP_200_OK)
+
+
+class UserLikedList(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        r_user = RegisterUser.objects.get(email=user.email)
+        like_list = []
+        liked_users = MatchedUser.objects.filter(user=r_user)
+        print('>>>>>>>>>>>>>>>>>', [x.liked_by_me.all() for x in liked_users])
+        for user in liked_users:
+            print('<<<<<<<', user)
+            print('Matched at ', user.matched_at)
+            for y in user.liked_by_me.all():
+                print('Register User id ', y.id)
+                z = RegisterUser.objects.get(id=y.id)
+                like_list.append(
+                    {'id': z.id, 'first_name': z.first_name, 'last_name': z.last_name, 'liked_at': user.matched_at,
+                     'profile_pic': z.pic_1.url})
+        return Response({'data': like_list, 'status': HTTP_200_OK})
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -1550,45 +1600,49 @@ class ScheduleMeetingAPIView(CreateAPIView):
     serializer_class = ScheduleMeetingSerializer
 
     def post(self, request, *args, **kwargs):
-        phone_number = self.request.data['phone_number']
-        logged_in_user_id = self.request.data['id']
-        requested_user = RegisterUser.objects.get(id=phone_number)
-        scheduled_by = RegisterUser.objects.get(id=logged_in_user_id)
+        user = self.request.user
+        phone_number = self.request.data['id']
+        # to_id = self.request.data['phone_number']
+        # logged_in_user_id = self.request.data['id']
+        requested_user = RegisterUser.objects.get(id=int(phone_number))
+        scheduled_by = RegisterUser.objects.get(email=user.email)
         meeting_date = self.request.data['meeting_date']
         meeting_time = self.request.data['meeting_time']
         venue = self.request.data['venue']
         description = self.request.data['description']
         status = self.request.data['status']
-        from_id = logged_in_user_id
+        from_id = requested_user.id
         from_user_id = RegisterUser.objects.get(id=from_id)
         from_user_name = from_user_id.first_name
         phone_number = self.request.data['phone_number']
-        to_user = RegisterUser.objects.get(id=phone_number)
-        first_name = to_user.first_name
-        to_id = self.request.data['phone_number']
-        to_user_id = RegisterUser.objects.get(id=to_id)
-        if logged_in_user_id.gender == 'Female':
-            ScheduleMeeting.objects.create(
-                scheduled_with=requested_user,
-                scheduled_by=scheduled_by,
-                meeting_date=meeting_date,
-                meeting_time=meeting_time,
-                venue=venue,
-                description=description,
-                status=status
-            )
-            UserNotification.objects.create(
-                from_user_id=from_user_id,
-                from_user_name=from_user_name,
-                to_user_id=to_user_id,
-                to_user_name=first_name,
-                notification_type='Meeting Schedule',
-                notification_title='Meeting Schedule Request',
-                notification_body='You have a meeting scheduled with ' + from_user_name
-            )
-            return Response({"Meeting schedule sent successfully"}, status=HTTP_200_OK)
-        else:
-            return Response({"Only females are allowed to sent meeting request"}, status=HTTP_400_BAD_REQUEST)
+        # to_user = RegisterUser.objects.get(id=phone_number)
+        # first_name = to_user.first_name
+        # to_user_id = RegisterUser.objects.get(id=to_id)
+        # if logged_in_user_id.gender == 'Female':
+        ScheduleMeeting.objects.create(
+            scheduled_with=requested_user,
+            scheduled_by=scheduled_by,
+            meeting_date=meeting_date,
+            meeting_time=meeting_time,
+            venue=venue,
+            description=description,
+            status=status
+        )
+        UserNotification.objects.create(
+            to=User.objects.get(email=user.email),
+            title='Meeting Request',
+            body="You have a meeting request from " + from_user_name
+            # from_user_id=from_user_id,
+            # from_user_name=from_user_name,
+            # to_user_id=to_user_id,
+            # to_user_name=first_name,
+            # notification_type='Meeting Schedule',
+            # notification_title='Meeting Schedule Request',
+            # notification_body='You have a meeting request from ' + from_user_name
+        )
+        return Response({"Meeting schedule sent successfully"}, status=HTTP_200_OK)
+        # else:
+        # return Response({"Only females are allowed to sent meeting request"}, status=HTTP_400_BAD_REQUEST)
 
 
 class FeedbackApiView(CreateAPIView):
