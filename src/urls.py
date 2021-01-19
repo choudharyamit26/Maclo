@@ -11,7 +11,8 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     GetMediaContent, PopNotificationAPIView, SubscriptionPlanAPIView, DeleteSuperMatchesAPIView, GetUserInstagramPics, \
     ShowInstagramPics, LoginView, CheckNumber, GetNotificationList, UpdateNotification, DeleteNotification, \
     GetUnreadMessageCount, ContactUsQueryForm, UpdateEmail, UpdateProfilePic, Logout, UpdateProfilePic_1, \
-    UpdateProfilePic_2, UpdateProfilePic_3, UpdateProfilePic_4, UpdateProfilePic_5, UpdateProfilePic_6, UpdateInterest,UserLikedList
+    UpdateProfilePic_2, UpdateProfilePic_3, UpdateProfilePic_4, UpdateProfilePic_5, UpdateProfilePic_6, UpdateInterest, \
+    UserLikedList, MeetingDetail, MettingList, UpdateMeetingStatus
 
 app_name = 'src'
 
@@ -58,6 +59,9 @@ urlpatterns = [
     path('user-deletesupermatches/', DeleteSuperMatchesAPIView.as_view(), name='delete-supermatch'),
     path('request-meeting/', RequestMeetingAPIView.as_view(), name='request-meeting'),
     path('meeting-status/<int:pk>/', MeetingStatusAPIView.as_view(), name='meeting-status'),
+    path('meeting-detail/', MeetingDetail.as_view(), name='meeting-detail'),
+    path('meeting-list/', MettingList.as_view(), name='meeting-list'),
+    path('update-meeting-status/', UpdateMeetingStatus.as_view(), name='update-meeting-status'),
     path('schedule-meeting/', ScheduleMeetingAPIView.as_view(), name='schedule-meeting'),
     path('purchase-subscription/', SubscriptionPlanAPIView.as_view(), name='subscription-purchase'),
     path('feedback/', FeedbackApiView.as_view(), name='feedback'),

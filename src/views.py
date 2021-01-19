@@ -1678,12 +1678,12 @@ class ScheduleMeetingAPIView(CreateAPIView):
         from_id = requested_user.id
         from_user_id = RegisterUser.objects.get(id=from_id)
         from_user_name = from_user_id.first_name
-        phone_number = self.request.data['phone_number']
+        # phone_number = self.request.data['phone_number']
         # to_user = RegisterUser.objects.get(id=phone_number)
         # first_name = to_user.first_name
         # to_user_id = RegisterUser.objects.get(id=to_id)
         # if logged_in_user_id.gender == 'Female':
-        ScheduleMeeting.objects.create(
+        meeting = ScheduleMeeting.objects.create(
             scheduled_with=requested_user,
             scheduled_by=scheduled_by,
             meeting_date=meeting_date,
@@ -1704,9 +1704,68 @@ class ScheduleMeetingAPIView(CreateAPIView):
             # notification_title='Meeting Schedule Request',
             # notification_body='You have a meeting request from ' + from_user_name
         )
-        return Response({"Meeting schedule sent successfully"}, status=HTTP_200_OK)
+        return Response(
+            {"meeting_id": meeting.id, "message": "Meeting schedule sent successfully", 'status': HTTP_200_OK})
         # else:
         # return Response({"Only females are allowed to sent meeting request"}, status=HTTP_400_BAD_REQUEST)
+
+
+class MeetingDetail(APIView):
+    model = ScheduleMeeting
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        meeting_id = self.request.data['meeting_id']
+        meeting_obj = ScheduleMeeting.objects.get(id=meeting_id)
+        return Response(
+            {'inivtee_pic': meeting_obj.scheduled_with.pic_1.url,
+             'invitee_first_name': meeting_obj.scheduled_with.first_name,
+             'invitee_last_name': meeting_obj.scheduled_with.last_name, 'time': meeting_obj.meeting_time,
+             'date': meeting_obj.meeting_date, 'description': meeting_obj.description, 'venue': meeting_obj.venue,
+             'status': HTTP_200_OK})
+
+
+class MettingList(APIView):
+    model = ScheduleMeeting
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        meeting_request_received = ScheduleMeeting.objects.filter(
+            scheduled_with=RegisterUser.objects.get(email=user.email))
+        meeting_request_sent = ScheduleMeeting.objects.filter(scheduled_by=RegisterUser.objects.get(email=user.email))
+        recevied_list = []
+        sent_list = []
+        for meeting in meeting_request_received:
+            recevied_list.append(
+                {'id': meeting.id, 'first_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).first_name,
+                 'last_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).last_name,
+                 'profile_pic': RegisterUser.objects.get(id=meeting.scheduled_by.id).pic_1.url,
+                 'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
+                 'type': 'received'})
+        for meeting in meeting_request_sent:
+            sent_list.append(
+                {'id': meeting.id, 'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
+                 'last_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).last_name,
+                 'profile_pic': RegisterUser.objects.get(id=meeting.scheduled_with.id).pic_1.url,
+                 'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status, 'type': 'sent'})
+        return Response({'meetings': recevied_list + sent_list, 'status': HTTP_200_OK})
+
+
+class UpdateMeetingStatus(APIView):
+    model = ScheduleMeeting
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        status = self.request.POST['status']
+        meeting_id = self.request.POST['meeting_id']
+        meeting = ScheduleMeeting.objects.get(id=meeting_id)
+        meeting.status = status.capitalize()
+        meeting.save()
+        return Response({'message': 'Meeting status updated successfully', 'status': HTTP_200_OK})
 
 
 class FeedbackApiView(CreateAPIView):
