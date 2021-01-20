@@ -12,7 +12,8 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     ShowInstagramPics, LoginView, CheckNumber, GetNotificationList, UpdateNotification, DeleteNotification, \
     GetUnreadMessageCount, ContactUsQueryForm, UpdateEmail, UpdateProfilePic, Logout, UpdateProfilePic_1, \
     UpdateProfilePic_2, UpdateProfilePic_3, UpdateProfilePic_4, UpdateProfilePic_5, UpdateProfilePic_6, UpdateInterest, \
-    UserLikedList, MeetingDetail, MettingList, UpdateMeetingStatus,UpdateUserLocation
+    UserLikedList, MeetingDetail, MettingList, UpdateMeetingStatus, UpdateUserLocation, UpdateDistanceRange, \
+    UpdateAgeRange
 
 app_name = 'src'
 
@@ -37,6 +38,8 @@ urlpatterns = [
     path('update-email/', UpdateEmail.as_view(), name='update-email'),
     path('update-profile-pic/', UpdateProfilePic.as_view(), name='update-profile-pic'),
     path('update-interest/', UpdateInterest.as_view(), name='update-interest'),
+    path('update-distance-range/', UpdateDistanceRange.as_view(), name='update-distance-range'),
+    path('update-age-range/', UpdateAgeRange.as_view(), name='update-age-range'),
     path('update-profile-pic-1/', UpdateProfilePic_1.as_view(), name='update-profile-pic-1'),
     path('update-profile-pic-2/', UpdateProfilePic_2.as_view(), name='update-profile-pic-2'),
     path('update-profile-pic-3/', UpdateProfilePic_3.as_view(), name='update-profile-pic-3'),

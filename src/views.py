@@ -4,6 +4,7 @@ import shutil
 import instaloader
 from django.contrib.auth import get_user_model
 from django.contrib.gis.geos import fromstr
+from django.contrib.gis.measure import D
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -18,7 +19,8 @@ from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
-
+from django.contrib.gis.db.models.functions import Distance
+from django.db.models import F
 from adminpanel.models import UserNotification
 from .models import UserInstagramPic, UserDetail, RegisterUser, MatchedUser, RequestMeeting, ScheduleMeeting, Feedback, \
     AboutUs, ContactUs, SubscriptionPlans, ContactUsQuery
@@ -868,14 +870,14 @@ class UserslistAPIView(APIView):
         # queryset needed to be filtered
         # logged_in_user_id = self.request.GET.get('id')
         logged_in_user_id = self.request.user
-        print('Logged in user email ', logged_in_user_id.email)
+        # print('Logged in user email ', logged_in_user_id.email)
         registr_user = RegisterUser.objects.get(email=logged_in_user_id.email)
-        print('Register user instance email ', registr_user.email)
-
-        print('Email after excluding logged in user ',
-              [x.phone_number.email for x in UserDetail.objects.all().exclude(phone_number=registr_user.id)])
-        print('All users email ', [x.phone_number.email for x in UserDetail.objects.all()])
-        print([x.id for x in UserDetail.objects.all()])
+        # print('Register user instance email ', registr_user.email)
+        #
+        # print('Email after excluding logged in user ',
+        #       [x.phone_number.email for x in UserDetail.objects.all().exclude(phone_number=registr_user.id)])
+        # print('All users email ', [x.phone_number.email for x in UserDetail.objects.all()])
+        # print([x.id for x in UserDetail.objects.all()])
         # print([UserDetail.objects.get(id=registr_user.id).phone_number.email])
         # user = UserDetail.objects.get(phone_number=registr_user)
         # queryset1 = RegisterUser.objects.all().exclude(id=logged_in_user_id).values()
@@ -883,6 +885,10 @@ class UserslistAPIView(APIView):
         # for obj in queryset1:
         #     users.append(obj)
         # return Response({"Users":users}, HTTP_200_OK)
+        lat = self.request.data['lat']
+        lang = self.request.data['lang']
+        users_location = fromstr('Point({} {})'.format(lat, lang), srid=4326)
+        users_in_range = UserDetail.objects.filter(discovery__distance_lte=(users_location, D(km=10)))
         if (UserDetail.objects.all().exclude(phone_number=registr_user.id)).count() > 0:
             for obj in (UserDetail.objects.all().exclude(phone_number=registr_user.id)):
                 id = obj.id
@@ -2070,6 +2076,36 @@ class GetUnreadMessageCount(APIView):
         count = UserNotification.objects.filter(to=user.id).filter(read=False).count()
         print(count)
         return Response({"count": count, "status": HTTP_200_OK})
+
+
+class UpdateDistanceRange(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        distance_range = self.request.POST['distance_range']
+        r_user = RegisterUser.objects.get(email=user.email)
+        user_detail_obj = UserDetail.objects.get(phone_number=r_user)
+        user_detail_obj.distance_range = distance_range
+        user_detail_obj.save()
+        return Response({'message': 'Distance range updated successfully', 'status': HTTP_200_OK})
+
+
+class UpdateAgeRange(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        min_age = self.request.POST['min_age']
+        max_age = self.request.POST['max_age']
+        r_user = RegisterUser.objects.get(email=user.email)
+        user_detail_obj = UserDetail.objects.get(phone_number=r_user)
+        user_detail_obj.min_age_range = min_age
+        user_detail_obj.max_age_range = max_age
+        user_detail_obj.save()
+        return Response({'message': 'Updated age range successfully', 'status': HTTP_200_OK})
 
 
 class PopNotificationAPIView(CreateAPIView):

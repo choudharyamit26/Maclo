@@ -147,6 +147,9 @@ class UserDetail(models.Model):
     bio = models.CharField(default='', max_length=600, null=True, blank=True)
     phone_number = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, null=True, blank=True)
     discovery = models.PointField(srid=4326, geography=True, null=True, blank=True)
+    distance_range = models.IntegerField()
+    min_age_range = models.IntegerField()
+    max_age_range = models.IntegerField()
     hometown = models.CharField(default='', max_length=300, null=True, blank=True)
     living_in = models.CharField(default='', max_length=300, null=True, blank=True)
     profession = models.CharField(
