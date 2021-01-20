@@ -885,10 +885,12 @@ class UserslistAPIView(APIView):
         # for obj in queryset1:
         #     users.append(obj)
         # return Response({"Users":users}, HTTP_200_OK)
-        lat = self.request.data['lat']
-        lang = self.request.data['lang']
+        user_detail_obj = UserDetail.objects.get(phone_number=registr_user.id)
+        lang = user_detail_obj.discovery[0]
+        lat = user_detail_obj.discovery[1]
         users_location = fromstr('Point({} {})'.format(lat, lang), srid=4326)
-        users_in_range = UserDetail.objects.filter(discovery__distance_lte=(users_location, D(km=10)))
+        users_in_range = UserDetail.objects.filter(discovery__distance_lte=(users_location, D(km=10))).exclude(
+            phone_number=registr_user.id)
         if (UserDetail.objects.all().exclude(phone_number=registr_user.id)).count() > 0:
             for obj in (UserDetail.objects.all().exclude(phone_number=registr_user.id)):
                 id = obj.id
@@ -2172,3 +2174,12 @@ class GetMediaContent(APIView):
             print('------>>>')
             print(f)
             return Response({"sdgfsgjas"})
+
+
+class UserAge(APIView):
+    def get(self, request, *args, **kwargs):
+        user = RegisterUser.objects.all()[0]
+        age = timezone.now().date().year - user.date_of_birth.year
+        print('date ', timezone.now().date())
+        print('Date of birth ', user.date_of_birth)
+        return Response({'age': age})

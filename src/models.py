@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.gis.db import models
+from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -120,6 +121,10 @@ class RegisterUser(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+    def get_user_age(self):
+        age = timezone.now().year-self.date_of_birth.year
+        return age
 
 
 class SubscriptionPlans(models.Model):

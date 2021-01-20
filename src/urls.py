@@ -13,7 +13,7 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     GetUnreadMessageCount, ContactUsQueryForm, UpdateEmail, UpdateProfilePic, Logout, UpdateProfilePic_1, \
     UpdateProfilePic_2, UpdateProfilePic_3, UpdateProfilePic_4, UpdateProfilePic_5, UpdateProfilePic_6, UpdateInterest, \
     UserLikedList, MeetingDetail, MettingList, UpdateMeetingStatus, UpdateUserLocation, UpdateDistanceRange, \
-    UpdateAgeRange
+    UpdateAgeRange,UserAge
 
 app_name = 'src'
 
@@ -88,7 +88,8 @@ urlpatterns = [
     path('content/', GetMediaContent.as_view(), name='media-content'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('check-number/', CheckNumber.as_view(), name='check-number')
+    path('check-number/', CheckNumber.as_view(), name='check-number'),
+    path('user-age/', UserAge.as_view(), name='user-age'),
 
 ]
 if settings.DEBUG:
