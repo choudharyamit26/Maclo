@@ -12,7 +12,7 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     ShowInstagramPics, LoginView, CheckNumber, GetNotificationList, UpdateNotification, DeleteNotification, \
     GetUnreadMessageCount, ContactUsQueryForm, UpdateEmail, UpdateProfilePic, Logout, UpdateProfilePic_1, \
     UpdateProfilePic_2, UpdateProfilePic_3, UpdateProfilePic_4, UpdateProfilePic_5, UpdateProfilePic_6, UpdateInterest, \
-    UserLikedList, MeetingDetail, MettingList, UpdateMeetingStatus
+    UserLikedList, MeetingDetail, MettingList, UpdateMeetingStatus,UpdateUserLocation
 
 app_name = 'src'
 
@@ -62,6 +62,7 @@ urlpatterns = [
     path('meeting-detail/', MeetingDetail.as_view(), name='meeting-detail'),
     path('meeting-list/', MettingList.as_view(), name='meeting-list'),
     path('update-meeting-status/', UpdateMeetingStatus.as_view(), name='update-meeting-status'),
+    path('update-location/', UpdateUserLocation.as_view(), name='update-location'),
     path('schedule-meeting/', ScheduleMeetingAPIView.as_view(), name='schedule-meeting'),
     path('purchase-subscription/', SubscriptionPlanAPIView.as_view(), name='subscription-purchase'),
     path('feedback/', FeedbackApiView.as_view(), name='feedback'),

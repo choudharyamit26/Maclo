@@ -3,6 +3,7 @@ import shutil
 
 import instaloader
 from django.contrib.auth import get_user_model
+from django.contrib.gis.geos import fromstr
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -1715,7 +1716,7 @@ class MeetingDetail(APIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         meeting_id = self.request.data['meeting_id']
         meeting_obj = ScheduleMeeting.objects.get(id=meeting_id)
         return Response(
@@ -1766,6 +1767,21 @@ class UpdateMeetingStatus(APIView):
         meeting.status = status.capitalize()
         meeting.save()
         return Response({'message': 'Meeting status updated successfully', 'status': HTTP_200_OK})
+
+
+class UpdateUserLocation(APIView):
+    model = UserDetail
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        lat = self.request.POST['lat']
+        lang = self.request.POST['lang']
+        r_user = RegisterUser.objects.get(email=self.request.user.email)
+        user_detail = UserDetail.objects.get(phone_number=r_user)
+        user_detail.discovery = fromstr(f'POINT({lang} {lat})', srid=4326)
+        user_detail.save()
+        return Response({'message': 'Location updated successfully', 'status': HTTP_200_OK})
 
 
 class FeedbackApiView(CreateAPIView):

@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.gis.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -97,7 +98,7 @@ class RegisterUser(models.Model):
         default="", choices=QUALIFICATION, max_length=100, null=True, blank=True)
     relationship_status = models.CharField(
         default='', choices=RELATIONSHIP_STATUS, max_length=100, null=True, blank=True)
-    height = models.IntegerField(null=True,blank=True)
+    height = models.IntegerField(null=True, blank=True)
     fav_quote = models.CharField(default='', max_length=1000)
     religion = models.CharField(default='', max_length=100, null=True, blank=True)
     body_type = models.CharField(default='', max_length=100)
@@ -145,9 +146,9 @@ class SubscriptionPlans(models.Model):
 class UserDetail(models.Model):
     bio = models.CharField(default='', max_length=600, null=True, blank=True)
     phone_number = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, null=True, blank=True)
-    living_in = models.CharField(
-        default='', choices=LOCATION, max_length=100, null=True, blank=True)
+    discovery = models.PointField(srid=4326, geography=True, null=True, blank=True)
     hometown = models.CharField(default='', max_length=300, null=True, blank=True)
+    living_in = models.CharField(default='', max_length=300, null=True, blank=True)
     profession = models.CharField(
         default="", choices=PROFESSION, max_length=100, null=True, blank=True)
     college_name = models.CharField(

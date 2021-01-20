@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
@@ -108,17 +109,28 @@ CHANNEL_LAYERS = {
 }
 
 # Server database
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'maclo',
+#         'USER': 'maclo',
+#         'PASSWORD': 'maclo',
+#         'HOST': 'localhost',
+#         'PORT': '5432'
+#     }
+# }
+
+# Geo database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'maclo',
-        'USER': 'maclo',
-        'PASSWORD': 'maclo',
+        'USER': 'postgres',
+        'PASSWORD': 'test123',
         'HOST': 'localhost',
         'PORT': '5432'
     }
 }
-
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
