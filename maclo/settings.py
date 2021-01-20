@@ -109,18 +109,18 @@ CHANNEL_LAYERS = {
 }
 
 # Server database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'maclo',
-        'USER': 'maclo',
-        'PASSWORD': 'maclo',
-        'HOST': 'localhost',
-        'PORT': '5432'
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'maclo',
+#         'USER': 'maclo',
+#         'PASSWORD': 'maclo',
+#         'HOST': 'localhost',
+#         'PORT': '5432'
+#     }
+# }
 
-# Geo database
+#local Geo database
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.contrib.gis.db.backends.postgis',
@@ -131,6 +131,17 @@ DATABASES = {
 #         'PORT': '5432'
 #     }
 # }
+# Production Geo Datbase
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'dating',
+        'USER': 'maclo',
+        'PASSWORD': 'maclo',
+        'HOST': 'localhost',
+        'PORT': '5432'
+    }
+}
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
