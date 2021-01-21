@@ -1429,25 +1429,25 @@ class GetMatchesAPIView(ListAPIView):
         z = []
         a = []
         for y in match.values():
-            if RegisterUser.objects.get(id=y['user_id']).pic_1.url:
+            try:
                 z.append({'id': y['user_id'], 'first_name': RegisterUser.objects.get(id=y['user_id']).first_name,
                           'last_name': RegisterUser.objects.get(id=y['user_id']).last_name,
                           'profile_pic': RegisterUser.objects.get(id=y['user_id']).pic_1.url,
                           'matched_at': y['matched_at'],
                           'type': 'match'})
-            else:
+            except Exception as e:
                 z.append({'id': y['user_id'], 'first_name': RegisterUser.objects.get(id=y['user_id']).first_name,
                           'last_name': RegisterUser.objects.get(id=y['user_id']).last_name,
                           'profile_pic': '', 'matched_at': y['matched_at'],
                           'type': 'match'})
         for b in super_match.values():
-            if RegisterUser.objects.get(id=b['user_id']).pic_1.url:
+            try:
                 a.append({'id': b['user_id'], 'first_name': RegisterUser.objects.get(id=b['user_id']).first_name,
                           'last_name': RegisterUser.objects.get(id=b['user_id']).last_name,
                           'profile_pic': RegisterUser.objects.get(id=b['user_id']).pic_1.url,
                           'matched_at': b['matched_at'],
                           'type': 'super_match'})
-            else:
+            except Exception as e:
                 a.append({'id': b['user_id'], 'first_name': RegisterUser.objects.get(id=b['user_id']).first_name,
                           'last_name': RegisterUser.objects.get(id=b['user_id']).last_name,
                           'profile_pic': '', 'matched_at': b['matched_at'],
