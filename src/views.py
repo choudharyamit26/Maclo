@@ -1429,15 +1429,29 @@ class GetMatchesAPIView(ListAPIView):
         z = []
         a = []
         for y in match.values():
-            z.append({'id': y['user_id'], 'first_name': RegisterUser.objects.get(id=y['user_id']).first_name,
-                      'last_name': RegisterUser.objects.get(id=y['user_id']).last_name,
-                      'profile_pic': RegisterUser.objects.get(id=y['user_id']).pic_1.url, 'matched_at': y['matched_at'],
-                      'type': 'match'})
+            if RegisterUser.objects.get(id=y['user_id']).pic_1.url:
+                z.append({'id': y['user_id'], 'first_name': RegisterUser.objects.get(id=y['user_id']).first_name,
+                          'last_name': RegisterUser.objects.get(id=y['user_id']).last_name,
+                          'profile_pic': RegisterUser.objects.get(id=y['user_id']).pic_1.url,
+                          'matched_at': y['matched_at'],
+                          'type': 'match'})
+            else:
+                z.append({'id': y['user_id'], 'first_name': RegisterUser.objects.get(id=y['user_id']).first_name,
+                          'last_name': RegisterUser.objects.get(id=y['user_id']).last_name,
+                          'profile_pic': '', 'matched_at': y['matched_at'],
+                          'type': 'match'})
         for b in super_match.values():
-            a.append({'id': b['user_id'], 'first_name': RegisterUser.objects.get(id=b['user_id']).first_name,
-                      'last_name': RegisterUser.objects.get(id=b['user_id']).last_name,
-                      'profile_pic': RegisterUser.objects.get(id=b['user_id']).pic_1.url, 'matched_at': b['matched_at'],
-                      'type': 'super_match'})
+            if RegisterUser.objects.get(id=b['user_id']).pic_1.url:
+                a.append({'id': b['user_id'], 'first_name': RegisterUser.objects.get(id=b['user_id']).first_name,
+                          'last_name': RegisterUser.objects.get(id=b['user_id']).last_name,
+                          'profile_pic': RegisterUser.objects.get(id=b['user_id']).pic_1.url,
+                          'matched_at': b['matched_at'],
+                          'type': 'super_match'})
+            else:
+                a.append({'id': b['user_id'], 'first_name': RegisterUser.objects.get(id=b['user_id']).first_name,
+                          'last_name': RegisterUser.objects.get(id=b['user_id']).last_name,
+                          'profile_pic': '', 'matched_at': b['matched_at'],
+                          'type': 'super_match'})
         return Response({'match': z + a, 'status': HTTP_200_OK})
 
 
