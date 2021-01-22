@@ -152,9 +152,9 @@ class UserDetail(models.Model):
     bio = models.CharField(default='', max_length=600, null=True, blank=True)
     phone_number = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, null=True, blank=True)
     discovery = models.PointField(srid=4326, geography=True, null=True, blank=True)
-    distance_range = models.IntegerField()
-    min_age_range = models.IntegerField()
-    max_age_range = models.IntegerField()
+    distance_range = models.IntegerField(default=5,null=True,blank=True)
+    min_age_range = models.IntegerField(default=18,null=True,blank=True)
+    max_age_range = models.IntegerField(default=50,null=True,blank=True)
     hometown = models.CharField(default='', max_length=300, null=True, blank=True)
     living_in = models.CharField(default='', max_length=300, null=True, blank=True)
     profession = models.CharField(
@@ -211,6 +211,7 @@ class UserSettings(models.Model):
 class MatchedUser(models.Model):
     user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
     liked_by_me = models.ManyToManyField(RegisterUser, default=1, related_name='likedbyme')
+    disliked_by_me = models.ManyToManyField(RegisterUser, default=1, related_name='dislikedbyme')
     super_liked_by_me = models.ManyToManyField(RegisterUser, default=1, related_name='superlikedbyme')
     matched = models.CharField(default='No', choices=BOOL_CHOICES, max_length=100)
     super_matched = models.CharField(default='No', choices=BOOL_CHOICES, max_length=100)

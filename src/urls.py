@@ -13,7 +13,7 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     GetUnreadMessageCount, ContactUsQueryForm, UpdateEmail, UpdateProfilePic, Logout, UpdateProfilePic_1, \
     UpdateProfilePic_2, UpdateProfilePic_3, UpdateProfilePic_4, UpdateProfilePic_5, UpdateProfilePic_6, UpdateInterest, \
     UserLikedList, MeetingDetail, MettingList, UpdateMeetingStatus, UpdateUserLocation, UpdateDistanceRange, \
-    UpdateAgeRange,UserAge
+    UpdateAgeRange,UserAge,FilteredUserView,DislikeUser
 
 app_name = 'src'
 
@@ -57,6 +57,7 @@ urlpatterns = [
     path('user-search/', SearchUser.as_view(), name='user-search'),
     path('get-user-matches/', GetMatchesAPIView.as_view(), name='get-user-matches'),
     path('like-user/', LikeUserAPIView.as_view(), name='like-user'),
+    path('dislike-user/', DislikeUser.as_view(), name='dislike-user'),
     path('superlike-user/', SuperLikeUserAPIView.as_view(), name='superlike-user'),
     path('user-deletematches/', DeleteMatchesAPIView.as_view(), name='delete-match'),
     path('user-deletesupermatches/', DeleteSuperMatchesAPIView.as_view(), name='delete-supermatch'),
@@ -90,6 +91,7 @@ urlpatterns = [
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('check-number/', CheckNumber.as_view(), name='check-number'),
     path('user-age/', UserAge.as_view(), name='user-age'),
+    path('home-or-filter/', FilteredUserView.as_view(), name='home-or-filter'),
 
 ]
 if settings.DEBUG:

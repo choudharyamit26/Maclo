@@ -158,6 +158,8 @@ class UserCreateAPIView(CreateAPIView):
         # pic_7 = self.request.data['pic_7']
         # pic_8 = self.request.data['pic_8']
         # pic_9 = self.request.data['pic_9']
+        lat = self.request.data['lat']
+        lang = self.request.data['lang']
         user_qs = RegisterUser.objects.filter(
             phone_number__iexact=phone_number)
         if user_qs.exists():
@@ -192,7 +194,8 @@ class UserCreateAPIView(CreateAPIView):
                 # pic_9=pic_9
             )
             UserDetail.objects.create(
-                phone_number=user
+                phone_number=user,
+                discovery=fromstr(f'POINT({lang} {lat})', srid=4326)
             )
             us_obj = User.objects.create(
                 email=email,
@@ -657,6 +660,11 @@ class UserProfileAPIView(ListCreateAPIView):
                 "drink": user.drink,
                 "subscription_purchased": user.subscription_purchased,
                 "subscription_purchased_at": user.subscription_purchased_at,
+                "discovery_lat": user.discovery[0],
+                "discovery_lang": user.discovery[1],
+                "distance_range": user.distance_range,
+                "min_age_range": user.min_age_range,
+                "max_age_range": user.max_age_range
             }
             return Response({"data": detail, "status": HTTP_200_OK})
         except Exception as e:
@@ -885,14 +893,35 @@ class UserslistAPIView(APIView):
         # for obj in queryset1:
         #     users.append(obj)
         # return Response({"Users":users}, HTTP_200_OK)
-        # user_detail_obj = UserDetail.objects.get(phone_number=registr_user.id)
-        # lang = user_detail_obj.discovery[0]
-        # lat = user_detail_obj.discovery[1]
-        # users_location = fromstr('Point({} {})'.format(lat, lang), srid=4326)
-        # users_in_range = UserDetail.objects.filter(discovery__distance_lte=(users_location, D(km=10))).exclude(
-        #     phone_number=registr_user.id)
+        user_detail_obj = UserDetail.objects.get(phone_number=registr_user.id)
+        lang = user_detail_obj.discovery[0]
+        lat = user_detail_obj.discovery[1]
+        distance_range = user_detail_obj.distance_range
+        if distance_range and user_detail_obj.max_age_range and user_detail_obj.min_age_range:
+            users_location = fromstr('Point({} {})'.format(lat, lang), srid=4326)
+            users_in_range = UserDetail.objects.filter(
+                discovery__distance_lte=(users_location, D(km=distance_range))).exclude(
+                phone_number=registr_user.id).exclude(phone_number=registr_user.id)
+            # print(users_in_range.filter(min_age_range__gte=obj.phone_number.get_user_age(),max_age_range__lte=))
+            print('>>>>>>>>>>>>>>>> Filtered Users -->', users_in_range)
+            f_u = []
+            for u in users_in_range:
+                if u.min_age_range <= u.phone_number.get_user_age() <= u.max_age_range:
+                    f_u.append(u)
+                else:
+                    pass
+            print(' From if case Filtered users---------------', f_u)
+        else:
+            users_location = fromstr('Point({} {})'.format(lat, lang), srid=4326)
+            users_in_range = UserDetail.objects.filter(
+                discovery__distance_lte=(users_location, D(km=2))).exclude(
+                phone_number=registr_user.id).exclude(phone_number=registr_user.id)
+            print('Else case Filtered users---------------', users_in_range)
+        # print('>>>>>>>>>>>>>>>> Age  -->', )
         if (UserDetail.objects.all().exclude(phone_number=registr_user.id)).count() > 0:
             for obj in (UserDetail.objects.all().exclude(phone_number=registr_user.id)):
+                print('>>>>>>>>>>>>>>>> Age  -->', obj.phone_number.get_user_age())
+                # print('>>>>>>>>>>>>>>>> Age  -->', obj.phone_number.get_user_age)
                 id = obj.id
                 bio = obj.bio
                 first_name = obj.phone_number.first_name
@@ -1026,6 +1055,245 @@ class UserslistAPIView(APIView):
             return Response({"message": "No users found", "status": HTTP_200_OK})
 
 
+class FilteredUserView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    model = UserDetail
+    serializer_class = UserDetailSerializer
+
+    def post(self, request, *args, **kwargs):
+        logged_in_user_id = self.request.user
+        register_user = RegisterUser.objects.get(email=logged_in_user_id.email)
+        print(register_user.id)
+        user_detail_obj = UserDetail.objects.get(phone_number=register_user.id)
+        lang = 0
+        lat = 0
+        if user_detail_obj.discovery:
+            lang = user_detail_obj.discovery[0]
+        if user_detail_obj.discovery:
+            lat = user_detail_obj.discovery[1]
+        if user_detail_obj.distance_range:
+            distance_range = user_detail_obj.distance_range
+        distance_range = user_detail_obj.distance_range
+        max_age_range = user_detail_obj.max_age_range
+        min_age_range = user_detail_obj.min_age_range
+        print('MIN AND MAX AGE RANGE---- ', min_age_range, max_age_range)
+        liked_users = MatchedUser.objects.filter(liked_by_me=register_user).distinct()
+        disliked_users = MatchedUser.objects.filter(disliked_by_me=register_user).distinct()
+        print('Liked Users---->>', liked_users)
+        print('Disliked users----->>', disliked_users)
+        l = []
+        for x in liked_users:
+            for y in x.liked_by_me.all():
+                l.append(y.id)
+        print(l)
+        d = []
+        for x in disliked_users:
+            for y in x.disliked_by_me.all():
+                d.append(y.id)
+        print('Disliked ', d)
+        print('Liked Disliked list ', l + d)
+        liked_disliked_user_detail = []
+        for x in l + d:
+            if x in liked_disliked_user_detail:
+                pass
+            else:
+                liked_disliked_user_detail.append(UserDetail.objects.get(phone_number=x))
+        f_u = []
+        print('Lang and Lat', lang, lat)
+        print('LIKED DISLIKED USER DETAIL--->>',liked_disliked_user_detail)
+        users_location = fromstr('Point({} {})'.format(lang, lat), srid=4326)
+        users_in_range = UserDetail.objects.filter(
+            discovery__distance_lte=(users_location, D(km=distance_range))).exclude(
+            phone_number=register_user.id).exclude(phone_number=register_user.id)
+        # print(users_in_range.filter(min_age_range__gte=obj.phone_number.get_user_age(),max_age_range__lte=))
+        print('>>>>>>>>>>>>>>>> Filtered Users -->', users_in_range)
+        list_after_liked_disliked = []
+        for x in liked_disliked_user_detail:
+            print(x)
+            if x not in users_in_range:
+                list_after_liked_disliked.append(x)
+            else:
+                pass
+        print('LIST AFTER LIKED AND DISLIKED REMOVAL---', list_after_liked_disliked)
+        for u in users_in_range:
+            if min_age_range <= u.phone_number.get_user_age() <= max_age_range:
+                f_u.append(u)
+            else:
+                pass
+        print(' From if case Filtered users---------------', f_u)
+        qualification = self.request.GET.get('qualification' or None)
+        relationship_status = self.request.GET.get('relationship_status' or None)
+        religion = self.request.POST.get('religion' or None)
+        body_type = self.request.POST.get('body_type' or None)
+        gender = self.request.POST.get('gender' or None)
+        height = self.request.POST.get('height' or None)
+        zodiac_sign = self.request.POST.get('zodiac_sign' or None)
+        taste = self.request.POST.get('taste' or None)
+        print('qualification--->>>', qualification)
+        print('relationship_status---->>', relationship_status)
+        print('religion---->>', religion)
+        print('body_type--->>', body_type)
+        print('gender--->>>', gender)
+        print('height--->>>', height)
+        print('zodiac_sign--->>', zodiac_sign)
+        print('taste____>>>', taste)
+        z = []
+        for x in f_u:
+            print('XXXXXXXXXXXXXX-----------', x)
+            print(x.phone_number.email)
+            r_u = RegisterUser.objects.get(email=x.phone_number.email)
+            z.append(r_u)
+        print('>>>>>>>>>>>>>>>>>>>>>>>>>zzzzzzzzzzz ', z)
+        qs = []
+        if qualification or relationship_status or height or gender or religion or zodiac_sign or taste or body_type:
+            for y in z:
+                if y.qualification == qualification or y.relationship_status == relationship_status or y.height == height or y.gender == gender or y.religion == religion or y.zodiac_sign == zodiac_sign or y.body_type == body_type or y.taste == taste:
+                    qs.append(y)
+                else:
+                    pass
+        else:
+            qs = z
+        final_list = []
+        print('QS_____________>>>>>>>>>>', qs)
+        for y in qs:
+            a = UserDetail.objects.get(phone_number=y.id)
+            final_list.append(a)
+        print('FINAL LIST ----->>>', final_list)
+        filtered_users = []
+        for obj in final_list:
+            id = obj.id
+            bio = obj.bio
+            first_name = obj.phone_number.first_name
+            last_name = obj.phone_number.last_name
+            email = obj.phone_number.email
+            gender = obj.phone_number.gender
+            date_of_birth = obj.phone_number.date_of_birth
+            job_profile = obj.phone_number.job_profile
+            company_name = obj.phone_number.company_name
+            qualification = obj.phone_number.qualification
+            relationship_status = obj.phone_number.relationship_status
+            height = obj.phone_number.height
+            fav_quote = obj.phone_number.fav_quote
+            religion = obj.phone_number.religion
+            body_type = obj.phone_number.body_type
+            verified = obj.phone_number.verified
+            fb_signup = obj.phone_number.fb_signup
+            pic_1 = ''
+            pic_2 = ''
+            pic_3 = ''
+            pic_4 = ''
+            pic_5 = ''
+            pic_6 = ''
+            if obj.phone_number.pic_1:
+                pic_1 = obj.phone_number.pic_1.url
+            else:
+                pic_1 = ''
+            if obj.phone_number.pic_2:
+                pic_2 = obj.phone_number.pic_2.url
+            else:
+                pic_2 = ''
+            if obj.phone_number.pic_3:
+                pic_3 = obj.phone_number.pic_3.url
+            else:
+                pic_3 = ''
+            if obj.phone_number.pic_4:
+                pic_4 = obj.phone_number.pic_4.url
+            else:
+                pic_4 = ''
+            if obj.phone_number.pic_5:
+                pic_5 = obj.phone_number.pic_5.url
+            else:
+                pic_5 = ''
+            if obj.phone_number.pic_6:
+                pic_6 = obj.phone_number.pic_6.url
+            else:
+                pic_6 = ''
+            # if obj.phone_number.pic_7:
+            #     pic_7 = obj.phone_number.pic_7.url
+            # else:
+            #     pic_7 = ''
+            # if obj.phone_number.pic_8:
+            #     pic_8 = obj.phone_number.pic_8.url
+            # else:
+            #     pic_8 = ''
+            # if obj.phone_number.pic_9:
+            #     pic_9 = obj.phone_number.pic_9.url
+            # else:
+            #     pic_9 = ''
+            living_in = obj.living_in
+            hometown = obj.hometown
+            profession = obj.profession
+            college_name = obj.college_name
+            university = obj.university
+            personality = obj.personality
+            preference_first_date = obj.preference_first_date
+            fav_music = obj.fav_music
+            travelled_place = obj.travelled_place
+            once_in_life = obj.once_in_life
+            exercise = obj.exercise
+            looking_for = obj.looking_for
+            fav_food = obj.fav_food
+            interest = obj.interest
+            fav_pet = obj.fav_pet
+            smoke = obj.smoke
+            drink = obj.drink
+            subscription_purchased = obj.subscription_purchased
+            subscription_purchased_at = obj.subscription_purchased_at
+            # subscription = obj.subscription.values()
+            detail = {
+                "id": id,
+                "bio": bio,
+                "first_name": first_name,
+                "last_name": last_name,
+                "email": email,
+                "gender": gender,
+                "date_of_birth": date_of_birth,
+                "job_profile": job_profile,
+                "company_name": company_name,
+                "qualification": qualification,
+                "relationship_status": relationship_status,
+                "height": height,
+                "fav_quote": fav_quote,
+                "religion": religion,
+                "body_type": body_type,
+                "verified": verified,
+                "fb_signup": fb_signup,
+                "pic_1": pic_1,
+                "pic_2": pic_2,
+                "pic_3": pic_3,
+                "pic_4": pic_4,
+                "pic_5": pic_5,
+                "pic_6": pic_6,
+                # "pic_7": pic_7,
+                # "pic_8": pic_8,
+                # "pic_9": pic_9,
+                "living_in": living_in,
+                "hometown": hometown,
+                "profession": profession,
+                "college_name": college_name,
+                "university": university,
+                "personality": personality,
+                "preference_first_date": preference_first_date,
+                "fav_music": fav_music,
+                "travelled_place": travelled_place,
+                "once_in_life": once_in_life,
+                "exercise": exercise,
+                "looking_for": looking_for,
+                "fav_food": fav_food,
+                "interest": interest,
+                "fav_pet": fav_pet,
+                "smoke": smoke,
+                "drink": drink,
+                "subscription_purchased": subscription_purchased,
+                "subscription_purchased_at": subscription_purchased_at,
+                # "subscription": subscription
+            }
+            filtered_users.append(detail)
+        print('FILTERED USERS LIST------------->>>>>>>', filtered_users)
+        return Response({'data': filtered_users, 'status': HTTP_200_OK})
+
+
 class UserDetailAPIView(APIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
@@ -1114,6 +1382,10 @@ class UserDetailAPIView(APIView):
             drink = obj.drink
             subscription_purchased = obj.subscription_purchased
             subscription_purchased_at = obj.subscription_purchased_at
+            discovery = obj.discovery
+            distance_range = obj.distance_range
+            min_age_range = obj.min_age_range
+            max_age_range = obj.max_age_range
             # subscription = obj.subscription.values()
             detail = {
                 "bio": bio,
@@ -1161,7 +1433,11 @@ class UserDetailAPIView(APIView):
                 "smoke": smoke,
                 "drink": drink,
                 "subscription_purchased": subscription_purchased,
-                "subscription_purchased_at": subscription_purchased_at,
+                "discovery_lat": discovery[0],
+                "discovery_lang": discovery[1],
+                "distance_range": distance_range,
+                "min_age_range": min_age_range,
+                "max_age_range": max_age_range,
                 # "subscription": subscription
             }
             return Response({"Details": detail}, status=HTTP_200_OK)
@@ -1318,6 +1594,37 @@ class LikeUserAPIView(CreateAPIView):
             print(e)
             x = {'error': str(e)}
             return Response({'error': x['error'], 'status': HTTP_400_BAD_REQUEST})
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class DislikeUser(CreateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    model = MatchedUser
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        logged_in_user_id = RegisterUser.objects.get(email=user.email)
+        disliked_by_me = self.request.data['disliked_by_me']
+        register_user = RegisterUser.objects.get(id=logged_in_user_id.id)
+        from_user_name = register_user.first_name
+        user = MatchedUser.objects.create(user=register_user, matched='No')
+        user.disliked_by_me.add(RegisterUser.objects.get(id=int(disliked_by_me)))
+        to_user_id = RegisterUser.objects.get(id=int(disliked_by_me))
+        # to_user_name = to_user_id.first_name
+        # UserNotification.objects.create(
+        #     to=User.objects.get(email=to_user_id.email),
+        #     title='Like Notification',
+        #     body="You have been disliked by " + from_user_name
+        #     # from_user_id=register_user,
+        #     # from_user_name=from_user_name,
+        #     # to_user_id=to_user_id,
+        #     # to_user_name=to_user_name,
+        #     # notification_type='Like Notification',
+        #     # notification_title='Like Notification',
+        #     # notification_body="You have been liked by " + from_user_name
+        # )
+        return Response({'message': 'Disliked user', 'status': HTTP_200_OK})
 
 
 @method_decorator(csrf_exempt, name='dispatch')
