@@ -1078,8 +1078,8 @@ class FilteredUserView(APIView):
         max_age_range = user_detail_obj.max_age_range
         min_age_range = user_detail_obj.min_age_range
         print('MIN AND MAX AGE RANGE---- ', min_age_range, max_age_range)
-        liked_users = MatchedUser.objects.filter(liked_by_me=register_user).distinct()
-        disliked_users = MatchedUser.objects.filter(disliked_by_me=register_user).distinct()
+        liked_users = MatchedUser.objects.filter(user=register_user).distinct()
+        disliked_users = MatchedUser.objects.filter(user=register_user).distinct()
         print('Liked Users---->>', liked_users)
         print('Disliked users----->>', disliked_users)
         l = []
@@ -1109,14 +1109,20 @@ class FilteredUserView(APIView):
         # print(users_in_range.filter(min_age_range__gte=obj.phone_number.get_user_age(),max_age_range__lte=))
         print('>>>>>>>>>>>>>>>> Filtered Users -->', users_in_range)
         list_after_liked_disliked = []
-        for x in liked_disliked_user_detail:
-            print(x)
-            if x not in users_in_range:
-                list_after_liked_disliked.append(x)
-            else:
-                pass
+        if len(users_in_range) > 0:
+            for x in set(liked_disliked_user_detail):
+                # print(x.id in [x.id for x in users_in_range])
+                # print(x.id, [x.id for x in users_in_range])
+                for y in users_in_range:
+                    if x.id == y.id:
+                        pass
+                    else:
+                        list_after_liked_disliked.append(y)
+
+        else:
+            print('ELSEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE')
         print('LIST AFTER LIKED AND DISLIKED REMOVAL---', list_after_liked_disliked)
-        for u in users_in_range:
+        for u in list_after_liked_disliked:
             if min_age_range <= u.phone_number.get_user_age() <= max_age_range:
                 f_u.append(u)
             else:
