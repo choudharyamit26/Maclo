@@ -19,7 +19,7 @@ from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
-from django.contrib.gis.db.models.functions import Distance
+from django.contrib.gis.db.models.functions import Distance, GeometryDistance
 from django.db.models import F
 from adminpanel.models import UserNotification
 from .models import UserInstagramPic, UserDetail, RegisterUser, MatchedUser, RequestMeeting, ScheduleMeeting, Feedback, \
@@ -1103,9 +1103,10 @@ class FilteredUserView(APIView):
         print('Lang and Lat', lang, lat)
         print('LIKED DISLIKED USER DETAIL--->>',liked_disliked_user_detail)
         users_location = fromstr('Point({} {})'.format(lang, lat), srid=4326)
-        users_in_range = UserDetail.objects.filter(
-            discovery__distance_lte=(users_location, D(km=distance_range))).exclude(
-            phone_number=register_user.id).exclude(phone_number=register_user.id)
+        # users_in_range = UserDetail.objects.filter(
+        #     discovery__distance_lte=(users_location, D(km=distance_range))).exclude(
+        #     phone_number=register_user.id).exclude(phone_number=register_user.id)
+        users_in_range = UserDetail.objects.annotate(distance=GeometryDistance("discovery__distance", users_location)).filter(distance__lte=50000).order_by("distance")
         # print(users_in_range.filter(min_age_range__gte=obj.phone_number.get_user_age(),max_age_range__lte=))
         print('>>>>>>>>>>>>>>>> Filtered Users -->', users_in_range)
         list_after_liked_disliked = []
@@ -1308,8 +1309,10 @@ class UserDetailAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
         phone_number = self.request.GET.get('id')
+        print(phone_number)
         # queryset = UserDetail.objects.filter(id=phone_number).values()
         queryset = UserDetail.objects.filter(id=phone_number)
+        print(queryset)
         for obj in queryset:
             bio = obj.bio
             first_name = obj.phone_number.first_name
@@ -1326,7 +1329,7 @@ class UserDetailAPIView(APIView):
             company_name = obj.phone_number.company_name
             qualification = obj.phone_number.qualification
             relationship_status = obj.phone_number.relationship_status
-            interests = obj.phone_number.interests
+            # interests = obj.phone_number.interests
             fav_quote = obj.phone_number.fav_quote
             religion = obj.phone_number.religion
             body_type = obj.phone_number.body_type
@@ -1356,18 +1359,18 @@ class UserDetailAPIView(APIView):
                 pic_6 = obj.phone_number.pic_6.url
             else:
                 pic_6 = ''
-            if obj.phone_number.pic_7:
-                pic_7 = obj.phone_number.pic_7.url
-            else:
-                pic_7 = ''
-            if obj.phone_number.pic_8:
-                pic_8 = obj.phone_number.pic_8.url
-            else:
-                pic_8 = ''
-            if obj.phone_number.pic_9:
-                pic_9 = obj.phone_number.pic_9.url
-            else:
-                pic_9 = ''
+            # if obj.phone_number.pic_7:
+            #     pic_7 = obj.phone_number.pic_7.url
+            # else:
+            #     pic_7 = ''
+            # if obj.phone_number.pic_8:
+            #     pic_8 = obj.phone_number.pic_8.url
+            # else:
+            #     pic_8 = ''
+            # if obj.phone_number.pic_9:
+            #     pic_9 = obj.phone_number.pic_9.url
+            # else:
+            #     pic_9 = ''
             living_in = obj.living_in
             hometown = obj.hometown
             profession = obj.profession
@@ -1405,7 +1408,7 @@ class UserDetailAPIView(APIView):
                 "company_name": company_name,
                 "qualification": qualification,
                 "relationship_status": relationship_status,
-                "interests": interests,
+                # "interests": interests,
                 "fav_quote": fav_quote,
                 "religion": religion,
                 "body_type": body_type,
@@ -1417,9 +1420,9 @@ class UserDetailAPIView(APIView):
                 "pic_4": pic_4,
                 "pic_5": pic_5,
                 "pic_6": pic_6,
-                "pic_7": pic_7,
-                "pic_8": pic_8,
-                "pic_9": pic_9,
+                # "pic_7": pic_7,
+                # "pic_8": pic_8,
+                # "pic_9": pic_9,
                 "living_in": living_in,
                 "hometown": hometown,
                 "profession": profession,
