@@ -1101,12 +1101,14 @@ class FilteredUserView(APIView):
                 liked_disliked_user_detail.append(UserDetail.objects.get(phone_number=x))
         f_u = []
         print('Lang and Lat', lang, lat)
-        print('LIKED DISLIKED USER DETAIL--->>',liked_disliked_user_detail)
+        print('LIKED DISLIKED USER DETAIL--->>', liked_disliked_user_detail)
         users_location = fromstr('Point({} {})'.format(lang, lat), srid=4326)
         # users_in_range = UserDetail.objects.filter(
         #     discovery__distance_lte=(users_location, D(km=distance_range))).exclude(
         #     phone_number=register_user.id).exclude(phone_number=register_user.id)
-        users_in_range = UserDetail.objects.annotate(distance=GeometryDistance("discovery__distance", users_location)).filter(distance__lte=50000).order_by("distance")
+        users_in_range = UserDetail.objects.annotate(
+            distance=GeometryDistance("discovery__distance", users_location)).filter(
+            distance__lte=(int(distance_range)) * 1000).order_by("distance")
         # print(users_in_range.filter(min_age_range__gte=obj.phone_number.get_user_age(),max_age_range__lte=))
         print('>>>>>>>>>>>>>>>> Filtered Users -->', users_in_range)
         list_after_liked_disliked = []
