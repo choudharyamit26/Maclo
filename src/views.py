@@ -49,6 +49,7 @@ class LoginView(ObtainAuthToken):
             if user:
                 token = Token.objects.get_or_create(user=user)
                 user_data = RegisterUser.objects.get(phone_number=phone_number)
+                user_detail = UserDetail.objects.get(phone_number=user_data)
                 pic_1 = ''
                 pic_2 = ''
                 pic_3 = ''
@@ -117,10 +118,16 @@ class LoginView(ObtainAuthToken):
                     # "pic_7": pic_7,
                     # "pic_8": pic_8,
                     # "pic_9": pic_9,
+                    "discovery_lat": user_detail.discovery[0],
+                    "discovery_lang": user_detail.discovery[1],
+                    "distance_range": user_detail.distance_range,
+                    "min_age_range": user_detail.min_age_range,
+                    "max_age_range": user_detail.max_age_range,
+                    "interested": user_detail.interest
                 }
                 print(token)
                 print(token[0].key)
-                return Response({'token': token[0].key, 'id': user.id, 'data': Data, 'status': HTTP_200_OK})
+                return Response({'token': token[0].key, 'data': Data, 'status': HTTP_200_OK})
         except Exception as e:
             x = {"Error": str(e)}
             return Response({'message': x['Error'], "status": HTTP_400_BAD_REQUEST})
@@ -193,7 +200,7 @@ class UserCreateAPIView(CreateAPIView):
                 # pic_8=pic_8,
                 # pic_9=pic_9
             )
-            UserDetail.objects.create(
+            user_detail=UserDetail.objects.create(
                 phone_number=user,
                 discovery=fromstr(f'POINT({lang} {lat})', srid=4326)
             )
@@ -276,6 +283,12 @@ class UserCreateAPIView(CreateAPIView):
                 # "pic_7": pic_7,
                 # "pic_8": pic_8,
                 # "pic_9": pic_9,
+                "discovery_lat": user_detail.discovery[0],
+                "discovery_lang": user_detail.discovery[1],
+                "distance_range": user_detail.distance_range,
+                "min_age_range": user_detail.min_age_range,
+                "max_age_range": user_detail.max_age_range,
+                "interested": user_detail.interest
             }
             token = Token.objects.get_or_create(user=us_obj)
             return Response(
@@ -1109,9 +1122,10 @@ class FilteredUserView(APIView):
         # users_in_range = UserDetail.objects.annotate(
         #     discovery__distance=GeometryDistance("discovery__distance", users_location)).filter(
         #     discovery__distance_lte=(int(distance_range)) * 1000)
-        d = (int(distance_range)*1000)
+        d = (int(distance_range) * 1000)
         users_in_range = UserDetail.objects.filter(discovery__dwithin=(users_location, d)).annotate(
-            distance=GeometryDistance("discovery", users_location)).exclude(phone_number=register_user.id).order_by("distance")
+            distance=GeometryDistance("discovery", users_location)).exclude(phone_number=register_user.id).order_by(
+            "distance")
         # print(users_in_range.filter(min_age_range__gte=obj.phone_number.get_user_age(),max_age_range__lte=))
         print('>>>>>>>>>>>>>>>> Filtered Users -->', users_in_range)
         list_after_liked_disliked = []
