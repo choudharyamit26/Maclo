@@ -200,7 +200,7 @@ class UserCreateAPIView(CreateAPIView):
                 # pic_8=pic_8,
                 # pic_9=pic_9
             )
-            user_detail=UserDetail.objects.create(
+            user_detail = UserDetail.objects.create(
                 phone_number=user,
                 discovery=fromstr(f'POINT({lang} {lat})', srid=4326)
             )
@@ -1128,25 +1128,41 @@ class FilteredUserView(APIView):
             "distance")
         # print(users_in_range.filter(min_age_range__gte=obj.phone_number.get_user_age(),max_age_range__lte=))
         print('>>>>>>>>>>>>>>>> Filtered Users -->', users_in_range)
+        print('-----------------------------', len(liked_disliked_user_detail))
         list_after_liked_disliked = []
+        # if len(users_in_range) > 0:
+        #     if len(set(liked_disliked_user_detail)) > 0:
+        #         for x in set(liked_disliked_user_detail):
+        #             print(x.id in [x.id for x in users_in_range])
+        #             # print(x.id, [x.id for x in users_in_range])
+        #             for y in users_in_range:
+        #                 print(f'x----{x.id} ,y-----{y.id}')
+        #                 if x.id == y.id:
+        #                     print('x.id == y.id -----------------', x.id == y.id)
+        #                     pass
+        #                 else:
+        #                     print('Else------------------',y)
+        #                     list_after_liked_disliked.append(y)
+        #     else:
+        #         print('inside else-------------------------- list_after_liked_disliked')
+        #         for y in users_in_range:
+        #             list_after_liked_disliked.append(y)
+        # else:
+        #     print('ELSEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE')
         if len(users_in_range) > 0:
-            if len(liked_disliked_user_detail) > 0:
-                for x in set(liked_disliked_user_detail):
-                    # print(x.id in [x.id for x in users_in_range])
-                    # print(x.id, [x.id for x in users_in_range])
-                    for y in users_in_range:
-                        if x.id == y.id:
-                            pass
-                        else:
-                            list_after_liked_disliked.append(y)
+            if len(set(liked_disliked_user_detail)) > 0:
+                for y in users_in_range:
+                    if y in [x for x in set(liked_disliked_user_detail)]:
+                        pass
+                    else:
+                        list_after_liked_disliked.append(y)
             else:
                 for y in users_in_range:
                     list_after_liked_disliked.append(y)
-
         else:
-            print('ELSEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE')
+            pass
         print('LIST AFTER LIKED AND DISLIKED REMOVAL---', list_after_liked_disliked)
-        for u in list_after_liked_disliked:
+        for u in set(list_after_liked_disliked):
             if min_age_range <= u.phone_number.get_user_age() <= max_age_range:
                 f_u.append(u)
             else:
@@ -1866,9 +1882,14 @@ class UserLikedList(APIView):
             for y in user.liked_by_me.all():
                 print('Register User id ', y.id)
                 z = RegisterUser.objects.get(id=y.id)
-                like_list.append(
-                    {'id': z.id, 'first_name': z.first_name, 'last_name': z.last_name, 'liked_at': user.matched_at,
-                     'profile_pic': z.pic_1.url})
+                if z.pic_1:
+                    like_list.append(
+                        {'id': z.id, 'first_name': z.first_name, 'last_name': z.last_name, 'liked_at': user.matched_at,
+                         'profile_pic': z.pic_1.url})
+                else:
+                    like_list.append(
+                        {'id': z.id, 'first_name': z.first_name, 'last_name': z.last_name, 'liked_at': user.matched_at,
+                         'profile_pic': ''})
         return Response({'data': like_list, 'status': HTTP_200_OK})
 
 
