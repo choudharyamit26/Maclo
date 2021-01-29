@@ -1111,19 +1111,23 @@ class FilteredUserView(APIView):
         #     discovery__distance_lte=(int(distance_range)) * 1000)
         d = (int(distance_range)*1000)
         users_in_range = UserDetail.objects.filter(discovery__dwithin=(users_location, d)).annotate(
-            distance=GeometryDistance("discovery", users_location)).order_by("distance")
+            distance=GeometryDistance("discovery", users_location)).exclude(phone_number=register_user.id).order_by("distance")
         # print(users_in_range.filter(min_age_range__gte=obj.phone_number.get_user_age(),max_age_range__lte=))
         print('>>>>>>>>>>>>>>>> Filtered Users -->', users_in_range)
         list_after_liked_disliked = []
         if len(users_in_range) > 0:
-            for x in set(liked_disliked_user_detail):
-                # print(x.id in [x.id for x in users_in_range])
-                # print(x.id, [x.id for x in users_in_range])
+            if len(liked_disliked_user_detail) > 0:
+                for x in set(liked_disliked_user_detail):
+                    # print(x.id in [x.id for x in users_in_range])
+                    # print(x.id, [x.id for x in users_in_range])
+                    for y in users_in_range:
+                        if x.id == y.id:
+                            pass
+                        else:
+                            list_after_liked_disliked.append(y)
+            else:
                 for y in users_in_range:
-                    if x.id == y.id:
-                        pass
-                    else:
-                        list_after_liked_disliked.append(y)
+                    list_after_liked_disliked.append(y)
 
         else:
             print('ELSEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE')
