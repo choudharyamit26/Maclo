@@ -2557,3 +2557,6 @@ class UserAge(APIView):
         print('date ', timezone.now().date())
         print('Date of birth ', user.date_of_birth)
         return Response({'age': age})
+
+
+

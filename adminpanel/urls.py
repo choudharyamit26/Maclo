@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import Login, Dashboard, UsersList, UserDetailView, UserDelete, PasswordChangeView, PasswordChangeDoneView, \
     SendNotification, CreateSubscriptionPlan, SubscriptionsPlansList, PurchasedSubscriptionList, MeetupList, \
-    TransactionsList, ReportsView,StaticContentView
+    TransactionsList, ReportsView, StaticContentView, PrivacyPolicyUrl
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -22,6 +22,7 @@ urlpatterns = [
     path('meetup-list/', MeetupList.as_view(), name='meetup-list'),
     path('transactions-list/', TransactionsList.as_view(), name='transactions-list'),
     path('reports/', ReportsView.as_view(), name='reports'),
+    path('privacy-policy-url/', PrivacyPolicyUrl.as_view(), name='privacy-policy-url'),
     path('static-content/', StaticContentView.as_view(), name='static-content'),
     path('purchased-subscription-plans-list/', PurchasedSubscriptionList.as_view(),
          name='purchased-subscription-plans-list'),

@@ -7,7 +7,7 @@ from django.contrib.auth.views import PasswordContextMixin
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -21,11 +21,11 @@ from django.utils import timezone
 from django.conf.global_settings import DEFAULT_FROM_EMAIL
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import LoginForm, UserNotificationForm
-from src.models import RegisterUser, SubscriptionPlans, ScheduleMeeting, UserDetail, ContactUs
+from src.models import RegisterUser, SubscriptionPlans, ScheduleMeeting, UserDetail, ContactUs, PrivacyPolicy
 from .filters import UserFilter
 from src.fcm_notification import send_to_one, send_another
 from django.utils.translation import gettext_lazy as _
-
+from weasyprint import HTML, CSS
 from .models import UserNotification, Transaction
 
 user = get_user_model()
@@ -419,3 +419,14 @@ class StaticContentView(LoginRequiredMixin, ListView):
 
     # def get(self, request, *args, **kwargs):
     #     return render(self.request, 'content-management.html')
+
+
+class PrivacyPolicyUrl(View):
+    model = PrivacyPolicy
+    template = 'privacy-policy-url.html'
+
+    def get(self, request, *args, **kwargs):
+        html_string = render_to_string('privacy-policy-url.html')
+        html = HTML(string=html_string)
+        result = html.write_pdf()
+        return HttpResponse(result, content_type='application/pdf')

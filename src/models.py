@@ -285,3 +285,7 @@ class PopNotification(models.Model):
     user1 = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='user1')
     user2 = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
     title = models.CharField(default='Met', max_length=100)
+
+
+class PrivacyPolicy(models.Model):
+    content = models.TextField()
