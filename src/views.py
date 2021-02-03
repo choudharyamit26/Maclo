@@ -854,34 +854,57 @@ class ShowInstagramPics(ListAPIView):
         user = self.request.user
         r_user = RegisterUser.objects.get(email=user.email)
         try:
-            pics = UserInstagramPic.objects.filter(phone_number=r_user)
+            pics = UserInstagramPic.objects.filter(phone_number=r_user)[-1]
             pics_list = []
             if pics:
-                for pic in pics:
-                    insta_pic_1 = pic.insta_pic_1
-                    insta_pic_2 = pic.insta_pic_2
-                    insta_pic_3 = pic.insta_pic_3
-                    insta_pic_4 = pic.insta_pic_4
-                    insta_pic_5 = pic.insta_pic_5
-                    insta_pic_6 = pic.insta_pic_6
-                    insta_pic_7 = pic.insta_pic_7
-                    insta_pic_8 = pic.insta_pic_8
-                    insta_pic_9 = pic.insta_pic_9
-                    insta_pic_10 = pic.insta_pic_10
-                    pics_data = {
-                        "insta_pic_1": insta_pic_1,
-                        "insta_pic_2": insta_pic_2,
-                        "insta_pic_3": insta_pic_3,
-                        "insta_pic_4": insta_pic_4,
-                        "insta_pic_5": insta_pic_5,
-                        "insta_pic_6": insta_pic_6,
-                        "insta_pic_7": insta_pic_7,
-                        "insta_pic_8": insta_pic_8,
-                        "insta_pic_9": insta_pic_9,
-                        "insta_pic_10": insta_pic_10,
-                        'insta_verified': pic.insta_connect
-                    }
-                    pics_list.append(pics_data)
+                insta_pic_1 = pics.insta_pic_1
+                insta_pic_2 = pics.insta_pic_2
+                insta_pic_3 = pics.insta_pic_3
+                insta_pic_4 = pics.insta_pic_4
+                insta_pic_5 = pics.insta_pic_5
+                insta_pic_6 = pics.insta_pic_6
+                insta_pic_7 = pics.insta_pic_7
+                insta_pic_8 = pics.insta_pic_8
+                insta_pic_9 = pics.insta_pic_9
+                insta_pic_10 = pics.insta_pic_10
+                pics_data = {
+                    "insta_pic_1": insta_pic_1,
+                    "insta_pic_2": insta_pic_2,
+                    "insta_pic_3": insta_pic_3,
+                    "insta_pic_4": insta_pic_4,
+                    "insta_pic_5": insta_pic_5,
+                    "insta_pic_6": insta_pic_6,
+                    "insta_pic_7": insta_pic_7,
+                    "insta_pic_8": insta_pic_8,
+                    "insta_pic_9": insta_pic_9,
+                    "insta_pic_10": insta_pic_10,
+                    'insta_verified': pics.insta_connect
+                }
+            # for pic in pics:
+            #     insta_pic_1 = pic.insta_pic_1
+            #     insta_pic_2 = pic.insta_pic_2
+            #     insta_pic_3 = pic.insta_pic_3
+            #     insta_pic_4 = pic.insta_pic_4
+            #     insta_pic_5 = pic.insta_pic_5
+            #     insta_pic_6 = pic.insta_pic_6
+            #     insta_pic_7 = pic.insta_pic_7
+            #     insta_pic_8 = pic.insta_pic_8
+            #     insta_pic_9 = pic.insta_pic_9
+            #     insta_pic_10 = pic.insta_pic_10
+            #     pics_data = {
+            #         "insta_pic_1": insta_pic_1,
+            #         "insta_pic_2": insta_pic_2,
+            #         "insta_pic_3": insta_pic_3,
+            #         "insta_pic_4": insta_pic_4,
+            #         "insta_pic_5": insta_pic_5,
+            #         "insta_pic_6": insta_pic_6,
+            #         "insta_pic_7": insta_pic_7,
+            #         "insta_pic_8": insta_pic_8,
+            #         "insta_pic_9": insta_pic_9,
+            #         "insta_pic_10": insta_pic_10,
+            #         'insta_verified': pic.insta_connect
+            #     }
+            #     pics_list.append(pics_data)
             return Response({"pics": pics_list, 'status': HTTP_200_OK})
         except Exception as e:
             print(e)
