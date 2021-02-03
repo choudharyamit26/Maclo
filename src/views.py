@@ -810,12 +810,14 @@ class GetUserInstagramPics(APIView):
 @method_decorator(csrf_exempt, name='dispatch')
 class UserInstagramPicsAPIView(CreateAPIView):
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated)
+    permission_classes = (IsAuthenticated,)
     serializer_class = UserInstagramSerializer
 
     def post(self, request, *args, **kwargs):
-        phone_number = self.request.data['id']
-        p_no = RegisterUser.objects.get(id=phone_number)
+        # phone_number = self.request.data['id']
+        user = self.request.user
+        p_no = RegisterUser.objects.get(email=user.email)
+        insta_pic_0 = self.request.data['insta_pic_0']
         insta_pic_1 = self.request.data['insta_pic_1']
         insta_pic_2 = self.request.data['insta_pic_2']
         insta_pic_3 = self.request.data['insta_pic_3']
@@ -825,23 +827,21 @@ class UserInstagramPicsAPIView(CreateAPIView):
         insta_pic_7 = self.request.data['insta_pic_7']
         insta_pic_8 = self.request.data['insta_pic_8']
         insta_pic_9 = self.request.data['insta_pic_9']
-        insta_pic_10 = self.request.data['insta_pic_10']
         UserInstagramPic.objects.create(
             phone_number=p_no,
-            insta_pic_1=insta_pic_1,
-            insta_pic_2=insta_pic_2,
-            insta_pic_3=insta_pic_3,
-            insta_pic_4=insta_pic_4,
-            insta_pic_5=insta_pic_5,
-            insta_pic_6=insta_pic_6,
-            insta_pic_7=insta_pic_7,
-            insta_pic_8=insta_pic_8,
-            insta_pic_9=insta_pic_9,
-            insta_pic_10=insta_pic_10,
+            insta_pic_1=insta_pic_0,
+            insta_pic_2=insta_pic_1,
+            insta_pic_3=insta_pic_2,
+            insta_pic_4=insta_pic_3,
+            insta_pic_5=insta_pic_4,
+            insta_pic_6=insta_pic_5,
+            insta_pic_7=insta_pic_6,
+            insta_pic_8=insta_pic_7,
+            insta_pic_9=insta_pic_8,
+            insta_pic_10=insta_pic_9,
             insta_connect=True
         )
-        return Response({"Success": "Images uploaded from instagram successfully"},
-                        status=HTTP_201_CREATED)
+        return Response({"Success": "Images uploaded from instagram successfully", "status": HTTP_200_OK})
 
 
 class ShowInstagramPics(ListAPIView):
@@ -850,9 +850,11 @@ class ShowInstagramPics(ListAPIView):
     serializer_class = ShowInstaPics
 
     def get(self, request, *args, **kwargs):
-        id = self.request.GET.get('phone_number')
+        # id = self.request.GET.get('phone_number')
+        user = self.request.user
+        r_user = RegisterUser.objects.get(email=user.email)
         try:
-            pics = UserInstagramPic.objects.get(phone_number=id)
+            pics = UserInstagramPic.objects.get(phone_number=r_user)
             if pics:
                 insta_pic_1 = pics.insta_pic_1
                 insta_pic_2 = pics.insta_pic_2
@@ -876,9 +878,9 @@ class ShowInstagramPics(ListAPIView):
                     "insta_pic_9": insta_pic_9,
                     "insta_pic_10": insta_pic_10,
                 }
-            return Response({"pics": pics}, status=HTTP_200_OK)
+            return Response({"pics": pics, 'status': HTTP_200_OK})
         except:
-            return Response({"No instagram pics"}, status=HTTP_400_BAD_REQUEST)
+            return Response({"message": "No instagram pics", 'status': HTTP_400_BAD_REQUEST})
 
 
 class UserslistAPIView(APIView):
@@ -2557,6 +2559,3 @@ class UserAge(APIView):
         print('date ', timezone.now().date())
         print('Date of birth ', user.date_of_birth)
         return Response({'age': age})
-
-
-

@@ -123,7 +123,7 @@ class RegisterUser(models.Model):
         return str(self.id)
 
     def get_user_age(self):
-        age = timezone.now().year-self.date_of_birth.year
+        age = timezone.now().year - self.date_of_birth.year
         return age
 
 
@@ -152,9 +152,9 @@ class UserDetail(models.Model):
     bio = models.CharField(default='', max_length=600, null=True, blank=True)
     phone_number = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, null=True, blank=True)
     discovery = models.PointField(srid=4326, geography=True, null=True, blank=True)
-    distance_range = models.IntegerField(default=5,null=True,blank=True)
-    min_age_range = models.IntegerField(default=18,null=True,blank=True)
-    max_age_range = models.IntegerField(default=50,null=True,blank=True)
+    distance_range = models.IntegerField(default=5, null=True, blank=True)
+    min_age_range = models.IntegerField(default=18, null=True, blank=True)
+    max_age_range = models.IntegerField(default=50, null=True, blank=True)
     hometown = models.CharField(default='', max_length=300, null=True, blank=True)
     living_in = models.CharField(default='', max_length=300, null=True, blank=True)
     profession = models.CharField(
@@ -185,19 +185,29 @@ class UserDetail(models.Model):
 
 class UserInstagramPic(models.Model):
     phone_number = models.ForeignKey(RegisterUser, default=1, on_delete=models.CASCADE)
-    username = models.CharField(default='username', max_length=100)
-    password = models.CharField(default='password', max_length=100)
-    insta_pic_1 = models.ImageField(null=True, blank=True)
-    insta_pic_2 = models.ImageField(null=True, blank=True)
-    insta_pic_3 = models.ImageField(null=True, blank=True)
-    insta_pic_4 = models.ImageField(null=True, blank=True)
-    insta_pic_5 = models.ImageField(null=True, blank=True)
-    insta_pic_6 = models.ImageField(null=True, blank=True)
-    insta_pic_7 = models.ImageField(null=True, blank=True)
-    insta_pic_8 = models.ImageField(null=True, blank=True)
-    insta_pic_9 = models.ImageField(null=True, blank=True)
-    insta_pic_10 = models.ImageField(null=True, blank=True)
-    insta_connect = models.CharField(default='NO', choices=BOOL_CHOICES, max_length=10)
+    # username = models.CharField(default='username', max_length=100)
+    # password = models.CharField(default='password', max_length=100)
+    # insta_pic_1 = models.ImageField(null=True, blank=True)
+    # insta_pic_2 = models.ImageField(null=True, blank=True)
+    # insta_pic_3 = models.ImageField(null=True, blank=True)
+    # insta_pic_4 = models.ImageField(null=True, blank=True)
+    # insta_pic_5 = models.ImageField(null=True, blank=True)
+    # insta_pic_6 = models.ImageField(null=True, blank=True)
+    # insta_pic_7 = models.ImageField(null=True, blank=True)
+    # insta_pic_8 = models.ImageField(null=True, blank=True)
+    # insta_pic_9 = models.ImageField(null=True, blank=True)
+    # insta_pic_10 = models.ImageField(null=True, blank=True)
+    insta_pic_1 = models.CharField(default='', null=True, blank=True, max_length=5000)
+    insta_pic_2 = models.CharField(default='', null=True, blank=True, max_length=5000)
+    insta_pic_3 = models.CharField(default='', null=True, blank=True, max_length=5000)
+    insta_pic_4 = models.CharField(default='', null=True, blank=True, max_length=5000)
+    insta_pic_5 = models.CharField(default='', null=True, blank=True, max_length=5000)
+    insta_pic_6 = models.CharField(default='', null=True, blank=True, max_length=5000)
+    insta_pic_7 = models.CharField(default='', null=True, blank=True, max_length=5000)
+    insta_pic_8 = models.CharField(default='', null=True, blank=True, max_length=5000)
+    insta_pic_9 = models.CharField(default='', null=True, blank=True, max_length=5000)
+    insta_pic_10 = models.CharField(default='', null=True, blank=True, max_length=5000)
+    insta_connect = models.BooleanField(default=False)
 
 
 class UserSettings(models.Model):
