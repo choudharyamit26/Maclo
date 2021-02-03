@@ -882,7 +882,7 @@ class ShowInstagramPics(ListAPIView):
                         'insta_verified': pic.insta_connect
                     }
                     pics_list.append(pics_data)
-            return Response({"pics": pics, 'status': HTTP_200_OK})
+            return Response({"pics": pics_list, 'status': HTTP_200_OK})
         except Exception as e:
             print(e)
             x = {'error': str(e)}
