@@ -880,8 +880,10 @@ class ShowInstagramPics(ListAPIView):
                     'insta_verified': pics.insta_connect
                 }
             return Response({"pics": pics, 'status': HTTP_200_OK})
-        except:
-            return Response({"message": "No instagram pics", 'status': HTTP_400_BAD_REQUEST})
+        except Exception as e:
+            print(e)
+            x = {'error': str(e)}
+            return Response({"message": x['error'], 'status': HTTP_400_BAD_REQUEST})
 
 
 class UserslistAPIView(APIView):
