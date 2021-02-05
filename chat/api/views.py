@@ -7,49 +7,91 @@ from rest_framework.generics import (
     DestroyAPIView,
     UpdateAPIView
 )
-from chat.models import Chat, Contact
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
+from chat.models import ChatRoom, Message
 from chat.views import get_user_contact
 from .serializers import ChatSerializer
 from src.models import RegisterUser
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 User = RegisterUser()
 
 
-class ChatListView(ListAPIView):
-    serializer_class = ChatSerializer
-    permission_classes = (permissions.AllowAny,)
+class CreateChatroom(APIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
 
-    def get_queryset(self):
-        queryset = Chat.objects.all()
-        # username = self.request.query_params.get('username', None)
-        # print('----------->>>>>',self.request.data)
-        username = self.request.data['id']
-        # print('>>>>>>>>', username)
-        if username is not None:
-            contact = get_user_contact(username)
-            queryset = contact.chats.all()
-        return queryset
+    def post(self, request, *args, **kwargs):
+        sender = self.request.POST['sender']
+        receiver = self.request.POST['receiver']
+        sender_obj = RegisterUser.objects.get(id=sender)
+        receiver_obj = RegisterUser.objects.get(id=receiver)
+        chat_room = ChatRoom.objects.create(
+            sender=sender_obj,
+            receiver=receiver_obj
+        )
 
-
-class ChatDetailView(RetrieveAPIView):
-    queryset = Chat.objects.all()
-    serializer_class = ChatSerializer
-    permission_classes = (permissions.AllowAny,)
+        return Response({'room_id': chat_room.id, 'status': HTTP_200_OK})
 
 
-class ChatCreateView(CreateAPIView):
-    queryset = Chat.objects.all()
-    serializer_class = ChatSerializer
-    permission_classes = (permissions.AllowAny,)
+class MessagesList(APIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+
+    def get(self, request, *args, **kwargs):
+        room_id = self.request.query_params.get('room_id')
+        chat = ChatRoom.objects.get(id=room_id)
+        # message_list = []
+        # for message in chat.messages.all():
+        #     print(message)
+        #     message_list.append(message)
+        # print('----------', message_list)
+        return Response({'messages': chat.messages.all().values(), 'status': HTTP_200_OK})
 
 
-class ChatUpdateView(UpdateAPIView):
-    queryset = Chat.objects.all()
-    serializer_class = ChatSerializer
-    permission_classes = (permissions.AllowAny,)
+class ChatList(APIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+
+    def get(self, request, *args, **kwargs):
+        user_id = self.request.user
+        r_user = RegisterUser.objects.get(email=user_id.email)
+        sender_chat = ChatRoom.objects.filter(sender=r_user)
+        receiver_chat = ChatRoom.objects.filter(receiver=r_user)
+        rooms = sender_chat | receiver_chat
+        print(rooms.order_by('-created_at').values())
+        room_list = []
+        for room in rooms:
+            room_list.append({'id': room.id, 'sender_id': room.sender.id, 'sender_name': RegisterUser.objects.get(
+                id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
+                              'sender_profile_pic': RegisterUser.objects.get(id=room.sender_id).pic_1.url,
+                              'receiver_id': room.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                    id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                    id=room.receiver_id).last_name,
+                              'receiver_profile_pic': RegisterUser.objects.get(id=room.receiver_id).pic_1.url})
+        # return Response({'rooms': rooms.order_by('-created_at').values(), 'status': HTTP_200_OK})
+        return Response({'rooms': room_list, 'status': HTTP_200_OK})
 
 
-class ChatDeleteView(DestroyAPIView):
-    queryset = Chat.objects.all()
-    serializer_class = ChatSerializer
-    permission_classes = (permissions.AllowAny,)
+class CheckRoom(APIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+
+    def get(self, request, *args, **kwargs):
+        sender_id = self.request.query_params.get('sender')
+        receiver_id = self.request.query_params.get('receiver')
+        sender = RegisterUser.objects.get(id=sender_id)
+        receiver = RegisterUser.objects.get(id=receiver_id)
+        try:
+            try:
+                room = ChatRoom.objects.get(sender=sender, receiver=receiver)
+                return Response({'room_exists': True, 'room_id': room.id, 'status': HTTP_200_OK})
+            except Exception as e:
+                room = ChatRoom.objects.get(sender=receiver, receiver=sender)
+                return Response({'room_exists': True, 'room_id': room.id, 'status': HTTP_200_OK})
+        except Exception as e:
+            print(e)
+            return Response({'room_exists': False, 'room_id': '', 'status': HTTP_400_BAD_REQUEST})

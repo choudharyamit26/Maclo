@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from chat.models import Chat, Contact
+from chat.models import ChatRoom
 from chat.views import get_user_contact
 
 
@@ -13,14 +13,14 @@ class ChatSerializer(serializers.ModelSerializer):
     participants = ContactSerializer(many=True)
 
     class Meta:
-        model = Chat
+        model = ChatRoom
         fields = ('id', 'messages', 'participants')
         read_only = ('id')
 
     def create(self, validated_data):
         print(validated_data)
         participants = validated_data.pop('participants')
-        chat = Chat()
+        chat = ChatRoom()
         chat.save()
         for username in participants:
             contact = get_user_contact(username)
