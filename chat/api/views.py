@@ -47,7 +47,7 @@ class MessagesList(APIView):
         messages = []
         for message in chat.messages.all():
             messages.append({'id': message.id, 'sender': message.sender.id, 'receiver': message.receiver.id,
-                             'is_image': message.is_image, 'created_at': message.created_at})
+                             'message': message.message,'is_image': message.is_image, 'created_at': message.created_at})
         return Response({'messages': messages, 'status': HTTP_200_OK})
 
 
@@ -106,7 +106,7 @@ class ChatList(APIView):
                             id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
                             id=room.receiver_id).last_name,
                                       'receiver_profile_pic': '', 'last_message': '',
-                                      'created_at':''})
+                                      'created_at': ''})
             elif RegisterUser.objects.get(id=room.receiver_id).pic_1:
                 if room.messages.last():
                     room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
