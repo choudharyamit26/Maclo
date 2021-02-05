@@ -2130,18 +2130,34 @@ class MettingList(APIView):
         recevied_list = []
         sent_list = []
         for meeting in meeting_request_received:
-            recevied_list.append(
-                {'id': meeting.id, 'first_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).first_name,
-                 'last_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).last_name,
-                 'profile_pic': RegisterUser.objects.get(id=meeting.scheduled_by.id).pic_1.url,
-                 'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
-                 'type': 'received'})
+            if RegisterUser.objects.get(id=meeting.scheduled_by.id).pic_1:
+                recevied_list.append(
+                    {'id': meeting.id, 'first_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).first_name,
+                     'last_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).last_name,
+                     'profile_pic': RegisterUser.objects.get(id=meeting.scheduled_by.id).pic_1.url,
+                     'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
+                     'type': 'received'})
+            else:
+                recevied_list.append(
+                    {'id': meeting.id, 'first_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).first_name,
+                     'last_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).last_name,
+                     'profile_pic': '',
+                     'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
+                     'type': 'received'})
         for meeting in meeting_request_sent:
-            sent_list.append(
-                {'id': meeting.id, 'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
-                 'last_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).last_name,
-                 'profile_pic': RegisterUser.objects.get(id=meeting.scheduled_with.id).pic_1.url,
-                 'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status, 'type': 'sent'})
+            if RegisterUser.objects.get(id=meeting.scheduled_with.id).pic_1:
+                sent_list.append(
+                    {'id': meeting.id, 'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
+                     'last_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).last_name,
+                     'profile_pic': RegisterUser.objects.get(id=meeting.scheduled_with.id).pic_1.url,
+                     'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status, 'type': 'sent'})
+            else:
+                sent_list.append(
+                    {'id': meeting.id, 'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
+                     'last_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).last_name,
+                     'profile_pic': '',
+                     'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
+                     'type': 'sent'})
         return Response({'meetings': recevied_list + sent_list, 'status': HTTP_200_OK})
 
 
