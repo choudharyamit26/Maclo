@@ -19,7 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3174a45b-a532-4d52-8d32-0dbe8f4e1182" name="Default Changelist" comment="" />
+    <list default="true" id="3174a45b-a532-4d52-8d32-0dbe8f4e1182" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/maclo/asgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/maclo/asgi.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -28,8 +30,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>

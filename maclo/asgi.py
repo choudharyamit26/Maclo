@@ -14,7 +14,7 @@ from channels.routing import get_default_application
 import os
 import django
 
-django.setup()
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'maclo.settings')
+django.setup()
 
 application = get_default_application()
