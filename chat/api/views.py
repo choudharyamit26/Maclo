@@ -69,35 +69,12 @@ class ChatList(APIView):
             if RegisterUser.objects.get(id=room.sender_id).pic_1 and RegisterUser.objects.get(
                     id=room.receiver_id).pic_1:
                 if room.messages.last():
-                    room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
-                        id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
-                                      'sender_profile_pic': RegisterUser.objects.get(id=room.sender_id).pic_1.url,
-                                      'receiver': room.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                            id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=room.receiver_id).last_name,
-                                      'receiver_profile_pic': RegisterUser.objects.get(id=room.receiver_id).pic_1.url,
-                                      'last_message': room.messages.last().message,
-                                      'created_at': room.messages.last().created_at})
+                    room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,'sender_profile_pic': RegisterUser.objects.get(id=room.sender_id).pic_1.url,'receiver': room.receiver.id, 'receiver_name': RegisterUser.objects.get(id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(id=room.receiver_id).last_name,'receiver_profile_pic': RegisterUser.objects.get(id=room.receiver_id).pic_1.url,'last_message': room.messages.last().message,'created_at': room.messages.last().created_at})
                 else:
-                    room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
-                        id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
-                                      'sender_profile_pic': RegisterUser.objects.get(id=room.sender_id).pic_1.url,
-                                      'receiver': room.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                            id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=room.receiver_id).last_name,
-                                      'receiver_profile_pic': RegisterUser.objects.get(id=room.receiver_id).pic_1.url,
-                                      'last_message': '',
-                                      'created_at': ''})
+                    room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,'sender_profile_pic': RegisterUser.objects.get(id=room.sender_id).pic_1.url,'receiver': room.receiver.id, 'receiver_name': RegisterUser.objects.get(id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(id=room.receiver_id).last_name,'receiver_profile_pic': RegisterUser.objects.get(id=room.receiver_id).pic_1.url,'last_message': '','created_at': ''})
             elif RegisterUser.objects.get(id=room.sender_id).pic_1:
                 if room.messages.last():
-                    room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
-                        id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
-                                      'sender_profile_pic': RegisterUser.objects.get(id=room.sender_id).pic_1.url,
-                                      'receiver': room.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                            id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=room.receiver_id).last_name,
-                                      'receiver_profile_pic': '', 'last_message': room.messages.last().message,
-                                      'created_at': room.messages.last().created_at})
+                    room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,'sender_profile_pic': RegisterUser.objects.get(id=room.sender_id).pic_1.url,'receiver': room.receiver.id, 'receiver_name': RegisterUser.objects.get(id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(id=room.receiver_id).last_name,'receiver_profile_pic': '', 'last_message': room.messages.last().message,'created_at': room.messages.last().created_at})
                 else:
                     room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
                         id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
