@@ -1759,41 +1759,11 @@ class GetMatchesAPIView(ListAPIView):
     def get(self, request, *args, **kwargs):
         user_id = self.request.user
         r_user = RegisterUser.objects.get(email=user_id.email)
-        # liked_me = MatchedUser.objects.filter(liked_by_me=r_user).exclude(user=r_user).distinct()
-        # liked_by_me = MatchedUser.objects.filter(user=r_user).distinct()
-        # super_liked_me = MatchedUser.objects.filter(super_liked_by_me=r_user).exclude(user=r_user).distinct()
-        # super_liked_by_me = MatchedUser.objects.filter(user=r_user).distinct()
-        # matches = []
-        # super_matches = []
-        # print(MatchedUser.objects.filter(matched='Yes').distinct().count())
-        # print(MatchedUser.objects.filter(super_matched='Yes').distinct().count())
         match = MatchedUser.objects.filter(matched='Yes').distinct()
         super_match = MatchedUser.objects.filter(super_matched='Yes').distinct()
-        # for user in match:
-        #     for x in user.liked_by_me.all():
-        #         if x.pic_1:
-        #             matches.append(
-        #                 {'id': x.id, 'first_name': x.first_name, 'last_name': x.last_name,
-        #                  'profile_pic': x.pic_1.url, 'type': 'match', 'matched_at': user.matched_at})
-        #         else:
-        #             matches.append(
-        #                 {'id': x.id, 'first_name': x.first_name, 'last_name': x.last_name,
-        #                  'profile_pic': '', 'type': 'match', 'matched_at': user.matched_at})
-        # for user in super_match:
-        #     for x in user.liked_by_me.all():
-        #         if x.pic_1:
-        #             super_matches.append(
-        #                 {'id': x.id, 'first_name': x.first_name, 'last_name': x.last_name,
-        #                  'profile_pic': x.pic_1.url, 'type': 'super_match', 'matched_at': user.matched_at})
-        #         else:
-        #             super_matches.append(
-        #                 {'id': x.id, 'first_name': x.first_name, 'last_name': x.last_name,
-        #                  'profile_pic': '', 'type': 'super_match', 'matched_at': user.matched_at})
         z = []
         a = []
         for y in match:
-            print(y.user.id)
-            print(y.liked_by_me.all().last())
             try:
                 if y.user.id == r_user.id:
                     z.append(
@@ -1813,17 +1783,6 @@ class GetMatchesAPIView(ListAPIView):
                          'profile_pic': RegisterUser.objects.get(id=y.user.id).pic_1.url,
                          'matched_at': y.matched_at,
                          'type': 'match'})
-                    # z.append(
-                    #     {'id': y.id, 'matched_by_id': y.user.id,
-                    #      'matched_by_first_name': RegisterUser.objects.get(id=y.user.id).first_name,
-                    #      'matched_by_last_name': RegisterUser.objects.get(id=y.user.id).last_name,
-                    #      'matched_by_profile_pic': RegisterUser.objects.get(id=y.user.id).pic_1.url,
-                    #      'matched_with_id': y.liked_by_me.all().last().id,
-                    #      'matched_with_first_name': RegisterUser.objects.get(id=y.liked_by_me.all().last().id).first_name,
-                    #      'matched_with_last_name': RegisterUser.objects.get(id=y.liked_by_me.all().last().id).last_name,
-                    #      'matched_with_profile_pic': RegisterUser.objects.get(id=y.liked_by_me.all().last().id).pic_1.url,
-                    #      'matched_at': y.matched_at,
-                    #      'type': 'match'})
             except Exception as e:
                 print('EXCEPT BLOCK Match--------------', y)
                 if y.user.id == r_user.id:
@@ -1844,46 +1803,47 @@ class GetMatchesAPIView(ListAPIView):
                          'profile_pic': '',
                          'matched_at': y.matched_at,
                          'type': 'match'})
-                # z.append(
-                #     {'id': y.id, 'matched_by_id': y.user.id,
-                #      'matched_by_first_name': RegisterUser.objects.get(id=y.user.id).first_name,
-                #      'matched_by_last_name': RegisterUser.objects.get(id=y.user.id).last_name,
-                #      'matched_by_profile_pic': '', 'matched_with_id': y.liked_by_me.all().last().id,
-                #      'matched_with_first_name': RegisterUser.objects.get(id=y.liked_by_me.all().last().id).first_name,
-                #      'matched_with_last_name': RegisterUser.objects.get(id=y.liked_by_me.all().last().id).last_name,
-                #      'matched_with_profile_pic': '',
-                #      'matched_at': y.matched_at,
-                #      'type': 'match'})
-        # for y in match.values():
-        #     print('TRY BLOCK Match--------------', y)
-        #     print('TRY BLOCK Match--------------', y['user_id'])
-        #     # print('TRY BLOCK Match--------------', y['liked_by_me'])
-        #     try:
-        #         z.append({'id': y['user_id'], 'first_name': RegisterUser.objects.get(id=y['user_id']).first_name,
-        #                   'last_name': RegisterUser.objects.get(id=y['user_id']).last_name,
-        #                   'profile_pic': RegisterUser.objects.get(id=y['user_id']).pic_1.url,
-        #                   'matched_at': y['matched_at'],
-        #                   'type': 'match'})
-        #     except Exception as e:
-        #         print('EXCEPT BLOCK Match--------------', y)
-        #         z.append({'id': y['user_id'], 'first_name': RegisterUser.objects.get(id=y['user_id']).first_name,
-        #                   'last_name': RegisterUser.objects.get(id=y['user_id']).last_name,
-        #                   'profile_pic': '', 'matched_at': y['matched_at'],
-        #                   'type': 'match'})
-        for b in super_match.values():
-            print('TRY BLOCK SUPER Match--------------', b)
+
+        for y in super_match:
             try:
-                a.append({'id': b['user_id'], 'first_name': RegisterUser.objects.get(id=b['user_id']).first_name,
-                          'last_name': RegisterUser.objects.get(id=b['user_id']).last_name,
-                          'profile_pic': RegisterUser.objects.get(id=b['user_id']).pic_1.url,
-                          'matched_at': b['matched_at'],
-                          'type': 'super_match'})
+                if y.user.id == r_user.id:
+                    a.append(
+                        {'id': y.super_liked_by_me.all().last().id,
+                         'first_name': RegisterUser.objects.get(
+                             id=y.super_liked_by_me.all().last().id).first_name,
+                         'last_name': RegisterUser.objects.get(id=y.super_liked_by_me.all().last().id).last_name,
+                         'profile_pic': RegisterUser.objects.get(
+                             id=y.super_liked_by_me.all().last().id).pic_1.url,
+                         'matched_at': y.matched_at,
+                         'type': 'super_match'})
+                else:
+                    a.append(
+                        {'id': y.user.id,
+                         'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
+                         'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
+                         'profile_pic': RegisterUser.objects.get(id=y.user.id).pic_1.url,
+                         'matched_at': y.matched_at,
+                         'type': 'super_match'})
             except Exception as e:
-                print('EXCEPT BLOCK SUPER Match--------------', b)
-                a.append({'id': b['user_id'], 'first_name': RegisterUser.objects.get(id=b['user_id']).first_name,
-                          'last_name': RegisterUser.objects.get(id=b['user_id']).last_name,
-                          'profile_pic': '', 'matched_at': b['matched_at'],
-                          'type': 'super_match'})
+                print('EXCEPT BLOCK Match--------------', y)
+                if a.user.id == r_user.id:
+                    z.append(
+                        {'id': y.super_liked_by_me.all().last().id,
+                         'first_name': RegisterUser.objects.get(
+                             id=y.super_liked_by_me.all().last().id).first_name,
+                         'last_name': RegisterUser.objects.get(
+                             id=y.super_liked_by_me.all().last().id).last_name,
+                         'profile_pic': '',
+                         'matched_at': y.matched_at,
+                         'type': 'super_match'})
+                else:
+                    a.append(
+                        {'id': y.user.id,
+                         'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
+                         'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
+                         'profile_pic': '',
+                         'matched_at': y.matched_at,
+                         'type': 'super_match'})
         return Response({'match': z + a, 'status': HTTP_200_OK})
 
 
