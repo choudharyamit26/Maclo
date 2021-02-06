@@ -1793,6 +1793,8 @@ class GetMatchesAPIView(ListAPIView):
         a = []
         for y in match.values():
             print('TRY BLOCK Match--------------',y)
+            print('TRY BLOCK Match--------------',y.user.id)
+            print('TRY BLOCK Match--------------',y.liked_by_me.id)
             try:
                 z.append({'id': y['user_id'], 'first_name': RegisterUser.objects.get(id=y['user_id']).first_name,
                           'last_name': RegisterUser.objects.get(id=y['user_id']).last_name,
