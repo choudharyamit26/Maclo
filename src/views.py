@@ -1792,9 +1792,9 @@ class GetMatchesAPIView(ListAPIView):
         z = []
         a = []
         for y in match.values():
-            print('TRY BLOCK Match--------------',y)
-            print('TRY BLOCK Match--------------',y.user.id)
-            print('TRY BLOCK Match--------------',y.liked_by_me.id)
+            print('TRY BLOCK Match--------------', y)
+            print('TRY BLOCK Match--------------', y['user_id'])
+            print('TRY BLOCK Match--------------', y['liked_by_me'])
             try:
                 z.append({'id': y['user_id'], 'first_name': RegisterUser.objects.get(id=y['user_id']).first_name,
                           'last_name': RegisterUser.objects.get(id=y['user_id']).last_name,
@@ -1808,7 +1808,7 @@ class GetMatchesAPIView(ListAPIView):
                           'profile_pic': '', 'matched_at': y['matched_at'],
                           'type': 'match'})
         for b in super_match.values():
-            print('TRY BLOCK SUPER Match--------------',b)
+            print('TRY BLOCK SUPER Match--------------', b)
             try:
                 a.append({'id': b['user_id'], 'first_name': RegisterUser.objects.get(id=b['user_id']).first_name,
                           'last_name': RegisterUser.objects.get(id=b['user_id']).last_name,
@@ -2156,7 +2156,8 @@ class MettingList(APIView):
                     {'id': meeting.id, 'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
                      'last_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).last_name,
                      'profile_pic': RegisterUser.objects.get(id=meeting.scheduled_with.id).pic_1.url,
-                     'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status, 'type': 'sent'})
+                     'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
+                     'type': 'sent'})
             else:
                 sent_list.append(
                     {'id': meeting.id, 'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
