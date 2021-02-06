@@ -1796,9 +1796,11 @@ class GetMatchesAPIView(ListAPIView):
             print(y.liked_by_me.all().last())
             try:
                 z.append(
-                    {'id': y.id, 'matched_by_first_name': RegisterUser.objects.get(id=y.user.id).first_name,
+                    {'id': y.id, 'matched_by_id': y.user.id,
+                     'matched_by_first_name': RegisterUser.objects.get(id=y.user.id).first_name,
                      'matched_by_last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                      'matched_by_profile_pic': RegisterUser.objects.get(id=y.user.id).pic_1.url,
+                     'matched_with_id': y.liked_by_me.all().last().id,
                      'matched_with_first_name': RegisterUser.objects.get(id=y.liked_by_me.all().last().id).first_name,
                      'matched_with_last_name': RegisterUser.objects.get(id=y.liked_by_me.all().last().id).last_name,
                      'matched_with_profile_pic': RegisterUser.objects.get(id=y.liked_by_me.all().last().id).pic_1.url,
@@ -1807,9 +1809,9 @@ class GetMatchesAPIView(ListAPIView):
             except Exception as e:
                 print('EXCEPT BLOCK Match--------------', y)
                 z.append(
-                    {'id': y.id, 'matched_by_first_name': RegisterUser.objects.get(id=y.user.id).first_name,
+                    {'id': y.id,'matched_by_id': y.user.id, 'matched_by_first_name': RegisterUser.objects.get(id=y.user.id).first_name,
                      'matched_by_last_name': RegisterUser.objects.get(id=y.user.id).last_name,
-                     'matched_by_profile_pic': '',
+                     'matched_by_profile_pic': '','matched_with_id': y.liked_by_me.all().last().id,
                      'matched_with_first_name': RegisterUser.objects.get(id=y.liked_by_me.all().last().id).first_name,
                      'matched_with_last_name': RegisterUser.objects.get(id=y.liked_by_me.all().last().id).last_name,
                      'matched_with_profile_pic': '',
