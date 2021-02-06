@@ -1792,7 +1792,8 @@ class GetMatchesAPIView(ListAPIView):
         z = []
         a = []
         for y in match:
-            print(y)
+            print(y.user.id)
+            print(y.liked_by_me.id)
         for y in match.values():
             print('TRY BLOCK Match--------------', y)
             print('TRY BLOCK Match--------------', y['user_id'])
