@@ -1792,6 +1792,7 @@ class GetMatchesAPIView(ListAPIView):
         z = []
         a = []
         for y in match.values():
+            print('TRY BLOCK Match--------------',y)
             try:
                 z.append({'id': y['user_id'], 'first_name': RegisterUser.objects.get(id=y['user_id']).first_name,
                           'last_name': RegisterUser.objects.get(id=y['user_id']).last_name,
@@ -1799,11 +1800,13 @@ class GetMatchesAPIView(ListAPIView):
                           'matched_at': y['matched_at'],
                           'type': 'match'})
             except Exception as e:
+                print('EXCEPT BLOCK Match--------------', y)
                 z.append({'id': y['user_id'], 'first_name': RegisterUser.objects.get(id=y['user_id']).first_name,
                           'last_name': RegisterUser.objects.get(id=y['user_id']).last_name,
                           'profile_pic': '', 'matched_at': y['matched_at'],
                           'type': 'match'})
         for b in super_match.values():
+            print('TRY BLOCK SUPER Match--------------',b)
             try:
                 a.append({'id': b['user_id'], 'first_name': RegisterUser.objects.get(id=b['user_id']).first_name,
                           'last_name': RegisterUser.objects.get(id=b['user_id']).last_name,
@@ -1811,6 +1814,7 @@ class GetMatchesAPIView(ListAPIView):
                           'matched_at': b['matched_at'],
                           'type': 'super_match'})
             except Exception as e:
+                print('EXCEPT BLOCK SUPER Match--------------', b)
                 a.append({'id': b['user_id'], 'first_name': RegisterUser.objects.get(id=b['user_id']).first_name,
                           'last_name': RegisterUser.objects.get(id=b['user_id']).last_name,
                           'profile_pic': '', 'matched_at': b['matched_at'],
