@@ -13,7 +13,7 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     GetUnreadMessageCount, ContactUsQueryForm, UpdateEmail, UpdateProfilePic, Logout, UpdateProfilePic_1, \
     UpdateProfilePic_2, UpdateProfilePic_3, UpdateProfilePic_4, UpdateProfilePic_5, UpdateProfilePic_6, UpdateInterest, \
     UserLikedList, MeetingDetail, MettingList, UpdateMeetingStatus, UpdateUserLocation, UpdateDistanceRange, \
-    UpdateAgeRange,UserAge,FilteredUserView,DislikeUser
+    UpdateAgeRange, UserAge, FilteredUserView, DislikeUser, DeleteAccount
 
 app_name = 'src'
 
@@ -92,6 +92,7 @@ urlpatterns = [
     path('check-number/', CheckNumber.as_view(), name='check-number'),
     path('user-age/', UserAge.as_view(), name='user-age'),
     path('home-or-filter/', FilteredUserView.as_view(), name='home-or-filter'),
+    path('delete-account/', DeleteAccount.as_view(), name='delete-account'),
 
 ]
 if settings.DEBUG:

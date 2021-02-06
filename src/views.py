@@ -2538,6 +2538,17 @@ class UpdateAgeRange(APIView):
         return Response({'message': 'Updated age range successfully', 'status': HTTP_200_OK})
 
 
+class DeleteAccount(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        r_user = RegisterUser.objects.get(email=user.email)
+        r_user.delete()
+        return Response({'message': 'Account deleted successfully', 'status': HTTP_200_OK})
+
+
 class PopNotificationAPIView(CreateAPIView):
     serializer_class = PopUpNotificationSerializer
 
