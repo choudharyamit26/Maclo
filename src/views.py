@@ -2544,6 +2544,7 @@ class DeleteAccount(APIView):
 
     def post(self, request, *args, **kwargs):
         user = self.request.user
+        request.user.auth_token.delete()
         r_user = RegisterUser.objects.get(email=user.email)
         r_user.delete()
         return Response({'message': 'Account deleted successfully', 'status': HTTP_200_OK})
