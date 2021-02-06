@@ -47,7 +47,7 @@ class MessagesList(APIView):
         messages = []
         for message in chat.messages.all():
             messages.append({'id': message.id, 'sender': message.sender.id, 'receiver': message.receiver.id,
-                             'message': message.message,'is_image': message.is_image, 'created_at': message.created_at})
+                             'message': message.message,'is_image': message.is_image, 'created_at': str(message.created_at)})
         return Response({'messages': messages, 'status': HTTP_200_OK})
 
 
