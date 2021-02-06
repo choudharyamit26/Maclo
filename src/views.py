@@ -1793,7 +1793,7 @@ class GetMatchesAPIView(ListAPIView):
         a = []
         for y in match:
             print(y.user.id)
-            print(y.liked_by_me.id)
+            print(y.liked_by_me.all().last())
         for y in match.values():
             print('TRY BLOCK Match--------------', y)
             print('TRY BLOCK Match--------------', y['user_id'])
