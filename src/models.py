@@ -299,3 +299,8 @@ class PopNotification(models.Model):
 
 class PrivacyPolicy(models.Model):
     content = models.TextField()
+
+
+class DeactivateAccount(models.Model):
+    user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
+    deactivated = models.BooleanField(default=False)

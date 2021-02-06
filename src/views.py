@@ -23,7 +23,7 @@ from django.contrib.gis.db.models.functions import Distance, GeometryDistance
 from django.db.models import F
 from adminpanel.models import UserNotification
 from .models import UserInstagramPic, UserDetail, RegisterUser, MatchedUser, RequestMeeting, ScheduleMeeting, Feedback, \
-    AboutUs, ContactUs, SubscriptionPlans, ContactUsQuery
+    AboutUs, ContactUs, SubscriptionPlans, ContactUsQuery, DeactivateAccount
 from .serializers import (UserDetailSerializer, UserInstagramSerializer, RegisterSerializer,
                           MatchedUserSerializer, LikeSerializer, DeleteMatchSerializer, SuperLikeSerializer,
                           RequestMeetingSerializer, ScheduleMeetingSerializer, FeedbackSerializer, ContactUsSerializer,
@@ -883,6 +883,8 @@ class ShowInstagramPics(ListAPIView):
                     'insta_verified': pics.insta_connect
                 }
                 return Response({"pics": pics_data, 'status': HTTP_200_OK})
+            else:
+                return Response({'pics':'','status':HTTP_200_OK})
         except Exception as e:
             print(e)
             x = {'error': str(e)}
@@ -1087,6 +1089,8 @@ class FilteredUserView(APIView):
         register_user = RegisterUser.objects.get(email=logged_in_user_id.email)
         print(register_user.id)
         user_detail_obj = UserDetail.objects.get(phone_number=register_user.id)
+        active_users = DeactivateAccount.objects.filter(deactivated=False)
+
         lang = 0
         lat = 0
         if user_detail_obj.discovery:
@@ -2548,6 +2552,27 @@ class DeleteAccount(APIView):
         r_user = RegisterUser.objects.get(email=user.email)
         r_user.delete()
         return Response({'message': 'Account deleted successfully', 'status': HTTP_200_OK})
+
+
+class DeactivateAccountView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    models = DeactivateAccount
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        r_user = RegisterUser.objects.get(email=user.email)
+        account = DeactivateAccount.objects.get(user=r_user)
+        if account.deactivated:
+            account.deactivated = False
+            account.save()
+            return Response({'message': 'Account activated successfully', 'deactivated': account.deactivated,
+                             'status': HTTP_200_OK})
+        else:
+            account.deactivated = True
+            account.save()
+            return Response({'message': 'Account deactivated successfully', 'deactivated': account.deactivated,
+                             'status': HTTP_200_OK})
 
 
 class PopNotificationAPIView(CreateAPIView):
