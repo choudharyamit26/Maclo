@@ -1791,10 +1791,12 @@ class GetMatchesAPIView(ListAPIView):
         #                  'profile_pic': '', 'type': 'super_match', 'matched_at': user.matched_at})
         z = []
         a = []
+        for y in match:
+            print(y)
         for y in match.values():
             print('TRY BLOCK Match--------------', y)
             print('TRY BLOCK Match--------------', y['user_id'])
-            print('TRY BLOCK Match--------------', y['liked_by_me'])
+            # print('TRY BLOCK Match--------------', y['liked_by_me'])
             try:
                 z.append({'id': y['user_id'], 'first_name': RegisterUser.objects.get(id=y['user_id']).first_name,
                           'last_name': RegisterUser.objects.get(id=y['user_id']).last_name,
