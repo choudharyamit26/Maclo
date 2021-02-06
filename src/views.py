@@ -210,6 +210,9 @@ class UserCreateAPIView(CreateAPIView):
             )
             us_obj.set_password(phone_number)
             us_obj.save()
+            DeactivateAccount.objects.create(
+                user=user
+            )
             # for x in liked_by:
             #     RegisterUser.liked_by.add(x)
             # for y in superliked_by:
