@@ -1796,24 +1796,24 @@ class GetMatchesAPIView(ListAPIView):
             print(y.liked_by_me.all().last())
             try:
                 z.append(
-                    {'id': y['user_id'], 'matched_by_first_name': RegisterUser.objects.get(id=y.user.id).first_name,
+                    {'id': y, 'matched_by_first_name': RegisterUser.objects.get(id=y.user.id).first_name,
                      'matched_by_last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                      'matched_by_profile_pic': RegisterUser.objects.get(id=y.user.id).pic_1.url,
                      'matched_with_first_name': RegisterUser.objects.get(id=y.liked_by_me.all().last()).first_name,
                      'matched_with_last_name': RegisterUser.objects.get(id=y.liked_by_me.all().last()).last_name,
                      'matched_with_profile_pic': RegisterUser.objects.get(id=y.liked_by_me.all().last()).pic_1.url,
-                     'matched_at': y['matched_at'],
+                     'matched_at': y.matched_at,
                      'type': 'match'})
             except Exception as e:
                 print('EXCEPT BLOCK Match--------------', y)
                 z.append(
-                    {'id': y['user_id'], 'matched_by_first_name': RegisterUser.objects.get(id=y.user.id).first_name,
+                    {'id': y, 'matched_by_first_name': RegisterUser.objects.get(id=y.user.id).first_name,
                      'matched_by_last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                      'matched_by_profile_pic': '',
                      'matched_with_first_name': RegisterUser.objects.get(id=y.liked_by_me.all().last()).first_name,
                      'matched_with_last_name': RegisterUser.objects.get(id=y.liked_by_me.all().last()).last_name,
                      'matched_with_profile_pic': '',
-                     'matched_at': y['matched_at'],
+                     'matched_at': y.matched_at,
                      'type': 'match'})
         # for y in match.values():
         #     print('TRY BLOCK Match--------------', y)
