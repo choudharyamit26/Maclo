@@ -67,11 +67,11 @@ class ChatRoomConsumer(WebsocketConsumer):
                 )
             except Exception as e:
                 print('inside nested except')
-                chat1 = ChatRoom.objects.get(sender=RegisterUser.objects.get(id=text_data_json['receiver']),
-                                             receiver=RegisterUser.objects.get(id=text_data_json['sender']))
+                chat1 = ChatRoom.objects.get(sender=RegisterUser.objects.get(id=text_data_json['sender']),
+                                             receiver=RegisterUser.objects.get(id=text_data_json['receiver']))
                 print('----', chat1.id)
-                sender = RegisterUser.objects.get(id=text_data_json['receiver'])
-                receiver = RegisterUser.objects.get(id=text_data_json['sender'])
+                sender = RegisterUser.objects.get(id=text_data_json['sender'])
+                receiver = RegisterUser.objects.get(id=text_data_json['receiver'])
                 m = Message.objects.create(
                     sender=sender,
                     receiver=receiver,
