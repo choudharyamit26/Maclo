@@ -898,7 +898,7 @@ class ShowInstagramPics(ListAPIView):
                     "insta_pic_8": '',
                     "insta_pic_9": '',
                     "insta_pic_10": '',
-                    'insta_verified': pics.insta_connect
+                    'insta_verified': False
                 }
                 return Response({'pics': pics_data, 'status': HTTP_200_OK})
         except Exception as e:
