@@ -1779,8 +1779,8 @@ class GetMatchesAPIView(ListAPIView):
     def get(self, request, *args, **kwargs):
         user_id = self.request.user
         r_user = RegisterUser.objects.get(email=user_id.email)
-        match = MatchedUser.objects.filter(matched='Yes').distinct()
-        super_match = MatchedUser.objects.filter(super_matched='Yes').distinct()
+        match = MatchedUser.objects.filter(liked_by_me=r_user, matched='Yes').distinct()
+        super_match = MatchedUser.objects.filter(super_liked_by_me=r_user, super_matched='Yes').distinct()
         z = []
         a = []
         for y in match:
