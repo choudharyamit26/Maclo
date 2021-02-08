@@ -1936,8 +1936,8 @@ class UserLikedList(APIView):
         liked_users = MatchedUser.objects.filter(user=r_user)
         liked_by_users = MatchedUser.objects.filter(liked_by_me=r_user)
         print('>>>>>>>>>>>>>>>>>', [x.liked_by_me.all() for x in liked_users])
-        print([x.liked_by_me.all() for x in liked_users | liked_by_users])
-        for user in liked_users | liked_by_users:
+        print([x.liked_by_me.all() for x in set(liked_users | liked_by_users)])
+        for user in set(liked_users | liked_by_users):
             print('<<<<<<<', user)
             print('Matched at ', user.matched_at)
             print('like list----->>', like_list)
