@@ -1809,24 +1809,28 @@ class GetMatchesAPIView(ListAPIView):
                 print('EXCEPT BLOCK Match--------------', len(match_with|match_by))
                 print('ID BLOCK Match--------------', [x.id for x in y.liked_by_me.all()])
                 if len(match_with | match_by) > 0:
-                    if y.user.id == r_user.id:
-                        z.append(
-                            {'id': y.liked_by_me.all().last().id,
-                             'first_name': RegisterUser.objects.get(
-                                 id=y.liked_by_me.all().last().id).first_name,
-                             'last_name': RegisterUser.objects.get(
-                                 id=y.liked_by_me.all().last().id).last_name,
-                             'profile_pic': '',
-                             'matched_at': y.matched_at,
-                             'type': 'match'})
-                    else:
-                        z.append(
-                            {'id': y.user.id,
-                             'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
-                             'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
-                             'profile_pic': '',
-                             'matched_at': y.matched_at,
-                             'type': 'match'})
+                    try:
+                        if y.user.id == r_user.id:
+                            z.append(
+                                {'id': y.liked_by_me.all().last().id,
+                                 'first_name': RegisterUser.objects.get(
+                                     id=y.liked_by_me.all().last().id).first_name,
+                                 'last_name': RegisterUser.objects.get(
+                                     id=y.liked_by_me.all().last().id).last_name,
+                                 'profile_pic': '',
+                                 'matched_at': y.matched_at,
+                                 'type': 'match'})
+                        else:
+                            z.append(
+                                {'id': y.user.id,
+                                 'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
+                                 'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
+                                 'profile_pic': '',
+                                 'matched_at': y.matched_at,
+                                 'type': 'match'})
+                    except Exception as e:
+                        print(e)
+                        pass
                 else:
                     pass
 
