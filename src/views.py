@@ -1879,7 +1879,9 @@ class UserLikedList(APIView):
         like_list = []
         liked_users = MatchedUser.objects.filter(user=r_user)
         for user in liked_users:
-            if user.liked_by_me:
+            if len(user.liked_by_me.all()) > 0:
+                print(user.liked_by_me.all()[0].id)
+                print(user.liked_by_me.all().first().id)
                 z = RegisterUser.objects.get(id=user.liked_by_me.all().first().id)
                 if z.id not in like_list:
                     print(z.id)
