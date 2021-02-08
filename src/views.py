@@ -1938,17 +1938,22 @@ class UserLikedList(APIView):
         for user in liked_users:
             print('<<<<<<<', user)
             print('Matched at ', user.matched_at)
+            print('like list----->>',like_list)
             for y in user.liked_by_me.all():
                 print('Register User id ', y.id)
                 z = RegisterUser.objects.get(id=y.id)
-                if z.pic_1:
-                    like_list.append(
-                        {'id': z.id, 'first_name': z.first_name, 'last_name': z.last_name, 'liked_at': user.matched_at,
-                         'profile_pic': z.pic_1.url})
+                if like_list[z.id] not in like_list:
+                    print('inside if------>>')
+                    if z.pic_1:
+                        like_list.append(
+                            {'id': z.id, 'first_name': z.first_name, 'last_name': z.last_name, 'liked_at': user.matched_at,
+                             'profile_pic': z.pic_1.url})
+                    else:
+                        like_list.append(
+                            {'id': z.id, 'first_name': z.first_name, 'last_name': z.last_name, 'liked_at': user.matched_at,
+                             'profile_pic': ''})
                 else:
-                    like_list.append(
-                        {'id': z.id, 'first_name': z.first_name, 'last_name': z.last_name, 'liked_at': user.matched_at,
-                         'profile_pic': ''})
+                    pass
         return Response({'data': like_list, 'status': HTTP_200_OK})
 
 
