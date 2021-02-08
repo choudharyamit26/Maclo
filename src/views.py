@@ -1806,7 +1806,7 @@ class GetMatchesAPIView(ListAPIView):
                          'matched_at': y.matched_at,
                          'type': 'match'})
             except Exception as e:
-                print('EXCEPT BLOCK Match--------------', y)
+                print('EXCEPT BLOCK Match--------------', len(match_with|match_by))
                 if len(match_with | match_by) > 0:
                     if y.user.id == r_user.id:
                         z.append(
