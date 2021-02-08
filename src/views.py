@@ -1934,11 +1934,13 @@ class UserLikedList(APIView):
         r_user = RegisterUser.objects.get(email=user.email)
         like_list = []
         liked_users = MatchedUser.objects.filter(user=r_user)
+        liked_by_users = MatchedUser.objects.filter(liked_by_users=r_user)
         print('>>>>>>>>>>>>>>>>>', [x.liked_by_me.all() for x in liked_users])
-        for user in liked_users:
+        print([x.liked_by_me.all() for x in liked_users | liked_by_users])
+        for user in liked_users | liked_by_users:
             print('<<<<<<<', user)
             print('Matched at ', user.matched_at)
-            print('like list----->>',like_list)
+            print('like list----->>', like_list)
             for y in user.liked_by_me.all():
                 print('Register User id ', y.id)
                 z = RegisterUser.objects.get(id=y.id)
@@ -1946,11 +1948,14 @@ class UserLikedList(APIView):
                     print('inside if------>>')
                     if z.pic_1:
                         like_list.append(
-                            {'id': z.id, 'first_name': z.first_name, 'last_name': z.last_name, 'liked_at': user.matched_at,
+                            {'id': z.id, 'first_name': z.first_name, 'last_name': z.last_name,
+                             'liked_at': user.matched_at,
                              'profile_pic': z.pic_1.url})
                     else:
+                        print('inside else----->>>')
                         like_list.append(
-                            {'id': z.id, 'first_name': z.first_name, 'last_name': z.last_name, 'liked_at': user.matched_at,
+                            {'id': z.id, 'first_name': z.first_name, 'last_name': z.last_name,
+                             'liked_at': user.matched_at,
                              'profile_pic': ''})
                 else:
                     pass
