@@ -1869,62 +1869,6 @@ class GetMatchesAPIView(ListAPIView):
         return Response({'match': z + a, 'status': HTTP_200_OK})
 
 
-# class GetMatchesAPIView(ListAPIView):
-#     authentication_classes = (TokenAuthentication,)
-#     permission_classes = (IsAuthenticated,)
-#     model = MatchedUser
-#     serializer_class = MatchedUserSerializer
-#
-#     def get(self, request, *args, **kwargs):
-#         # user_id = self.request.data['user_id']
-#         user_id = self.request.user
-#         r_user = RegisterUser.objects.get(email=user_id.email)
-#         # print('------', r_user)
-#         # print('------>>>', r_user.id)
-#         liked_me = MatchedUser.objects.filter(
-#             liked_by_me=r_user).exclude(user=r_user).distinct()
-#         liked_me_list = [
-#             {'first_name': obj.user.first_name, 'last_name': obj.user.last_name, 'profile_pic': obj.user.pic_1.url} for
-#             obj in liked_me]
-#         liked_by_me = MatchedUser.objects.filter(user=r_user).distinct()
-#         print('>>>>>>>>>> liked_by_me ', [obj.user.first_name for obj in liked_by_me])
-#         # print('>>>>>>>>>> liked_by_me id', [obj.user.id for obj in liked_by_me])
-#         # print('>>>>>>>>>>  liked_me_list ', liked_me_list)
-#         # print('>>>>>>>>>>  liked_me_list ', liked_me_list)
-#         liked_by_me_list = []
-#         for obj in liked_by_me:
-#             y = obj.liked_by_me.all()
-#             for z in y:
-#                 liked_by_me_list.append(
-#                     {'first_name': z.first_name, 'last_name': z.last_name, 'profile_pic': z.pic_1.url})
-#         super_liked_me = MatchedUser.objects.filter(
-#             super_liked_by_me=r_user).exclude(user=r_user).distinct()
-#         super_liked_by_me = MatchedUser.objects.filter(user=r_user).distinct()
-#         super_liked_me_list = [x.user.first_name for x in super_liked_me]
-#         # print('<<<<<<<<<<<<', super_liked_me_list)
-#         super_liked_by_me_list = []
-#         for obj in super_liked_by_me:
-#             y = obj.super_liked_by_me.all()
-#             for z in y:
-#                 super_liked_by_me_list.append(z.first_name)
-#         match = []
-#         super_match = []
-#         # x = set(liked_by_me_list) & set(liked_me_list)
-#         # x = set(list(map(dict, set(tuple(sorted(sub.items())) for sub in liked_by_me_list)))) & set(
-#         #     list(map(dict, set(tuple(sorted(sub.items())) for sub in liked_me_list))))
-#
-#         # print(x)
-#         # l = liked_by_me_list.extend(liked_me_list)
-#         l = liked_by_me_list + liked_me_list
-#         print(l)
-#         x = list(map(dict, set(tuple(sorted(sub.items())) for sub in l)))
-#         match.append(x)
-#         y = set(super_liked_me_list) & set(super_liked_by_me_list)
-#         print(y)
-#         super_match.append(y)
-#         return Response({"Matches": match, "Super Matches": super_match}, status=HTTP_200_OK)
-
-
 class UserLikedList(APIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
@@ -1934,25 +1878,17 @@ class UserLikedList(APIView):
         r_user = RegisterUser.objects.get(email=user.email)
         like_list = []
         liked_users = MatchedUser.objects.filter(user=r_user)
-        liked_by_users = MatchedUser.objects.filter(liked_by_me=r_user)
-        print('>>>>>>>>>>>>>>>>>', [x.liked_by_me.all() for x in liked_users])
-        print([x.liked_by_me.all() for x in set(liked_users | liked_by_users)])
-        for user in set(liked_users | liked_by_users):
-            print('<<<<<<<', user)
-            print('Matched at ', user.matched_at)
-            print('like list----->>', like_list)
-            for y in user.liked_by_me.all():
-                print('Register User id ', y.id)
-                z = RegisterUser.objects.get(id=y.id)
-                if like_list[z.id] not in like_list:
-                    print('inside if------>>')
+        for user in liked_users:
+            if user.liked_by_me:
+                z = RegisterUser.objects.get(id=user.liked_by_me.all().first().id)
+                if z.id not in like_list:
+                    print(z.id)
                     if z.pic_1:
                         like_list.append(
                             {'id': z.id, 'first_name': z.first_name, 'last_name': z.last_name,
                              'liked_at': user.matched_at,
                              'profile_pic': z.pic_1.url})
                     else:
-                        print('inside else----->>>')
                         like_list.append(
                             {'id': z.id, 'first_name': z.first_name, 'last_name': z.last_name,
                              'liked_at': user.matched_at,
