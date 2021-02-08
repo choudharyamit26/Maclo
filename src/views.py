@@ -887,7 +887,20 @@ class ShowInstagramPics(ListAPIView):
                 }
                 return Response({"pics": pics_data, 'status': HTTP_200_OK})
             else:
-                return Response({'pics':'','status':HTTP_200_OK})
+                pics_data = {
+                    "insta_pic_1": '',
+                    "insta_pic_2": '',
+                    "insta_pic_3": '',
+                    "insta_pic_4": '',
+                    "insta_pic_5": '',
+                    "insta_pic_6": '',
+                    "insta_pic_7": '',
+                    "insta_pic_8": '',
+                    "insta_pic_9": '',
+                    "insta_pic_10": '',
+                    'insta_verified': pics.insta_connect
+                }
+                return Response({'pics': pics_data, 'status': HTTP_200_OK})
         except Exception as e:
             print(e)
             x = {'error': str(e)}
@@ -2146,7 +2159,7 @@ class MeetingDetail(APIView):
         meeting_id = self.request.data['meeting_id']
         meeting_obj = ScheduleMeeting.objects.get(id=meeting_id)
         return Response(
-            {'inivtee_pic': meeting_obj.scheduled_with.pic_1.url,
+            {'invitee_id': meeting_obj.scheduled_with.id, 'invitee_pic': meeting_obj.scheduled_with.pic_1.url,
              'invitee_first_name': meeting_obj.scheduled_with.first_name,
              'invitee_last_name': meeting_obj.scheduled_with.last_name, 'time': meeting_obj.meeting_time,
              'date': meeting_obj.meeting_date, 'description': meeting_obj.description, 'venue': meeting_obj.venue,
