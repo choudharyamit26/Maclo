@@ -1621,58 +1621,63 @@ class LikeUserAPIView(CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         user = self.request.user
-        logged_in_user_id = RegisterUser.objects.get(email=user.email)
+        r_user = RegisterUser.objects.get(email=user.email)
+        print(r_user.id)
+        users_liked_by_me = MatchedUser.objects.filter(user=r_user)
+        users_liked_me = MatchedUser.objects.filter(liked_by_me=r_user)
         liked_by_me = self.request.data['liked_by_me']
-        try:
-            users_liked_by_me = MatchedUser.objects.filter(
-                liked_by_me=logged_in_user_id)
-            users_liked_by_me_list = []
-            for obj in users_liked_by_me:
-                y = obj.user.id
-                # y = obj.liked_by_me.all().first().id
-                users_liked_by_me_list.append(y)
-            if int(liked_by_me) not in users_liked_by_me_list:
-                print('inside if case')
-                register_user = RegisterUser.objects.get(id=logged_in_user_id.id)
+        users_liked_by_me_list = []
+        users_liked_me_list = []
+        for x in users_liked_me:
+            if x.liked_by_me.all():
+                print('Many to Many field ', x.liked_by_me.all()[0].id)
+                print('LIKED BY USER', x.user.id)
+                users_liked_me_list.append(x.user.id)
+        for x in users_liked_by_me:
+            if x.liked_by_me.all():
+                users_liked_by_me_list.append(x.liked_by_me.all()[0].id)
+        print('USERS LIKED BY ME LIST ', users_liked_by_me_list)
+        print('USERS LIKED ME LIST', users_liked_me_list)
+        print(liked_by_me)
+        print(type(liked_by_me))
+        print(users_liked_me_list + users_liked_by_me_list)
+        print(int(liked_by_me) in users_liked_me_list + users_liked_by_me_list)
+        if int(liked_by_me) not in users_liked_by_me_list + users_liked_me_list:
+            register_user = RegisterUser.objects.get(id=r_user.id)
+            from_user_name = register_user.first_name
+            user = MatchedUser.objects.create(user=register_user, matched='No')
+            user.liked_by_me.add(RegisterUser.objects.get(id=int(liked_by_me)))
+            to_user_id = RegisterUser.objects.get(id=int(liked_by_me))
+            UserNotification.objects.create(
+                to=User.objects.get(email=to_user_id.email),
+                title='Match Notification',
+                body="You have been matched by " + from_user_name
+            )
+            return Response({"message": "You have liked a user", "status": HTTP_200_OK})
+        else:
+            try:
+                try:
+                    m = MatchedUser.objects.get(user=r_user, matched='Yes', liked_by_me=int(liked_by_me))
+                    print(m.id)
+                    return Response({'message': 'You have already matched with this user', 'status': HTTP_200_OK})
+                except Exception as e:
+                    m = MatchedUser.objects.get(user=r_user, liked_by_me=int(liked_by_me))
+                    print(m.id)
+                    return Response({'message': 'You have already matched with this user', 'status': HTTP_200_OK})
+            except Exception as e:
+                print(e)
+                register_user = RegisterUser.objects.get(id=r_user.id)
                 from_user_name = register_user.first_name
-                user = MatchedUser.objects.create(user=register_user, matched='No')
+                user = MatchedUser.objects.create(user=register_user, matched='Yes')
                 user.liked_by_me.add(RegisterUser.objects.get(id=int(liked_by_me)))
                 to_user_id = RegisterUser.objects.get(id=int(liked_by_me))
                 # to_user_name = to_user_id.first_name
                 UserNotification.objects.create(
                     to=User.objects.get(email=to_user_id.email),
-                    title='Like Notification',
-                    body="You have been liked by " + from_user_name
+                    title='Match Notification',
+                    body="You have been matched by " + from_user_name
                 )
-                return Response({"message": "You have liked a user", "status": HTTP_200_OK})
-            else:
-                liked_me_users = MatchedUser.objects.filter(liked_by_me=logged_in_user_id)
-                liked_by_me_users = MatchedUser.objects.filter(user=logged_in_user_id)
-                liked_me_users_list = [user.user.id for user in liked_me_users]
-                liked_by_me_users_list = [user.liked_by_me.all().first().id for user in liked_by_me_users]
-                if int(liked_by_me) in liked_me_users_list:
-                    if int(liked_by_me) in liked_by_me_users_list:
-                        return Response({"message": "You have matched with a user", "status": HTTP_200_OK})
-                    else:
-                        register_user = RegisterUser.objects.get(id=logged_in_user_id.id)
-                        from_user_name = register_user.first_name
-                        user = MatchedUser.objects.create(
-                            user=register_user, matched='Yes')
-                        user.liked_by_me.add(RegisterUser.objects.get(id=int(liked_by_me)))
-                        to_user_id = RegisterUser.objects.get(id=int(liked_by_me))
-                        # to_user_name = to_user_id.first_name
-                        UserNotification.objects.create(
-                            to=User.objects.get(email=to_user_id.email),
-                            title='Match Notification',
-                            body="You have been matched by " + from_user_name
-                        )
-                        return Response({"message": "You have matched with a user", "status": HTTP_200_OK})
-                else:
-                    return Response({"message": "You have liked a user", "status": HTTP_200_OK})
-        except Exception as e:
-            print(e)
-            x = {'error': str(e)}
-            return Response({'error': x['error'], 'status': HTTP_400_BAD_REQUEST})
+                return Response({"message": "You have matched with a user", "status": HTTP_200_OK})
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -1702,67 +1707,66 @@ class SuperLikeUserAPIView(CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         user = self.request.user
-        logged_in_user_id = RegisterUser.objects.get(email=user.email)
+        r_user = RegisterUser.objects.get(email=user.email)
+        print(r_user.id)
+        users_liked_by_me = MatchedUser.objects.filter(user=r_user)
+        users_liked_me = MatchedUser.objects.filter(super_liked_by_me=r_user)
         super_liked_by_me = self.request.data['super_liked_by_me']
-        # logged_in_user_id = self.request.data['id']
-        try:
-            users_super_liked_me = MatchedUser.objects.filter(
-                super_liked_by_me=logged_in_user_id)
-            users_super_liked_me_list = []
-            for obj in users_super_liked_me:
-                y = obj.user.id
-                users_super_liked_me_list.append(y)
-            print(super_liked_by_me)
-            print(int(super_liked_by_me) in users_super_liked_me_list)
-            print(users_super_liked_me_list)
-            if int(super_liked_by_me) not in users_super_liked_me_list:
-                print('inside if case----')
-                register_user = RegisterUser.objects.get(id=logged_in_user_id.id)
+        users_liked_by_me_list = []
+        users_liked_me_list = []
+        for x in users_liked_me:
+            if x.super_liked_by_me.all():
+                print('Many to Many field ', x.super_liked_by_me.all()[0].id)
+                print('LIKED BY USER', x.user.id)
+                users_liked_me_list.append(x.user.id)
+        for x in users_liked_by_me:
+            if x.super_liked_by_me.all():
+                users_liked_by_me_list.append(x.super_liked_by_me.all()[0].id)
+        print('USERS LIKED BY ME LIST ', users_liked_by_me_list)
+        print('USERS LIKED ME LIST', users_liked_me_list)
+        print(super_liked_by_me)
+        print(type(super_liked_by_me))
+        print(users_liked_me_list + users_liked_by_me_list)
+        print(int(super_liked_by_me) in users_liked_me_list + users_liked_by_me_list)
+        if int(super_liked_by_me) not in users_liked_by_me_list + users_liked_me_list:
+            register_user = RegisterUser.objects.get(id=r_user.id)
+            from_user_name = register_user.first_name
+            user = MatchedUser.objects.create(user=register_user, super_matched='No')
+            user.super_liked_by_me.add(RegisterUser.objects.get(id=int(super_liked_by_me)))
+            to_user_id = RegisterUser.objects.get(id=int(super_liked_by_me))
+            UserNotification.objects.create(
+                to=User.objects.get(email=to_user_id.email),
+                title='Super Match Notification',
+                body="You have been super matched by " + from_user_name
+            )
+            return Response({"message": "You have super liked a user", "status": HTTP_200_OK})
+        else:
+            try:
+                try:
+                    m = MatchedUser.objects.get(user=r_user, super_matched='Yes',
+                                                super_liked_by_me=int(super_liked_by_me))
+                    print(m.id)
+                    print(m.super_matched)
+                    return Response({'message': 'You have already super matched with this user', 'status': HTTP_200_OK})
+                except Exception as e:
+                    m = MatchedUser.objects.get(user=r_user, super_liked_by_me=int(super_liked_by_me))
+                    print('--', m.id)
+                    print(m.super_matched)
+                    return Response({'message': 'You have already super liked this user', 'status': HTTP_200_OK})
+            except Exception as e:
+                print(e)
+                register_user = RegisterUser.objects.get(id=r_user.id)
                 from_user_name = register_user.first_name
-                user = MatchedUser.objects.create(
-                    user=register_user, super_matched='No')
-                user.super_liked_by_me.add(super_liked_by_me)
+                user = MatchedUser.objects.create(user=register_user, super_matched='Yes')
+                user.super_liked_by_me.add(RegisterUser.objects.get(id=int(super_liked_by_me)))
                 to_user_id = RegisterUser.objects.get(id=int(super_liked_by_me))
-                to_user_name = to_user_id.first_name
+                # to_user_name = to_user_id.first_name
                 UserNotification.objects.create(
                     to=User.objects.get(email=to_user_id.email),
-                    title='Super Like Notification',
-                    body="You have been super liked by " + from_user_name
+                    title='Super Match Notification',
+                    body="You have been super matched by " + from_user_name
                 )
-                return Response({"message": "You have super liked a user", "status": HTTP_200_OK})
-            else:
-                # super_liked_by_me = self.request.data['super_liked_by_me']
-                print('inside else case---->>')
-                super_liked_me_users = MatchedUser.objects.filter(super_liked_by_me=logged_in_user_id)
-                print('1 ', super_liked_me_users)
-                super_liked_by_me_users = MatchedUser.objects.filter(user=logged_in_user_id)
-                print('2 ', super_liked_by_me_users)
-                super_liked_me_users_list = [user.user.id for user in super_liked_me_users]
-                print('3 ', super_liked_me_users_list)
-                super_liked_by_me_users_list = [user.super_liked_by_me.all().first().id for user in
-                                                super_liked_by_me_users if user.super_liked_by_me.all()]
-                print('4 ', super_liked_by_me_users_list)
-                if int(super_liked_by_me) in super_liked_me_users_list:
-                    if int(super_liked_by_me) in super_liked_by_me_users_list:
-                        return Response({"message": "You have super matched with a user", "status": HTTP_200_OK})
-                    else:
-                        register_user = RegisterUser.objects.get(id=logged_in_user_id.id)
-                        from_user_name = register_user.first_name
-                        user = MatchedUser.objects.create(
-                            user=register_user, matched='Yes')
-                        user.super_liked_by_me.add(RegisterUser.objects.get(id=int(super_liked_by_me)))
-                        to_user_id = RegisterUser.objects.get(id=int(super_liked_by_me))
-                        UserNotification.objects.create(
-                            to=User.objects.get(email=to_user_id.email),
-                            title='Super Match Notification',
-                            body="You have been super matched with " + from_user_name
-                        )
-                        return Response({"message": "You have super matched with a user", "status": HTTP_200_OK})
-                else:
-                    return Response({"message": "You have super liked a user", "status": HTTP_200_OK})
-        except Exception as e:
-            x = {'error': str(e)}
-            return Response({'error': x['error'], 'status': HTTP_400_BAD_REQUEST})
+                return Response({"message": "You have super matched with a user", "status": HTTP_200_OK})
 
 
 class GetMatchesAPIView(ListAPIView):
