@@ -2281,6 +2281,8 @@ class FacebookSignupApiView(CreateAPIView):
         social_type = self.request.POST.get('social_type' or None)
         # profile_pic = self.request.POST.get('profile_pic' or None)
         device_token = self.request.POST.get('device_token' or None)
+        lat = self.request.POST.get('lat' or None)
+        lang = self.request.POST.get('lang' or None)
         # print('>>>>>>>>>>>>>>', device_token)
         print('before try')
         try:
@@ -2317,7 +2319,11 @@ class FacebookSignupApiView(CreateAPIView):
                     device_token=device_token,
                 )
                 UserDetail.objects.create(
-                    phone_number=reg_usr
+                    phone_number=reg_usr,
+                    discovery=fromstr(f'POINT({lang} {lat})', srid=4326)
+                )
+                DeactivateAccount.objects.create(
+                    user=reg_usr
                 )
                 token = Token.objects.create(user=user)
                 return Response({"Token": token.key, "user_id": user.id, "status": HTTP_200_OK})
@@ -2344,6 +2350,8 @@ class GoogleSignupView(CreateAPIView):
         # device_token = self.request.POST.get('device_token' or None)
         device_token = self.request.data['device_token']
         profile_pic = self.request.POST.get('profile_pic' or None)
+        lat = self.request.POST.get('lat' or None)
+        lang = self.request.POST.get('lang' or None)
         try:
             print('Gmail try---------------->', self.request.data)
             # print('>>>>>>>>>>>>>>', email)
@@ -2377,7 +2385,11 @@ class GoogleSignupView(CreateAPIView):
                     # profile_pic=profile_pic
                 )
                 UserDetail.objects.create(
-                    phone_number=reg_usr
+                    phone_number=reg_usr,
+                    discovery=fromstr(f'POINT({lang} {lat})', srid=4326)
+                )
+                DeactivateAccount.objects.create(
+                    user=reg_usr
                 )
                 token = Token.objects.create(user=user)
                 return Response({"Token": token.key, "user_id": user.id, "status": HTTP_200_OK})
