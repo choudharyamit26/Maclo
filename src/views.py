@@ -1788,7 +1788,7 @@ class GetMatchesAPIView(ListAPIView):
             try:
                 if y.user.id == r_user.id:
                     z.append(
-                        {'id': y.liked_by_me.all().last().id,
+                        {'match_id': y.id, 'id': y.liked_by_me.all().last().id,
                          'first_name': RegisterUser.objects.get(
                              id=y.liked_by_me.all().last().id).first_name,
                          'last_name': RegisterUser.objects.get(id=y.liked_by_me.all().last().id).last_name,
@@ -1798,7 +1798,7 @@ class GetMatchesAPIView(ListAPIView):
                          'type': 'match'})
                 else:
                     z.append(
-                        {'id': y.user.id,
+                        {'match_id': y.id, 'id': y.user.id,
                          'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
                          'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                          'profile_pic': RegisterUser.objects.get(id=y.user.id).pic_1.url,
@@ -1811,7 +1811,7 @@ class GetMatchesAPIView(ListAPIView):
                     try:
                         if y.user.id == r_user.id:
                             z.append(
-                                {'id': y.liked_by_me.all().last().id,
+                                {'match_id': y.id, 'id': y.liked_by_me.all().last().id,
                                  'first_name': RegisterUser.objects.get(
                                      id=y.liked_by_me.all().last().id).first_name,
                                  'last_name': RegisterUser.objects.get(
@@ -1821,7 +1821,7 @@ class GetMatchesAPIView(ListAPIView):
                                  'type': 'match'})
                         else:
                             z.append(
-                                {'id': y.user.id,
+                                {'match_id': y.id, 'id': y.user.id,
                                  'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
                                  'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                                  'profile_pic': '',
@@ -1837,7 +1837,7 @@ class GetMatchesAPIView(ListAPIView):
             try:
                 if y.user.id == r_user.id:
                     a.append(
-                        {'id': y.super_liked_by_me.all().last().id,
+                        {'match_id': y.id, 'id': y.super_liked_by_me.all().last().id,
                          'first_name': RegisterUser.objects.get(
                              id=y.super_liked_by_me.all().last().id).first_name,
                          'last_name': RegisterUser.objects.get(id=y.super_liked_by_me.all().last().id).last_name,
@@ -1847,7 +1847,7 @@ class GetMatchesAPIView(ListAPIView):
                          'type': 'super_match'})
                 else:
                     a.append(
-                        {'id': y.user.id,
+                        {'match_id': y.id, 'id': y.user.id,
                          'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
                          'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                          'profile_pic': RegisterUser.objects.get(id=y.user.id).pic_1.url,
@@ -1858,7 +1858,7 @@ class GetMatchesAPIView(ListAPIView):
                 if len(super_match_with | super_match_by) > 0:
                     if y.user.id == r_user.id:
                         z.append(
-                            {'id': y.super_liked_by_me.all().last().id,
+                            {'match_id': y.id, 'id': y.super_liked_by_me.all().last().id,
                              'first_name': RegisterUser.objects.get(
                                  id=y.super_liked_by_me.all().last().id).first_name,
                              'last_name': RegisterUser.objects.get(
@@ -1868,7 +1868,7 @@ class GetMatchesAPIView(ListAPIView):
                              'type': 'super_match'})
                     else:
                         a.append(
-                            {'id': y.user.id,
+                            {'match_id': y.id, 'id': y.user.id,
                              'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
                              'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                              'profile_pic': '',
@@ -2571,6 +2571,21 @@ class CheckMeeting(APIView):
                 return Response({'meeting_exists': True, 'meeting_id': meeting.id, 'status': HTTP_200_OK})
         except Exception as e:
             return Response({'meeting_exists': False, 'status': HTTP_400_BAD_REQUEST})
+
+
+class UnMatchView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            match_id = self.request.POST['match_id']
+            match = MatchedUser.objects.get(id=match_id)
+            match.delete()
+            return Response({'message': 'Unmatched successfully', 'status': HTTP_200_OK})
+        except Exception as e:
+            x = {'error': str(e)}
+            return Response({'message': x['error'], 'status': HTTP_400_BAD_REQUEST})
 
 
 class PopNotificationAPIView(CreateAPIView):

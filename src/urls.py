@@ -14,7 +14,8 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     GetUnreadMessageCount, ContactUsQueryForm, UpdateEmail, UpdateProfilePic, Logout, UpdateProfilePic_1, \
     UpdateProfilePic_2, UpdateProfilePic_3, UpdateProfilePic_4, UpdateProfilePic_5, UpdateProfilePic_6, UpdateInterest, \
     UserLikedList, MeetingDetail, MettingList, UpdateMeetingStatus, UpdateUserLocation, UpdateDistanceRange, \
-    UpdateAgeRange, UserAge, FilteredUserView, DislikeUser, DeleteAccount, DeactivateAccountView,CheckMeeting
+    UpdateAgeRange, UserAge, FilteredUserView, DislikeUser, DeleteAccount, DeactivateAccountView, CheckMeeting, \
+    UnMatchView
 
 app_name = 'src'
 
@@ -96,6 +97,7 @@ urlpatterns = [
     path('delete-account/', DeleteAccount.as_view(), name='delete-account'),
     path('deactivate-account/', DeactivateAccountView.as_view(), name='deactivate-account'),
     path('check-meeting/', CheckMeeting.as_view(), name='check-meeting'),
+    path('un-match/', UnMatchView.as_view(), name='un-match'),
 
 ]
 if settings.DEBUG:
