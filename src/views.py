@@ -123,7 +123,7 @@ class LoginView(ObtainAuthToken):
                     "distance_range": user_detail.distance_range,
                     "min_age_range": user_detail.min_age_range,
                     "max_age_range": user_detail.max_age_range,
-                    "interested": user_data.interest
+                    "interested": user_detail.interest
                 }
                 print(token)
                 print(token[0].key)
@@ -2470,8 +2470,9 @@ class UpdateInterest(UpdateAPIView):
     def patch(self, request, *args, **kwargs):
         user = self.request.user
         user_obj = RegisterUser.objects.get(email=user.email)
-        user_obj.interest = request.data.get('interest')
-        user_obj.save()
+        user_detail = UserDetail.objects.get(phone_number=user_obj)
+        user_detail.interest = request.data.get('interest')
+        user_detail.save()
         return Response({"message": "Your interest has been updated", "status": HTTP_200_OK})
 
 
