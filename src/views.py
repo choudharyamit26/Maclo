@@ -123,7 +123,7 @@ class LoginView(ObtainAuthToken):
                     "distance_range": user_detail.distance_range,
                     "min_age_range": user_detail.min_age_range,
                     "max_age_range": user_detail.max_age_range,
-                    "interested": user_detail.interest
+                    "interested": user_data.interest
                 }
                 print(token)
                 print(token[0].key)
