@@ -80,7 +80,7 @@ class ChatList(APIView):
                             id=room.receiver_id).last_name,
                                       'receiver_profile_pic': RegisterUser.objects.get(id=room.receiver_id).pic_1.url,
                                       'last_message': room.messages.last().message,
-                                      'created_at': room.messages.last().created_at})
+                                      'created_at': str(room.messages.last().created_at)})
                 else:
                     room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
                         id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
@@ -99,7 +99,7 @@ class ChatList(APIView):
                             id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
                             id=room.receiver_id).last_name, 'receiver_profile_pic': '',
                                       'last_message': room.messages.last().message,
-                                      'created_at': room.messages.last().created_at})
+                                      'created_at': str(room.messages.last().created_at)})
                 else:
                     room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
                         id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
@@ -119,7 +119,7 @@ class ChatList(APIView):
                             id=room.receiver_id).last_name,
                                       'receiver_profile_pic': RegisterUser.objects.get(id=room.receiver_id).pic_1.url,
                                       'last_message': room.messages.last().message,
-                                      'created_at': room.messages.last().created_at})
+                                      'created_at': str(room.messages.last().created_at)})
                 else:
                     room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
                         id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
@@ -139,7 +139,7 @@ class ChatList(APIView):
                             id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
                             id=room.receiver_id).last_name,
                                       'receiver_profile_pic': '', 'last_message': room.messages.last().message,
-                                      'created_at': room.messages.last().created_at})
+                                      'created_at': str(room.messages.last().created_at)})
                 else:
                     room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
                         id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
