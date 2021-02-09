@@ -2106,8 +2106,6 @@ class ScheduleMeetingAPIView(CreateAPIView):
         )
         return Response(
             {"meeting_id": meeting.id, "message": "Meeting schedule sent successfully", 'status': HTTP_200_OK})
-        # else:
-        # return Response({"Only females are allowed to sent meeting request"}, status=HTTP_400_BAD_REQUEST)
 
 
 class MeetingDetail(APIView):
@@ -2550,6 +2548,25 @@ class DeactivateAccountView(APIView):
             account.save()
             return Response({'message': 'Account deactivated successfully', 'deactivated': account.deactivated,
                              'status': HTTP_200_OK})
+
+
+class CheckMeeting(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    model = ScheduleMeeting
+
+    def get(self, request, *args, **kwargs):
+        user1 = self.request.query_params.get('user1')
+        user2 = self.request.query_params.get('user2')
+        try:
+            try:
+                meeting = ScheduleMeeting.objects.get(scheduled_with=user1, scheduled_by=user2)
+                return Response({'meeting_exists': True, 'meeting_id': meeting.id, 'status': HTTP_200_OK})
+            except Exception as e:
+                meeting = ScheduleMeeting.objects.get(scheduled_with=user2, scheduled_by=user1)
+                return Response({'meeting_exists': True, 'meeting_id': meeting.id, 'status': HTTP_200_OK})
+        except Exception as e:
+            return Response({'meeting_exists': False, 'status': HTTP_400_BAD_REQUEST})
 
 
 class PopNotificationAPIView(CreateAPIView):

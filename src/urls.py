@@ -1,9 +1,10 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from rest_framework import permissions
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
+from rest_framework import permissions
+
 from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIView, UserslistAPIView, UserProfileAPIView, \
     SearchUser, GetMatchesAPIView, LikeUserAPIView, DeleteMatchesAPIView, RequestMeetingAPIView, MeetingStatusAPIView, \
     ScheduleMeetingAPIView, FeedbackApiView, ContactUsApiView, AboutUsApiView, EditAboutUsAPIView, EditContactUsApiView, \
@@ -13,7 +14,7 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     GetUnreadMessageCount, ContactUsQueryForm, UpdateEmail, UpdateProfilePic, Logout, UpdateProfilePic_1, \
     UpdateProfilePic_2, UpdateProfilePic_3, UpdateProfilePic_4, UpdateProfilePic_5, UpdateProfilePic_6, UpdateInterest, \
     UserLikedList, MeetingDetail, MettingList, UpdateMeetingStatus, UpdateUserLocation, UpdateDistanceRange, \
-    UpdateAgeRange, UserAge, FilteredUserView, DislikeUser, DeleteAccount, DeactivateAccountView
+    UpdateAgeRange, UserAge, FilteredUserView, DislikeUser, DeleteAccount, DeactivateAccountView,CheckMeeting
 
 app_name = 'src'
 
@@ -94,6 +95,7 @@ urlpatterns = [
     path('home-or-filter/', FilteredUserView.as_view(), name='home-or-filter'),
     path('delete-account/', DeleteAccount.as_view(), name='delete-account'),
     path('deactivate-account/', DeactivateAccountView.as_view(), name='deactivate-account'),
+    path('check-meeting/', CheckMeeting.as_view(), name='check-meeting'),
 
 ]
 if settings.DEBUG:
