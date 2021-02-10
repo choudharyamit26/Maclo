@@ -591,7 +591,7 @@ class UserProfileAPIView(ListCreateAPIView):
             print(register_id)
             user = UserDetail.objects.get(phone_number=register_id)
             print(user)
-            r_user = RegisterUser.objects.get(register_id=user.email)
+            r_user = RegisterUser.objects.get(register_id=register_id.email)
             account = DeactivateAccount.objects.get(user=r_user)
             pic_1 = ''
             pic_2 = ''
