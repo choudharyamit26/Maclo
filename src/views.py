@@ -2387,6 +2387,7 @@ class GoogleSignupView(CreateAPIView):
         profile_pic = self.request.POST.get('profile_pic' or None)
         lat = self.request.POST.get('lat' or None)
         lang = self.request.POST.get('lang' or None)
+        dob = self.request.POST.get('lang' or None)
         try:
             print('Gmail try---------------->', self.request.data)
             # print('>>>>>>>>>>>>>>', email)
@@ -2408,7 +2409,8 @@ class GoogleSignupView(CreateAPIView):
             if serializer.is_valid():
                 reg_usr = RegisterUser.objects.create(
                     email=email,
-                    first_name=name
+                    first_name=name,
+                    date_of_birth=dob
                 )
                 user = User.objects.create(
                     name=name,
