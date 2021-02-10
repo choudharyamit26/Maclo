@@ -1247,7 +1247,7 @@ class FilteredUserView(APIView):
         print('FINAL LIST ----->>>', final_list)
         filtered_users = []
         for obj in final_list:
-            id = obj.id
+            id = obj.phone_number.id
             bio = obj.bio
             first_name = obj.phone_number.first_name
             last_name = obj.phone_number.last_name
