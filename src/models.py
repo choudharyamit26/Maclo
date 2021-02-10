@@ -122,9 +122,9 @@ class RegisterUser(models.Model):
     def __str__(self):
         return str(self.id)
 
-    # def get_user_age(self):
-    #     age = timezone.now().year - self.date_of_birth.year
-    #     return age
+    def get_user_age(self):
+        age = timezone.now().year - self.date_of_birth.year
+        return age
 
 
 class SubscriptionPlans(models.Model):
