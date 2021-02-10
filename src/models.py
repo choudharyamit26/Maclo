@@ -181,6 +181,7 @@ class UserDetail(models.Model):
     subscription_purchased = models.CharField(default='No', choices=BOOL_CHOICES, max_length=100, null=True, blank=True)
     subscription_purchased_at = models.DateField(null=True, blank=True)
     subscription = models.ForeignKey(SubscriptionPlans, on_delete=models.CASCADE, null=True, blank=True)
+    deactivated = models.BooleanField(default=False)
 
 
 class UserInstagramPic(models.Model):

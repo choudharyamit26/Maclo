@@ -130,6 +130,8 @@ class LoginView(ObtainAuthToken):
                 if account.deactivated:
                     account.deactivated = False
                     account.save()
+                    user_detail.deactivated = False
+                    user_detail.save()
                 print(token)
                 print(token[0].key)
                 return Response(
@@ -1162,7 +1164,7 @@ class FilteredUserView(APIView):
         d = (int(distance_range) * 1000)
         users_in_range = UserDetail.objects.filter(discovery__dwithin=(users_location, d)).annotate(
             distance=GeometryDistance("discovery", users_location)).exclude(phone_number=register_user.id).order_by(
-            "distance")
+            "distance").exclude(deactivated=True)
         # print(users_in_range.filter(min_age_range__gte=obj.phone_number.get_user_age(),max_age_range__lte=))
         print('>>>>>>>>>>>>>>>> Filtered Users -->', users_in_range)
         print('-----------------------------', len(liked_disliked_user_detail))
@@ -2583,15 +2585,20 @@ class DeactivateAccountView(APIView):
     def post(self, request, *args, **kwargs):
         user = self.request.user
         r_user = RegisterUser.objects.get(email=user.email)
+        user_detail = UserDetail.objects.get(phone_number=r_user)
         account = DeactivateAccount.objects.get(user=r_user)
         if account.deactivated:
             account.deactivated = False
             account.save()
+            user_detail.deactivated = False
+            user_detail.save()
             return Response({'message': 'Account activated successfully', 'deactivated': account.deactivated,
                              'status': HTTP_200_OK})
         else:
             account.deactivated = True
             account.save()
+            user_detail.deactivated = True
+            user_detail.save()
             return Response({'message': 'Account deactivated successfully', 'deactivated': account.deactivated,
                              'status': HTTP_200_OK})
 
