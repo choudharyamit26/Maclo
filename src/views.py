@@ -132,7 +132,8 @@ class LoginView(ObtainAuthToken):
                     account.save()
                 print(token)
                 print(token[0].key)
-                return Response({'token': token[0].key, 'data': Data, 'status': HTTP_200_OK})
+                return Response(
+                    {'token': token[0].key, 'data': Data, 'deactivated': account.deactivated, 'status': HTTP_200_OK})
         except Exception as e:
             x = {"Error": str(e)}
             return Response({'message': x['Error'], "status": HTTP_400_BAD_REQUEST})
@@ -588,6 +589,8 @@ class UserProfileAPIView(ListCreateAPIView):
             print(register_id)
             user = UserDetail.objects.get(phone_number=register_id)
             print(user)
+            r_user = RegisterUser.objects.get(email=user.email)
+            account = DeactivateAccount.objects.get(user=r_user)
             pic_1 = ''
             pic_2 = ''
             pic_3 = ''
@@ -685,7 +688,8 @@ class UserProfileAPIView(ListCreateAPIView):
                 "discovery_lang": user.discovery[1],
                 "distance_range": user.distance_range,
                 "min_age_range": user.min_age_range,
-                "max_age_range": user.max_age_range
+                "max_age_range": user.max_age_range,
+                "deactivated": account.deactivated
             }
             return Response({"data": detail, "status": HTTP_200_OK})
         except Exception as e:
