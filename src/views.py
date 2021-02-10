@@ -125,6 +125,11 @@ class LoginView(ObtainAuthToken):
                     "max_age_range": user_detail.max_age_range,
                     "interested": user_detail.interest
                 }
+                r_user = RegisterUser.objects.get(email=user.email)
+                account = DeactivateAccount.objects.get(user=r_user)
+                if account.deactivated:
+                    account.deactivated = False
+                    account.save()
                 print(token)
                 print(token[0].key)
                 return Response({'token': token[0].key, 'data': Data, 'status': HTTP_200_OK})
@@ -2632,47 +2637,6 @@ class SubscriptionPlanAPIView(ListAPIView):
     serializer_class = SubscriptionPlanSerializer
     queryset = SubscriptionPlans.objects.all()
 
-    # def get(self, request, *args, **kwargs):
-    #     queryset = SubscriptionPlans.objects.all().values()
-    #     return Response(queryset)
-    #
-    # def post(self, request, *args, **kwargs):
-    #     return Response({"You have updated your meeting request successfully"}, status=HTTP_200_OK)
-
-
-# class GetScheduledMeeting(APIView):
-#
-#     def get(self, request, *args, **kwargs):
-#         liked_obj = MatchedUser.objects.filter(matched='Yes')
-#         for obj in liked_obj:
-#             print('<<<<<--------->>>>', obj.user)
-#             print('--------->>>>', obj.liked_by_me.all()[0])
-#             liked_by = RegisterUser.objects.get(id=obj.user.id)
-#             liked_user = RegisterUser.objects.get(id=obj.liked_by_me.all()[0].id)
-#             print('...........................', obj.matched_at.date())
-#             print('>>>>>>>>>>>>>>>', liked_by.first_name)
-#             print('<<<<<<<<<<<<<<<<<<<<<<<<<<<<,', liked_user.first_name)
-#             schedule_obj = ScheduleMeeting.objects.filter(
-#                 Q(scheduled_by__exact=obj.user.id) & Q(scheduled_with__exact=obj.liked_by_me.all()[0].id) & Q(
-#                     status__icontains='Not Completed')).values()
-#             if schedule_obj:
-#                 for s_obj in schedule_obj:
-#                     meeting_at = s_obj['created_at']
-#                     m_date = str(meeting_at.date()).split('-')
-#                     meeting_year = int(m_date[0])
-#                     meeting_month = int(m_date[1])
-#                     meeting_date = int(m_date[2])
-#                     meeting_at = date(meeting_year, meeting_month, meeting_date)
-#                     matched_at = str(obj.matched_at.date()).split('-')
-#                     matched_year = int(matched_at[0])
-#                     matched_month = int(matched_at[1])
-#                     matched_date = int(matched_at[2])
-#                     matched_at = date(matched_year, matched_month, matched_date)
-#                     delta = matched_at - meeting_at
-#                     print(delta.days)
-#                     if delta.days > 30:
-#                         obj.delete()
-#                         return Response({"Objects": schedule_obj}, status=HTTP_200_OK)
 
 class GetMediaContent(APIView):
     def get(self, request, *args, **kwargs):
