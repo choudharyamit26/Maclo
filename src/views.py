@@ -2315,7 +2315,7 @@ class FacebookSignupApiView(CreateAPIView):
         device_token = self.request.POST.get('device_token' or None)
         lat = self.request.POST.get('lat' or None)
         lang = self.request.POST.get('lang' or None)
-        dob = self.request.POST.get('lang' or None)
+        dob = self.request.POST.get('dob' or None)
 
         # print('>>>>>>>>>>>>>>', device_token)
         print('before try')
@@ -2387,7 +2387,7 @@ class GoogleSignupView(CreateAPIView):
         profile_pic = self.request.POST.get('profile_pic' or None)
         lat = self.request.POST.get('lat' or None)
         lang = self.request.POST.get('lang' or None)
-        dob = self.request.POST.get('lang' or None)
+        dob = self.request.POST.get('dob' or None)
         try:
             print('Gmail try---------------->', self.request.data)
             # print('>>>>>>>>>>>>>>', email)
@@ -2597,13 +2597,15 @@ class DeactivateAccountView(APIView):
             account.save()
             user_detail.deactivated = False
             user_detail.save()
-            return Response({'message': 'Account activated successfully', 'deactivated': account.deactivated,'status': HTTP_200_OK})
+            return Response({'message': 'Account activated successfully', 'deactivated': account.deactivated,
+                             'status': HTTP_200_OK})
         else:
             account.deactivated = True
             account.save()
             user_detail.deactivated = True
             user_detail.save()
-            return Response({'message': 'Account deactivated successfully', 'deactivated': account.deactivated,'status': HTTP_200_OK})
+            return Response({'message': 'Account deactivated successfully', 'deactivated': account.deactivated,
+                             'status': HTTP_200_OK})
 
 
 class CheckMeeting(APIView):
@@ -2635,6 +2637,20 @@ class UnMatchView(APIView):
             match = MatchedUser.objects.get(id=match_id)
             match.delete()
             return Response({'message': 'Unmatched successfully', 'status': HTTP_200_OK})
+        except Exception as e:
+            x = {'error': str(e)}
+            return Response({'message': x['error'], 'status': HTTP_400_BAD_REQUEST})
+
+
+class BlockUser(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        user_id = self.request.POST['id']
+        try:
+            print('user_id')
+            return Response({'message': 'User blocked successfully', 'status': HTTP_200_OK})
         except Exception as e:
             x = {'error': str(e)}
             return Response({'message': x['error'], 'status': HTTP_400_BAD_REQUEST})
