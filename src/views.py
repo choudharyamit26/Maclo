@@ -641,21 +641,21 @@ class UserProfileAPIView(ListCreateAPIView):
             detail = {
                 "id": user.id,
                 "bio": user.bio,
-                "first_name": user.phone_number.first_name,
-                "last_name": user.phone_number.last_name,
-                "email": user.phone_number.email,
-                "gender": user.phone_number.gender,
-                "date_of_birth": user.phone_number.date_of_birth,
-                "job_profile": user.phone_number.job_profile,
-                "company_name": user.phone_number.company_name,
-                "qualification": user.phone_number.qualification,
-                "relationship_status": user.phone_number.relationship_status,
-                "height": user.phone_number.height,
-                "fav_quote": user.phone_number.fav_quote,
-                "religion": user.phone_number.religion,
-                "body_type": user.phone_number.body_type,
-                "verified": user.phone_number.verified,
-                "fb_signup": user.phone_number.fb_signup,
+                "first_name": register_id.phone_number.first_name,
+                "last_name": register_id.phone_number.last_name,
+                "email": register_id.phone_number.email,
+                "gender": register_id.phone_number.gender,
+                "date_of_birth": register_id.phone_number.date_of_birth,
+                "job_profile": register_id.phone_number.job_profile,
+                "company_name": register_id.phone_number.company_name,
+                "qualification": register_id.phone_number.qualification,
+                "relationship_status": register_id.phone_number.relationship_status,
+                "height": register_id.phone_number.height,
+                "fav_quote": register_id.phone_number.fav_quote,
+                "religion": register_id.phone_number.religion,
+                "body_type": register_id.phone_number.body_type,
+                "verified": register_id.phone_number.verified,
+                "fb_signup": register_id.phone_number.fb_signup,
                 "pic_1": pic_1,
                 "pic_2": pic_2,
                 "pic_3": pic_3,
@@ -2649,9 +2649,11 @@ class BlockUser(APIView):
     def post(self, request, *args, **kwargs):
         user_id = self.request.POST['id']
         try:
+            print('inside try')
             print('user_id')
             return Response({'message': 'User blocked successfully', 'status': HTTP_200_OK})
         except Exception as e:
+            print('Inside exception',e)
             x = {'error': str(e)}
             return Response({'message': x['error'], 'status': HTTP_400_BAD_REQUEST})
 
