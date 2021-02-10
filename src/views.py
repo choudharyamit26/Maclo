@@ -23,7 +23,7 @@ from rest_framework.views import APIView
 
 from adminpanel.models import UserNotification
 from .models import UserInstagramPic, UserDetail, RegisterUser, MatchedUser, RequestMeeting, ScheduleMeeting, Feedback, \
-    AboutUs, ContactUs, SubscriptionPlans, ContactUsQuery, DeactivateAccount
+    AboutUs, ContactUs, SubscriptionPlans, ContactUsQuery, DeactivateAccount, BlockedUsers
 from .serializers import (UserDetailSerializer, UserInstagramSerializer, RegisterSerializer,
                           MatchedUserSerializer, LikeSerializer, DeleteMatchSerializer, SuperLikeSerializer,
                           RequestMeetingSerializer, ScheduleMeetingSerializer, FeedbackSerializer, ContactUsSerializer,
@@ -1554,40 +1554,6 @@ class SnippetFilter(rest_framework.FilterSet):
         # }
 
 
-# class SearchUser(ListCreateAPIView):
-#     model = RegisterUser
-#     serializer_class = RegisterSerializer
-#     filter_backends = (rest_framework.DjangoFilterBackend,)
-#     filterset_class = SnippetFilter
-#     queryset = RegisterUser.objects.all()
-
-# def get_queryset(self):
-#     queryset = RegisterUser.objects.all()
-#     print(self.request.data)
-#     qualification = self.request.GET.get('qualification', None)
-#     relationship_status = self.request.GET.get('relationship_status', None)
-#     religion = self.request.GET.get('religion', None)
-#     body_type = self.request.GET.get('body_type', None)
-#     gender = self.request.GET.get('gender', None)
-#     interests = self.request.GET.get('interests', None)
-# relationship_status = self.request.data['relationship_status']
-# religion = self.request.data['religion']
-# body_type = se
-# lf.request.data['body_type']
-# gender = self.request.data['gender']
-# interests = self.request.data['interests']
-# print('Qualification ', qualification)
-# if qualification is not None:
-# queryset = RegisterUser.objects.filter(Q(qualification__exact=qualification) |
-#                                        Q(relationship_status__exact=relationship_status) |
-#                                        Q(interests__exact=interests) |
-#                                        Q(gender__exact=gender) |
-#                                        Q(religion__exact=religion) |
-#                                        Q(body_type__exact=body_type)
-#                                        )
-# print('>>>>>>>>>>>>>>>>>>>>', queryset)
-# return queryset
-
 class SearchUser(CreateAPIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
@@ -2642,20 +2608,76 @@ class UnMatchView(APIView):
             return Response({'message': x['error'], 'status': HTTP_400_BAD_REQUEST})
 
 
-class BlockUser(APIView):
+class BlockUserView(APIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
+    model = BlockedUsers
 
     def post(self, request, *args, **kwargs):
         user_id = self.request.POST['id']
         try:
+            r_user = RegisterUser.objects.get(email=self.request.user.email)
             print('inside try')
             print('user_id')
-            return Response({'message': 'User blocked successfully', 'status': HTTP_200_OK})
+            blocked_user_obj = BlockedUsers.objects.get(user=r_user)
+            if blocked_user_obj:
+                blocked_user_obj.blocked.add(RegisterUser.objects.get(id=int(user_id)))
+                return Response({'message': 'User blocked successfully', 'status': HTTP_200_OK})
         except Exception as e:
-            print('Inside exception',e)
+            print('Inside exception', e)
+            # x = {'error': str(e)}
+            block = BlockedUsers.objects.create(
+                user=RegisterUser.objects.get(email=self.request.user.email),
+                # blocked=RegisterUser.objects.get(id=int(user_id))
+            )
+            block.blocked.add(RegisterUser.objects.get(id=int(user_id)))
+            return Response({'message': 'User blocked successfully', 'status': HTTP_200_OK})
+
+
+class BlockedUsersList(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    model = BlockedUsers
+
+    def get(self, request, *args, **kwargs):
+        try:
+            blocked_users_list = []
+            r_user = RegisterUser.objects.get(email=self.request.user.email)
+            blocked_users = BlockedUsers.objects.get(user=r_user)
+            for x in blocked_users.blocked.all():
+                if RegisterUser.objects.get(id=x.id).pic_1:
+                    blocked_users_list.append({'id': x.id, 'first_name': RegisterUser.objects.get(id=x.id).first_name,
+                                               'last_name': RegisterUser.objects.get(id=x.id).last_name,
+                                               'profile_pic': RegisterUser.objects.get(id=x.id).pic_1.url})
+                else:
+                    blocked_users_list.append({'id': x.id, 'first_name': RegisterUser.objects.get(id=x.id).first_name,
+                                               'last_name': RegisterUser.objects.get(id=x.id).last_name,
+                                               'profile_pic': ''})
+            return Response({'data': blocked_users_list, 'status': HTTP_200_OK})
+        except Exception as e:
             x = {'error': str(e)}
             return Response({'message': x['error'], 'status': HTTP_400_BAD_REQUEST})
+
+
+class UnBlockUser(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    model = BlockedUsers
+
+    def post(self, request, *args, **kwargs):
+        user_id = self.request.POST['id']
+        try:
+            r_user = RegisterUser.objects.get(email=self.request.user.email)
+            print('inside try')
+            print('user_id')
+            blocked_user_obj = BlockedUsers.objects.get(user=r_user)
+            if blocked_user_obj:
+                blocked_user_obj.blocked.remove(RegisterUser.objects.get(id=int(user_id)))
+                return Response({'message': 'User unblocked successfully', 'status': HTTP_200_OK})
+        except Exception as e:
+            print('Inside exception', e)
+            x = {'error': str(e)}
+            return Response({'message': x['error'], 'status': HTTP_200_OK})
 
 
 class PopNotificationAPIView(CreateAPIView):

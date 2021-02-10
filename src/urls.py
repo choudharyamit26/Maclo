@@ -15,7 +15,7 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     UpdateProfilePic_2, UpdateProfilePic_3, UpdateProfilePic_4, UpdateProfilePic_5, UpdateProfilePic_6, UpdateInterest, \
     UserLikedList, MeetingDetail, MettingList, UpdateMeetingStatus, UpdateUserLocation, UpdateDistanceRange, \
     UpdateAgeRange, UserAge, FilteredUserView, DislikeUser, DeleteAccount, DeactivateAccountView, CheckMeeting, \
-    UnMatchView,BlockUser
+    UnMatchView, BlockUserView, BlockedUsersList, UnBlockUser
 
 app_name = 'src'
 
@@ -98,7 +98,9 @@ urlpatterns = [
     path('deactivate-account/', DeactivateAccountView.as_view(), name='deactivate-account'),
     path('check-meeting/', CheckMeeting.as_view(), name='check-meeting'),
     path('un-match/', UnMatchView.as_view(), name='un-match'),
-    path('block-user/', BlockUser.as_view(), name='block-user'),
+    path('block-user/', BlockUserView.as_view(), name='block-user'),
+    path('unblock-user/', UnBlockUser.as_view(), name='unblock-user'),
+    path('blocked-users-list/', BlockedUsersList.as_view(), name='blocked-users-list'),
 
 
 ]

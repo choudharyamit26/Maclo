@@ -284,3 +284,8 @@ class PrivacyPolicy(models.Model):
 class DeactivateAccount(models.Model):
     user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
     deactivated = models.BooleanField(default=False)
+
+
+class BlockedUsers(models.Model):
+    user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
+    blocked = models.ManyToManyField(RegisterUser,related_name='blocked')
