@@ -1864,6 +1864,7 @@ class UserLikedList(APIView):
         user = self.request.user
         r_user = RegisterUser.objects.get(email=user.email)
         like_list = []
+        super_like_list = []
         liked_users = MatchedUser.objects.filter(user=r_user)
         for user in liked_users:
             if len(user.liked_by_me.all()) > 0:
@@ -1876,15 +1877,34 @@ class UserLikedList(APIView):
                         like_list.append(
                             {'id': z.id, 'first_name': z.first_name, 'last_name': z.last_name,
                              'liked_at': user.matched_at,
-                             'profile_pic': z.pic_1.url})
+                             'profile_pic': z.pic_1.url, 'type': 'like'})
                     else:
                         like_list.append(
                             {'id': z.id, 'first_name': z.first_name, 'last_name': z.last_name,
                              'liked_at': user.matched_at,
-                             'profile_pic': ''})
+                             'profile_pic': '', 'type': 'like'})
                 else:
                     pass
-        return Response({'data': like_list, 'status': HTTP_200_OK})
+
+            if len(user.super_liked_by_me.all()) > 0:
+                print(user.super_liked_by_me.all()[0].id)
+                print(user.super_liked_by_me.all().first().id)
+                z = RegisterUser.objects.get(id=user.super_liked_by_me.all().first().id)
+                if z.id not in super_like_list:
+                    print(z.id)
+                    if z.pic_1:
+                        super_like_list.append(
+                            {'id': z.id, 'first_name': z.first_name, 'last_name': z.last_name,
+                             'liked_at': user.matched_at,
+                             'profile_pic': z.pic_1.url, 'type': 'super_like'})
+                    else:
+                        super_like_list.append(
+                            {'id': z.id, 'first_name': z.first_name, 'last_name': z.last_name,
+                             'liked_at': user.matched_at,
+                             'profile_pic': '', 'type': 'super_like'})
+                else:
+                    pass
+        return Response({'data': like_list + super_like_list, 'status': HTTP_200_OK})
 
 
 @method_decorator(csrf_exempt, name='dispatch')
