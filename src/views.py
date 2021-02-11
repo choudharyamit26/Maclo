@@ -308,25 +308,6 @@ class UserCreateAPIView(CreateAPIView):
             return Response({"message": serializer.errors, "status": HTTP_400_BAD_REQUEST})
 
 
-# class GetUserToken(ObtainAuthToken):
-#     serializer_class = GetUserTokenSerializer
-
-#     def post(self, request, *args, **kwargs):
-#         phone_number = self.request.data['phone_number']
-#         user = RegisterUser.objects.get(phone_number=phone_number).user
-#         print('--------------->>>>>>',user)
-#         try:
-#             user_with_token = Token.objects.get(user=user)
-#             print('TRY-------------->>>',user_with_token)
-#             if user_with_token:
-#                 print('TRY If-------------->>>',user_with_token)
-#                 return Response({"Token": user_with_token.key})
-#         except Exception as e:
-#             print(e)
-#             token = Token.objects.create(user=user)
-#             print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', token)
-#             return Response({"Token": token.key}, status=HTTP_200_OK)
-
 class UpdatePhoneNumber(UpdateAPIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
@@ -2582,6 +2563,8 @@ class DeleteAccount(APIView):
         user.delete()
         r_user = RegisterUser.objects.get(email=user.email)
         r_user.delete()
+        user_detail = UserDetail.objects.get(phone_number=r_user)
+        user_detail.delete()
         return Response({'message': 'Account deleted successfully', 'status': HTTP_200_OK})
 
 
