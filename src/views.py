@@ -2290,7 +2290,7 @@ class EditContactUsApiView(UpdateAPIView):
 
 class CheckDob(APIView):
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         social_id = self.request.POST['social_id']
         try:
             user = User.objects.get(social_id=social_id)
