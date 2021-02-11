@@ -2280,7 +2280,13 @@ class CheckDob(APIView):
         social_id = self.request.POST['social_id']
         try:
             user = User.objects.get(social_id=social_id)
-            return Response({'message': "User with this social id exists", 'exists': True, 'status': HTTP_200_OK})
+            user_data = RegisterUser.objects.get(email=user.email)
+            user_with_token = Token.objects.get_or_create(user=user)
+            user_with_token = user_with_token[0]
+            print(user_with_token)
+            # return Response({"Token": user_with_token.key, "user_id": user.id, "status": HTTP_200_OK})
+            return Response({'message': "User with this social id exists", 'exists': True, "Token": user_with_token.key,
+                             'id': user_data.id, 'status': HTTP_200_OK})
         except Exception as e:
             x = {'error': str(e)}
             return Response({'message': x['error'], 'exists': False, 'status': HTTP_400_BAD_REQUEST})
@@ -2317,7 +2323,8 @@ class FacebookSignupApiView(CreateAPIView):
                 user.save(update_fields=['device_token'])
                 user_with_token = user_with_token[0]
                 print(user_with_token)
-                return Response({"Token": user_with_token.key, "user_id": user.id, "status": HTTP_200_OK})
+                user_data = RegisterUser.objects.get(email=user.email)
+                return Response({"Token": user_with_token.key, "user_id": user_data.id, "status": HTTP_200_OK})
         except:
             print('inside except')
             print('Email fb except------------>>>', self.request.data)
@@ -2345,7 +2352,7 @@ class FacebookSignupApiView(CreateAPIView):
                     user=reg_usr
                 )
                 token = Token.objects.create(user=user)
-                return Response({"Token": token.key, "user_id": user.id, "status": HTTP_200_OK})
+                return Response({"Token": token.key, "user_id": reg_usr.id, "status": HTTP_200_OK})
             else:
                 return Response({"message": serializer.errors, "status": HTTP_400_BAD_REQUEST})
 
@@ -2385,7 +2392,8 @@ class GoogleSignupView(CreateAPIView):
                 existing_user.save(update_fields=['device_token'])
                 user_with_token = user_with_token[0]
                 print(user_with_token)
-                return Response({"Token": user_with_token.key, "user id": existing_user.id, "status": HTTP_200_OK})
+                user_data = RegisterUser.objects.get(email=existing_user.email)
+                return Response({"Token": user_with_token.key, "user id": user_data.id, "status": HTTP_200_OK})
         except:
             print('Gmail except ----------------->>>>>>>>>>>', self.request.data)
             # print('>>>>>>>>>>>>>>', self.request.data.POST('email'))
@@ -2413,7 +2421,7 @@ class GoogleSignupView(CreateAPIView):
                     user=reg_usr
                 )
                 token = Token.objects.create(user=user)
-                return Response({"Token": token.key, "user_id": user.id, "status": HTTP_200_OK})
+                return Response({"Token": token.key, "user_id": reg_usr.id, "status": HTTP_200_OK})
             else:
                 return Response({"message": serializer.errors, "status": HTTP_400_BAD_REQUEST})
 
@@ -2698,6 +2706,18 @@ class UnBlockUser(APIView):
             print('Inside exception', e)
             x = {'error': str(e)}
             return Response({'message': x['error'], 'status': HTTP_200_OK})
+
+
+class CheckEmail(APIView):
+
+    def post(self, request, *args, **kwargs):
+        email = self.request.POST['email']
+        try:
+            user = User.objects.get(email=email)
+            return Response({'message': 'User with this email already exists', 'status': HTTP_200_OK})
+        except Exception as e:
+            x = {'error': str(e)}
+            return Response({'message': x['error'], 'status': HTTP_400_BAD_REQUEST})
 
 
 class PopNotificationAPIView(CreateAPIView):
