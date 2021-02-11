@@ -1116,10 +1116,10 @@ class FilteredUserView(APIView):
         register_user = RegisterUser.objects.get(email=logged_in_user_id.email)
         print(register_user.id)
         user_detail_obj = UserDetail.objects.get(phone_number=register_user.id)
-        users_blocked_by_me = BlockedUsers.objects.filter(user=register_user)
-        print('USERS BLOCKED BY ME ', users_blocked_by_me)
-        users_blocked_me = BlockedUsers.objects.filter(blocked=register_user)
-        print('USERS BLOCKED ME ', users_blocked_me)
+        # users_blocked_by_me = BlockedUsers.objects.filter(user=register_user)
+        # print('USERS BLOCKED BY ME ', users_blocked_by_me)
+        # users_blocked_me = BlockedUsers.objects.filter(blocked=register_user)
+        # print('USERS BLOCKED ME ', users_blocked_me)
         lang = 0
         lat = 0
         if user_detail_obj.discovery:
