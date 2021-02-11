@@ -357,7 +357,7 @@ class ChatList(APIView):
         #                               'receiver_profile_pic': '', 'last_message': '',
         #                               'created_at': ''})
         # return Response({'rooms': rooms.order_by('-created_at').values(), 'status': HTTP_200_OK})
-        return Response({'sent_messages': sent_massage, 'received_messages': received_message, 'status': HTTP_200_OK})
+        return Response({'messages': sent_massage+received_message, 'status': HTTP_200_OK})
 
 
 class CheckRoom(APIView):
