@@ -2695,9 +2695,12 @@ class UnBlockUser(APIView):
             r_user = RegisterUser.objects.get(email=self.request.user.email)
             print('inside try')
             print('user_id')
-            blocked_user_obj = BlockedUsers.objects.get(user=r_user)
+            blocked_user_obj = BlockedUsers.objects.filter(user=r_user)
             if blocked_user_obj:
-                blocked_user_obj.blocked.remove(RegisterUser.objects.get(id=int(user_id)))
+                for obj in blocked_user_obj:
+                    for x in obj.blocked.all():
+                        if x.id == int(user_id):
+                            obj.blocked.remove(RegisterUser.objects.get(id=int(user_id)))
                 return Response({'message': 'User unblocked successfully', 'status': HTTP_200_OK})
         except Exception as e:
             print('Inside exception', e)
