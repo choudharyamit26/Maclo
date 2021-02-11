@@ -170,7 +170,7 @@ class ChatList(APIView):
                          'receiver_profile_pic': '',
                          'last_message': '',
                          'created_at': ''})
-        for message in received_message:
+        for message in receiver_chat:
             if RegisterUser.objects.get(id=message.sender_id).pic_1 and RegisterUser.objects.get(
                     id=message.receiver_id).pic_1:
                 if message.messages.last():
