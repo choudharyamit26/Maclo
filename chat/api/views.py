@@ -174,7 +174,7 @@ class ChatList(APIView):
             if RegisterUser.objects.get(id=message.sender_id).pic_1 and RegisterUser.objects.get(
                     id=message.receiver_id).pic_1:
                 if message.messages.last():
-                    sent_massage.append(
+                    received_message.append(
                         {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
                             id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
                             id=message.receiver_id).last_name,
@@ -186,7 +186,7 @@ class ChatList(APIView):
                          'last_message': message.messages.last().message,
                          'created_at': str(message.messages.last().created_at)})
                 else:
-                    sent_massage.append(
+                    received_message.append(
                         {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
                             id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
                             id=message.receiver_id).last_name,
@@ -199,7 +199,7 @@ class ChatList(APIView):
                          'created_at': ''})
             elif RegisterUser.objects.get(id=message.sender_id).pic_1:
                 if message.messages.last():
-                    sent_massage.append(
+                    received_message.append(
                         {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
                             id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
                             id=message.receiver_id).last_name,
@@ -211,7 +211,7 @@ class ChatList(APIView):
                          'last_message': message.messages.last().message,
                          'created_at': str(message.messages.last().created_at)})
                 else:
-                    sent_massage.append(
+                    received_message.append(
                         {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
                             id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
                             id=message.receiver_id).last_name,
@@ -224,7 +224,7 @@ class ChatList(APIView):
                          'created_at': ''})
             elif RegisterUser.objects.get(id=message.receiver_id).pic_1:
                 if message.messages.last():
-                    sent_massage.append(
+                    received_message.append(
                         {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
                             id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
                             id=message.receiver_id).last_name,
@@ -236,7 +236,7 @@ class ChatList(APIView):
                          'last_message': message.messages.last().message,
                          'created_at': str(message.messages.last().created_at)})
                 else:
-                    sent_massage.append(
+                    received_message.append(
                         {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
                             id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
                             id=message.receiver_id).last_name,
@@ -249,7 +249,7 @@ class ChatList(APIView):
                          'created_at': ''})
             else:
                 if message.messages.last():
-                    sent_massage.append(
+                    received_message.append(
                         {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
                             id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
                             id=message.receiver_id).last_name,
@@ -261,7 +261,7 @@ class ChatList(APIView):
                          'last_message': message.messages.last().message,
                          'created_at': str(message.messages.last().created_at)})
                 else:
-                    sent_massage.append(
+                    received_message.append(
                         {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
                             id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
                             id=message.receiver_id).last_name,
