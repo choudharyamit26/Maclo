@@ -1116,8 +1116,10 @@ class FilteredUserView(APIView):
         register_user = RegisterUser.objects.get(email=logged_in_user_id.email)
         print(register_user.id)
         user_detail_obj = UserDetail.objects.get(phone_number=register_user.id)
-        active_users = DeactivateAccount.objects.filter(deactivated=False)
-
+        users_blocked_by_me = BlockedUsers.objects.filter(user=register_user)
+        print('USERS BLOCKED BY ME ', users_blocked_by_me)
+        users_blocked_me = BlockedUsers.objects.filter(blocked=register_user)
+        print('USERS BLOCKED ME ', users_blocked_me)
         lang = 0
         lat = 0
         if user_detail_obj.discovery:
@@ -1138,6 +1140,9 @@ class FilteredUserView(APIView):
         for x in liked_users:
             for y in x.liked_by_me.all():
                 l.append(y.id)
+        for y in liked_users:
+            for z in y.super_liked_by_me.all():
+                l.append(z)
         print(l)
         d = []
         for x in disliked_users:
