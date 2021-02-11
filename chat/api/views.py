@@ -65,92 +65,299 @@ class ChatList(APIView):
         receiver_chat = ChatRoom.objects.filter(receiver=r_user)
         rooms = sender_chat | receiver_chat
         print(rooms.order_by('-created_at').values())
-        room_list = []
-        for room in rooms:
-            print('All message----->>', room.messages.all())
-            print('Last message----->>>', room.messages.last())
-            if RegisterUser.objects.get(id=room.sender_id).pic_1 and RegisterUser.objects.get(
-                    id=room.receiver_id).pic_1:
-                if room.messages.last():
-                    room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
-                        id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
-                                      'sender_profile_pic': RegisterUser.objects.get(id=room.sender_id).pic_1.url,
-                                      'receiver': room.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                            id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=room.receiver_id).last_name,
-                                      'receiver_profile_pic': RegisterUser.objects.get(id=room.receiver_id).pic_1.url,
-                                      'last_message': room.messages.last().message,
-                                      'created_at': str(room.messages.last().created_at)})
+        sent_massage = []
+        received_message = []
+        for message in sender_chat:
+            if RegisterUser.objects.get(id=message.sender_id).pic_1 and RegisterUser.objects.get(
+                    id=message.receiver_id).pic_1:
+                if message.messages.last():
+                    sent_massage.append(
+                        {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.sender_id).last_name,
+                         'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                         'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.receiver_id).last_name,
+                         'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                         'last_message': message.messages.last().message,
+                         'created_at': str(message.messages.last().created_at)})
                 else:
-                    room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
-                        id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
-                                      'sender_profile_pic': RegisterUser.objects.get(id=room.sender_id).pic_1.url,
-                                      'receiver': room.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                            id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=room.receiver_id).last_name,
-                                      'receiver_profile_pic': RegisterUser.objects.get(id=room.receiver_id).pic_1.url,
-                                      'last_message': '', 'created_at': ''})
-            elif RegisterUser.objects.get(id=room.sender_id).pic_1:
-                if room.messages.last():
-                    room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
-                        id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
-                                      'sender_profile_pic': RegisterUser.objects.get(id=room.sender_id).pic_1.url,
-                                      'receiver': room.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                            id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=room.receiver_id).last_name, 'receiver_profile_pic': '',
-                                      'last_message': room.messages.last().message,
-                                      'created_at': str(room.messages.last().created_at)})
+                    sent_massage.append(
+                        {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.sender_id).last_name,
+                         'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                         'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.receiver_id).last_name,
+                         'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                         'last_message': '',
+                         'created_at': ''})
+            elif RegisterUser.objects.get(id=message.sender_id).pic_1:
+                if message.messages.last():
+                    sent_massage.append(
+                        {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.sender_id).last_name,
+                         'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                         'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.receiver_id).last_name,
+                         'receiver_profile_pic': '',
+                         'last_message': message.messages.last().message,
+                         'created_at': str(message.messages.last().created_at)})
                 else:
-                    room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
-                        id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
-                                      'sender_profile_pic': RegisterUser.objects.get(id=room.sender_id).pic_1.url,
-                                      'receiver': room.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                            id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=room.receiver_id).last_name,
-                                      'receiver_profile_pic': '', 'last_message': '',
-                                      'created_at': ''})
-            elif RegisterUser.objects.get(id=room.receiver_id).pic_1:
-                if room.messages.last():
-                    room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
-                        id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
-                                      'sender_profile_pic': '',
-                                      'receiver': room.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                            id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=room.receiver_id).last_name,
-                                      'receiver_profile_pic': RegisterUser.objects.get(id=room.receiver_id).pic_1.url,
-                                      'last_message': room.messages.last().message,
-                                      'created_at': str(room.messages.last().created_at)})
+                    sent_massage.append(
+                        {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.sender_id).last_name,
+                         'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                         'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.receiver_id).last_name,
+                         'receiver_profile_pic': '',
+                         'last_message': '',
+                         'created_at': ''})
+
+            elif RegisterUser.objects.get(id=message.receiver_id).pic_1:
+                if message.messages.last():
+                    sent_massage.append(
+                        {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.sender_id).last_name,
+                         'sender_profile_pic': '',
+                         'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.receiver_id).last_name,
+                         'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                         'last_message': message.messages.last().message,
+                         'created_at': str(message.messages.last().created_at)})
                 else:
-                    room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
-                        id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
-                                      'sender_profile_pic': '',
-                                      'receiver': room.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                            id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=room.receiver_id).last_name,
-                                      'receiver_profile_pic': RegisterUser.objects.get(id=room.receiver_id).pic_1.url,
-                                      'last_message': '',
-                                      'created_at': ''})
+                    sent_massage.append(
+                        {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.sender_id).last_name,
+                         'sender_profile_pic': '',
+                         'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.receiver_id).last_name,
+                         'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                         'last_message': '',
+                         'created_at': ''})
             else:
-                if room.messages.last():
-                    room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
-                        id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
-                                      'sender_profile_pic': '',
-                                      'receiver': room.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                            id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=room.receiver_id).last_name,
-                                      'receiver_profile_pic': '', 'last_message': room.messages.last().message,
-                                      'created_at': str(room.messages.last().created_at)})
+                if message.messages.last():
+                    sent_massage.append(
+                        {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.sender_id).last_name,
+                         'sender_profile_pic': '',
+                         'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.receiver_id).last_name,
+                         'receiver_profile_pic': '',
+                         'last_message': message.messages.last().message,
+                         'created_at': str(message.messages.last().created_at)})
                 else:
-                    room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
-                        id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
-                                      'sender_profile_pic': '',
-                                      'receiver': room.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                            id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=room.receiver_id).last_name,
-                                      'receiver_profile_pic': '', 'last_message': '',
-                                      'created_at': ''})
+                    sent_massage.append(
+                        {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.sender_id).last_name,
+                         'sender_profile_pic': '',
+                         'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.receiver_id).last_name,
+                         'receiver_profile_pic': '',
+                         'last_message': '',
+                         'created_at': ''})
+        for message in received_message:
+            if RegisterUser.objects.get(id=message.sender_id).pic_1 and RegisterUser.objects.get(
+                    id=message.receiver_id).pic_1:
+                if message.messages.last():
+                    sent_massage.append(
+                        {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.receiver_id).last_name,
+                         'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                         'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.sender_id).last_name,
+                         'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                         'last_message': message.messages.last().message,
+                         'created_at': str(message.messages.last().created_at)})
+                else:
+                    sent_massage.append(
+                        {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.receiver_id).last_name,
+                         'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                         'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.sender_id).last_name,
+                         'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                         'last_message': '',
+                         'created_at': ''})
+            elif RegisterUser.objects.get(id=message.sender_id).pic_1:
+                if message.messages.last():
+                    sent_massage.append(
+                        {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.receiver_id).last_name,
+                         'sender_profile_pic': '',
+                         'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.sender_id).last_name,
+                         'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                         'last_message': message.messages.last().message,
+                         'created_at': str(message.messages.last().created_at)})
+                else:
+                    sent_massage.append(
+                        {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.receiver_id).last_name,
+                         'sender_profile_pic': '',
+                         'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.sender_id).last_name,
+                         'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                         'last_message': '',
+                         'created_at': ''})
+            elif RegisterUser.objects.get(id=message.receiver_id).pic_1:
+                if message.messages.last():
+                    sent_massage.append(
+                        {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.receiver_id).last_name,
+                         'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                         'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.sender_id).last_name,
+                         'receiver_profile_pic': '',
+                         'last_message': message.messages.last().message,
+                         'created_at': str(message.messages.last().created_at)})
+                else:
+                    sent_massage.append(
+                        {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.receiver_id).last_name,
+                         'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                         'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.sender_id).last_name,
+                         'receiver_profile_pic': '',
+                         'last_message': '',
+                         'created_at': ''})
+            else:
+                if message.messages.last():
+                    sent_massage.append(
+                        {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.receiver_id).last_name,
+                         'sender_profile_pic': '',
+                         'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.sender_id).last_name,
+                         'receiver_profile_pic': '',
+                         'last_message': message.messages.last().message,
+                         'created_at': str(message.messages.last().created_at)})
+                else:
+                    sent_massage.append(
+                        {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.receiver_id).last_name,
+                         'sender_profile_pic': '',
+                         'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                            id=message.sender_id).last_name,
+                         'receiver_profile_pic': '',
+                         'last_message': '',
+                         'created_at': ''})
+        # room_list = []
+        # for room in rooms:
+        #     print('All message----->>', room.messages.all())
+        #     print('Last message----->>>', room.messages.last())
+        #     if RegisterUser.objects.get(id=room.sender_id).pic_1 and RegisterUser.objects.get(
+        #             id=room.receiver_id).pic_1:
+        #         if room.messages.last():
+        #             room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
+        #                 id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
+        #                               'sender_profile_pic': RegisterUser.objects.get(id=room.sender_id).pic_1.url,
+        #                               'receiver': room.receiver.id, 'receiver_name': RegisterUser.objects.get(
+        #                     id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+        #                     id=room.receiver_id).last_name,
+        #                               'receiver_profile_pic': RegisterUser.objects.get(id=room.receiver_id).pic_1.url,
+        #                               'last_message': room.messages.last().message,
+        #                               'created_at': str(room.messages.last().created_at)})
+        #         else:
+        #             room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
+        #                 id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
+        #                               'sender_profile_pic': RegisterUser.objects.get(id=room.sender_id).pic_1.url,
+        #                               'receiver': room.receiver.id, 'receiver_name': RegisterUser.objects.get(
+        #                     id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+        #                     id=room.receiver_id).last_name,
+        #                               'receiver_profile_pic': RegisterUser.objects.get(id=room.receiver_id).pic_1.url,
+        #                               'last_message': '', 'created_at': ''})
+        #     elif RegisterUser.objects.get(id=room.sender_id).pic_1:
+        #         if room.messages.last():
+        #             room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
+        #                 id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
+        #                               'sender_profile_pic': RegisterUser.objects.get(id=room.sender_id).pic_1.url,
+        #                               'receiver': room.receiver.id, 'receiver_name': RegisterUser.objects.get(
+        #                     id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+        #                     id=room.receiver_id).last_name, 'receiver_profile_pic': '',
+        #                               'last_message': room.messages.last().message,
+        #                               'created_at': str(room.messages.last().created_at)})
+        #         else:
+        #             room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
+        #                 id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
+        #                               'sender_profile_pic': RegisterUser.objects.get(id=room.sender_id).pic_1.url,
+        #                               'receiver': room.receiver.id, 'receiver_name': RegisterUser.objects.get(
+        #                     id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+        #                     id=room.receiver_id).last_name,
+        #                               'receiver_profile_pic': '', 'last_message': '',
+        #                               'created_at': ''})
+        #     elif RegisterUser.objects.get(id=room.receiver_id).pic_1:
+        #         if room.messages.last():
+        #             room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
+        #                 id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
+        #                               'sender_profile_pic': '',
+        #                               'receiver': room.receiver.id, 'receiver_name': RegisterUser.objects.get(
+        #                     id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+        #                     id=room.receiver_id).last_name,
+        #                               'receiver_profile_pic': RegisterUser.objects.get(id=room.receiver_id).pic_1.url,
+        #                               'last_message': room.messages.last().message,
+        #                               'created_at': str(room.messages.last().created_at)})
+        #         else:
+        #             room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
+        #                 id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
+        #                               'sender_profile_pic': '',
+        #                               'receiver': room.receiver.id, 'receiver_name': RegisterUser.objects.get(
+        #                     id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+        #                     id=room.receiver_id).last_name,
+        #                               'receiver_profile_pic': RegisterUser.objects.get(id=room.receiver_id).pic_1.url,
+        #                               'last_message': '',
+        #                               'created_at': ''})
+        #     else:
+        #         if room.messages.last():
+        #             room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
+        #                 id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
+        #                               'sender_profile_pic': '',
+        #                               'receiver': room.receiver.id, 'receiver_name': RegisterUser.objects.get(
+        #                     id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+        #                     id=room.receiver_id).last_name,
+        #                               'receiver_profile_pic': '', 'last_message': room.messages.last().message,
+        #                               'created_at': str(room.messages.last().created_at)})
+        #         else:
+        #             room_list.append({'id': room.id, 'sender': room.sender.id, 'sender_name': RegisterUser.objects.get(
+        #                 id=room.sender_id).first_name + ' ' + RegisterUser.objects.get(id=room.sender_id).last_name,
+        #                               'sender_profile_pic': '',
+        #                               'receiver': room.receiver.id, 'receiver_name': RegisterUser.objects.get(
+        #                     id=room.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+        #                     id=room.receiver_id).last_name,
+        #                               'receiver_profile_pic': '', 'last_message': '',
+        #                               'created_at': ''})
         # return Response({'rooms': rooms.order_by('-created_at').values(), 'status': HTTP_200_OK})
-        return Response({'rooms': room_list, 'status': HTTP_200_OK})
+        return Response({'sent_messages': sent_massage, 'received_messages': received_message, 'status': HTTP_200_OK})
 
 
 class CheckRoom(APIView):

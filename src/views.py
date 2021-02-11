@@ -1767,35 +1767,43 @@ class GetMatchesAPIView(ListAPIView):
         for y in match_with | match_by:
             try:
                 if y.user.id == r_user.id:
-                    # if y.liked_by_me.all().last().id in final_blocked_users_list:
-                    z.append(
-                        {'match_id': y.id, 'id': y.liked_by_me.all().last().id,
-                         'first_name': RegisterUser.objects.get(
-                             id=y.liked_by_me.all().last().id).first_name,
-                         'last_name': RegisterUser.objects.get(id=y.liked_by_me.all().last().id).last_name,
-                         'profile_pic': RegisterUser.objects.get(
-                             id=y.liked_by_me.all().last().id).pic_1.url,
-                         'matched_at': y.matched_at,
-                         'type': 'match','blocked':True})
-                    # else:
-                    #     z.append(
-                    #         {'match_id': y.id, 'id': y.liked_by_me.all().last().id,
-                    #          'first_name': RegisterUser.objects.get(
-                    #              id=y.liked_by_me.all().last().id).first_name,
-                    #          'last_name': RegisterUser.objects.get(id=y.liked_by_me.all().last().id).last_name,
-                    #          'profile_pic': RegisterUser.objects.get(
-                    #              id=y.liked_by_me.all().last().id).pic_1.url,
-                    #          'matched_at': y.matched_at,
-                    #          'type': 'match','blocked':False})
+                    if y.liked_by_me.all().last().id in final_blocked_users_list:
+                        z.append(
+                            {'match_id': y.id, 'id': y.liked_by_me.all().last().id,
+                             'first_name': RegisterUser.objects.get(
+                                 id=y.liked_by_me.all().last().id).first_name,
+                             'last_name': RegisterUser.objects.get(id=y.liked_by_me.all().last().id).last_name,
+                             'profile_pic': RegisterUser.objects.get(
+                                 id=y.liked_by_me.all().last().id).pic_1.url,
+                             'matched_at': y.matched_at,
+                             'type': 'match', 'blocked': True})
+                    else:
+                        z.append(
+                            {'match_id': y.id, 'id': y.liked_by_me.all().last().id,
+                             'first_name': RegisterUser.objects.get(
+                                 id=y.liked_by_me.all().last().id).first_name,
+                             'last_name': RegisterUser.objects.get(id=y.liked_by_me.all().last().id).last_name,
+                             'profile_pic': RegisterUser.objects.get(
+                                 id=y.liked_by_me.all().last().id).pic_1.url,
+                             'matched_at': y.matched_at,
+                             'type': 'match', 'blocked': False})
                 else:
-                    # if y.liked_by_me.all().last().id in final_blocked_users_list
-                    z.append(
-                        {'match_id': y.id, 'id': y.user.id,
-                         'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
-                         'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
-                         'profile_pic': RegisterUser.objects.get(id=y.user.id).pic_1.url,
-                         'matched_at': y.matched_at,
-                         'type': 'match','blocked':True})
+                    if y.liked_by_me.all().last().id in final_blocked_users_list:
+                        z.append(
+                            {'match_id': y.id, 'id': y.user.id,
+                             'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
+                             'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
+                             'profile_pic': RegisterUser.objects.get(id=y.user.id).pic_1.url,
+                             'matched_at': y.matched_at,
+                             'type': 'match', 'blocked': True})
+                    else:
+                        z.append(
+                            {'match_id': y.id, 'id': y.user.id,
+                             'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
+                             'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
+                             'profile_pic': RegisterUser.objects.get(id=y.user.id).pic_1.url,
+                             'matched_at': y.matched_at,
+                             'type': 'match', 'blocked': False})
 
             except Exception as e:
                 print('EXCEPT BLOCK Match--------------', len(match_with | match_by))
@@ -1803,23 +1811,43 @@ class GetMatchesAPIView(ListAPIView):
                 if len(match_with | match_by) > 0:
                     try:
                         if y.user.id == r_user.id:
-                            z.append(
-                                {'match_id': y.id, 'id': y.liked_by_me.all().last().id,
-                                 'first_name': RegisterUser.objects.get(
-                                     id=y.liked_by_me.all().last().id).first_name,
-                                 'last_name': RegisterUser.objects.get(
-                                     id=y.liked_by_me.all().last().id).last_name,
-                                 'profile_pic': '',
-                                 'matched_at': y.matched_at,
-                                 'type': 'match'})
+                            if y.liked_by_me.all().last().id in final_blocked_users_list:
+                                z.append(
+                                    {'match_id': y.id, 'id': y.liked_by_me.all().last().id,
+                                     'first_name': RegisterUser.objects.get(
+                                         id=y.liked_by_me.all().last().id).first_name,
+                                     'last_name': RegisterUser.objects.get(
+                                         id=y.liked_by_me.all().last().id).last_name,
+                                     'profile_pic': '',
+                                     'matched_at': y.matched_at,
+                                     'type': 'match', 'blocked': True})
+                            else:
+                                z.append(
+                                    {'match_id': y.id, 'id': y.liked_by_me.all().last().id,
+                                     'first_name': RegisterUser.objects.get(
+                                         id=y.liked_by_me.all().last().id).first_name,
+                                     'last_name': RegisterUser.objects.get(
+                                         id=y.liked_by_me.all().last().id).last_name,
+                                     'profile_pic': '',
+                                     'matched_at': y.matched_at,
+                                     'type': 'match', 'blocked': False})
                         else:
-                            z.append(
-                                {'match_id': y.id, 'id': y.user.id,
-                                 'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
-                                 'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
-                                 'profile_pic': '',
-                                 'matched_at': y.matched_at,
-                                 'type': 'match'})
+                            if y.liked_by_me.all().last().id in final_blocked_users_list:
+                                z.append(
+                                    {'match_id': y.id, 'id': y.user.id,
+                                     'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
+                                     'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
+                                     'profile_pic': '',
+                                     'matched_at': y.matched_at,
+                                     'type': 'match', 'blocked': True})
+                            else:
+                                z.append(
+                                    {'match_id': y.id, 'id': y.user.id,
+                                     'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
+                                     'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
+                                     'profile_pic': '',
+                                     'matched_at': y.matched_at,
+                                     'type': 'match', 'blocked': False})
                     except Exception as e:
                         print(e)
                         pass
@@ -1829,44 +1857,84 @@ class GetMatchesAPIView(ListAPIView):
         for y in super_match_with | super_match_by:
             try:
                 if y.user.id == r_user.id:
-                    a.append(
-                        {'match_id': y.id, 'id': y.super_liked_by_me.all().last().id,
-                         'first_name': RegisterUser.objects.get(
-                             id=y.super_liked_by_me.all().last().id).first_name,
-                         'last_name': RegisterUser.objects.get(id=y.super_liked_by_me.all().last().id).last_name,
-                         'profile_pic': RegisterUser.objects.get(
-                             id=y.super_liked_by_me.all().last().id).pic_1.url,
-                         'matched_at': y.matched_at,
-                         'type': 'super_match'})
-                else:
-                    a.append(
-                        {'match_id': y.id, 'id': y.user.id,
-                         'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
-                         'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
-                         'profile_pic': RegisterUser.objects.get(id=y.user.id).pic_1.url,
-                         'matched_at': y.matched_at,
-                         'type': 'super_match'})
-            except Exception as e:
-                print('EXCEPT BLOCK Match--------------', y)
-                if len(super_match_with | super_match_by) > 0:
-                    if y.user.id == r_user.id:
-                        z.append(
+                    if y.super_liked_by_me.all().last().id in final_blocked_users_list:
+                        a.append(
                             {'match_id': y.id, 'id': y.super_liked_by_me.all().last().id,
                              'first_name': RegisterUser.objects.get(
                                  id=y.super_liked_by_me.all().last().id).first_name,
-                             'last_name': RegisterUser.objects.get(
-                                 id=y.super_liked_by_me.all().last().id).last_name,
-                             'profile_pic': '',
+                             'last_name': RegisterUser.objects.get(id=y.super_liked_by_me.all().last().id).last_name,
+                             'profile_pic': RegisterUser.objects.get(
+                                 id=y.super_liked_by_me.all().last().id).pic_1.url,
                              'matched_at': y.matched_at,
-                             'type': 'super_match'})
+                             'type': 'super_match', 'blocked': True})
+                    else:
+                        a.append(
+                            {'match_id': y.id, 'id': y.super_liked_by_me.all().last().id,
+                             'first_name': RegisterUser.objects.get(
+                                 id=y.super_liked_by_me.all().last().id).first_name,
+                             'last_name': RegisterUser.objects.get(id=y.super_liked_by_me.all().last().id).last_name,
+                             'profile_pic': RegisterUser.objects.get(
+                                 id=y.super_liked_by_me.all().last().id).pic_1.url,
+                             'matched_at': y.matched_at,
+                             'type': 'super_match', 'blocked': False})
+                else:
+                    if y.super_liked_by_me.all().last().id in final_blocked_users_list:
+                        a.append(
+                            {'match_id': y.id, 'id': y.user.id,
+                             'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
+                             'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
+                             'profile_pic': RegisterUser.objects.get(id=y.user.id).pic_1.url,
+                             'matched_at': y.matched_at,
+                             'type': 'super_match', 'blocked': True})
                     else:
                         a.append(
                             {'match_id': y.id, 'id': y.user.id,
                              'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
                              'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
-                             'profile_pic': '',
+                             'profile_pic': RegisterUser.objects.get(id=y.user.id).pic_1.url,
                              'matched_at': y.matched_at,
-                             'type': 'super_match'})
+                             'type': 'super_match', 'blocked': False})
+            except Exception as e:
+                print('EXCEPT BLOCK Match--------------', y)
+                if len(super_match_with | super_match_by) > 0:
+                    if y.user.id == r_user.id:
+                        if y.super_liked_by_me.all().last().id in final_blocked_users_list:
+                            z.append(
+                                {'match_id': y.id, 'id': y.super_liked_by_me.all().last().id,
+                                 'first_name': RegisterUser.objects.get(
+                                     id=y.super_liked_by_me.all().last().id).first_name,
+                                 'last_name': RegisterUser.objects.get(
+                                     id=y.super_liked_by_me.all().last().id).last_name,
+                                 'profile_pic': '',
+                                 'matched_at': y.matched_at,
+                                 'type': 'super_match', 'block': True})
+                        else:
+                            z.append(
+                                {'match_id': y.id, 'id': y.super_liked_by_me.all().last().id,
+                                 'first_name': RegisterUser.objects.get(
+                                     id=y.super_liked_by_me.all().last().id).first_name,
+                                 'last_name': RegisterUser.objects.get(
+                                     id=y.super_liked_by_me.all().last().id).last_name,
+                                 'profile_pic': '',
+                                 'matched_at': y.matched_at,
+                                 'type': 'super_match', 'block': False})
+                    else:
+                        if y.super_liked_by_me.all().last().id in final_blocked_users_list:
+                            a.append(
+                                {'match_id': y.id, 'id': y.user.id,
+                                 'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
+                                 'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
+                                 'profile_pic': '',
+                                 'matched_at': y.matched_at,
+                                 'type': 'super_match', 'blocked': True})
+                        else:
+                            a.append(
+                                {'match_id': y.id, 'id': y.user.id,
+                                 'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
+                                 'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
+                                 'profile_pic': '',
+                                 'matched_at': y.matched_at,
+                                 'type': 'super_match', 'blocked': False})
                 else:
                     pass
         return Response({'match': z + a, 'status': HTTP_200_OK})
@@ -2233,33 +2301,37 @@ class MettingList(APIView):
             if RegisterUser.objects.get(id=meeting.scheduled_with.id).pic_1:
                 if RegisterUser.objects.get(id=meeting.scheduled_with.id).id in final_blocked_users_list:
                     sent_list.append(
-                        {'id': meeting.id, 'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
+                        {'id': meeting.id,
+                         'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
                          'last_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).last_name,
                          'profile_pic': RegisterUser.objects.get(id=meeting.scheduled_with.id).pic_1.url,
                          'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
-                         'type': 'sent','blocked':True})
+                         'type': 'sent', 'blocked': True})
                 else:
                     sent_list.append(
-                        {'id': meeting.id, 'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
+                        {'id': meeting.id,
+                         'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
                          'last_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).last_name,
                          'profile_pic': RegisterUser.objects.get(id=meeting.scheduled_with.id).pic_1.url,
                          'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
-                         'type': 'sent','blocked':False})
+                         'type': 'sent', 'blocked': False})
             else:
                 if RegisterUser.objects.get(id=meeting.scheduled_with.id).id in final_blocked_users_list:
                     sent_list.append(
-                        {'id': meeting.id, 'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
+                        {'id': meeting.id,
+                         'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
                          'last_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).last_name,
                          'profile_pic': '',
                          'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
-                         'type': 'sent','blocked':True})
+                         'type': 'sent', 'blocked': True})
                 else:
                     sent_list.append(
-                        {'id': meeting.id, 'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
+                        {'id': meeting.id,
+                         'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
                          'last_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).last_name,
                          'profile_pic': '',
                          'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
-                         'type': 'sent','blocked':False})
+                         'type': 'sent', 'blocked': False})
         return Response({'meetings': recevied_list + sent_list, 'status': HTTP_200_OK})
 
 
