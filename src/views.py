@@ -620,7 +620,7 @@ class UserProfileAPIView(ListCreateAPIView):
             # else:
             #     pic_9 = ''
             detail = {
-                "id": user.id,
+                "id": user.phone_number.id,
                 "bio": user.bio,
                 "first_name": user.phone_number.first_name,
                 "last_name": user.phone_number.last_name,
