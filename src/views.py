@@ -2288,6 +2288,18 @@ class EditContactUsApiView(UpdateAPIView):
     queryset = ContactUs.objects.all()
 
 
+class CheckDob(APIView):
+
+    def get(self, request, *args, **kwargs):
+        social_id = self.request.POST['social_id']
+        try:
+            user = User.objects.get(social_id=social_id)
+            return Response({'message': "User with this social id exists", 'exists': True, 'status': HTTP_200_OK})
+        except Exception as e:
+            x = {'error': str(e)}
+            return Response({'message': x['error'], 'exists': False, 'status': HTTP_400_BAD_REQUEST})
+
+
 class FacebookSignupApiView(CreateAPIView):
     serializer_class = FacebookSerializer
 
