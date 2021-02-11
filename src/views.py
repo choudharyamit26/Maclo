@@ -1097,10 +1097,24 @@ class FilteredUserView(APIView):
         register_user = RegisterUser.objects.get(email=logged_in_user_id.email)
         print(register_user.id)
         user_detail_obj = UserDetail.objects.get(phone_number=register_user.id)
-        # users_blocked_by_me = BlockedUsers.objects.filter(user=register_user)
-        # print('USERS BLOCKED BY ME ', users_blocked_by_me)
-        # users_blocked_me = BlockedUsers.objects.filter(blocked=register_user)
-        # print('USERS BLOCKED ME ', users_blocked_me)
+        users_blocked_by_me = BlockedUsers.objects.filter(user=register_user)
+        print('USERS BLOCKED BY ME ', users_blocked_by_me)
+        # users_blocked_by_me_list_2 = [x for x in users_blocked_by_me for y in x.blocked.all()]
+        # print('BLOCKED LIST 2', users_blocked_by_me_list_2)
+        users_blocked_by_me_list = []
+        for user in users_blocked_by_me:
+            for u in user.blocked.all():
+                users_blocked_by_me_list.append(u.id)
+        print('USERS BLOCKED BY ME LIST---', users_blocked_by_me_list)
+        users_blocked_me = BlockedUsers.objects.filter(blocked=register_user)
+        print('USERS BLOCKED ME ID', [x.user.id for x in users_blocked_me])
+        # users_blocked_me_list = [x.id for x in users_blocked_me.blocked.all()]
+        users_blocked_me_list = []
+        for user in users_blocked_me:
+            users_blocked_me_list.append(user.user.id)
+        print('USERS BLOCKED ME ', users_blocked_me_list)
+        final_blocked_users_list = users_blocked_by_me_list + users_blocked_me_list
+        print('FINAL BLOCKED LIST', final_blocked_users_list)
         lang = 0
         lat = 0
         if user_detail_obj.discovery:
@@ -1155,25 +1169,6 @@ class FilteredUserView(APIView):
         print('>>>>>>>>>>>>>>>> Filtered Users -->', users_in_range)
         print('-----------------------------', len(liked_disliked_user_detail))
         list_after_liked_disliked = []
-        # if len(users_in_range) > 0:
-        #     if len(set(liked_disliked_user_detail)) > 0:
-        #         for x in set(liked_disliked_user_detail):
-        #             print(x.id in [x.id for x in users_in_range])
-        #             # print(x.id, [x.id for x in users_in_range])
-        #             for y in users_in_range:
-        #                 print(f'x----{x.id} ,y-----{y.id}')
-        #                 if x.id == y.id:
-        #                     print('x.id == y.id -----------------', x.id == y.id)
-        #                     pass
-        #                 else:
-        #                     print('Else------------------',y)
-        #                     list_after_liked_disliked.append(y)
-        #     else:
-        #         print('inside else-------------------------- list_after_liked_disliked')
-        #         for y in users_in_range:
-        #             list_after_liked_disliked.append(y)
-        # else:
-        #     print('ELSEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE')
         if len(users_in_range) > 0:
             if len(set(liked_disliked_user_detail)) > 0:
                 for y in users_in_range:
@@ -1214,7 +1209,11 @@ class FilteredUserView(APIView):
             print('XXXXXXXXXXXXXX-----------', x)
             print(x.phone_number.email)
             r_u = RegisterUser.objects.get(email=x.phone_number.email)
-            z.append(r_u)
+            if r_u.id in final_blocked_users_list:
+                print('REGISTER USER ID', r_u.id)
+                pass
+            else:
+                z.append(r_u)
         print('>>>>>>>>>>>>>>>>>>>>>>>>>zzzzzzzzzzz ', z)
         qs = []
         if qualification or relationship_status or height or gender or religion or zodiac_sign or taste or body_type:
@@ -2570,8 +2569,6 @@ class DeleteAccount(APIView):
         request.user.auth_token.delete()
         user.delete()
         r_user = RegisterUser.objects.get(email=user.email)
-        # user_detail = UserDetail.objects.get(phone_number=r_user)
-        # user_detail.delete()
         r_user.delete()
         return Response({'message': 'Account deleted successfully', 'status': HTTP_200_OK})
 
@@ -2714,10 +2711,10 @@ class CheckEmail(APIView):
         email = self.request.POST['email']
         try:
             user = User.objects.get(email=email)
-            return Response({'message': 'User with this email already exists', 'status': HTTP_200_OK})
+            return Response({'message': 'User with this email already exists', 'status': HTTP_400_BAD_REQUEST})
         except Exception as e:
             x = {'error': str(e)}
-            return Response({'message': x['error'], 'status': HTTP_400_BAD_REQUEST})
+            return Response({'message': x['error'], 'status': HTTP_200_OK})
 
 
 class PopNotificationAPIView(CreateAPIView):
