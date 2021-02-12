@@ -2529,7 +2529,7 @@ class CheckDob(APIView):
                 user_detail.save()
             # return Response({"Token": user_with_token.key, "user_id": user.id, "status": HTTP_200_OK})
             return Response({'message': "User with this social id exists", 'exists': True, "Token": user_with_token.key,
-                             'id': user_data.id, 'data': Data, 'deactivated': account.deactivated,
+                             'data': Data, 'deactivated': account.deactivated,
                              'status': HTTP_200_OK})
         except Exception as e:
             x = {'error': str(e)}
