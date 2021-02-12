@@ -89,208 +89,416 @@ class ChatList(APIView):
             if RegisterUser.objects.get(id=message.sender_id).pic_1 and RegisterUser.objects.get(
                     id=message.receiver_id).pic_1:
                 if message.messages.last():
-                    sent_massage.append(
-                        {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
-                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.sender_id).last_name,
-                         'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
-                         'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.receiver_id).last_name,
-                         'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
-                         'last_message': message.messages.last().message,
-                         'created_at': str(message.messages.last().created_at)})
+                    if message.sender.id in final_blocked_users_list:
+                        sent_massage.append(
+                            {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                             'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                             'last_message': message.messages.last().message,
+                             'created_at': str(message.messages.last().created_at), 'blocked': True})
+                    else:
+                        sent_massage.append(
+                            {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                             'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                             'last_message': message.messages.last().message,
+                             'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
-                    sent_massage.append(
-                        {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
-                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.sender_id).last_name,
-                         'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
-                         'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.receiver_id).last_name,
-                         'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
-                         'last_message': '',
-                         'created_at': ''})
+                    if message.sender.id in final_blocked_users_list:
+                        sent_massage.append(
+                            {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                             'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                             'last_message': '',
+                             'created_at': '', 'blocked': True})
+                    else:
+                        sent_massage.append(
+                            {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                             'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                             'last_message': '',
+                             'created_at': '', 'blocked': False})
             elif RegisterUser.objects.get(id=message.sender_id).pic_1:
                 if message.messages.last():
-                    sent_massage.append(
-                        {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
-                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.sender_id).last_name,
-                         'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
-                         'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.receiver_id).last_name,
-                         'receiver_profile_pic': '',
-                         'last_message': message.messages.last().message,
-                         'created_at': str(message.messages.last().created_at)})
+                    if message.sender.id in final_blocked_users_list:
+                        sent_massage.append(
+                            {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                             'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'receiver_profile_pic': '',
+                             'last_message': message.messages.last().message,
+                             'created_at': str(message.messages.last().created_at), 'blocked': True})
+                    else:
+                        sent_massage.append(
+                            {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                             'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'receiver_profile_pic': '',
+                             'last_message': message.messages.last().message,
+                             'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
-                    sent_massage.append(
-                        {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
-                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.sender_id).last_name,
-                         'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
-                         'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.receiver_id).last_name,
-                         'receiver_profile_pic': '',
-                         'last_message': '',
-                         'created_at': ''})
+                    if message.sender.id in final_blocked_users_list:
+                        sent_massage.append(
+                            {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                             'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'receiver_profile_pic': '',
+                             'last_message': '',
+                             'created_at': '', 'blocked': True})
+                    else:
+                        sent_massage.append(
+                            {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                             'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'receiver_profile_pic': '',
+                             'last_message': '',
+                             'created_at': '', 'blocked': False})
 
             elif RegisterUser.objects.get(id=message.receiver_id).pic_1:
                 if message.messages.last():
-                    sent_massage.append(
-                        {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
-                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.sender_id).last_name,
-                         'sender_profile_pic': '',
-                         'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.receiver_id).last_name,
-                         'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
-                         'last_message': message.messages.last().message,
-                         'created_at': str(message.messages.last().created_at)})
+                    if message.sender.id in final_blocked_users_list:
+                        sent_massage.append(
+                            {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'sender_profile_pic': '',
+                             'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                             'last_message': message.messages.last().message,
+                             'created_at': str(message.messages.last().created_at), 'blocked': True})
+                    else:
+                        sent_massage.append(
+                            {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'sender_profile_pic': '',
+                             'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                             'last_message': message.messages.last().message,
+                             'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
-                    sent_massage.append(
-                        {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
-                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.sender_id).last_name,
-                         'sender_profile_pic': '',
-                         'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.receiver_id).last_name,
-                         'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
-                         'last_message': '',
-                         'created_at': ''})
+                    if message.sender.id in final_blocked_users_list:
+                        sent_massage.append(
+                            {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'sender_profile_pic': '',
+                             'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                             'last_message': '',
+                             'created_at': '', 'blocked': True})
+                    else:
+                        sent_massage.append(
+                            {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'sender_profile_pic': '',
+                             'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                             'last_message': '',
+                             'created_at': '', 'blocked': False})
             else:
                 if message.messages.last():
-                    sent_massage.append(
-                        {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
-                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.sender_id).last_name,
-                         'sender_profile_pic': '',
-                         'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.receiver_id).last_name,
-                         'receiver_profile_pic': '',
-                         'last_message': message.messages.last().message,
-                         'created_at': str(message.messages.last().created_at)})
+                    if message.sender.id in final_blocked_users_list:
+                        sent_massage.append(
+                            {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'sender_profile_pic': '',
+                             'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'receiver_profile_pic': '',
+                             'last_message': message.messages.last().message,
+                             'created_at': str(message.messages.last().created_at), 'blocked': True})
+                    else:
+                        sent_massage.append(
+                            {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'sender_profile_pic': '',
+                             'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'receiver_profile_pic': '',
+                             'last_message': message.messages.last().message,
+                             'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
-                    sent_massage.append(
-                        {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
-                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.sender_id).last_name,
-                         'sender_profile_pic': '',
-                         'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.receiver_id).last_name,
-                         'receiver_profile_pic': '',
-                         'last_message': '',
-                         'created_at': ''})
+                    if message.sender.id in final_blocked_users_list:
+                        sent_massage.append(
+                            {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'sender_profile_pic': '',
+                             'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'receiver_profile_pic': '',
+                             'last_message': '',
+                             'created_at': '', 'blocked': True})
+                    else:
+                        sent_massage.append(
+                            {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'sender_profile_pic': '',
+                             'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'receiver_profile_pic': '',
+                             'last_message': '',
+                             'created_at': '', 'blocked': False})
         for message in receiver_chat:
             if RegisterUser.objects.get(id=message.sender_id).pic_1 and RegisterUser.objects.get(
                     id=message.receiver_id).pic_1:
                 if message.messages.last():
-                    received_message.append(
-                        {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
-                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.receiver_id).last_name,
-                         'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
-                         'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.sender_id).last_name,
-                         'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
-                         'last_message': message.messages.last().message,
-                         'created_at': str(message.messages.last().created_at)})
+                    if message.receiver.id in final_blocked_users_list:
+                        received_message.append(
+                            {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                             'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                             'last_message': message.messages.last().message,
+                             'created_at': str(message.messages.last().created_at), 'blocked': True})
+                    else:
+                        received_message.append(
+                            {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                             'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                             'last_message': message.messages.last().message,
+                             'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
-                    received_message.append(
-                        {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
-                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.receiver_id).last_name,
-                         'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
-                         'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.sender_id).last_name,
-                         'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
-                         'last_message': '',
-                         'created_at': ''})
+                    if message.receiver.id in final_blocked_users_list:
+                        received_message.append(
+                            {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                             'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                             'last_message': '',
+                             'created_at': '', 'blocked': True})
+                    else:
+                        received_message.append(
+                            {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                             'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                             'last_message': '',
+                             'created_at': '', 'blocked': False})
             elif RegisterUser.objects.get(id=message.sender_id).pic_1:
                 if message.messages.last():
-                    received_message.append(
-                        {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
-                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.receiver_id).last_name,
-                         'sender_profile_pic': '',
-                         'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.sender_id).last_name,
-                         'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
-                         'last_message': message.messages.last().message,
-                         'created_at': str(message.messages.last().created_at)})
+                    if message.receiver.id in final_blocked_users_list:
+                        received_message.append(
+                            {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'sender_profile_pic': '',
+                             'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                             'last_message': message.messages.last().message,
+                             'created_at': str(message.messages.last().created_at), 'blocked': True})
+                    else:
+                        received_message.append(
+                            {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'sender_profile_pic': '',
+                             'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                             'last_message': message.messages.last().message,
+                             'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
-                    received_message.append(
-                        {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
-                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.receiver_id).last_name,
-                         'sender_profile_pic': '',
-                         'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.sender_id).last_name,
-                         'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
-                         'last_message': '',
-                         'created_at': ''})
+                    if message.receiver.id in final_blocked_users_list:
+                        received_message.append(
+                            {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'sender_profile_pic': '',
+                             'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                             'last_message': '',
+                             'created_at': '', 'blocked': True})
+                    else:
+                        received_message.append(
+                            {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'sender_profile_pic': '',
+                             'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
+                             'last_message': '',
+                             'created_at': '', 'blocked': False})
             elif RegisterUser.objects.get(id=message.receiver_id).pic_1:
                 if message.messages.last():
-                    received_message.append(
-                        {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
-                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.receiver_id).last_name,
-                         'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
-                         'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.sender_id).last_name,
-                         'receiver_profile_pic': '',
-                         'last_message': message.messages.last().message,
-                         'created_at': str(message.messages.last().created_at)})
+                    if message.receiver.id in final_blocked_users_list:
+                        received_message.append(
+                            {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                             'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'receiver_profile_pic': '',
+                             'last_message': message.messages.last().message,
+                             'created_at': str(message.messages.last().created_at), 'blocked': True})
+                    else:
+                        received_message.append(
+                            {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                             'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'receiver_profile_pic': '',
+                             'last_message': message.messages.last().message,
+                             'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
-                    received_message.append(
-                        {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
-                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.receiver_id).last_name,
-                         'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
-                         'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.sender_id).last_name,
-                         'receiver_profile_pic': '',
-                         'last_message': '',
-                         'created_at': ''})
+                    if message.receiver.id in final_blocked_users_list:
+                        received_message.append(
+                            {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                             'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'receiver_profile_pic': '',
+                             'last_message': '',
+                             'created_at': '', 'blocked': True})
+                    else:
+                        received_message.append(
+                            {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
+                             'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'receiver_profile_pic': '',
+                             'last_message': '',
+                             'created_at': '', 'blocked': False})
             else:
                 if message.messages.last():
-                    received_message.append(
-                        {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
-                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.receiver_id).last_name,
-                         'sender_profile_pic': '',
-                         'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.sender_id).last_name,
-                         'receiver_profile_pic': '',
-                         'last_message': message.messages.last().message,
-                         'created_at': str(message.messages.last().created_at)})
+                    if message.receiver.id in final_blocked_users_list:
+                        received_message.append(
+                            {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'sender_profile_pic': '',
+                             'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'receiver_profile_pic': '',
+                             'last_message': message.messages.last().message,
+                             'created_at': str(message.messages.last().created_at), 'blocked': True})
+                    else:
+                        received_message.append(
+                            {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'sender_profile_pic': '',
+                             'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'receiver_profile_pic': '',
+                             'last_message': message.messages.last().message,
+                             'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
-                    received_message.append(
-                        {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
-                            id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.receiver_id).last_name,
-                         'sender_profile_pic': '',
-                         'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                            id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                            id=message.sender_id).last_name,
-                         'receiver_profile_pic': '',
-                         'last_message': '',
-                         'created_at': ''})
-        return Response({'messages': sent_massage+received_message, 'status': HTTP_200_OK})
+                    if message.receiver.id in final_blocked_users_list:
+                        received_message.append(
+                            {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'sender_profile_pic': '',
+                             'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'receiver_profile_pic': '',
+                             'last_message': '',
+                             'created_at': '', 'blocked': True})
+                    else:
+                        received_message.append(
+                            {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
+                                id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.receiver_id).last_name,
+                             'sender_profile_pic': '',
+                             'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
+                                id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
+                                id=message.sender_id).last_name,
+                             'receiver_profile_pic': '',
+                             'last_message': '',
+                             'created_at': '', 'blocked': False})
+        return Response({'messages': sent_massage + received_message, 'status': HTTP_200_OK})
 
 
 class CheckRoom(APIView):
