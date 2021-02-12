@@ -46,7 +46,7 @@ class LoginView(ObtainAuthToken):
         device_token = self.request.data['device_token']
         x = {}
         try:
-            user = User.objects.get(phone_number=phone_number)
+            user = User.objects.get(phone_number=int(phone_number))
             if user:
                 user.device_token = device_token
                 user.save()
