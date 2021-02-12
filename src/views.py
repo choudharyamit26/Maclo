@@ -1621,10 +1621,15 @@ class LikeUserAPIView(CreateAPIView):
                 body="You have been liked by " + from_user_name
             )
             fcm_token = User.objects.get(email=to_user_id.email).device_token
+            print('FCM TOKEN ',fcm_token)
             try:
+                # data_message = {"data": {"title": "Like Notification",
+                #                          "body": "You have been liked by " + from_user_name,
+                #                          "type": "likeNotification"}}
                 title = "Like Notification"
                 body = "You have been liked by " + from_user_name
                 message_type = "likeNotification"
+                # respo = send_to_one(fcm_token, data_message)
                 respo = send_another(fcm_token, title, body, message_type)
                 print("FCM Response===============>0", respo)
             except Exception as e:

@@ -4,6 +4,7 @@ from channels.generic.websocket import WebsocketConsumer
 import json
 from src.models import RegisterUser
 from .models import Message, ChatRoom
+from src.fcm_notification import send_another,send_to_one
 from .views import get_last_10_messages, get_user_contact, get_current_chat
 
 User = RegisterUser()
@@ -65,6 +66,15 @@ class ChatRoomConsumer(WebsocketConsumer):
                         'm': m
                     }
                 )
+                fcm_token = User.objects.get(email=sender.email).device_token
+                data_message = {"data": {"title": sender.first_name,
+                                         "body": text_data_json['message'],
+                                         "type": "NewMessage"}}
+                respo = send_to_one(fcm_token, data_message)
+                title = sender.first_name
+                body = text_data_json['message']
+                message_type = "newMessage"
+                respo = send_another(fcm_token, title, body, message_type)
             except Exception as e:
                 print('inside nested except')
                 chat1 = ChatRoom.objects.get(sender=RegisterUser.objects.get(id=text_data_json['receiver']),
@@ -90,7 +100,15 @@ class ChatRoomConsumer(WebsocketConsumer):
                         'm': m,
                     }
                 )
-
+                fcm_token = User.objects.get(email=receiver.email).device_token
+                data_message = {"data": {"title": receiver.first_name,
+                                         "body": text_data_json['message'],
+                                         "type": "NewMessage"}}
+                respo = send_to_one(fcm_token, data_message)
+                title = receiver.first_name
+                body = text_data_json['message']
+                message_type = "newMessage"
+                respo = send_another(fcm_token, title, body, message_type)
         except Exception as e:
             print('inside outer except', e)
             x = ChatRoom.objects.create(sender=RegisterUser.objects.get(id=text_data_json['sender']),
@@ -116,6 +134,15 @@ class ChatRoomConsumer(WebsocketConsumer):
                     'm': m
                 }
             )
+            fcm_token = User.objects.get(email=sender.email).device_token
+            data_message = {"data": {"title": sender.first_name,
+                                     "body": text_data_json['message'],
+                                     "type": "NewMessage"}}
+            respo = send_to_one(fcm_token, data_message)
+            title = sender.first_name
+            body = text_data_json['message']
+            message_type = "newMessage"
+            respo = send_another(fcm_token, title, body, message_type)
 
     # Receive message from room group
     def chat_message(self, event):
