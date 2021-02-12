@@ -223,7 +223,9 @@ STATICFILES_DIRS = [
 AWS_DEFAULT_ACL = None
 
 AWS_QUERYSTRING_AUTH = False
-
+FCM_DJANGO_SETTINGS = {
+    "FCM_SERVER_KEY": "AAAAORwXGTc:APA91bFzV3R5Agp3wnrvhYwGbA4n-v5x-sBF9_nAgwPv6HVl92RyNontEw0A8RzNOQvVTOOKvKzpU_XrFFg--uAvkazmFfL03X71XjUe8CEZiLUmLtVfho4jtDVXdmm6rrfPkOqdroP6"
+}
 '''
 <?xml version="1.0" encoding="UTF-8"?>
 <CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">

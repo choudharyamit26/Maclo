@@ -1,8 +1,7 @@
 from pyfcm import FCMNotification
 
 push_service = FCMNotification(
-    api_key="AAAAfWTapmU:APA91bGQGqxcMJMF-RVQsbETEsiRS3Y0xTLIQS5Z4cUEOcZmQJ6casKERRJaNdDKBRiGEVaeRifp"
-            "-5CRX2S2423T_BVR8_5MPz1fQfXrYJHhmg-hCTPZ4NWaFnn0Fhm88QnJtsNJ5q5m")
+    api_key="AAAAORwXGTc:APA91bFzV3R5Agp3wnrvhYwGbA4n-v5x-sBF9_nAgwPv6HVl92RyNontEw0A8RzNOQvVTOOKvKzpU_XrFFg--uAvkazmFfL03X71XjUe8CEZiLUmLtVfho4jtDVXdmm6rrfPkOqdroP6")
 
 
 # OR initialize with proxies

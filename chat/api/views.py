@@ -89,7 +89,7 @@ class ChatList(APIView):
             if RegisterUser.objects.get(id=message.sender_id).pic_1 and RegisterUser.objects.get(
                     id=message.receiver_id).pic_1:
                 if message.messages.last():
-                    if message.sender.id in final_blocked_users_list:
+                    if message.sender.id in final_blocked_users_list or message.receiver.id in final_blocked_users_list:
                         sent_massage.append(
                             {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
                                 id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
