@@ -1788,7 +1788,7 @@ class GetMatchesAPIView(ListAPIView):
                              'matched_at': y.matched_at,
                              'type': 'match', 'blocked': False})
                 else:
-                    if y.liked_by_me.all().last().id in final_blocked_users_list:
+                    if y.user.id in final_blocked_users_list:
                         z.append(
                             {'match_id': y.id, 'id': y.user.id,
                              'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
@@ -1832,7 +1832,7 @@ class GetMatchesAPIView(ListAPIView):
                                      'matched_at': y.matched_at,
                                      'type': 'match', 'blocked': False})
                         else:
-                            if y.liked_by_me.all().last().id in final_blocked_users_list:
+                            if y.user.id in final_blocked_users_list:
                                 z.append(
                                     {'match_id': y.id, 'id': y.user.id,
                                      'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
@@ -1878,7 +1878,7 @@ class GetMatchesAPIView(ListAPIView):
                              'matched_at': y.matched_at,
                              'type': 'super_match', 'blocked': False})
                 else:
-                    if y.super_liked_by_me.all().last().id in final_blocked_users_list:
+                    if y.user.id in final_blocked_users_list:
                         a.append(
                             {'match_id': y.id, 'id': y.user.id,
                              'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
@@ -1919,7 +1919,7 @@ class GetMatchesAPIView(ListAPIView):
                                  'matched_at': y.matched_at,
                                  'type': 'super_match', 'block': False})
                     else:
-                        if y.super_liked_by_me.all().last().id in final_blocked_users_list:
+                        if y.user.id in final_blocked_users_list:
                             a.append(
                                 {'match_id': y.id, 'id': y.user.id,
                                  'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
