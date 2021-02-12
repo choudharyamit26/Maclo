@@ -43,10 +43,13 @@ class LoginView(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
         phone_number = self.request.data['phone_number']
+        device_token = self.request.data['device_token']
         x = {}
         try:
             user = User.objects.get(phone_number=phone_number)
             if user:
+                user.device_token = device_token
+                user.save()
                 token = Token.objects.get_or_create(user=user)
                 user_data = RegisterUser.objects.get(phone_number=phone_number)
                 user_detail = UserDetail.objects.get(phone_number=user_data)
@@ -154,6 +157,7 @@ class UserCreateAPIView(CreateAPIView):
         phone_number = self.request.data['phone_number']
         gender = self.request.data['gender']
         date_of_birth = self.request.data['date_of_birth']
+        device_token = self.request.data['device_token']
         # job_profile = self.request.data['job_profile']
         # company_name = self.request.data['company_name']
         email = self.request.data['email']
@@ -214,7 +218,8 @@ class UserCreateAPIView(CreateAPIView):
             )
             us_obj = User.objects.create(
                 email=email,
-                phone_number=phone_number
+                phone_number=phone_number,
+                device_token=device_token
             )
             us_obj.set_password(phone_number)
             us_obj.save()
@@ -2438,8 +2443,11 @@ class CheckDob(APIView):
 
     def post(self, request, *args, **kwargs):
         social_id = self.request.POST['social_id']
+        device_token = self.request.POST['device_token']
         try:
             user = User.objects.get(social_id=social_id)
+            user.device_token = device_token
+            user.save()
             user_data = RegisterUser.objects.get(email=user.email)
             user_with_token = Token.objects.get_or_create(user=user)
             user_with_token = user_with_token[0]
