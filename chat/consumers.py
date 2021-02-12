@@ -75,8 +75,9 @@ class ChatRoomConsumer(WebsocketConsumer):
                 body = text_data_json['message']
                 message_type = "newMessage"
                 respo = send_another(fcm_token, title, body, message_type)
+                print(respo)
             except Exception as e:
-                print('inside nested except')
+                print('inside nested except',e)
                 chat1 = ChatRoom.objects.get(sender=RegisterUser.objects.get(id=text_data_json['receiver']),
                                              receiver=RegisterUser.objects.get(id=text_data_json['sender']))
                 print('----', chat1.id)
@@ -109,6 +110,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                 body = text_data_json['message']
                 message_type = "newMessage"
                 respo = send_another(fcm_token, title, body, message_type)
+                print(respo)
         except Exception as e:
             print('inside outer except', e)
             x = ChatRoom.objects.create(sender=RegisterUser.objects.get(id=text_data_json['sender']),
@@ -143,7 +145,7 @@ class ChatRoomConsumer(WebsocketConsumer):
             body = text_data_json['message']
             message_type = "newMessage"
             respo = send_another(fcm_token, title, body, message_type)
-
+            print(respo)
     # Receive message from room group
     def chat_message(self, event):
         print('inside send', event)
