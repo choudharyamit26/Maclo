@@ -1617,10 +1617,18 @@ class LikeUserAPIView(CreateAPIView):
             to_user_id = RegisterUser.objects.get(id=int(liked_by_me))
             UserNotification.objects.create(
                 to=User.objects.get(email=to_user_id.email),
-                title='Match Notification',
-                body="You have been matched by " + from_user_name
+                title='Like Notification',
+                body="You have been liked by " + from_user_name
             )
-
+            fcm_token = User.objects.get(email=to_user_id.email).device_token
+            try:
+                title = "Like Notification"
+                body = "You have been liked by " + from_user_name
+                message_type = "likeNotification"
+                respo = send_another(fcm_token, title, body, message_type)
+                print("FCM Response===============>0", respo)
+            except Exception as e:
+                pass
             return Response({"message": "You have liked a user", "status": HTTP_200_OK})
         else:
             try:
@@ -1645,6 +1653,15 @@ class LikeUserAPIView(CreateAPIView):
                     title='Match Notification',
                     body="You have been matched by " + from_user_name
                 )
+                fcm_token = User.objects.get(email=to_user_id.email).device_token
+                try:
+                    title = "Match Notification"
+                    body = "You have been matched with " + from_user_name
+                    message_type = "matchNotification"
+                    respo = send_another(fcm_token, title, body, message_type)
+                    print("FCM Response===============>0", respo)
+                except Exception as e:
+                    pass
                 return Response({"message": "You have matched with a user", "status": HTTP_200_OK})
 
 
@@ -1705,8 +1722,17 @@ class SuperLikeUserAPIView(CreateAPIView):
             UserNotification.objects.create(
                 to=User.objects.get(email=to_user_id.email),
                 title='Super Match Notification',
-                body="You have been super matched by " + from_user_name
+                body="You have been super liked by " + from_user_name
             )
+            fcm_token = User.objects.get(email=to_user_id.email).device_token
+            try:
+                title = "Super Like Notification"
+                body = "You have been super liked by " + from_user_name
+                message_type = "superLike"
+                respo = send_another(fcm_token, title, body, message_type)
+                print("FCM Response===============>0", respo)
+            except Exception as e:
+                pass
             return Response({"message": "You have super liked a user", "status": HTTP_200_OK})
         else:
             try:
@@ -1734,6 +1760,15 @@ class SuperLikeUserAPIView(CreateAPIView):
                     title='Super Match Notification',
                     body="You have been super matched by " + from_user_name
                 )
+                fcm_token = User.objects.get(email=to_user_id.email).device_token
+                try:
+                    title = "Super Like Notification"
+                    body = "You have been super matched with " + from_user_name
+                    message_type = "superMatch"
+                    respo = send_another(fcm_token, title, body, message_type)
+                    print("FCM Response===============>0", respo)
+                except Exception as e:
+                    pass
                 return Response({"message": "You have super matched with a user", "status": HTTP_200_OK})
 
 
@@ -2165,11 +2200,6 @@ class ScheduleMeetingAPIView(CreateAPIView):
         from_id = requested_user.id
         from_user_id = RegisterUser.objects.get(id=from_id)
         from_user_name = from_user_id.first_name
-        # phone_number = self.request.data['phone_number']
-        # to_user = RegisterUser.objects.get(id=phone_number)
-        # first_name = to_user.first_name
-        # to_user_id = RegisterUser.objects.get(id=to_id)
-        # if logged_in_user_id.gender == 'Female':
         meeting = ScheduleMeeting.objects.create(
             scheduled_with=requested_user,
             scheduled_by=scheduled_by,
@@ -2180,17 +2210,19 @@ class ScheduleMeetingAPIView(CreateAPIView):
             status=status
         )
         UserNotification.objects.create(
-            to=User.objects.get(email=user.email),
+            to=User.objects.get(email=requested_user.email),
             title='Meeting Request',
             body="You have a meeting request from " + from_user_name
-            # from_user_id=from_user_id,
-            # from_user_name=from_user_name,
-            # to_user_id=to_user_id,
-            # to_user_name=first_name,
-            # notification_type='Meeting Schedule',
-            # notification_title='Meeting Schedule Request',
-            # notification_body='You have a meeting request from ' + from_user_name
         )
+        fcm_token = User.objects.get(email=requested_user.email).device_token
+        try:
+            title = "Meeting Request"
+            body = "You have a meeting request from " + from_user_name
+            message_type = "superLike"
+            respo = send_another(fcm_token, title, body, message_type)
+            print("FCM Response===============>0", respo)
+        except Exception as e:
+            pass
         return Response(
             {"meeting_id": meeting.id, "message": "Meeting schedule sent successfully", 'status': HTTP_200_OK})
 
@@ -2352,6 +2384,20 @@ class UpdateMeetingStatus(APIView):
         meeting = ScheduleMeeting.objects.get(id=meeting_id)
         meeting.status = status.capitalize()
         meeting.save()
+        UserNotification.objects.create(
+            to=User.objects.get(email=meeting.scheduled_by.email),
+            title='Meeting Status',
+            body="Your meeting request has been {} by {}".format(status, meeting.scheduled_with.first_name)
+        )
+        fcm_token = User.objects.get(email=meeting.scheduled_by.email).device_token
+        try:
+            title = "Meeting Status"
+            body = "Your meeting request has been {} by {}".format(status, meeting.scheduled_with.first_name)
+            message_type = "superLike"
+            respo = send_another(fcm_token, title, body, message_type)
+            print("FCM Response===============>0", respo)
+        except Exception as e:
+            pass
         return Response({'message': 'Meeting status updated successfully', 'status': HTTP_200_OK})
 
 
