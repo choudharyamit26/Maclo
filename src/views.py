@@ -2837,7 +2837,7 @@ class GoogleSignupView(CreateAPIView):
                     user=reg_usr
                 )
                 token = Token.objects.create(user=user)
-                user_data = RegisterUser.objects.get(email=existing_user.email)
+                # user_data = RegisterUser.objects.get(email=existing_user.email)
                 user_data = RegisterUser.objects.get(email=user.email)
                 user_detail = UserDetail.objects.get(phone_number=user_data)
                 pic_1 = ''
