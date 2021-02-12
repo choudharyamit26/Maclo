@@ -140,7 +140,7 @@ class ChatList(APIView):
                              'created_at': '', 'blocked': False})
             elif RegisterUser.objects.get(id=message.sender_id).pic_1:
                 if message.messages.last():
-                    if message.sender.id in final_blocked_users_list:
+                    if message.sender.id in final_blocked_users_list or message.receiver.id in final_blocked_users_list:
                         sent_massage.append(
                             {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
                                 id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
@@ -165,7 +165,7 @@ class ChatList(APIView):
                              'last_message': message.messages.last().message,
                              'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
-                    if message.sender.id in final_blocked_users_list:
+                    if message.sender.id in final_blocked_users_list or message.receiver.id in final_blocked_users_list:
                         sent_massage.append(
                             {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
                                 id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
@@ -192,7 +192,7 @@ class ChatList(APIView):
 
             elif RegisterUser.objects.get(id=message.receiver_id).pic_1:
                 if message.messages.last():
-                    if message.sender.id in final_blocked_users_list:
+                    if message.sender.id in final_blocked_users_list or message.receiver in final_blocked_users_list:
                         sent_massage.append(
                             {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
                                 id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
@@ -217,7 +217,7 @@ class ChatList(APIView):
                              'last_message': message.messages.last().message,
                              'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
-                    if message.sender.id in final_blocked_users_list:
+                    if message.sender.id in final_blocked_users_list or message.receiver.id in final_blocked_users_list:
                         sent_massage.append(
                             {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
                                 id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
@@ -243,7 +243,7 @@ class ChatList(APIView):
                              'created_at': '', 'blocked': False})
             else:
                 if message.messages.last():
-                    if message.sender.id in final_blocked_users_list:
+                    if message.sender.id in final_blocked_users_list or message.receiver.id in final_blocked_users_list:
                         sent_massage.append(
                             {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
                                 id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
@@ -268,7 +268,7 @@ class ChatList(APIView):
                              'last_message': message.messages.last().message,
                              'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
-                    if message.sender.id in final_blocked_users_list:
+                    if message.sender.id in final_blocked_users_list or message.receiver.id in final_blocked_users_list:
                         sent_massage.append(
                             {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
                                 id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
@@ -296,7 +296,7 @@ class ChatList(APIView):
             if RegisterUser.objects.get(id=message.sender_id).pic_1 and RegisterUser.objects.get(
                     id=message.receiver_id).pic_1:
                 if message.messages.last():
-                    if message.receiver.id in final_blocked_users_list:
+                    if message.receiver.id in final_blocked_users_list or message.sender.id in final_blocked_users_list:
                         received_message.append(
                             {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
                                 id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
@@ -321,7 +321,7 @@ class ChatList(APIView):
                              'last_message': message.messages.last().message,
                              'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
-                    if message.receiver.id in final_blocked_users_list:
+                    if message.receiver.id in final_blocked_users_list or message.sender.id in final_blocked_users_list:
                         received_message.append(
                             {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
                                 id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
@@ -347,7 +347,7 @@ class ChatList(APIView):
                              'created_at': '', 'blocked': False})
             elif RegisterUser.objects.get(id=message.sender_id).pic_1:
                 if message.messages.last():
-                    if message.receiver.id in final_blocked_users_list:
+                    if message.receiver.id in final_blocked_users_list or message.sender.id in final_blocked_users_list:
                         received_message.append(
                             {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
                                 id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
@@ -372,7 +372,7 @@ class ChatList(APIView):
                              'last_message': message.messages.last().message,
                              'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
-                    if message.receiver.id in final_blocked_users_list:
+                    if message.receiver.id in final_blocked_users_list or message.sender.id in final_blocked_users_list:
                         received_message.append(
                             {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
                                 id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
@@ -398,7 +398,7 @@ class ChatList(APIView):
                              'created_at': '', 'blocked': False})
             elif RegisterUser.objects.get(id=message.receiver_id).pic_1:
                 if message.messages.last():
-                    if message.receiver.id in final_blocked_users_list:
+                    if message.receiver.id in final_blocked_users_list or message.sender.id in final_blocked_users_list:
                         received_message.append(
                             {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
                                 id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
@@ -423,7 +423,7 @@ class ChatList(APIView):
                              'last_message': message.messages.last().message,
                              'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
-                    if message.receiver.id in final_blocked_users_list:
+                    if message.receiver.id in final_blocked_users_list or message.sender.id in final_blocked_users_list:
                         received_message.append(
                             {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
                                 id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
@@ -449,7 +449,7 @@ class ChatList(APIView):
                              'created_at': '', 'blocked': False})
             else:
                 if message.messages.last():
-                    if message.receiver.id in final_blocked_users_list:
+                    if message.receiver.id in final_blocked_users_list or message.sender.id in final_blocked_users_list:
                         received_message.append(
                             {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
                                 id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
@@ -474,7 +474,7 @@ class ChatList(APIView):
                              'last_message': message.messages.last().message,
                              'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
-                    if message.receiver.id in final_blocked_users_list:
+                    if message.receiver.id in final_blocked_users_list or message.sender.id in final_blocked_users_list:
                         received_message.append(
                             {'id': message.id, 'sender': message.receiver.id, 'sender_name': RegisterUser.objects.get(
                                 id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
