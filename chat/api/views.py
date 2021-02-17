@@ -100,6 +100,7 @@ class ChatList(APIView):
                                 id=message.receiver_id).last_name,
                              'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                              'last_message': message.messages.last().message,
+                             'is_image': message.messages.last().is_image,
                              'created_at': str(message.messages.last().created_at), 'blocked': True})
                     else:
                         sent_massage.append(
@@ -112,6 +113,7 @@ class ChatList(APIView):
                                 id=message.receiver_id).last_name,
                              'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                              'last_message': message.messages.last().message,
+                             'is_image': message.messages.last().is_image,
                              'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
                     if message.sender.id in final_blocked_users_list or message.receiver.id in final_blocked_users_list:
@@ -124,7 +126,7 @@ class ChatList(APIView):
                                 id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
                                 id=message.receiver_id).last_name,
                              'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
-                             'last_message': '',
+                             'last_message': '', 'is_image': '',
                              'created_at': '', 'blocked': True})
                     else:
                         sent_massage.append(
@@ -136,7 +138,7 @@ class ChatList(APIView):
                                 id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
                                 id=message.receiver_id).last_name,
                              'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
-                             'last_message': '',
+                             'last_message': '', 'is_image': '',
                              'created_at': '', 'blocked': False})
             elif RegisterUser.objects.get(id=message.sender_id).pic_1:
                 if message.messages.last():
@@ -151,6 +153,7 @@ class ChatList(APIView):
                                 id=message.receiver_id).last_name,
                              'receiver_profile_pic': '',
                              'last_message': message.messages.last().message,
+                             'is_image': message.messages.last().is_image,
                              'created_at': str(message.messages.last().created_at), 'blocked': True})
                     else:
                         sent_massage.append(
@@ -163,6 +166,7 @@ class ChatList(APIView):
                                 id=message.receiver_id).last_name,
                              'receiver_profile_pic': '',
                              'last_message': message.messages.last().message,
+                             'is_image': message.messages.last().is_image,
                              'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
                     if message.sender.id in final_blocked_users_list or message.receiver.id in final_blocked_users_list:
@@ -175,7 +179,7 @@ class ChatList(APIView):
                                 id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
                                 id=message.receiver_id).last_name,
                              'receiver_profile_pic': '',
-                             'last_message': '',
+                             'last_message': '', 'is_image': '',
                              'created_at': '', 'blocked': True})
                     else:
                         sent_massage.append(
@@ -187,7 +191,7 @@ class ChatList(APIView):
                                 id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
                                 id=message.receiver_id).last_name,
                              'receiver_profile_pic': '',
-                             'last_message': '',
+                             'last_message': '', 'is_image': '',
                              'created_at': '', 'blocked': False})
 
             elif RegisterUser.objects.get(id=message.receiver_id).pic_1:
@@ -203,6 +207,7 @@ class ChatList(APIView):
                                 id=message.receiver_id).last_name,
                              'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                              'last_message': message.messages.last().message,
+                             'is_image': message.messages.last().is_image,
                              'created_at': str(message.messages.last().created_at), 'blocked': True})
                     else:
                         sent_massage.append(
@@ -215,6 +220,7 @@ class ChatList(APIView):
                                 id=message.receiver_id).last_name,
                              'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                              'last_message': message.messages.last().message,
+                             'is_image': message.messages.last().is_image,
                              'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
                     if message.sender.id in final_blocked_users_list or message.receiver.id in final_blocked_users_list:
@@ -227,7 +233,7 @@ class ChatList(APIView):
                                 id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
                                 id=message.receiver_id).last_name,
                              'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
-                             'last_message': '',
+                             'last_message': '', 'is_image': '',
                              'created_at': '', 'blocked': True})
                     else:
                         sent_massage.append(
@@ -239,7 +245,7 @@ class ChatList(APIView):
                                 id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
                                 id=message.receiver_id).last_name,
                              'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
-                             'last_message': '',
+                             'last_message': '', 'is_image': '',
                              'created_at': '', 'blocked': False})
             else:
                 if message.messages.last():
@@ -254,6 +260,7 @@ class ChatList(APIView):
                                 id=message.receiver_id).last_name,
                              'receiver_profile_pic': '',
                              'last_message': message.messages.last().message,
+                             'is_image': message.messages.last().is_image,
                              'created_at': str(message.messages.last().created_at), 'blocked': True})
                     else:
                         sent_massage.append(
@@ -266,6 +273,7 @@ class ChatList(APIView):
                                 id=message.receiver_id).last_name,
                              'receiver_profile_pic': '',
                              'last_message': message.messages.last().message,
+                             'is_image': message.messages.last().is_image,
                              'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
                     if message.sender.id in final_blocked_users_list or message.receiver.id in final_blocked_users_list:
@@ -278,7 +286,7 @@ class ChatList(APIView):
                                 id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
                                 id=message.receiver_id).last_name,
                              'receiver_profile_pic': '',
-                             'last_message': '',
+                             'last_message': '', 'is_image': '',
                              'created_at': '', 'blocked': True})
                     else:
                         sent_massage.append(
@@ -290,7 +298,7 @@ class ChatList(APIView):
                                 id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
                                 id=message.receiver_id).last_name,
                              'receiver_profile_pic': '',
-                             'last_message': '',
+                             'last_message': '', 'is_image': '',
                              'created_at': '', 'blocked': False})
         for message in receiver_chat:
             if RegisterUser.objects.get(id=message.sender_id).pic_1 and RegisterUser.objects.get(
@@ -307,6 +315,7 @@ class ChatList(APIView):
                                 id=message.sender_id).last_name,
                              'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                              'last_message': message.messages.last().message,
+                             'is_image': message.messages.last().is_image,
                              'created_at': str(message.messages.last().created_at), 'blocked': True})
                     else:
                         received_message.append(
@@ -319,6 +328,7 @@ class ChatList(APIView):
                                 id=message.sender_id).last_name,
                              'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                              'last_message': message.messages.last().message,
+                             'is_image': message.messages.last().is_image,
                              'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
                     if message.receiver.id in final_blocked_users_list or message.sender.id in final_blocked_users_list:
@@ -331,7 +341,7 @@ class ChatList(APIView):
                                 id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
                                 id=message.sender_id).last_name,
                              'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
-                             'last_message': '',
+                             'last_message': '', 'is_image': '',
                              'created_at': '', 'blocked': True})
                     else:
                         received_message.append(
@@ -343,7 +353,7 @@ class ChatList(APIView):
                                 id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
                                 id=message.sender_id).last_name,
                              'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
-                             'last_message': '',
+                             'last_message': '', 'is_image': '',
                              'created_at': '', 'blocked': False})
             elif RegisterUser.objects.get(id=message.sender_id).pic_1:
                 if message.messages.last():
@@ -358,6 +368,7 @@ class ChatList(APIView):
                                 id=message.sender_id).last_name,
                              'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                              'last_message': message.messages.last().message,
+                             'is_image': message.messages.last().is_image,
                              'created_at': str(message.messages.last().created_at), 'blocked': True})
                     else:
                         received_message.append(
@@ -370,6 +381,7 @@ class ChatList(APIView):
                                 id=message.sender_id).last_name,
                              'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                              'last_message': message.messages.last().message,
+                             'is_image': message.messages.last().is_image,
                              'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
                     if message.receiver.id in final_blocked_users_list or message.sender.id in final_blocked_users_list:
@@ -382,7 +394,7 @@ class ChatList(APIView):
                                 id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
                                 id=message.sender_id).last_name,
                              'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
-                             'last_message': '',
+                             'last_message': '', 'is_image': '',
                              'created_at': '', 'blocked': True})
                     else:
                         received_message.append(
@@ -394,7 +406,7 @@ class ChatList(APIView):
                                 id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
                                 id=message.sender_id).last_name,
                              'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
-                             'last_message': '',
+                             'last_message': '', 'is_image': '',
                              'created_at': '', 'blocked': False})
             elif RegisterUser.objects.get(id=message.receiver_id).pic_1:
                 if message.messages.last():
@@ -409,6 +421,7 @@ class ChatList(APIView):
                                 id=message.sender_id).last_name,
                              'receiver_profile_pic': '',
                              'last_message': message.messages.last().message,
+                             'is_image': message.messages.last().is_image,
                              'created_at': str(message.messages.last().created_at), 'blocked': True})
                     else:
                         received_message.append(
@@ -421,6 +434,7 @@ class ChatList(APIView):
                                 id=message.sender_id).last_name,
                              'receiver_profile_pic': '',
                              'last_message': message.messages.last().message,
+                             'is_image': message.messages.last().is_image,
                              'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
                     if message.receiver.id in final_blocked_users_list or message.sender.id in final_blocked_users_list:
@@ -433,7 +447,7 @@ class ChatList(APIView):
                                 id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
                                 id=message.sender_id).last_name,
                              'receiver_profile_pic': '',
-                             'last_message': '',
+                             'last_message': '', 'is_image': '',
                              'created_at': '', 'blocked': True})
                     else:
                         received_message.append(
@@ -445,7 +459,7 @@ class ChatList(APIView):
                                 id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
                                 id=message.sender_id).last_name,
                              'receiver_profile_pic': '',
-                             'last_message': '',
+                             'last_message': '', 'is_image': '',
                              'created_at': '', 'blocked': False})
             else:
                 if message.messages.last():
@@ -460,6 +474,7 @@ class ChatList(APIView):
                                 id=message.sender_id).last_name,
                              'receiver_profile_pic': '',
                              'last_message': message.messages.last().message,
+                             'is_image': message.messages.last().is_image,
                              'created_at': str(message.messages.last().created_at), 'blocked': True})
                     else:
                         received_message.append(
@@ -472,6 +487,7 @@ class ChatList(APIView):
                                 id=message.sender_id).last_name,
                              'receiver_profile_pic': '',
                              'last_message': message.messages.last().message,
+                             'is_image': message.messages.last().is_image,
                              'created_at': str(message.messages.last().created_at), 'blocked': False})
                 else:
                     if message.receiver.id in final_blocked_users_list or message.sender.id in final_blocked_users_list:
@@ -484,7 +500,7 @@ class ChatList(APIView):
                                 id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
                                 id=message.sender_id).last_name,
                              'receiver_profile_pic': '',
-                             'last_message': '',
+                             'last_message': '', 'is_image': '',
                              'created_at': '', 'blocked': True})
                     else:
                         received_message.append(
@@ -496,7 +512,7 @@ class ChatList(APIView):
                                 id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
                                 id=message.sender_id).last_name,
                              'receiver_profile_pic': '',
-                             'last_message': '',
+                             'last_message': '', 'is_image': '',
                              'created_at': '', 'blocked': False})
         return Response({'messages': sent_massage + received_message, 'status': HTTP_200_OK})
 
