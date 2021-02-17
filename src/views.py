@@ -1867,8 +1867,8 @@ class GetMatchesAPIView(ListAPIView):
                              'type': 'match', 'blocked': False})
 
             except Exception as e:
-                print('EXCEPT BLOCK Match--------------', len(match_with | match_by))
-                print('ID BLOCK Match--------------', [x.id for x in y.liked_by_me.all()])
+                # print('EXCEPT BLOCK Match--------------', len(match_with | match_by))
+                # print('ID BLOCK Match--------------', [x.id for x in y.liked_by_me.all()])
                 if len(match_with | match_by) > 0:
                     try:
                         if y.user.id == r_user.id:
@@ -2321,75 +2321,83 @@ class MettingList(APIView):
         recevied_list = []
         sent_list = []
         for meeting in meeting_request_received:
-            if RegisterUser.objects.get(id=meeting.scheduled_by.id).pic_1:
-                if RegisterUser.objects.get(id=meeting.scheduled_by.id).id in final_blocked_users_list:
-                    recevied_list.append(
-                        {'id': meeting.id,
-                         'first_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).first_name,
-                         'last_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).last_name,
-                         'profile_pic': RegisterUser.objects.get(id=meeting.scheduled_by.id).pic_1.url,
-                         'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
-                         'type': 'received', 'blocked': True})
+            try:
+                if RegisterUser.objects.get(id=meeting.scheduled_by.id).pic_1:
+                    if RegisterUser.objects.get(id=meeting.scheduled_by.id).id in final_blocked_users_list:
+                        recevied_list.append(
+                            {'id': meeting.id,
+                             'first_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).first_name,
+                             'last_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).last_name,
+                             'profile_pic': RegisterUser.objects.get(id=meeting.scheduled_by.id).pic_1.url,
+                             'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
+                             'type': 'received', 'blocked': True})
+                    else:
+                        recevied_list.append(
+                            {'id': meeting.id,
+                             'first_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).first_name,
+                             'last_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).last_name,
+                             'profile_pic': RegisterUser.objects.get(id=meeting.scheduled_by.id).pic_1.url,
+                             'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
+                             'type': 'received', 'blocked': False})
                 else:
-                    recevied_list.append(
-                        {'id': meeting.id,
-                         'first_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).first_name,
-                         'last_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).last_name,
-                         'profile_pic': RegisterUser.objects.get(id=meeting.scheduled_by.id).pic_1.url,
-                         'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
-                         'type': 'received', 'blocked': False})
-            else:
-                if RegisterUser.objects.get(id=meeting.scheduled_by.id).id in final_blocked_users_list:
-                    recevied_list.append(
-                        {'id': meeting.id,
-                         'first_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).first_name,
-                         'last_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).last_name,
-                         'profile_pic': '',
-                         'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
-                         'type': 'received', 'blocked': True})
-                else:
-                    recevied_list.append(
-                        {'id': meeting.id,
-                         'first_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).first_name,
-                         'last_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).last_name,
-                         'profile_pic': '',
-                         'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
-                         'type': 'received', 'blocked': False})
+                    if RegisterUser.objects.get(id=meeting.scheduled_by.id).id in final_blocked_users_list:
+                        recevied_list.append(
+                            {'id': meeting.id,
+                             'first_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).first_name,
+                             'last_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).last_name,
+                             'profile_pic': '',
+                             'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
+                             'type': 'received', 'blocked': True})
+                    else:
+                        recevied_list.append(
+                            {'id': meeting.id,
+                             'first_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).first_name,
+                             'last_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).last_name,
+                             'profile_pic': '',
+                             'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
+                             'type': 'received', 'blocked': False})
+            except Exception as e:
+                print(e)
+                pass
         for meeting in meeting_request_sent:
-            if RegisterUser.objects.get(id=meeting.scheduled_with.id).pic_1:
-                if RegisterUser.objects.get(id=meeting.scheduled_with.id).id in final_blocked_users_list:
-                    sent_list.append(
-                        {'id': meeting.id,
-                         'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
-                         'last_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).last_name,
-                         'profile_pic': RegisterUser.objects.get(id=meeting.scheduled_with.id).pic_1.url,
-                         'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
-                         'type': 'sent', 'blocked': True})
+            try:
+                if RegisterUser.objects.get(id=meeting.scheduled_with.id).pic_1:
+                    if RegisterUser.objects.get(id=meeting.scheduled_with.id).id in final_blocked_users_list:
+                        sent_list.append(
+                            {'id': meeting.id,
+                             'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
+                             'last_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).last_name,
+                             'profile_pic': RegisterUser.objects.get(id=meeting.scheduled_with.id).pic_1.url,
+                             'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
+                             'type': 'sent', 'blocked': True})
+                    else:
+                        sent_list.append(
+                            {'id': meeting.id,
+                             'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
+                             'last_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).last_name,
+                             'profile_pic': RegisterUser.objects.get(id=meeting.scheduled_with.id).pic_1.url,
+                             'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
+                             'type': 'sent', 'blocked': False})
                 else:
-                    sent_list.append(
-                        {'id': meeting.id,
-                         'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
-                         'last_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).last_name,
-                         'profile_pic': RegisterUser.objects.get(id=meeting.scheduled_with.id).pic_1.url,
-                         'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
-                         'type': 'sent', 'blocked': False})
-            else:
-                if RegisterUser.objects.get(id=meeting.scheduled_with.id).id in final_blocked_users_list:
-                    sent_list.append(
-                        {'id': meeting.id,
-                         'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
-                         'last_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).last_name,
-                         'profile_pic': '',
-                         'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
-                         'type': 'sent', 'blocked': True})
-                else:
-                    sent_list.append(
-                        {'id': meeting.id,
-                         'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
-                         'last_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).last_name,
-                         'profile_pic': '',
-                         'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
-                         'type': 'sent', 'blocked': False})
+                    if RegisterUser.objects.get(id=meeting.scheduled_with.id).id in final_blocked_users_list:
+                        sent_list.append(
+                            {'id': meeting.id,
+                             'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
+                             'last_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).last_name,
+                             'profile_pic': '',
+                             'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
+                             'type': 'sent', 'blocked': True})
+                    else:
+                        sent_list.append(
+                            {'id': meeting.id,
+                             'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
+                             'last_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).last_name,
+                             'profile_pic': '',
+                             'date': meeting.meeting_date, 'time': meeting.meeting_time, 'status': meeting.status,
+                             'type': 'sent', 'blocked': False})
+            except Exception as e:
+                print(e)
+                pass
         return Response({'meetings': recevied_list + sent_list, 'status': HTTP_200_OK})
 
 
@@ -3392,12 +3400,12 @@ class CheckUserBlocked(APIView):
         user_2_blocked_list = []
         blocked_users_1 = BlockedUsers.objects.get(user=RegisterUser.objects.get(id=user1))
         blocked_users_2 = BlockedUsers.objects.get(user=RegisterUser.objects.get(id=user2))
-        for user in blocked_users_1:
-            for x in user.blocked.all():
-                user_1_blocked_list.append(x.id)
-        for user in blocked_users_2:
-            for x in user.blocked.all():
-                user_2_blocked_list.append(x.blocked.all)
+        for user in blocked_users_1.blocked.all():
+            # for x in user.blocked.all():
+            user_1_blocked_list.append(user.id)
+        for user in blocked_users_2.blocked.all():
+            # for x in user.blocked.all():
+            user_2_blocked_list.append(user.blocked.all)
         blocked_users_list = user_1_blocked_list + user_2_blocked_list
         if user1 in blocked_users_list or user2 in blocked_users_list:
             return Response({'blocked': True, 'status': HTTP_200_OK})
