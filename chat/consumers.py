@@ -139,8 +139,8 @@ class ChatRoomConsumer(WebsocketConsumer):
             x.messages.add(m)
             email = sender.email
             first_name = sender.first_name
-            fcm_token = User.objects.get(email=email).device_token
-
+            user = User.objects.get(email=email)
+            fcm_token = user.device_token
             try:
                 print(x.id)
                 print(email)
