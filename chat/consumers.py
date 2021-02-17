@@ -139,8 +139,8 @@ class ChatRoomConsumer(WebsocketConsumer):
                 is_image=text_data_json['is_image']
             )
             x.messages.add(m)
-            email = sender.email
-            first_name = sender.first_name
+            email = RegisterUser.objects.get(id=text_data_json['sender']).email
+            first_name = RegisterUser.objects.get(id=text_data_json['sender']).first_name
             user = User.objects.get(email=email)
             fcm_token = user.device_token
             try:
