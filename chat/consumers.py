@@ -52,17 +52,17 @@ class ChatRoomConsumer(WebsocketConsumer):
                     is_image=text_data_json['is_image']
                 )
                 chat1.messages.add(m)
-                fcm_token = User.objects.get(email=sender.email).device_token
-                data_message = {"data": {"title": sender.first_name,
-                                         "body": text_data_json['message'],
-                                         "type": "NewMessage"}}
-                respo = send_to_one(fcm_token, data_message)
-                print(respo)
-                title = sender.first_name
-                body = text_data_json['message']
-                message_type = "newMessage"
-                respo = send_another(fcm_token, title, body, message_type)
-                print(respo)
+                # fcm_token = User.objects.get(email=sender.email).device_token
+                # data_message = {"data": {"title": sender.first_name,
+                #                          "body": text_data_json['message'],
+                #                          "type": "NewMessage"}}
+                # respo = send_to_one(fcm_token, data_message)
+                # print(respo)
+                # title = sender.first_name
+                # body = text_data_json['message']
+                # message_type = "newMessage"
+                # respo = send_another(fcm_token, title, body, message_type)
+                # print(respo)
                 async_to_sync(self.channel_layer.group_send)(
                     self.room_group_name,
                     {
@@ -88,17 +88,17 @@ class ChatRoomConsumer(WebsocketConsumer):
                     is_image=text_data_json['is_image']
                 )
                 chat1.messages.add(m)
-                fcm_token = User.objects.get(email=receiver.email).device_token
-                data_message = {"data": {"title": receiver.first_name,
-                                         "body": text_data_json['message'],
-                                         "type": "NewMessage"}}
-                respo = send_to_one(fcm_token, data_message)
-                print(respo)
-                title = receiver.first_name
-                body = text_data_json['message']
-                message_type = "newMessage"
-                respo = send_another(fcm_token, title, body, message_type)
-                print(respo)
+                # fcm_token = User.objects.get(email=receiver.email).device_token
+                # data_message = {"data": {"title": receiver.first_name,
+                #                          "body": text_data_json['message'],
+                #                          "type": "NewMessage"}}
+                # respo = send_to_one(fcm_token, data_message)
+                # print(respo)
+                # title = receiver.first_name
+                # body = text_data_json['message']
+                # message_type = "newMessage"
+                # respo = send_another(fcm_token, title, body, message_type)
+                # print(respo)
                 async_to_sync(self.channel_layer.group_send)(
                     self.room_group_name,
                     {
@@ -123,18 +123,18 @@ class ChatRoomConsumer(WebsocketConsumer):
                 is_image=text_data_json['is_image']
             )
             x.messages.add(m)
-            print(x.id)
-            fcm_token = User.objects.get(email=sender.email).device_token
-            data_message = {"data": {"title": sender.first_name,
-                                     "body": text_data_json['message'],
-                                     "type": "NewMessage"}}
-            respo = send_to_one(fcm_token, data_message)
-            print(respo)
-            title = sender.first_name
-            body = text_data_json['message']
-            message_type = "newMessage"
-            respo = send_another(fcm_token, title, body, message_type)
-            print(respo)
+            # print(x.id)
+            # fcm_token = User.objects.get(email=sender.email).device_token
+            # data_message = {"data": {"title": sender.first_name,
+            #                          "body": text_data_json['message'],
+            #                          "type": "NewMessage"}}
+            # respo = send_to_one(fcm_token, data_message)
+            # print(respo)
+            # title = sender.first_name
+            # body = text_data_json['message']
+            # message_type = "newMessage"
+            # respo = send_another(fcm_token, title, body, message_type)
+            # print(respo)
             async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,
                 {
