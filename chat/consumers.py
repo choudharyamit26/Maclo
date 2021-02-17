@@ -55,8 +55,9 @@ class ChatRoomConsumer(WebsocketConsumer):
                 try:
                     email = sender.email
                     print(email)
+                    first_name = sender.first_name
                     fcm_token = User.objects.get(email=email).device_token
-                    data_message = {"data": {"title": sender.first_name,
+                    data_message = {"data": {"title": first_name,
                                              "body": text_data_json['message'],
                                              "type": "NewMessage"}}
                     respo = send_to_one(fcm_token, data_message)
@@ -97,13 +98,14 @@ class ChatRoomConsumer(WebsocketConsumer):
                 try:
                     email = receiver.email
                     print(email)
+                    first_name = receiver.first_name
                     fcm_token = User.objects.get(email=email).device_token
-                    data_message = {"data": {"title": receiver.first_name,
+                    data_message = {"data": {"title": first_name,
                                              "body": text_data_json['message'],
                                              "type": "NewMessage"}}
                     respo = send_to_one(fcm_token, data_message)
                     print(respo)
-                    title = receiver.first_name
+                    title = first_name
                     body = text_data_json['message']
                     message_type = "newMessage"
                     respo = send_another(fcm_token, title, body, message_type)
@@ -138,13 +140,14 @@ class ChatRoomConsumer(WebsocketConsumer):
                 print(x.id)
                 email = sender.email
                 print(email)
+                first_name = sender.first_name
                 fcm_token = User.objects.get(email=email).device_token
-                data_message = {"data": {"title": sender.first_name,
+                data_message = {"data": {"title": first_name,
                                          "body": text_data_json['message'],
                                          "type": "NewMessage"}}
                 respo = send_to_one(fcm_token, data_message)
                 print(respo)
-                title = sender.first_name
+                title = first_name
                 body = text_data_json['message']
                 message_type = "newMessage"
                 respo = send_another(fcm_token, title, body, message_type)
