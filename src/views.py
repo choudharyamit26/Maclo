@@ -1233,14 +1233,16 @@ class FilteredUserView(APIView):
         print('QS_____________>>>>>>>>>>', qs)
         for y in qs:
             a = UserDetail.objects.get(phone_number=y.id)
-            ### Check for empty string
-            if user_detail_obj.interest:
-                if a.interest == user_detail_obj.interest:
-                    final_list.append(a)
-                else:
-                    pass
-            else:
-                final_list.append(a)
+            ### Check for empty string of logged in users interest
+            # print(user_detail_obj.interest)
+            # if user_detail_obj.interest:
+            #     if a.interest == user_detail_obj.interest:
+            #         print('FINAL LIST USER IN',a.interest)
+            #         final_list.append(a)
+            #     else:
+            #         pass
+            # else:
+            final_list.append(a)
         print('FINAL LIST ----->>>', final_list)
         filtered_users = []
         for obj in final_list:
@@ -1371,7 +1373,13 @@ class FilteredUserView(APIView):
                 "subscription_purchased_at": subscription_purchased_at,
                 # "subscription": subscription
             }
-            filtered_users.append(detail)
+            if user_detail_obj.interest:
+                if obj.phone_number.gender == user_detail_obj.interest:
+                    filtered_users.append(detail)
+                else:
+                    pass
+            else:
+                filtered_users.append(detail)
         print('FILTERED USERS LIST------------->>>>>>>', filtered_users)
         return Response({'data': filtered_users, 'status': HTTP_200_OK})
 
