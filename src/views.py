@@ -3398,20 +3398,23 @@ class CheckUserBlocked(APIView):
         user2 = self.request.POST['user2']
         user_1_blocked_list = []
         user_2_blocked_list = []
-        blocked_users_1 = BlockedUsers.objects.get(user=RegisterUser.objects.get(id=user1))
-        blocked_users_2 = BlockedUsers.objects.get(user=RegisterUser.objects.get(id=user2))
-        for user in blocked_users_1.blocked.all():
-            # for x in user.blocked.all():
-            user_1_blocked_list.append(user.id)
-        for user in blocked_users_2.blocked.all():
-            # for x in user.blocked.all():
-            user_2_blocked_list.append(user.id)
-        blocked_users_list = user_1_blocked_list + user_2_blocked_list
-        print('blocked users list',blocked_users_list)
-        if int(user1) in blocked_users_list or int(user2) in blocked_users_list:
-            return Response({'blocked': True, 'status': HTTP_200_OK})
-        else:
-            return Response({'blocked': False, 'status': HTTP_200_OK})
+        try:
+            blocked_users_1 = BlockedUsers.objects.get(user=RegisterUser.objects.get(id=user1))
+            blocked_users_2 = BlockedUsers.objects.get(user=RegisterUser.objects.get(id=user2))
+            for user in blocked_users_1.blocked.all():
+                # for x in user.blocked.all():
+                user_1_blocked_list.append(user.id)
+            for user in blocked_users_2.blocked.all():
+                # for x in user.blocked.all():
+                user_2_blocked_list.append(user.id)
+            blocked_users_list = user_1_blocked_list + user_2_blocked_list
+            print('blocked users list',blocked_users_list)
+            if int(user1) in blocked_users_list or int(user2) in blocked_users_list:
+                return Response({'blocked': True, 'status': HTTP_200_OK})
+            else:
+                return Response({'blocked': False, 'status': HTTP_200_OK})
+        except:
+            pass
 
 
 class PopNotificationAPIView(CreateAPIView):
