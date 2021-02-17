@@ -62,7 +62,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                                              "type": "NewMessage"}}
                     respo = send_to_one(fcm_token, data_message)
                     print(respo)
-                    title = sender.first_name
+                    title = first_name
                     body = text_data_json['message']
                     message_type = "newMessage"
                     respo = send_another(fcm_token, title, body, message_type)
