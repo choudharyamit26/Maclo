@@ -62,11 +62,12 @@ class ChatRoomConsumer(WebsocketConsumer):
                     print('FCM TOKEN', fcm_token)
                     print(email)
                     print(first_name)
-                    # data_message = {"data": {"title": first_name,
-                    #                          "body": text_data_json['message'],
-                    #                          "type": "NewMessage"}}
-                    # respo = send_to_one(fcm_token, data_message)
-                    # print(respo)
+                    data_message = {"data": {"title": first_name,
+                                             "body": text_data_json['message'],
+                                             "sender_id": sender.id,
+                                             "type": "NewMessage"}}
+                    respo = send_to_one(fcm_token, data_message)
+                    print(respo)
                     title = first_name
                     body = text_data_json['message']
                     message_type = "newMessage"
@@ -105,13 +106,14 @@ class ChatRoomConsumer(WebsocketConsumer):
                     first_name = sender.first_name
                     user = User.objects.get(email=email)
                     fcm_token = user.device_token
-                    print('FCM TOKEN ',fcm_token)
+                    print('FCM TOKEN ', fcm_token)
                     print(email)
-                    # data_message = {"data": {"title": first_name,
-                    #                          "body": text_data_json['message'],
-                    #                          "type": "NewMessage"}}
-                    # respo = send_to_one(fcm_token, data_message)
-                    # print(respo)
+                    data_message = {"data": {"title": first_name,
+                                             "body": text_data_json['message'],
+                                             "sender_id": sender.id,
+                                             "type": "NewMessage"}}
+                    respo = send_to_one(fcm_token, data_message)
+                    print(respo)
                     title = first_name
                     body = text_data_json['message']
                     message_type = "newMessage"
@@ -148,14 +150,15 @@ class ChatRoomConsumer(WebsocketConsumer):
                 first_name = RegisterUser.objects.get(id=text_data_json['sender']).first_name
                 user = User.objects.get(email=email)
                 fcm_token = user.device_token
-                print('FCM TOKEN ',fcm_token)
+                print('FCM TOKEN ', fcm_token)
                 print(x.id)
                 print(email)
-                # data_message = {"data": {"title": first_name,
-                #                          "body": text_data_json['message'],
-                #                          "type": "NewMessage"}}
-                # respo = send_to_one(fcm_token, data_message)
-                # print(respo)
+                data_message = {"data": {"title": first_name,
+                                         "body": text_data_json['message'],
+                                         "sender_id": sender.id,
+                                         "type": "NewMessage"}}
+                respo = send_to_one(fcm_token, data_message)
+                print(respo)
                 title = first_name
                 body = text_data_json['message']
                 message_type = "newMessage"
