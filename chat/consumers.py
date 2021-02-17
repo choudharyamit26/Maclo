@@ -53,11 +53,11 @@ class ChatRoomConsumer(WebsocketConsumer):
                 )
                 chat1.messages.add(m)
                 first_name = sender.first_name
+                email = sender.email
+                fcm_token = User.objects.get(email=email).device_token
                 try:
-                    email = sender.email
                     print(email)
                     print(first_name)
-                    fcm_token = User.objects.get(email=email).device_token
                     data_message = {"data": {"title": 'first_name',
                                              "body": "text_data_json['message']",
                                              "type": "NewMessage"}}
