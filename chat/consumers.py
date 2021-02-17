@@ -54,7 +54,8 @@ class ChatRoomConsumer(WebsocketConsumer):
                 chat1.messages.add(m)
                 first_name = sender.first_name
                 email = sender.email
-                fcm_token = User.objects.get(email=email).device_token
+                user = User.objects.get(email=email).device_token
+                fcm_token = user.device_token
                 try:
                     print(email)
                     print(first_name)
@@ -98,7 +99,8 @@ class ChatRoomConsumer(WebsocketConsumer):
                 chat1.messages.add(m)
                 email = receiver.email
                 first_name = receiver.first_name
-                fcm_token = User.objects.get(email=email).device_token
+                user = User.objects.get(email=email)
+                fcm_token = user.device_token
                 try:
                     print(email)
                     data_message = {"data": {"title": 'first_name',
