@@ -1233,10 +1233,14 @@ class FilteredUserView(APIView):
         print('QS_____________>>>>>>>>>>', qs)
         for y in qs:
             a = UserDetail.objects.get(phone_number=y.id)
-            if a.interest == user_detail_obj.interest:
-                final_list.append(a)
+            ### Check for empty string
+            if user_detail_obj.interest:
+                if a.interest == user_detail_obj.interest:
+                    final_list.append(a)
+                else:
+                    pass
             else:
-                pass
+                final_list.append(a)
         print('FINAL LIST ----->>>', final_list)
         filtered_users = []
         for obj in final_list:
