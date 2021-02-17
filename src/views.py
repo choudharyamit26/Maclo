@@ -3405,8 +3405,9 @@ class CheckUserBlocked(APIView):
             user_1_blocked_list.append(user.id)
         for user in blocked_users_2.blocked.all():
             # for x in user.blocked.all():
-            user_2_blocked_list.append(user.blocked.all)
+            user_2_blocked_list.append(user.id)
         blocked_users_list = user_1_blocked_list + user_2_blocked_list
+        print('blocked users list',blocked_users_list)
         if user1 in blocked_users_list or user2 in blocked_users_list:
             return Response({'blocked': True, 'status': HTTP_200_OK})
         else:
