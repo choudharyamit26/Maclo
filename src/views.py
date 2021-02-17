@@ -3414,7 +3414,7 @@ class CheckUserBlocked(APIView):
             else:
                 return Response({'blocked': False, 'status': HTTP_200_OK})
         except:
-            pass
+            return Response({'blocked': False, 'status': HTTP_200_OK})
 
 
 class PopNotificationAPIView(CreateAPIView):
