@@ -39,8 +39,8 @@ class ChatRoomConsumer(WebsocketConsumer):
         try:
             try:
                 print('inside nested try-----')
-                chat1 = ChatRoom.objects.get(sender=RegisterUser.objects.get(id=text_data_json['sender']),
-                                             receiver=RegisterUser.objects.get(id=text_data_json['receiver']))
+                chat1 = ChatRoom.objects.get(sender=RegisterUser.objects.get(id=text_data_json['sender'].id),
+                                             receiver=RegisterUser.objects.get(id=text_data_json['receiver'].id))
                 room = ChatRoom.objects.get(id=chat1.id)
                 print(room.id)
                 sender = RegisterUser.objects.get(id=text_data_json['sender'])
@@ -80,8 +80,8 @@ class ChatRoomConsumer(WebsocketConsumer):
                 )
             except Exception as e:
                 print('inside nested except', e)
-                chat1 = ChatRoom.objects.get(sender=RegisterUser.objects.get(id=text_data_json['receiver']),
-                                             receiver=RegisterUser.objects.get(id=text_data_json['sender']))
+                chat1 = ChatRoom.objects.get(sender=RegisterUser.objects.get(id=text_data_json['receiver'].id),
+                                             receiver=RegisterUser.objects.get(id=text_data_json['sender'].id))
                 print('----', chat1.id)
                 sender = RegisterUser.objects.get(id=text_data_json['sender'])
                 receiver = RegisterUser.objects.get(id=text_data_json['receiver'])
@@ -119,8 +119,8 @@ class ChatRoomConsumer(WebsocketConsumer):
                 )
         except Exception as e:
             print('inside outer except', e)
-            x = ChatRoom.objects.create(sender=RegisterUser.objects.get(id=text_data_json['sender']),
-                                        receiver=RegisterUser.objects.get(id=text_data_json['receiver']))
+            x = ChatRoom.objects.create(sender=RegisterUser.objects.get(id=text_data_json['sender'].id),
+                                        receiver=RegisterUser.objects.get(id=text_data_json['receiver'].id))
             sender = RegisterUser.objects.get(id=text_data_json['sender'])
             receiver = RegisterUser.objects.get(id=text_data_json['receiver'])
             m = Message.objects.create(
