@@ -57,8 +57,8 @@ class ChatRoomConsumer(WebsocketConsumer):
                     print(email)
                     first_name = sender.first_name
                     fcm_token = User.objects.get(email=email).device_token
-                    data_message = {"data": {"title": first_name,
-                                             "body": text_data_json['message'],
+                    data_message = {"data": {"title": 'first_name',
+                                             "body": "text_data_json['message']",
                                              "type": "NewMessage"}}
                     respo = send_to_one(fcm_token, data_message)
                     print(respo)
