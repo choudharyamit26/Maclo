@@ -39,8 +39,8 @@ class ChatRoomConsumer(WebsocketConsumer):
         try:
             try:
                 print('inside nested try-----')
-                chat1 = ChatRoom.objects.get(sender=RegisterUser.objects.get(id=text_data_json['sender'].id),
-                                             receiver=RegisterUser.objects.get(id=text_data_json['receiver'].id))
+                chat1 = ChatRoom.objects.get(sender=RegisterUser.objects.get(id=text_data_json['sender']),
+                                             receiver=RegisterUser.objects.get(id=text_data_json['receiver']))
                 room = ChatRoom.objects.get(id=chat1.id)
                 print(room.id)
                 sender = RegisterUser.objects.get(id=text_data_json['sender'])
@@ -53,7 +53,9 @@ class ChatRoomConsumer(WebsocketConsumer):
                 )
                 chat1.messages.add(m)
                 try:
-                    fcm_token = User.objects.get(email=sender.email).device_token
+                    email = sender.email
+                    print(email)
+                    fcm_token = User.objects.get(email=email).device_token
                     data_message = {"data": {"title": sender.first_name,
                                              "body": text_data_json['message'],
                                              "type": "NewMessage"}}
@@ -65,7 +67,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                     respo = send_another(fcm_token, title, body, message_type)
                     print(respo)
                 except Exception as e:
-                    print('Inside fcm exception', e)
+                    print('Inside fcm exception',e)
                     pass
                 async_to_sync(self.channel_layer.group_send)(
                     self.room_group_name,
@@ -80,8 +82,8 @@ class ChatRoomConsumer(WebsocketConsumer):
                 )
             except Exception as e:
                 print('inside nested except', e)
-                chat1 = ChatRoom.objects.get(sender=RegisterUser.objects.get(id=text_data_json['receiver'].id),
-                                             receiver=RegisterUser.objects.get(id=text_data_json['sender'].id))
+                chat1 = ChatRoom.objects.get(sender=RegisterUser.objects.get(id=text_data_json['receiver']),
+                                             receiver=RegisterUser.objects.get(id=text_data_json['sender']))
                 print('----', chat1.id)
                 sender = RegisterUser.objects.get(id=text_data_json['sender'])
                 receiver = RegisterUser.objects.get(id=text_data_json['receiver'])
@@ -93,7 +95,9 @@ class ChatRoomConsumer(WebsocketConsumer):
                 )
                 chat1.messages.add(m)
                 try:
-                    fcm_token = User.objects.get(email=receiver.email).device_token
+                    email = receiver.email
+                    print(email)
+                    fcm_token = User.objects.get(email=email).device_token
                     data_message = {"data": {"title": receiver.first_name,
                                              "body": text_data_json['message'],
                                              "type": "NewMessage"}}
@@ -105,7 +109,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                     respo = send_another(fcm_token, title, body, message_type)
                     print(respo)
                 except Exception as e:
-                    print('inside FCM EXCEPTION', e)
+                    print('inside FCM EXCEPTION',e)
                 async_to_sync(self.channel_layer.group_send)(
                     self.room_group_name,
                     {
@@ -119,8 +123,8 @@ class ChatRoomConsumer(WebsocketConsumer):
                 )
         except Exception as e:
             print('inside outer except', e)
-            x = ChatRoom.objects.create(sender=RegisterUser.objects.get(id=text_data_json['sender'].id),
-                                        receiver=RegisterUser.objects.get(id=text_data_json['receiver'].id))
+            x = ChatRoom.objects.create(sender=RegisterUser.objects.get(id=text_data_json['sender']),
+                                        receiver=RegisterUser.objects.get(id=text_data_json['receiver']))
             sender = RegisterUser.objects.get(id=text_data_json['sender'])
             receiver = RegisterUser.objects.get(id=text_data_json['receiver'])
             m = Message.objects.create(
@@ -132,7 +136,9 @@ class ChatRoomConsumer(WebsocketConsumer):
             x.messages.add(m)
             try:
                 print(x.id)
-                fcm_token = User.objects.get(email=sender.email).device_token
+                email = sender.email
+                print(email)
+                fcm_token = User.objects.get(email=email).device_token
                 data_message = {"data": {"title": sender.first_name,
                                          "body": text_data_json['message'],
                                          "type": "NewMessage"}}
@@ -144,7 +150,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                 respo = send_another(fcm_token, title, body, message_type)
                 print(respo)
             except Exception as e:
-                print('INSIDE FCM EXCEPTION', e)
+                print('INSIDE FCM EXCEPTION',e)
             async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,
                 {
