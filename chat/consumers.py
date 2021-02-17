@@ -101,8 +101,8 @@ class ChatRoomConsumer(WebsocketConsumer):
                 )
                 chat1.messages.add(m)
                 try:
-                    email = sender.email
-                    first_name = receiver.first_name
+                    email = receiver.email
+                    first_name = sender.first_name
                     user = User.objects.get(email=email)
                     fcm_token = user.device_token
                     print('FCM TOKEN ',fcm_token)
