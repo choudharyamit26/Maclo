@@ -52,10 +52,10 @@ class ChatRoomConsumer(WebsocketConsumer):
                     is_image=text_data_json['is_image']
                 )
                 chat1.messages.add(m)
+                first_name = sender.first_name
                 try:
                     email = sender.email
                     print(email)
-                    first_name = sender.first_name
                     print(first_name)
                     fcm_token = User.objects.get(email=email).device_token
                     data_message = {"data": {"title": 'first_name',
