@@ -96,13 +96,13 @@ class ChatRoomConsumer(WebsocketConsumer):
                     is_image=text_data_json['is_image']
                 )
                 chat1.messages.add(m)
+                email = receiver.email
+                first_name = receiver.first_name
+                fcm_token = User.objects.get(email=email).device_token
                 try:
-                    email = receiver.email
                     print(email)
-                    first_name = receiver.first_name
-                    fcm_token = User.objects.get(email=email).device_token
-                    data_message = {"data": {"title": first_name,
-                                             "body": text_data_json['message'],
+                    data_message = {"data": {"title": 'first_name',
+                                             "body": "text_data_json['message']",
                                              "type": "NewMessage"}}
                     respo = send_to_one(fcm_token, data_message)
                     print(respo)
