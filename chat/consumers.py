@@ -56,17 +56,18 @@ class ChatRoomConsumer(WebsocketConsumer):
                     email = sender.email
                     print(email)
                     first_name = sender.first_name
+                    print(first_name)
                     fcm_token = User.objects.get(email=email).device_token
                     data_message = {"data": {"title": 'first_name',
                                              "body": "text_data_json['message']",
                                              "type": "NewMessage"}}
                     respo = send_to_one(fcm_token, data_message)
                     print(respo)
-                    title = first_name
-                    body = text_data_json['message']
-                    message_type = "newMessage"
-                    respo = send_another(fcm_token, title, body, message_type)
-                    print(respo)
+                    # title = first_name
+                    # body = text_data_json['message']
+                    # message_type = "newMessage"
+                    # respo = send_another(fcm_token, title, body, message_type)
+                    # print(respo)
                 except Exception as e:
                     print('Inside fcm exception',e)
                     pass
