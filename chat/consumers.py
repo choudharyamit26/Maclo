@@ -62,11 +62,11 @@ class ChatRoomConsumer(WebsocketConsumer):
                     print('FCM TOKEN', fcm_token)
                     print(email)
                     print(first_name)
-                    data_message = {"title": first_name,
+                    data_message = {"data": {"title": first_name,
                                              "body": text_data_json['message'],
                                              "is_image": str(text_data_json['is_image']),
                                              "room_id": chat1.id,
-                                             "type": "NewMessage"}
+                                             "type": "NewMessage"}}
                     respo = send_to_one(fcm_token, data_message)
                     print(respo)
                     title = first_name
@@ -109,11 +109,11 @@ class ChatRoomConsumer(WebsocketConsumer):
                     fcm_token = user.device_token
                     print('FCM TOKEN ', fcm_token)
                     print(email)
-                    data_message = {"title": first_name,
+                    data_message = {"data": {"title": first_name,
                                              "body": text_data_json['message'],
                                              "is_image": str(text_data_json['is_image']),
                                              "room_id": chat1.id,
-                                             "type": "NewMessage"}
+                                             "type": "NewMessage"}}
                     respo = send_to_one(fcm_token, data_message)
                     print(respo)
                     title = first_name
@@ -155,11 +155,11 @@ class ChatRoomConsumer(WebsocketConsumer):
                 print('FCM TOKEN ', fcm_token)
                 print(x.id)
                 print(email)
-                data_message = {"title": first_name,
+                data_message = {"data": {"title": first_name,
                                          "body": text_data_json['message'],
                                          "is_image": str(text_data_json['is_image']),
                                          "room_id": x.id,
-                                         "type": "NewMessage"}
+                                         "type": "NewMessage"}}
                 respo = send_to_one(fcm_token, data_message)
                 print(respo)
                 title = first_name
