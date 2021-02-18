@@ -1253,11 +1253,12 @@ class FilteredUserView(APIView):
                 else:
                     pass
         else:
-            print('inside outer else')
+            print('>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<inside outer else>>>>>>>>>>>>>>>>')
             qs = z
         final_list = []
         print('QS_____________>>>>>>>>>>', qs)
         for y in qs:
+            print('between qs and final list', y)
             a = UserDetail.objects.get(phone_number=y.id)
             ### Check for empty string of logged in users interest
             # print(user_detail_obj.interest)
