@@ -1403,10 +1403,12 @@ class FilteredUserView(APIView):
             }
             if user_detail_obj.interest:
                 if obj.phone_number.gender == user_detail_obj.interest:
+                    print('inner if')
                     filtered_users.append(detail)
                 else:
                     pass
             else:
+                print('outer else')
                 filtered_users.append(detail)
         print('FILTERED USERS LIST------------->>>>>>>', filtered_users)
         return Response({'data': filtered_users, 'status': HTTP_200_OK})
