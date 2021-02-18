@@ -1232,13 +1232,13 @@ class FilteredUserView(APIView):
                 print('Qualification', y.qualification)
                 print('Qualification', y.qualification)
                 print('Qualification', y.qualification)
-                if RegisterUser.objects.get(id=y).qualification == qualification or RegisterUser.objects.get(
-                        id=y).relationship_status == relationship_status or RegisterUser.objects.get(
-                        id=y).height == height or RegisterUser.objects.get(
-                        id=y).gender == gender or RegisterUser.objects.get(
-                        id=y).religion == religion or RegisterUser.objects.get(
-                        id=y).zodiac_sign == zodiac_sign or RegisterUser.objects.get(
-                        id=y).body_type == body_type or RegisterUser.objects.get(id=y).taste == taste:
+                if RegisterUser.objects.get(id=y.id).qualification == qualification or RegisterUser.objects.get(
+                        id=y.id).relationship_status == relationship_status or RegisterUser.objects.get(
+                        id=y.id).height == height or RegisterUser.objects.get(
+                        id=y.id).gender == gender or RegisterUser.objects.get(
+                        id=y.id).religion == religion or RegisterUser.objects.get(
+                        id=y.id).zodiac_sign == zodiac_sign or RegisterUser.objects.get(
+                        id=y.id).body_type == body_type or RegisterUser.objects.get(id=y.id).taste == taste:
                     qs.append(y)
                 else:
                     pass
