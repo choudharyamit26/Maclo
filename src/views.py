@@ -1275,8 +1275,8 @@ class FilteredUserView(APIView):
         print('FINAL LIST ----->>>', final_list)
         filtered_users = []
         for obj in final_list:
-            print('inside last loop',obj)
-            print('inside last loop register user id',obj.phone_number.id)
+            print('inside last loop', obj)
+            print('inside last loop register user id', obj.phone_number.id)
             id = obj.phone_number.id
             bio = obj.bio
             first_name = obj.phone_number.first_name
@@ -1405,8 +1405,12 @@ class FilteredUserView(APIView):
                 # "subscription": subscription
             }
             print('after dictionary creation--------------------------------------')
-            if qualification or relationship_status or height or gender or religion or zodiac_sign or body_type or taste:
-                print('filtered users----->>',detail)
+            if self.request.GET.get('qualification' or None) or self.request.GET.get(
+                    'relationship_status' or None) or self.request.GET.get(
+                'height' or None) or self.request.GET.get('gender' or None) or self.request.GET.get(
+                'religion' or None) or self.request.GET.get('zodiac_sign' or None) or self.request.GET.get(
+                'body_type' or None) or self.request.GET.get('taste' or None):
+                print('filtered users----->>', detail)
                 print(obj)
                 filtered_users.append(detail)
             else:
