@@ -1270,6 +1270,7 @@ class FilteredUserView(APIView):
             #         pass
             # else:
             final_list.append(a)
+            print('>>>>>>>>>>>>>>>>>>>>>',final_list)
         print('FINAL LIST ----->>>', final_list)
         filtered_users = []
         for obj in final_list:
