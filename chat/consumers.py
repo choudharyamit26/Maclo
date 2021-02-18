@@ -71,7 +71,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                     print(respo)
                     title = first_name
                     body = text_data_json['message']
-                    message_type = "newMessage"
+                    message_type = data_message
                     respo = send_another(fcm_token, title, body, message_type)
                     print(respo)
                 except Exception as e:
@@ -118,7 +118,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                     print(respo)
                     title = first_name
                     body = text_data_json['message']
-                    message_type = "newMessage"
+                    message_type = data_message
                     respo = send_another(fcm_token, title, body, message_type)
                     print(respo)
                 except Exception as e:
@@ -164,7 +164,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                 print(respo)
                 title = first_name
                 body = text_data_json['message']
-                message_type = "newMessage"
+                message_type = data_message
                 respo = send_another(fcm_token, title, body, message_type)
                 print(respo)
             except Exception as e:
