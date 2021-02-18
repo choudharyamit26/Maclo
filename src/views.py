@@ -1234,16 +1234,22 @@ class FilteredUserView(APIView):
                 print('Qualification', y.qualification)
                 if RegisterUser.objects.get(id=y.id).qualification == qualification or RegisterUser.objects.get(
                         id=y.id).relationship_status == relationship_status or RegisterUser.objects.get(
-                        id=y.id).height == height or RegisterUser.objects.get(
-                        id=y.id).gender == gender or RegisterUser.objects.get(
-                        id=y.id).religion == religion or RegisterUser.objects.get(
-                        id=y.id).zodiac_sign == zodiac_sign or RegisterUser.objects.get(
-                        id=y.id).body_type == body_type or RegisterUser.objects.get(id=y.id).taste == taste:
+                    id=y.id).height == height or RegisterUser.objects.get(
+                    id=y.id).gender == gender or RegisterUser.objects.get(
+                    id=y.id).religion == religion or RegisterUser.objects.get(
+                    id=y.id).zodiac_sign == zodiac_sign or RegisterUser.objects.get(
+                    id=y.id).body_type == body_type or RegisterUser.objects.get(id=y.id).taste == taste:
                     print('inside if case of filter')
                     print('Qualification', y.qualification == qualification)
                     print('relationship_status ', y.relationship_status == relationship_status)
-
+                    print('height ', y.height == height)
+                    print('gender ', y.gender == gender)
+                    print('religion ', y.religion == religion)
+                    print('zodiac_sign ', y.zodiac_sign == zodiac_sign)
+                    print('body_type ', y.body_type == body_type)
+                    print('body_type ', y.taste == taste)
                     qs.append(y)
+                    print('QS--------------->>>', qs)
                 else:
                     pass
         else:
