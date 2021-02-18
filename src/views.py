@@ -2326,6 +2326,7 @@ class MettingList(APIView):
                     if RegisterUser.objects.get(id=meeting.scheduled_by.id).id in final_blocked_users_list:
                         recevied_list.append(
                             {'id': meeting.id,
+                             'user_id':RegisterUser.objects.get(id=meeting.scheduled_by.id).id,
                              'first_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).first_name,
                              'last_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).last_name,
                              'profile_pic': RegisterUser.objects.get(id=meeting.scheduled_by.id).pic_1.url,
@@ -2334,6 +2335,7 @@ class MettingList(APIView):
                     else:
                         recevied_list.append(
                             {'id': meeting.id,
+                             'user_id': RegisterUser.objects.get(id=meeting.scheduled_by.id).id,
                              'first_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).first_name,
                              'last_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).last_name,
                              'profile_pic': RegisterUser.objects.get(id=meeting.scheduled_by.id).pic_1.url,
@@ -2343,6 +2345,7 @@ class MettingList(APIView):
                     if RegisterUser.objects.get(id=meeting.scheduled_by.id).id in final_blocked_users_list:
                         recevied_list.append(
                             {'id': meeting.id,
+                             'user_id': RegisterUser.objects.get(id=meeting.scheduled_by.id).id,
                              'first_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).first_name,
                              'last_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).last_name,
                              'profile_pic': '',
@@ -2351,6 +2354,7 @@ class MettingList(APIView):
                     else:
                         recevied_list.append(
                             {'id': meeting.id,
+                             'user_id': RegisterUser.objects.get(id=meeting.scheduled_by.id).id,
                              'first_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).first_name,
                              'last_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).last_name,
                              'profile_pic': '',
@@ -2365,6 +2369,7 @@ class MettingList(APIView):
                     if RegisterUser.objects.get(id=meeting.scheduled_with.id).id in final_blocked_users_list:
                         sent_list.append(
                             {'id': meeting.id,
+                             'user_id': RegisterUser.objects.get(id=meeting.scheduled_with.id).id,
                              'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
                              'last_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).last_name,
                              'profile_pic': RegisterUser.objects.get(id=meeting.scheduled_with.id).pic_1.url,
@@ -2373,6 +2378,7 @@ class MettingList(APIView):
                     else:
                         sent_list.append(
                             {'id': meeting.id,
+                             'user_id': RegisterUser.objects.get(id=meeting.scheduled_with.id).id,
                              'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
                              'last_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).last_name,
                              'profile_pic': RegisterUser.objects.get(id=meeting.scheduled_with.id).pic_1.url,
@@ -2382,6 +2388,7 @@ class MettingList(APIView):
                     if RegisterUser.objects.get(id=meeting.scheduled_with.id).id in final_blocked_users_list:
                         sent_list.append(
                             {'id': meeting.id,
+                             'user_id': RegisterUser.objects.get(id=meeting.scheduled_with.id).id,
                              'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
                              'last_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).last_name,
                              'profile_pic': '',
@@ -2390,6 +2397,7 @@ class MettingList(APIView):
                     else:
                         sent_list.append(
                             {'id': meeting.id,
+                             'user_id': RegisterUser.objects.get(id=meeting.scheduled_with.id).id,
                              'first_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).first_name,
                              'last_name': RegisterUser.objects.get(id=meeting.scheduled_with.id).last_name,
                              'profile_pic': '',
