@@ -1403,6 +1403,9 @@ class FilteredUserView(APIView):
             }
             if user_detail_obj.interest:
                 if obj.phone_number.gender == user_detail_obj.interest:
+                    print('TRUE FALSE ',obj.phone_number.gender == user_detail_obj.interest)
+                    print('OBJ PHONE NUMBER GENDER ',obj.phone_number.gender)
+                    print('USER DETAIL OBJ ',user_detail_obj.interest)
                     print('inner if')
                     filtered_users.append(detail)
                 else:
