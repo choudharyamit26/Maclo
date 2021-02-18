@@ -26,9 +26,9 @@ from .filters import UserFilter
 from src.fcm_notification import send_to_one, send_another
 from django.utils.translation import gettext_lazy as _
 from weasyprint import HTML, CSS
-from .models import UserNotification, Transaction,User
+from .models import UserNotification, Transaction, User
 
-# user = get_user_model()
+user = get_user_model()
 
 
 class Login(View):
@@ -343,7 +343,7 @@ class SendNotification(LoginRequiredMixin, View):
             fcm_token = user_obj.device_token
             print(fcm_token)
             UserNotification.objects.create(
-                to=user,
+                to=user_obj,
                 title=title,
                 body=message,
                 read=False
