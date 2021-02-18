@@ -1228,10 +1228,11 @@ class FilteredUserView(APIView):
                 print('Qualification', y.qualification)
                 print('relationship_status', y.relationship_status)
                 print('height', y.height)
-                print('Qualification', y.qualification)
-                print('Qualification', y.qualification)
-                print('Qualification', y.qualification)
-                print('Qualification', y.qualification)
+                print('gender', y.gender)
+                print('religion', y.religion)
+                print('zodiac_sign', y.zodiac_sign)
+                print('body_type', y.body_type)
+                print('taste', y.taste)
                 if RegisterUser.objects.get(id=y.id).qualification == qualification or RegisterUser.objects.get(
                         id=y.id).relationship_status == relationship_status or RegisterUser.objects.get(
                     id=y.id).height == height or RegisterUser.objects.get(
@@ -1402,6 +1403,7 @@ class FilteredUserView(APIView):
                 # "subscription": subscription
             }
             if qualification or relationship_status or height or gender or religion or zodiac_sign or body_type or taste:
+                print('filtered users',detail)
                 filtered_users.append(detail)
             else:
                 if user_detail_obj.interest:
