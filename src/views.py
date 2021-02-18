@@ -1222,7 +1222,15 @@ class FilteredUserView(APIView):
         print('>>>>>>>>>>>>>>>>>>>>>>>>>zzzzzzzzzzz ', z)
         qs = []
         if qualification or relationship_status or height or gender or religion or zodiac_sign or taste or body_type:
+            print('inside filter if')
             for y in z:
+                print('Qualification',y.qualification)
+                print('relationship_status',y.relationship_status)
+                print('height',y.height)
+                print('Qualification',y.qualification)
+                print('Qualification',y.qualification)
+                print('Qualification',y.qualification)
+                print('Qualification',y.qualification)
                 if y.qualification == qualification or y.relationship_status == relationship_status or y.height == height or y.gender == gender or y.religion == religion or y.zodiac_sign == zodiac_sign or y.body_type == body_type or y.taste == taste:
                     qs.append(y)
                 else:
