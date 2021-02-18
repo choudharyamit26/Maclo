@@ -1239,6 +1239,10 @@ class FilteredUserView(APIView):
                         id=y.id).religion == religion or RegisterUser.objects.get(
                         id=y.id).zodiac_sign == zodiac_sign or RegisterUser.objects.get(
                         id=y.id).body_type == body_type or RegisterUser.objects.get(id=y.id).taste == taste:
+                    print('inside if case of filter')
+                    print('Qualification', y.qualification == qualification)
+                    print('relationship_status ', y.relationship_status == relationship_status)
+
                     qs.append(y)
                 else:
                     pass
