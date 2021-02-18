@@ -1404,6 +1404,7 @@ class FilteredUserView(APIView):
                 "subscription_purchased_at": subscription_purchased_at,
                 # "subscription": subscription
             }
+            print('after dictionary creation--------------------------------------')
             if qualification or relationship_status or height or gender or religion or zodiac_sign or body_type or taste:
                 print('filtered users',detail)
                 print(obj)
