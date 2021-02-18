@@ -339,7 +339,9 @@ class SendNotification(LoginRequiredMixin, View):
         for i in users_list:
             # user = User.objects.get(id=i)
             user = RegisterUser.objects.get(id=i)
+            print(user)
             user_obj = User.objects.get(email=user.email)
+            print(user_obj)
             fcm_token = user_obj.device_token
             print(fcm_token)
             UserNotification.objects.create(
