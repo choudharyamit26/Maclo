@@ -64,6 +64,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                     print(first_name)
                     data_message = {"data": {"title": first_name,
                                              "body": text_data_json['message'],
+                                             "is_image": text_data_json['is_image'],
                                              "room_id": chat1.id,
                                              "type": "NewMessage"}}
                     respo = send_to_one(fcm_token, data_message)
@@ -110,6 +111,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                     print(email)
                     data_message = {"data": {"title": first_name,
                                              "body": text_data_json['message'],
+                                             "is_image": text_data_json['is_image'],
                                              "room_id": chat1.id,
                                              "type": "NewMessage"}}
                     respo = send_to_one(fcm_token, data_message)
@@ -155,6 +157,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                 print(email)
                 data_message = {"data": {"title": first_name,
                                          "body": text_data_json['message'],
+                                         "is_image": text_data_json['is_image'],
                                          "room_id": x.id,
                                          "type": "NewMessage"}}
                 respo = send_to_one(fcm_token, data_message)
