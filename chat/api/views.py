@@ -54,6 +54,22 @@ class MessagesList(APIView):
         return Response({'messages': messages, 'status': HTTP_200_OK})
 
 
+class UpdateUnReadMessage(APIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+
+    def get(self, request, *args, **kwargs):
+        room_id = self.request.query_params.get('room_id')
+        chat = ChatRoom.objects.get(id=room_id)
+        for message in chat.messages.all():
+            if message.read:
+                pass
+            else:
+                message.read = True
+                message.save()
+        return Response({'message': 'Message updated successfully', 'status': HTTP_200_OK})
+
+
 class ChatList(APIView):
     permission_classes = (IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
@@ -105,7 +121,7 @@ class ChatList(APIView):
                                  'created_at': str(message.messages.last().created_at), 'blocked': True})
                         else:
                             messages = []
-                            all_messages = message.message.all()
+                            all_messages = message.messages.all()
                             for m in all_messages:
                                 if not message.read:
                                     messages.append(m)
@@ -139,7 +155,7 @@ class ChatList(APIView):
                                  'created_at': '', 'blocked': True})
                         else:
                             messages = []
-                            all_messages = message.message.all()
+                            all_messages = message.messages.all()
                             for m in all_messages:
                                 if not message.read:
                                     messages.append(m)
@@ -173,7 +189,7 @@ class ChatList(APIView):
                                  'created_at': str(message.messages.last().created_at), 'blocked': True})
                         else:
                             messages = []
-                            all_messages = message.message.all()
+                            all_messages = message.messages.all()
                             for m in all_messages:
                                 if not message.read:
                                     messages.append(m)
@@ -207,7 +223,7 @@ class ChatList(APIView):
                                  'created_at': '', 'blocked': True})
                         else:
                             messages = []
-                            all_messages = message.message.all()
+                            all_messages = message.messages.all()
                             for m in all_messages:
                                 if not message.read:
                                     messages.append(m)
@@ -241,7 +257,7 @@ class ChatList(APIView):
                                  'created_at': str(message.messages.last().created_at), 'blocked': True})
                         else:
                             messages = []
-                            all_messages = message.message.all()
+                            all_messages = message.messages.all()
                             for m in all_messages:
                                 if not message.read:
                                     messages.append(m)
@@ -275,7 +291,7 @@ class ChatList(APIView):
                                  'created_at': '', 'blocked': True})
                         else:
                             messages = []
-                            all_messages = message.message.all()
+                            all_messages = message.messages.all()
                             for m in all_messages:
                                 if not message.read:
                                     messages.append(m)
@@ -309,7 +325,7 @@ class ChatList(APIView):
                                  'created_at': str(message.messages.last().created_at), 'blocked': True})
                         else:
                             messages = []
-                            all_messages = message.message.all()
+                            all_messages = message.messages.all()
                             for m in all_messages:
                                 if not message.read:
                                     messages.append(m)
@@ -343,7 +359,7 @@ class ChatList(APIView):
                                  'created_at': '', 'blocked': True})
                         else:
                             messages = []
-                            all_messages = message.message.all()
+                            all_messages = message.messages.all()
                             for m in all_messages:
                                 if not message.read:
                                     messages.append(m)
@@ -384,7 +400,7 @@ class ChatList(APIView):
                                  'created_at': str(message.messages.last().created_at), 'blocked': True})
                         else:
                             messages = []
-                            all_messages = message.message.all()
+                            all_messages = message.messages.all()
                             for m in all_messages:
                                 if not message.read:
                                     messages.append(m)
@@ -420,7 +436,7 @@ class ChatList(APIView):
                                  'created_at': '', 'blocked': True})
                         else:
                             messages = []
-                            all_messages = message.message.all()
+                            all_messages = message.messages.all()
                             for m in all_messages:
                                 if not message.read:
                                     messages.append(m)
@@ -456,7 +472,7 @@ class ChatList(APIView):
                                  'created_at': str(message.messages.last().created_at), 'blocked': True})
                         else:
                             messages = []
-                            all_messages = message.message.all()
+                            all_messages = message.messages.all()
                             for m in all_messages:
                                 if not message.read:
                                     messages.append(m)
@@ -492,7 +508,7 @@ class ChatList(APIView):
                                  'created_at': '', 'blocked': True})
                         else:
                             messages = []
-                            all_messages = message.message.all()
+                            all_messages = message.messages.all()
                             for m in all_messages:
                                 if not message.read:
                                     messages.append(m)
@@ -528,7 +544,7 @@ class ChatList(APIView):
                                  'created_at': str(message.messages.last().created_at), 'blocked': True})
                         else:
                             messages = []
-                            all_messages = message.message.all()
+                            all_messages = message.messages.all()
                             for m in all_messages:
                                 if not message.read:
                                     messages.append(m)
@@ -564,7 +580,7 @@ class ChatList(APIView):
                                  'created_at': '', 'blocked': True})
                         else:
                             messages = []
-                            all_messages = message.message.all()
+                            all_messages = message.messages.all()
                             for m in all_messages:
                                 if not message.read:
                                     messages.append(m)
@@ -600,7 +616,7 @@ class ChatList(APIView):
                                  'created_at': str(message.messages.last().created_at), 'blocked': True})
                         else:
                             messages = []
-                            all_messages = message.message.all()
+                            all_messages = message.messages.all()
                             for m in all_messages:
                                 if not message.read:
                                     messages.append(m)
@@ -619,7 +635,7 @@ class ChatList(APIView):
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
                                  'created_at': str(message.messages.last().created_at), 'blocked': False,
-                                 'message_count':len(messages)})
+                                 'message_count': len(messages)})
                     else:
                         if message.receiver.id in final_blocked_users_list or message.sender.id in final_blocked_users_list:
                             received_message.append(
@@ -636,7 +652,7 @@ class ChatList(APIView):
                                  'created_at': '', 'blocked': True})
                         else:
                             messages = []
-                            all_messages = message.message.all()
+                            all_messages = message.messages.all()
                             for m in all_messages:
                                 if not message.read:
                                     messages.append(m)
@@ -653,7 +669,7 @@ class ChatList(APIView):
                                     id=message.sender_id).last_name,
                                  'receiver_profile_pic': '',
                                  'last_message': '', 'is_image': '',
-                                 'created_at': '', 'blocked': False,'message_count':len(messages)})
+                                 'created_at': '', 'blocked': False, 'message_count': len(messages)})
             except Exception as e:
                 pass
         return Response({'messages': sent_massage + received_message, 'status': HTTP_200_OK})
