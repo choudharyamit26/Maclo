@@ -123,7 +123,7 @@ class ChatList(APIView):
                             un_read_messages = []
                             all_messages = message.messages.all()
                             for m in all_messages:
-                                if not message.read:
+                                if not m.read:
                                     un_read_messages.append(m)
                                 else:
                                     pass
@@ -157,7 +157,7 @@ class ChatList(APIView):
                             un_read_messages = []
                             all_messages = message.messages.all()
                             for m in all_messages:
-                                if not message.read:
+                                if not m.read:
                                     un_read_messages.append(m)
                                 else:
                                     pass
@@ -191,7 +191,7 @@ class ChatList(APIView):
                             un_read_messages = []
                             all_messages = message.messages.all()
                             for m in all_messages:
-                                if not message.read:
+                                if not m.read:
                                     un_read_messages.append(m)
                                 else:
                                     pass
@@ -225,7 +225,7 @@ class ChatList(APIView):
                             un_read_messages = []
                             all_messages = message.messages.all()
                             for m in all_messages:
-                                if not message.read:
+                                if not m.read:
                                     un_read_messages.append(m)
                                 else:
                                     pass
@@ -259,7 +259,7 @@ class ChatList(APIView):
                             un_read_messages = []
                             all_messages = message.messages.all()
                             for m in all_messages:
-                                if not message.read:
+                                if not m.read:
                                     un_read_messages.append(m)
                                 else:
                                     pass
@@ -293,7 +293,7 @@ class ChatList(APIView):
                             un_read_messages = []
                             all_messages = message.messages.all()
                             for m in all_messages:
-                                if not message.read:
+                                if not m.read:
                                     un_read_messages.append(m)
                                 else:
                                     pass
@@ -327,7 +327,7 @@ class ChatList(APIView):
                             un_read_messages = []
                             all_messages = message.messages.all()
                             for m in all_messages:
-                                if not message.read:
+                                if not m.read:
                                     un_read_messages.append(m)
                                 else:
                                     pass
@@ -361,7 +361,7 @@ class ChatList(APIView):
                             un_read_messages = []
                             all_messages = message.messages.all()
                             for m in all_messages:
-                                if not message.read:
+                                if not m.read:
                                     un_read_messages.append(m)
                                 else:
                                     pass
@@ -402,7 +402,7 @@ class ChatList(APIView):
                             un_read_messages = []
                             all_messages = message.messages.all()
                             for m in all_messages:
-                                if not message.read:
+                                if not m.read:
                                     un_read_messages.append(m)
                                 else:
                                     pass
@@ -438,7 +438,7 @@ class ChatList(APIView):
                             un_read_messages = []
                             all_messages = message.messages.all()
                             for m in all_messages:
-                                if not message.read:
+                                if not m.read:
                                     un_read_messages.append(m)
                                 else:
                                     pass
@@ -474,7 +474,7 @@ class ChatList(APIView):
                             un_read_messages = []
                             all_messages = message.messages.all()
                             for m in all_messages:
-                                if not message.read:
+                                if not m.read:
                                     un_read_messages.append(m)
                                 else:
                                     pass
@@ -510,7 +510,7 @@ class ChatList(APIView):
                             un_read_messages = []
                             all_messages = message.messages.all()
                             for m in all_messages:
-                                if not message.read:
+                                if not m.read:
                                     un_read_messages.append(m)
                                 else:
                                     pass
@@ -546,7 +546,7 @@ class ChatList(APIView):
                             un_read_messages = []
                             all_messages = message.messages.all()
                             for m in all_messages:
-                                if not message.read:
+                                if not m.read:
                                     un_read_messages.append(m)
                                 else:
                                     pass
@@ -582,7 +582,7 @@ class ChatList(APIView):
                             un_read_messages = []
                             all_messages = message.messages.all()
                             for m in all_messages:
-                                if not message.read:
+                                if not m.read:
                                     un_read_messages.append(m)
                                 else:
                                     pass
@@ -618,7 +618,7 @@ class ChatList(APIView):
                             un_read_messages = []
                             all_messages = message.messages.all()
                             for m in all_messages:
-                                if not message.read:
+                                if not m.read:
                                     un_read_messages.append(m)
                                 else:
                                     pass
@@ -654,7 +654,7 @@ class ChatList(APIView):
                             un_read_messages = []
                             all_messages = message.messages.all()
                             for m in all_messages:
-                                if not message.read:
+                                if not m.read:
                                     un_read_messages.append(m)
                                 else:
                                     pass
@@ -671,6 +671,7 @@ class ChatList(APIView):
                                  'last_message': '', 'is_image': '',
                                  'created_at': '', 'blocked': False, 'message_count': len(un_read_messages)})
             except Exception as e:
+                print('Exception',e)
                 pass
         return Response({'messages': sent_massage + received_message, 'status': HTTP_200_OK})
 
