@@ -1270,7 +1270,7 @@ class FilteredUserView(APIView):
             #         pass
             # else:
             final_list.append(a)
-            print('>>>>>>>>>>>>>>>>>>>>>',final_list)
+            print('>>>>>>>>>>>>>>>>>>>>>', final_list)
         print('FINAL LIST ----->>>', final_list)
         filtered_users = []
         for obj in final_list:
@@ -1401,18 +1401,21 @@ class FilteredUserView(APIView):
                 "subscription_purchased_at": subscription_purchased_at,
                 # "subscription": subscription
             }
-            if user_detail_obj.interest:
-                if obj.phone_number.gender == user_detail_obj.interest:
-                    print('TRUE FALSE ',obj.phone_number.gender == user_detail_obj.interest)
-                    print('OBJ PHONE NUMBER GENDER ',obj.phone_number.gender)
-                    print('USER DETAIL OBJ ',user_detail_obj.interest)
-                    print('inner if')
-                    filtered_users.append(detail)
-                else:
-                    pass
-            else:
-                print('outer else')
+            if qualification or relationship_status or height or gender or religion or zodiac_sign or body_type or taste:
                 filtered_users.append(detail)
+            else:
+                if user_detail_obj.interest:
+                    if obj.phone_number.gender == user_detail_obj.interest:
+                        print('TRUE FALSE ', obj.phone_number.gender == user_detail_obj.interest)
+                        print('OBJ PHONE NUMBER GENDER ', obj.phone_number.gender)
+                        print('USER DETAIL OBJ ', user_detail_obj.interest)
+                        print('inner if')
+                        filtered_users.append(detail)
+                    else:
+                        pass
+                else:
+                    print('outer else')
+                    filtered_users.append(detail)
         print('FILTERED USERS LIST------------->>>>>>>', filtered_users)
         return Response({'data': filtered_users, 'status': HTTP_200_OK})
 
