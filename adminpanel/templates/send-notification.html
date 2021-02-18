@@ -81,8 +81,8 @@
                 alert(data);
             },
             error: function (data) {
-                alert(data.status);
-                alert(data.responseJSON.error);
+                console.log(data.status)
+                console.log(data.responseJSON.error);
             }
         });
         event.preventDefault();
