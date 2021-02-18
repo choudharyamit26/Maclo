@@ -1275,6 +1275,7 @@ class FilteredUserView(APIView):
         print('FINAL LIST ----->>>', final_list)
         filtered_users = []
         for obj in final_list:
+            print('inside last loop',obj)
             id = obj.phone_number.id
             bio = obj.bio
             first_name = obj.phone_number.first_name
@@ -1404,6 +1405,7 @@ class FilteredUserView(APIView):
             }
             if qualification or relationship_status or height or gender or religion or zodiac_sign or body_type or taste:
                 print('filtered users',detail)
+                print(obj)
                 filtered_users.append(detail)
             else:
                 if user_detail_obj.interest:
