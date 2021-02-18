@@ -2210,6 +2210,7 @@ class ScheduleMeetingAPIView(CreateAPIView):
         phone_number = self.request.data['id']
         # to_id = self.request.data['phone_number']
         # logged_in_user_id = self.request.data['id']
+        logged_in_user_id = RegisterUser.objects.get(email=user.email)
         requested_user = RegisterUser.objects.get(id=int(phone_number))
         scheduled_by = RegisterUser.objects.get(email=user.email)
         meeting_date = self.request.data['meeting_date']
@@ -2232,13 +2233,13 @@ class ScheduleMeetingAPIView(CreateAPIView):
         UserNotification.objects.create(
             to=User.objects.get(email=requested_user.email),
             title='Meeting Request',
-            body="You have a meeting request from " + from_user_name
+            body="You have a meeting request from " + logged_in_user_id.first_name
         )
         fcm_token = User.objects.get(email=requested_user.email).device_token
         try:
             title = "Meeting Request"
-            body = "You have a meeting request from " + from_user_name
-            message_type = "superLike"
+            body = "You have a meeting request from " + logged_in_user_id.first_name
+            message_type = "meeting"
             respo = send_another(fcm_token, title, body, message_type)
             print("FCM Response===============>0", respo)
         except Exception as e:
