@@ -340,6 +340,7 @@ class SendNotification(LoginRequiredMixin, View):
             # user = User.objects.get(id=i)
             user = RegisterUser.objects.get(id=i)
             print(user)
+            print(user.first_name)
             user_obj = User.objects.get(email=user.email)
             print(user_obj)
             fcm_token = user_obj.device_token
