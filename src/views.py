@@ -1406,10 +1406,11 @@ class FilteredUserView(APIView):
             }
             print('after dictionary creation--------------------------------------')
             if qualification or relationship_status or height or gender or religion or zodiac_sign or body_type or taste:
-                print('filtered users',detail)
+                print('filtered users----->>',detail)
                 print(obj)
                 filtered_users.append(detail)
             else:
+                print('inside else case')
                 if user_detail_obj.interest:
                     if obj.phone_number.gender == user_detail_obj.interest:
                         print('TRUE FALSE ', obj.phone_number.gender == user_detail_obj.interest)
@@ -1418,6 +1419,7 @@ class FilteredUserView(APIView):
                         print('inner if')
                         filtered_users.append(detail)
                     else:
+                        print('inside nested else case')
                         pass
                 else:
                     print('outer else')
