@@ -58,8 +58,9 @@ class UpdateUnReadMessage(APIView):
     permission_classes = (IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
 
-    def get(self, request, *args, **kwargs):
-        room_id = self.request.query_params.get('room_id')
+    def post(self, request, *args, **kwargs):
+        # room_id = self.request.query_params.get('room_id')
+        room_id = self.request.POST['room_id']
         chat = ChatRoom.objects.get(id=room_id)
         for message in chat.messages.all():
             if message.read:
