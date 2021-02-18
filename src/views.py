@@ -1224,15 +1224,21 @@ class FilteredUserView(APIView):
         if qualification or relationship_status or height or gender or religion or zodiac_sign or taste or body_type:
             print('inside filter if')
             for y in z:
-                print('--------....>>>',y)
-                print('Qualification',y.qualification)
-                print('relationship_status',y.relationship_status)
-                print('height',y.height)
-                print('Qualification',y.qualification)
-                print('Qualification',y.qualification)
-                print('Qualification',y.qualification)
-                print('Qualification',y.qualification)
-                if y.qualification == qualification or y.relationship_status == relationship_status or y.height == height or y.gender == gender or y.religion == religion or y.zodiac_sign == zodiac_sign or y.body_type == body_type or y.taste == taste:
+                print('--------....>>>', y)
+                print('Qualification', y.qualification)
+                print('relationship_status', y.relationship_status)
+                print('height', y.height)
+                print('Qualification', y.qualification)
+                print('Qualification', y.qualification)
+                print('Qualification', y.qualification)
+                print('Qualification', y.qualification)
+                if RegisterUser.objects.get(id=y).qualification == qualification or RegisterUser.objects.get(
+                        id=y).relationship_status == relationship_status or RegisterUser.objects.get(
+                        id=y).height == height or RegisterUser.objects.get(
+                        id=y).gender == gender or RegisterUser.objects.get(
+                        id=y).religion == religion or RegisterUser.objects.get(
+                        id=y).zodiac_sign == zodiac_sign or RegisterUser.objects.get(
+                        id=y).body_type == body_type or RegisterUser.objects.get(id=y).taste == taste:
                     qs.append(y)
                 else:
                     pass
@@ -2336,7 +2342,7 @@ class MettingList(APIView):
                     if RegisterUser.objects.get(id=meeting.scheduled_by.id).id in final_blocked_users_list:
                         recevied_list.append(
                             {'id': meeting.id,
-                             'user_id':RegisterUser.objects.get(id=meeting.scheduled_by.id).id,
+                             'user_id': RegisterUser.objects.get(id=meeting.scheduled_by.id).id,
                              'first_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).first_name,
                              'last_name': RegisterUser.objects.get(id=meeting.scheduled_by.id).last_name,
                              'profile_pic': RegisterUser.objects.get(id=meeting.scheduled_by.id).pic_1.url,
@@ -3426,7 +3432,7 @@ class CheckUserBlocked(APIView):
                 # for x in user.blocked.all():
                 user_2_blocked_list.append(user.id)
             blocked_users_list = user_1_blocked_list + user_2_blocked_list
-            print('blocked users list',blocked_users_list)
+            print('blocked users list', blocked_users_list)
             if int(user1) in blocked_users_list or int(user2) in blocked_users_list:
                 return Response({'blocked': True, 'status': HTTP_200_OK})
             else:
