@@ -61,14 +61,18 @@ class UpdateUnReadMessage(APIView):
     def post(self, request, *args, **kwargs):
         # room_id = self.request.query_params.get('room_id')
         room_id = self.request.POST['room_id']
-        chat = ChatRoom.objects.get(id=room_id)
-        for message in chat.messages.all():
-            if message.read:
-                pass
-            else:
-                message.read = True
-                message.save()
-        return Response({'message': 'Message updated successfully', 'status': HTTP_200_OK})
+        try:
+            chat = ChatRoom.objects.get(id=room_id)
+            for message in chat.messages.all():
+                if message.read:
+                    pass
+                else:
+                    message.read = True
+                    message.save()
+            return Response({'message': 'Message updated successfully', 'status': HTTP_200_OK})
+        except Exception as e:
+            x = {'error': str(e)}
+            return Response({'message': x['error'], 'status': HTTP_400_BAD_REQUEST})
 
 
 class ChatList(APIView):
