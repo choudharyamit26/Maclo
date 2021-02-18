@@ -1253,6 +1253,7 @@ class FilteredUserView(APIView):
                 else:
                     pass
         else:
+            print('inside outer else')
             qs = z
         final_list = []
         print('QS_____________>>>>>>>>>>', qs)
