@@ -49,7 +49,7 @@ class MessagesList(APIView):
         messages = []
         for message in chat.messages.all():
             messages.append({'id': message.id, 'sender': message.sender.id, 'receiver': message.receiver.id,
-                             'message': message.message, 'is_image': message.is_image,
+                             'message': message.message, 'is_image': message.is_image, 'read': message.read,
                              'created_at': str(message.created_at.replace(microsecond=0))})
         return Response({'messages': messages, 'status': HTTP_200_OK})
 
@@ -672,7 +672,7 @@ class ChatList(APIView):
                                  'last_message': '', 'is_image': '',
                                  'created_at': '', 'blocked': False, 'message_count': len(un_read_messages)})
             except Exception as e:
-                print('Exception',e)
+                print('Exception', e)
                 pass
         return Response({'messages': sent_massage + received_message, 'status': HTTP_200_OK})
 
