@@ -27,7 +27,7 @@ def send_to_one(registration_id, data_message):
     # result = push_service.notify_single_device(registration_id, message_title, message_body, data_message)
     print('------->>>>Data Message', json.dumps(data_message))
     result = push_service.single_device_data_message(
-        registration_id=registration_id, data_message=json.dumps(data_message))
+        registration_id=registration_id, data_message=data_message)
     print("<----------------------------------------------------->", result)
 
 
