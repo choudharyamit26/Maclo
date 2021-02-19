@@ -180,7 +180,6 @@ class ChatRoomConsumer(WebsocketConsumer):
                 message_type = data_message
                 respo = send_another(fcm_token, title, body)
                 print(respo)
-                fcm_token.send_message(title="Title", body="Message", icon=..., data={"test": "test"})
             except Exception as e:
                 print('INSIDE FCM EXCEPTION', e)
             async_to_sync(self.channel_layer.group_send)(
