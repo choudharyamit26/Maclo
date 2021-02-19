@@ -66,7 +66,9 @@ class ChatRoomConsumer(WebsocketConsumer):
                                              "body": text_data_json['message'],
                                              "is_image": str(text_data_json['is_image']),
                                              "room_id": chat1.id,
-                                             "type": "NewMessage"}}
+                                             "type": "NewMessage"},
+                                    'notification': {"title": first_name, "body": text_data_json['message']}
+                                    }
                     respo = send_to_one(fcm_token, data_message)
                     print(respo)
                     # title = first_name
@@ -113,7 +115,9 @@ class ChatRoomConsumer(WebsocketConsumer):
                                              "body": text_data_json['message'],
                                              "is_image": str(text_data_json['is_image']),
                                              "room_id": chat1.id,
-                                             "type": "NewMessage"}}
+                                             "type": "NewMessage"},
+                                    'notification': {"title": first_name, "body": text_data_json['message']}
+                                    }
                     respo = send_to_one(fcm_token, data_message)
                     print(respo)
                     # title = first_name
@@ -159,7 +163,9 @@ class ChatRoomConsumer(WebsocketConsumer):
                                          "body": text_data_json['message'],
                                          "is_image": str(text_data_json['is_image']),
                                          "room_id": x.id,
-                                         "type": "NewMessage"}}
+                                         "type": "NewMessage"},
+                                'notification': {"title": first_name, "body": text_data_json['message']}
+                                }
                 respo = send_to_one(fcm_token, data_message)
                 print(respo)
                 # title = first_name
