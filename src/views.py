@@ -1422,6 +1422,7 @@ class FilteredUserView(APIView):
             if self.request.POST.get('qualification' or None) is not None:
                 if detail['qualification'] is not None:
                     filtered_users.append(detail)
+                    print('Inside if ', filtered_users)
             elif self.request.POST.get('relationship_status' or None) is not None:
                 if detail['relationship_status'] is not None:
                     filtered_users.append(detail)
