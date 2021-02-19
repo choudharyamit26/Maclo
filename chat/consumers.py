@@ -20,6 +20,7 @@ class ChatRoomConsumer(WebsocketConsumer):
         print('-------------------- ROOM GROUP NAME', self.room_group_name)
         # Join room group
         CONNECTED = True
+        print('-------------inside connect method',CONNECTED)
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
             self.channel_name
@@ -30,6 +31,7 @@ class ChatRoomConsumer(WebsocketConsumer):
     def disconnect(self, close_code):
         # Leave room group
         CONNECTED = False
+        print('-------------Inside disconnect',CONNECTED)
         async_to_sync(self.channel_layer.group_discard)(
             self.room_group_name,
             self.channel_name
@@ -40,6 +42,7 @@ class ChatRoomConsumer(WebsocketConsumer):
         print('-----------------', text_data)
         text_data_json = json.loads(text_data)
         print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', text_data_json)
+        print('----------inside receive',CONNECTED)
         message = text_data_json['message']
         try:
             try:
