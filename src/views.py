@@ -1193,8 +1193,8 @@ class FilteredUserView(APIView):
             else:
                 pass
         print(' From if case Filtered users---------------', f_u)
-        qualification = self.request.GET.get('qualification' or None)
-        relationship_status = self.request.GET.get('relationship_status' or None)
+        qualification = self.request.POST.get('qualification' or None)
+        relationship_status = self.request.POST.get('relationship_status' or None)
         religion = self.request.POST.get('religion' or None)
         body_type = self.request.POST.get('body_type' or None)
         gender = self.request.POST.get('gender' or None)
@@ -1249,14 +1249,14 @@ class FilteredUserView(APIView):
                     print('zodiac_sign ', y.zodiac_sign == zodiac_sign)
                     print('body_type ', y.body_type == body_type)
                     print('body_type ', y.taste == taste)
-                    if RegisterUser.objects.get(id=y.id).qualification is not None and RegisterUser.objects.get(
-                            id=y.id).relationship_status is not None or RegisterUser.objects.get(
-                            id=y.id).height is not None and RegisterUser.objects.get(
-                            id=y.id).gender is not None and RegisterUser.objects.get(
-                            id=y.id).religion is not None and RegisterUser.objects.get(
-                            id=y.id).zodiac_sign is not None and RegisterUser.objects.get(
-                            id=y.id).body_type is not None and RegisterUser.objects.get(id=y.id).taste is not None:
-                        qs.append(y)
+                    # if RegisterUser.objects.get(id=y.id).qualification is not None and RegisterUser.objects.get(
+                    #         id=y.id).relationship_status is not None or RegisterUser.objects.get(
+                    #         id=y.id).height is not None and RegisterUser.objects.get(
+                    #         id=y.id).gender is not None and RegisterUser.objects.get(
+                    #         id=y.id).religion is not None and RegisterUser.objects.get(
+                    #         id=y.id).zodiac_sign is not None and RegisterUser.objects.get(
+                    #         id=y.id).body_type is not None and RegisterUser.objects.get(id=y.id).taste is not None:
+                    qs.append(y)
                     print('QS--------------->>>', qs)
                 else:
                     pass
