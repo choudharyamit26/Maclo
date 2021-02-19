@@ -19,6 +19,8 @@ class ChatRoomConsumer(WebsocketConsumer):
         self.room_group_name = 'chat_%s' % self.room_name
         print('-------------------- ROOM GROUP NAME', self.room_group_name)
         # Join room group
+        x=self.channel_layer.group_channels(self.room_group_name)
+        print('CONNECTED USERS-----',x)
         global CONNECTED
         CONNECTED = True
         print('-------------inside connect method', CONNECTED)
