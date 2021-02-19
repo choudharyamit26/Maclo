@@ -30,10 +30,10 @@ def send_to_one(registration_id, data_message):
     print("<----------------------------------------------------->", result)
 
 
-def send_another(registration_id, message_title, message_body):
-    print(registration_id, message_title, message_body)
+def send_another(registration_id, message_title, message_body,data_message):
+    print(registration_id, message_title, message_body,data_message)
     result = push_service.notify_single_device(
-        registration_id, message_body, message_title)
+        registration_id, message_body, message_title,data_message)
     print("<----------------------------------------------------->", result)
 
 

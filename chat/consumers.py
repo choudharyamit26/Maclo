@@ -75,7 +75,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                     title = first_name
                     body = text_data_json['message']
                     message_type = data_message
-                    respo = send_another(fcm_token, title, data_message)
+                    respo = send_another(fcm_token, title,body, data_message)
                     print(respo)
                 except Exception as e:
                     print('Inside fcm exception', e)
@@ -125,7 +125,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                     title = first_name
                     body = text_data_json['message']
                     message_type = data_message
-                    respo = send_another(fcm_token, title, data_message)
+                    respo = send_another(fcm_token, title,body, data_message)
                     print(respo)
                 except Exception as e:
                     print('inside FCM EXCEPTION', e)
@@ -174,7 +174,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                 title = first_name
                 body = text_data_json['message']
                 message_type = data_message
-                respo = send_another(fcm_token, title, data_message)
+                respo = send_another(fcm_token, title,body, data_message)
                 print(respo)
                 fcm_token.send_message(title="Title", body="Message", icon=..., data={"test": "test"})
             except Exception as e:
