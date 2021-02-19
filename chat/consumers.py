@@ -19,6 +19,7 @@ class ChatRoomConsumer(WebsocketConsumer):
         self.room_group_name = 'chat_%s' % self.room_name
         print('-------------------- ROOM GROUP NAME', self.room_group_name)
         # Join room group
+        global CONNECTED
         CONNECTED = True
         print('-------------inside connect method', CONNECTED)
         async_to_sync(self.channel_layer.group_add)(
@@ -30,6 +31,7 @@ class ChatRoomConsumer(WebsocketConsumer):
 
     def disconnect(self, close_code):
         # Leave room group
+        global CONNECTED
         CONNECTED = False
         print('-------------Inside disconnect', CONNECTED)
         async_to_sync(self.channel_layer.group_discard)(
@@ -68,6 +70,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                     print('FCM TOKEN', fcm_token)
                     print(email)
                     print(first_name)
+                    global CONNECTED
                     if CONNECTED:
                         print('DATA MESSAGE_____________________', CONNECTED)
                         data_message = {
@@ -120,6 +123,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                     fcm_token = user.device_token
                     print('FCM TOKEN ', fcm_token)
                     print(email)
+                    global CONNECTED
                     if CONNECTED:
                         print('DATA MESSAGE______________', CONNECTED)
                         data_message = {
@@ -171,6 +175,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                 print('FCM TOKEN ', fcm_token)
                 print(x.id)
                 print(email)
+                global CONNECTED
                 if CONNECTED:
                     print('DATA MESSAGE____________', CONNECTED)
                     data_message = {
