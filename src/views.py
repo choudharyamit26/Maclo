@@ -1726,6 +1726,8 @@ class LikeUserAPIView(CreateAPIView):
             )
             fcm_token = User.objects.get(email=to_user_id.email).device_token
             print('FCM TOKEN ', fcm_token)
+            x = fcm_token.send_message(title="Title", body="Message", icon=..., data={"test": "test"})
+            print(x)
             try:
                 # data_message = {"data": {"title": "Like Notification",
                 #                          "body": "You have been liked by " + from_user_name,
