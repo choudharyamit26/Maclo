@@ -70,7 +70,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                     print('FCM TOKEN', fcm_token)
                     print(email)
                     print(first_name)
-                    global CONNECTED
+                    # global CONNECTED
                     if CONNECTED:
                         print('DATA MESSAGE_____________________', CONNECTED)
                         data_message = {
@@ -123,7 +123,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                     fcm_token = user.device_token
                     print('FCM TOKEN ', fcm_token)
                     print(email)
-                    global CONNECTED
+                    # global CONNECTED
                     if CONNECTED:
                         print('DATA MESSAGE______________', CONNECTED)
                         data_message = {
@@ -175,7 +175,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                 print('FCM TOKEN ', fcm_token)
                 print(x.id)
                 print(email)
-                global CONNECTED
+                # global CONNECTED
                 if CONNECTED:
                     print('DATA MESSAGE____________', CONNECTED)
                     data_message = {
