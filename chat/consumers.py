@@ -25,6 +25,7 @@ class ChatRoomConsumer(WebsocketConsumer):
         print(self.channel_layer.groups.get(self.room_name))
         print(self.channel_layer.groups.get(self.room_group_name,{}))
         print(self.channel_layer.groups.get(self.room_group_name,{}).items())
+        print(self.channel_layer.groups.channel_name)
         print('CONNECTED USERS-----', c)
         global CONNECTED
         CONNECTED = True
