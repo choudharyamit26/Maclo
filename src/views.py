@@ -1412,11 +1412,11 @@ class FilteredUserView(APIView):
                 # "subscription": subscription
             }
             print('after dictionary creation--------------------------------------')
-            if self.request.GET.get('qualification' or None) or self.request.GET.get(
-                    'relationship_status' or None) or self.request.GET.get(
-                'height' or None) or self.request.GET.get('gender' or None) or self.request.GET.get(
-                'religion' or None) or self.request.GET.get('zodiac_sign' or None) or self.request.GET.get(
-                'body_type' or None) or self.request.GET.get('taste' or None):
+            if self.request.POST.get('qualification' or None) or self.request.POST.get(
+                    'relationship_status' or None) or self.request.POST.get(
+                'height' or None) or self.request.POST.get('gender' or None) or self.request.POST.get(
+                'religion' or None) or self.request.POST.get('zodiac_sign' or None) or self.request.POST.get(
+                'body_type' or None) or self.request.POST.get('taste' or None):
                 print('filtered users----->>', detail)
                 print(obj)
                 filtered_users.append(detail)
