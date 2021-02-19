@@ -2106,22 +2106,22 @@ class UserLikedList(APIView):
         super_like_list = []
         liked_users = MatchedUser.objects.filter(liked_by_me=r_user)
         super_liked_users = MatchedUser.objects.filter(super_liked_by_me=r_user)
-        for user in liked_users:
+        for z in liked_users:
             if len(liked_users) > 0:
                 # print(user.liked_by_me.all()[0].id)
                 # print(user.liked_by_me.all().first().id)
-                z = RegisterUser.objects.get(id=user.id)
+                # z = RegisterUser.objects.get(id=user.id)
                 if z.id not in like_list:
                     print(z.id)
                     if z.pic_1:
                         like_list.append(
-                            {'id': z.id, 'first_name': z.first_name, 'last_name': z.last_name,
-                             'liked_at': user.matched_at,
-                             'profile_pic': z.pic_1.url, 'type': 'like'})
+                            {'id': z.user.id, 'first_name': z.user.first_name, 'last_name': z.user.last_name,
+                             'liked_at': z.matched_at,
+                             'profile_pic': z.user.pic_1.url, 'type': 'like'})
                     else:
                         like_list.append(
-                            {'id': z.id, 'first_name': z.first_name, 'last_name': z.last_name,
-                             'liked_at': user.matched_at,
+                            {'id': z.user.id, 'first_name': z.user.first_name, 'last_name': z.user.last_name,
+                             'liked_at': z.matched_at,
                              'profile_pic': '', 'type': 'like'})
                 else:
                     pass
@@ -2130,18 +2130,18 @@ class UserLikedList(APIView):
                 # print(user.super_liked_by_me.all()[0].id)
                 # print(user.super_liked_by_me.all().first().id)
                 # z = RegisterUser.objects.get(id=user.super_liked_by_me.all().first().id)
-                for z in super_liked_users:
-                    if z.id not in super_like_list:
+                for y in super_liked_users:
+                    if y.id not in super_like_list:
                         print(z.id)
-                        if z.pic_1:
+                        if y.pic_1:
                             super_like_list.append(
-                                {'id': z.id, 'first_name': z.first_name, 'last_name': z.last_name,
-                                 'liked_at': user.matched_at,
-                                 'profile_pic': z.pic_1.url, 'type': 'super_like'})
+                                {'id': y.user.id, 'first_name': y.user.first_name, 'last_name': y.user.last_name,
+                                 'liked_at': y.matched_at,
+                                 'profile_pic': y.user.pic_1.url, 'type': 'super_like'})
                         else:
                             super_like_list.append(
-                                {'id': z.id, 'first_name': z.first_name, 'last_name': z.last_name,
-                                 'liked_at': user.matched_at,
+                                {'id': y.id, 'first_name': y.user.first_name, 'last_name': y.user.last_name,
+                                 'liked_at': y.matched_at,
                                  'profile_pic': '', 'type': 'super_like'})
                     else:
                         pass
