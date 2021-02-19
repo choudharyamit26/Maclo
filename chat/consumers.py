@@ -27,9 +27,10 @@ class ChatRoomConsumer(WebsocketConsumer):
         print(self.channel_layer.groups.get(self.room_group_name,{}).items())
         print([x for x in self.channel_layer.groups])
         print('CONNECTED USERS-----', c)
-        global CONNECTED
-        CONNECTED = True
-        print('-------------inside connect method', CONNECTED)
+        if c > 0:
+            global CONNECTED
+            CONNECTED = True
+            print('-------------inside connect method', CONNECTED)
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
             self.channel_name
