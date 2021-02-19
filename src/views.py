@@ -1420,29 +1420,29 @@ class FilteredUserView(APIView):
             #     print('filtered users----->>', detail)
             #     print(obj)
             if self.request.POST.get('qualification' or None) is not None:
-                if detail['qualification'] is not None:
+                if detail['qualification'] is not None and detail['qualification'] != '':
                     filtered_users.append(detail)
                     print('Inside if ', filtered_users)
             elif self.request.POST.get('relationship_status' or None) is not None:
-                if detail['relationship_status'] is not None:
+                if detail['relationship_status'] is not None and detail['relationship_status'] != '':
                     filtered_users.append(detail)
             elif self.request.POST.get('religion' or None) is not None:
-                if detail['religion'] is not None:
+                if detail['religion'] is not None and detail['religion'] != '':
                     filtered_users.append(detail)
             elif self.request.POST.get('body_type' or None) is not None:
-                if detail['body_type'] is not None:
+                if detail['body_type'] is not None and detail['body_type'] != '':
                     filtered_users.append(detail)
             elif self.request.POST.get('gender' or None) is not None:
-                if detail['gender'] is not None:
+                if detail['gender'] is not None and detail['gender'] != '':
                     filtered_users.append(detail)
             elif self.request.POST.get('height' or None) is not None:
-                if detail['height'] is not None:
+                if detail['height'] is not None and detail['height'] != '':
                     filtered_users.append(detail)
             elif self.request.POST.get('zodiac_sign' or None) is not None:
-                if detail['zodiac_sign'] is not None:
+                if detail['zodiac_sign'] is not None and detail['zodiac_sign'] != '':
                     filtered_users.append(detail)
             elif self.request.POST.get('taste' or None) is not None:
-                if detail['taste'] is not None:
+                if detail['taste'] is not None and detail['taste'] != '':
                     filtered_users.append(detail)
             else:
                 print('inside else case')
