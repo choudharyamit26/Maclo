@@ -853,9 +853,9 @@ class ShowInstagramPics(ListAPIView):
     serializer_class = ShowInstaPics
 
     def get(self, request, *args, **kwargs):
-        # id = self.request.GET.get('phone_number')
+        id = self.request.GET.get('user_id')
         user = self.request.user
-        r_user = RegisterUser.objects.get(email=user.email)
+        r_user = RegisterUser.objects.get(id=id)
         try:
             pics = UserInstagramPic.objects.filter(phone_number=r_user).last()
             print(pics)
