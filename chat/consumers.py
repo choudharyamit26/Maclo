@@ -90,7 +90,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                         body = ''
                         if text_data_json['message']:
                             title = first_name
-                            body = 'image'
+                            body = 'Image'
                             # message_type = data_message
                             respo = send_another(fcm_token, title, body)
                             print(respo)
@@ -150,7 +150,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                         print('NOTIFICATION_____________', CONNECTED)
                         if text_data_json['message']:
                             title = first_name
-                            body = 'image'
+                            body = 'Image'
                             # message_type = data_message
                             respo = send_another(fcm_token, title, body)
                             print(respo)
@@ -210,7 +210,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                     body = ''
                     if text_data_json['message']:
                         title = first_name
-                        body = 'image'
+                        body = 'Image'
                         # message_type = data_message
                         respo = send_another(fcm_token, title, body)
                         print(respo)
