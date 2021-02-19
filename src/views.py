@@ -1412,14 +1412,37 @@ class FilteredUserView(APIView):
                 # "subscription": subscription
             }
             print('after dictionary creation--------------------------------------')
-            if self.request.POST.get('qualification' or None) or self.request.POST.get(
-                    'relationship_status' or None) or self.request.POST.get(
-                'height' or None) or self.request.POST.get('gender' or None) or self.request.POST.get(
-                'religion' or None) or self.request.POST.get('zodiac_sign' or None) or self.request.POST.get(
-                'body_type' or None) or self.request.POST.get('taste' or None):
-                print('filtered users----->>', detail)
-                print(obj)
-                filtered_users.append(detail)
+            # if self.request.POST.get('qualification' or None) or self.request.POST.get(
+            #         'relationship_status' or None) or self.request.POST.get(
+            #     'height' or None) or self.request.POST.get('gender' or None) or self.request.POST.get(
+            #     'religion' or None) or self.request.POST.get('zodiac_sign' or None) or self.request.POST.get(
+            #     'body_type' or None) or self.request.POST.get('taste' or None):
+            #     print('filtered users----->>', detail)
+            #     print(obj)
+            if self.request.POST.get('qualification' or None) is not None:
+                if detail['qualification'] is not None:
+                    filtered_users.append(detail)
+            elif self.request.POST.get('relationship_status' or None) is not None:
+                if detail['relationship_status'] is not None:
+                    filtered_users.append(detail)
+            elif self.request.POST.get('religion' or None) is not None:
+                if detail['religion'] is not None:
+                    filtered_users.append(detail)
+            elif self.request.POST.get('body_type' or None) is not None:
+                if detail['body_type'] is not None:
+                    filtered_users.append(detail)
+            elif self.request.POST.get('gender' or None) is not None:
+                if detail['gender'] is not None:
+                    filtered_users.append(detail)
+            elif self.request.POST.get('height' or None) is not None:
+                if detail['height'] is not None:
+                    filtered_users.append(detail)
+            elif self.request.POST.get('zodiac_sign' or None) is not None:
+                if detail['zodiac_sign'] is not None:
+                    filtered_users.append(detail)
+            elif self.request.POST.get('taste' or None) is not None:
+                if detail['taste'] is not None:
+                    filtered_users.append(detail)
             else:
                 print('inside else case')
                 if user_detail_obj.interest:
