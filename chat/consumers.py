@@ -22,6 +22,7 @@ class ChatRoomConsumer(WebsocketConsumer):
         # count = getattr(self.channel_layer, self.room_group_name, 0)
         c=len(self.channel_layer.groups.get(self.room_group_name, {}).items())
         print(self.channel_layer.groups.get(self.room_group_name))
+        print(self.channel_layer.groups.get(self.room_name))
         print(self.channel_layer.groups.get(self.room_group_name,{}))
         print(self.channel_layer.groups.get(self.room_group_name,{}).items())
         print('CONNECTED USERS-----', c)
