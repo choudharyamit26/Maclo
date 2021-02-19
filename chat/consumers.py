@@ -20,7 +20,7 @@ class ChatRoomConsumer(WebsocketConsumer):
         print('-------------------- ROOM GROUP NAME', self.room_group_name)
         # Join room group
         CONNECTED = True
-        print('-------------inside connect method',CONNECTED)
+        print('-------------inside connect method', CONNECTED)
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
             self.channel_name
@@ -31,7 +31,7 @@ class ChatRoomConsumer(WebsocketConsumer):
     def disconnect(self, close_code):
         # Leave room group
         CONNECTED = False
-        print('-------------Inside disconnect',CONNECTED)
+        print('-------------Inside disconnect', CONNECTED)
         async_to_sync(self.channel_layer.group_discard)(
             self.room_group_name,
             self.channel_name
@@ -42,7 +42,7 @@ class ChatRoomConsumer(WebsocketConsumer):
         print('-----------------', text_data)
         text_data_json = json.loads(text_data)
         print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', text_data_json)
-        print('----------inside receive',CONNECTED)
+        print('----------inside receive', CONNECTED)
         message = text_data_json['message']
         try:
             try:
@@ -69,6 +69,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                     print(email)
                     print(first_name)
                     if CONNECTED:
+                        print('DATA MESSAGE_____________________', CONNECTED)
                         data_message = {
                             "body": text_data_json['message'],
                             "title": first_name,
@@ -78,6 +79,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                         respo = send_to_one(fcm_token, data_message)
                         print(respo)
                     else:
+                        print('NOTIFICATION MESSAGE____________', CONNECTED)
                         title = first_name
                         body = text_data_json['message']
                         # message_type = data_message
@@ -119,6 +121,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                     print('FCM TOKEN ', fcm_token)
                     print(email)
                     if CONNECTED:
+                        print('DATA MESSAGE______________', CONNECTED)
                         data_message = {
                             "body": text_data_json['message'],
                             "title": first_name,
@@ -128,6 +131,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                         respo = send_to_one(fcm_token, data_message)
                         print(respo)
                     else:
+                        print('NOTIFICATION MESSAGE_______', CONNECTED)
                         title = first_name
                         body = text_data_json['message']
                         # message_type = data_message
@@ -168,6 +172,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                 print(x.id)
                 print(email)
                 if CONNECTED:
+                    print('DATA MESSAGE____________', CONNECTED)
                     data_message = {
                         "body": text_data_json['message'],
                         "title": first_name,
@@ -177,6 +182,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                     respo = send_to_one(fcm_token, data_message)
                     print(respo)
                 else:
+                    print('NOTIFICATION_____________', CONNECTED)
                     title = first_name
                     body = text_data_json['message']
                     # message_type = data_message
