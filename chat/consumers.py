@@ -162,10 +162,6 @@ class ChatRoomConsumer(WebsocketConsumer):
                 print(x.id)
                 print(email)
                 data_message = {
-                    "notification": {
-                        "title": first_name,
-                        "body": text_data_json['message'],
-                    },
                     "data": {
                         "body": text_data_json['message'],
                         "title": first_name,
