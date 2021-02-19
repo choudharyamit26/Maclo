@@ -62,13 +62,18 @@ class ChatRoomConsumer(WebsocketConsumer):
                     print('FCM TOKEN', fcm_token)
                     print(email)
                     print(first_name)
-                    data_message = {"data": {"title": first_name,
-                                             "body": text_data_json['message'],
-                                             "is_image": str(text_data_json['is_image']),
-                                             "room_id": chat1.id,
-                                             "type": "NewMessage"},
-                                    'notification': {"title": first_name, "body": text_data_json['message']}
-                                    }
+                    data_message = {"notification": {
+                        "body": "hlooo",
+                        "title": "push notification 9"
+                    },
+                        "data": {
+                            "body": "foreground message",
+                            "title": "Title of Your Notification in Title",
+                            "key_1": "Value for key_1",
+                            "key_2": "Value for key_2"
+                        }
+
+                    }
                     respo = send_to_one(fcm_token, data_message)
                     print(respo)
                     # title = first_name
@@ -111,13 +116,18 @@ class ChatRoomConsumer(WebsocketConsumer):
                     fcm_token = user.device_token
                     print('FCM TOKEN ', fcm_token)
                     print(email)
-                    data_message = {"data": {"title": first_name,
-                                             "body": text_data_json['message'],
-                                             "is_image": str(text_data_json['is_image']),
-                                             "room_id": chat1.id,
-                                             "type": "NewMessage"},
-                                    'notification': {"title": first_name, "body": text_data_json['message']}
-                                    }
+                    data_message = {"notification": {
+                        "body": "hlooo",
+                        "title": "push notification 9"
+                    },
+                        "data": {
+                            "body": "foreground message",
+                            "title": "Title of Your Notification in Title",
+                            "key_1": "Value for key_1",
+                            "key_2": "Value for key_2"
+                        }
+
+                    }
                     respo = send_to_one(fcm_token, data_message)
                     print(respo)
                     # title = first_name
@@ -159,13 +169,18 @@ class ChatRoomConsumer(WebsocketConsumer):
                 print('FCM TOKEN ', fcm_token)
                 print(x.id)
                 print(email)
-                data_message = {"data": {"title": first_name,
-                                         "body": text_data_json['message'],
-                                         "is_image": str(text_data_json['is_image']),
-                                         "room_id": x.id,
-                                         "type": "NewMessage"},
-                                'notification': {"title": first_name, "body": text_data_json['message']}
-                                }
+                data_message = {"notification": {
+                    "body": "hlooo",
+                    "title": "push notification 9"
+                },
+                    "data": {
+                        "body": "foreground message",
+                        "title": "Title of Your Notification in Title",
+                        "key_1": "Value for key_1",
+                        "key_2": "Value for key_2"
+                    }
+
+                }
                 respo = send_to_one(fcm_token, data_message)
                 print(respo)
                 # title = first_name
