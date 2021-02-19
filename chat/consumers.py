@@ -63,14 +63,14 @@ class ChatRoomConsumer(WebsocketConsumer):
                     print(email)
                     print(first_name)
                     data_message = {"notification": {
-                        "body": "hlooo",
-                        "title": "push notification 9"
+                        "body": text_data_json['message'],
+                        "title": first_name
                     },
                         "data": {
-                            "body": "foreground message",
-                            "title": "Title of Your Notification in Title",
-                            "key_1": "Value for key_1",
-                            "key_2": "Value for key_2"
+                            "body": text_data_json['message'],
+                            "title": first_name,
+                            "is_image": str(text_data_json['is_image']),
+                            "room_id": chat1.id
                         }
 
                     }
@@ -117,14 +117,14 @@ class ChatRoomConsumer(WebsocketConsumer):
                     print('FCM TOKEN ', fcm_token)
                     print(email)
                     data_message = {"notification": {
-                        "body": "hlooo",
-                        "title": "push notification 9"
+                        "body": text_data_json['message'],
+                        "title": first_name
                     },
                         "data": {
-                            "body": "foreground message",
-                            "title": "Title of Your Notification in Title",
-                            "key_1": "Value for key_1",
-                            "key_2": "Value for key_2"
+                            "body": text_data_json['message'],
+                            "title": first_name,
+                            "is_image": str(text_data_json['is_image']),
+                            "room_id": chat1.id
                         }
 
                     }
@@ -170,14 +170,14 @@ class ChatRoomConsumer(WebsocketConsumer):
                 print(x.id)
                 print(email)
                 data_message = {"notification": {
-                    "body": "hlooo",
-                    "title": "push notification 9"
+                    "body": text_data_json['message'],
+                    "title": first_name
                 },
                     "data": {
-                        "body": "foreground message",
-                        "title": "Title of Your Notification in Title",
-                        "key_1": "Value for key_1",
-                        "key_2": "Value for key_2"
+                        "body": text_data_json['message'],
+                        "title": first_name,
+                        "is_image": str(text_data_json['is_image']),
+                        "room_id": x.id
                     }
 
                 }
