@@ -65,13 +65,13 @@ class ChatRoomConsumer(WebsocketConsumer):
                     data_message = {"notification": {
                         "body": text_data_json['message'],
                         "title": first_name
-                    },
-                        "data": {
-                            "body": text_data_json['message'],
-                            "title": first_name,
-                            "is_image": str(text_data_json['is_image']),
-                            "room_id": chat1.id
-                        }
+                    }
+                        # "data": {
+                        #     "body": text_data_json['message'],
+                        #     "title": first_name,
+                        #     "is_image": str(text_data_json['is_image']),
+                        #     "room_id": chat1.id
+                        # }
 
                     }
                     respo = send_to_one(fcm_token, data_message)
@@ -119,13 +119,13 @@ class ChatRoomConsumer(WebsocketConsumer):
                     data_message = {"notification": {
                         "body": text_data_json['message'],
                         "title": first_name
-                    },
-                        "data": {
-                            "body": text_data_json['message'],
-                            "title": first_name,
-                            "is_image": str(text_data_json['is_image']),
-                            "room_id": chat1.id
-                        }
+                    }
+                        # "data": {
+                        #     "body": text_data_json['message'],
+                        #     "title": first_name,
+                        #     "is_image": str(text_data_json['is_image']),
+                        #     "room_id": chat1.id
+                        # }
 
                     }
                     respo = send_to_one(fcm_token, data_message)
@@ -172,13 +172,13 @@ class ChatRoomConsumer(WebsocketConsumer):
                 data_message = {"notification": {
                     "body": text_data_json['message'],
                     "title": first_name
-                },
-                    "data": {
-                        "body": text_data_json['message'],
-                        "title": first_name,
-                        "is_image": str(text_data_json['is_image']),
-                        "room_id": x.id
-                    }
+                }
+                    # "data": {
+                    #     "body": text_data_json['message'],
+                    #     "title": first_name,
+                    #     "is_image": str(text_data_json['is_image']),
+                    #     "room_id": x.id
+                    # }
 
                 }
                 respo = send_to_one(fcm_token, data_message)
