@@ -1419,54 +1419,54 @@ class FilteredUserView(APIView):
             #     'body_type' or None) or self.request.POST.get('taste' or None):
             #     print('filtered users----->>', detail)
             #     print(obj)
-            if self.request.POST.get('qualification' or None) is not None:
-                if detail['qualification'] is not None and detail['qualification'] != '' and detail[
-                    'qualification'] == self.request.POST.get('qualification' or None):
+            # if self.request.POST.get('qualification' or None) is not None:
+            #     if detail['qualification'] is not None and detail['qualification'] != '' and detail[
+            #         'qualification'] == self.request.POST.get('qualification' or None):
+            #         filtered_users.append(detail)
+            #         print('Inside if ', filtered_users)
+            # elif self.request.POST.get('relationship_status' or None) is not None:
+            #     if detail['relationship_status'] is not None and detail['relationship_status'] != '' and detail[
+            #         'relationship_status'] == self.request.POST.get('relationship_status' or None):
+            #         filtered_users.append(detail)
+            # elif self.request.POST.get('religion' or None) is not None:
+            #     if detail['religion'] is not None and detail['religion'] != '' and detail[
+            #         'religion'] == self.request.POST.get('religion' or None):
+            #         filtered_users.append(detail)
+            # elif self.request.POST.get('body_type' or None) is not None:
+            #     if detail['body_type'] is not None and detail['body_type'] != '' and detail[
+            #         'body_type'] == self.request.POST.get('body_type' or None):
+            #         filtered_users.append(detail)
+            # elif self.request.POST.get('gender' or None) is not None:
+            #     if detail['gender'] is not None and detail['gender'] != '' and detail[
+            #         'gender'] == self.request.POST.get('gender' or None):
+            #         filtered_users.append(detail)
+            # elif self.request.POST.get('height' or None) is not None:
+            #     if detail['height'] is not None and detail['height'] != '' and detail[
+            #         'height'] == self.request.POST.get('height' or None):
+            #         filtered_users.append(detail)
+            # elif self.request.POST.get('zodiac_sign' or None) is not None:
+            #     if detail['zodiac_sign'] is not None and detail['zodiac_sign'] != '' and detail[
+            #         'zodiac_sign'] == self.request.POST.get('zodiac_sign' or None):
+            #         filtered_users.append(detail)
+            # elif self.request.POST.get('taste' or None) is not None:
+            #     if detail['taste'] is not None and detail['taste'] != '' and detail[
+            #         'taste'] == self.request.POST.get('taste' or None):
+            #         filtered_users.append(detail)
+            # else:
+            print('inside else case')
+            if user_detail_obj.interest:
+                if obj.phone_number.gender == user_detail_obj.interest:
+                    print('TRUE FALSE ', obj.phone_number.gender == user_detail_obj.interest)
+                    print('OBJ PHONE NUMBER GENDER ', obj.phone_number.gender)
+                    print('USER DETAIL OBJ ', user_detail_obj.interest)
+                    print('inner if')
                     filtered_users.append(detail)
-                    print('Inside if ', filtered_users)
-            elif self.request.POST.get('relationship_status' or None) is not None:
-                if detail['relationship_status'] is not None and detail['relationship_status'] != '' and detail[
-                    'relationship_status'] == self.request.POST.get('relationship_status' or None):
-                    filtered_users.append(detail)
-            elif self.request.POST.get('religion' or None) is not None:
-                if detail['religion'] is not None and detail['religion'] != '' and detail[
-                    'religion'] == self.request.POST.get('religion' or None):
-                    filtered_users.append(detail)
-            elif self.request.POST.get('body_type' or None) is not None:
-                if detail['body_type'] is not None and detail['body_type'] != '' and detail[
-                    'body_type'] == self.request.POST.get('body_type' or None):
-                    filtered_users.append(detail)
-            elif self.request.POST.get('gender' or None) is not None:
-                if detail['gender'] is not None and detail['gender'] != '' and detail[
-                    'gender'] == self.request.POST.get('gender' or None):
-                    filtered_users.append(detail)
-            elif self.request.POST.get('height' or None) is not None:
-                if detail['height'] is not None and detail['height'] != '' and detail[
-                    'height'] == self.request.POST.get('height' or None):
-                    filtered_users.append(detail)
-            elif self.request.POST.get('zodiac_sign' or None) is not None:
-                if detail['zodiac_sign'] is not None and detail['zodiac_sign'] != '' and detail[
-                    'zodiac_sign'] == self.request.POST.get('zodiac_sign' or None):
-                    filtered_users.append(detail)
-            elif self.request.POST.get('taste' or None) is not None:
-                if detail['taste'] is not None and detail['taste'] != '' and detail[
-                    'taste'] == self.request.POST.get('taste' or None):
-                    filtered_users.append(detail)
-            else:
-                print('inside else case')
-                if user_detail_obj.interest:
-                    if obj.phone_number.gender == user_detail_obj.interest:
-                        print('TRUE FALSE ', obj.phone_number.gender == user_detail_obj.interest)
-                        print('OBJ PHONE NUMBER GENDER ', obj.phone_number.gender)
-                        print('USER DETAIL OBJ ', user_detail_obj.interest)
-                        print('inner if')
-                        filtered_users.append(detail)
-                    else:
-                        print('inside nested else case')
-                        pass
                 else:
-                    print('outer else')
-                    filtered_users.append(detail)
+                    print('inside nested else case')
+                    pass
+            else:
+                print('outer else')
+                filtered_users.append(detail)
         print('FILTERED USERS LIST------------->>>>>>>', filtered_users)
         return Response({'data': filtered_users, 'status': HTTP_200_OK})
 
