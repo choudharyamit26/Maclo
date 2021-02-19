@@ -87,11 +87,19 @@ class ChatRoomConsumer(WebsocketConsumer):
                         print(respo)
                     else:
                         print('NOTIFICATION MESSAGE____________', CONNECTED)
-                        title = first_name
-                        body = text_data_json['message']
-                        # message_type = data_message
-                        respo = send_another(fcm_token, title, body)
-                        print(respo)
+                        body = ''
+                        if text_data_json['message']:
+                            title = first_name
+                            body = 'image'
+                            # message_type = data_message
+                            respo = send_another(fcm_token, title, body)
+                            print(respo)
+                        else:
+                            title = first_name
+                            body = text_data_json['message']
+                            # message_type = data_message
+                            respo = send_another(fcm_token, title, body)
+                            print(respo)
                 except Exception as e:
                     print('Inside fcm exception', e)
                     pass
@@ -139,12 +147,19 @@ class ChatRoomConsumer(WebsocketConsumer):
                         respo = send_to_one(fcm_token, data_message)
                         print(respo)
                     else:
-                        print('NOTIFICATION MESSAGE_______', CONNECTED)
-                        title = first_name
-                        body = text_data_json['message']
-                        # message_type = data_message
-                        respo = send_another(fcm_token, title, body)
-                        print(respo)
+                        print('NOTIFICATION_____________', CONNECTED)
+                        if text_data_json['message']:
+                            title = first_name
+                            body = 'image'
+                            # message_type = data_message
+                            respo = send_another(fcm_token, title, body)
+                            print(respo)
+                        else:
+                            title = first_name
+                            body = text_data_json['message']
+                            # message_type = data_message
+                            respo = send_another(fcm_token, title, body)
+                            print(respo)
                 except Exception as e:
                     print('inside FCM EXCEPTION', e)
                 async_to_sync(self.channel_layer.group_send)(
@@ -192,11 +207,19 @@ class ChatRoomConsumer(WebsocketConsumer):
                     print(respo)
                 else:
                     print('NOTIFICATION_____________', CONNECTED)
-                    title = first_name
-                    body = text_data_json['message']
-                    # message_type = data_message
-                    respo = send_another(fcm_token, title, body)
-                    print(respo)
+                    body = ''
+                    if text_data_json['message']:
+                        title = first_name
+                        body = 'image'
+                        # message_type = data_message
+                        respo = send_another(fcm_token, title, body)
+                        print(respo)
+                    else:
+                        title = first_name
+                        body = text_data_json['message']
+                        # message_type = data_message
+                        respo = send_another(fcm_token, title, body)
+                        print(respo)
             except Exception as e:
                 print('INSIDE FCM EXCEPTION', e)
             async_to_sync(self.channel_layer.group_send)(
