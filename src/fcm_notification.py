@@ -1,4 +1,5 @@
 from pyfcm import FCMNotification
+import json
 
 push_service = FCMNotification(
     api_key="AAAAORwXGTc:APA91bFzV3R5Agp3wnrvhYwGbA4n-v5x-sBF9_nAgwPv6HVl92RyNontEw0A8RzNOQvVTOOKvKzpU_XrFFg--uAvkazmFfL03X71XjUe8CEZiLUmLtVfho4jtDVXdmm6rrfPkOqdroP6")
@@ -24,9 +25,9 @@ def send_to_one(registration_id, data_message):
     # message_body = "Hi john, your customized news for today is ready"
     # data_message = {"New Booking": "You have a new task added to your Jobs", }
     # result = push_service.notify_single_device(registration_id, message_title, message_body, data_message)
-    # print('------->>>>Data Message',data_message)
+    print('------->>>>Data Message', json.dumps(data_message))
     result = push_service.single_device_data_message(
-        registration_id=registration_id, data_message=data_message)
+        registration_id=registration_id, data_message=json.dumps(data_message))
     print("<----------------------------------------------------->", result)
 
 

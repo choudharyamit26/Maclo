@@ -162,6 +162,10 @@ class ChatRoomConsumer(WebsocketConsumer):
                 print(x.id)
                 print(email)
                 data_message = {
+                    "notification": {
+                        "title": first_name,
+                        "body": text_data_json['message'],
+                    },
                     "data": {
                         "body": text_data_json['message'],
                         "title": first_name,
@@ -174,7 +178,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                 title = first_name
                 body = text_data_json['message']
                 message_type = data_message
-                respo = send_another(fcm_token, title, data_message)
+                respo = send_another(fcm_token, title, body)
                 print(respo)
                 fcm_token.send_message(title="Title", body="Message", icon=..., data={"test": "test"})
             except Exception as e:

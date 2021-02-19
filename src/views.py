@@ -11,6 +11,7 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django_filters import rest_framework
+from fcm_django.models import FCMDevice
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -3551,3 +3552,20 @@ class UserAge(APIView):
         print('date ', timezone.now().date())
         print('Date of birth ', user.date_of_birth)
         return Response({'age': age})
+
+
+class FCMNotification(APIView):
+    from fcm_django.models import FCMDevice
+
+    def get(self, request, *args, **kwargs):
+        FCMDevice.objects.create(
+            name='Test',
+            user=User.objects.all().first(),
+            device_id='enbaCq8MQF-dPIFfF-ifFH:APA91bEhGKw43G1YcoMGJQZ2rRGhfneKwaMsX1OX68JKkiLOPz1NLJ_BqIW0ttpiszepwIMIR4liWbGCdsYa_Rv-Ft2PIaxtqFEg7ND7L5Mzlu92KHOqk0gyyIWhp7kQhVyPh0FMn_fc',
+            # registration_token='AAAAORwXGTc:APA91bFzV3R5Agp3wnrvhYwGbA4n-v5x-sBF9_nAgwPv6HVl92RyNontEw0A8RzNOQvVTOOKvKzpU_XrFFg--uAvkazmFfL03X71XjUe8CEZiLUmLtVfho4jtDVXdmm6rrfPkOqdroP6',
+            type='android'
+        )
+        device = FCMDevice.objects.all().first()
+        x = device.send_message(title="Title", body="Message", icon=..., data={"test": "test"})
+        print(x)
+        return 'Sent Push Notification'
