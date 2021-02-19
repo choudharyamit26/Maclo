@@ -62,27 +62,21 @@ class ChatRoomConsumer(WebsocketConsumer):
                     print('FCM TOKEN', fcm_token)
                     print(email)
                     print(first_name)
-                    # data_message = {"notification": {
-                    #     "body": text_data_json['message'],
-                    #     "title": first_name
-                    # }
-                    #     # "data": {
-                    #     #     "body": text_data_json['message'],
-                    #     #     "title": first_name,
-                    #     #     "is_image": str(text_data_json['is_image']),
-                    #     #     "room_id": chat1.id
-                    #     # }
-                    #
-                    # }
-                    # respo = send_to_one(fcm_token, data_message)
-                    # print(respo)
-                    # title = first_name
-                    # body = text_data_json['message']
-                    # message_type = data_message
-                    # respo = send_another(fcm_token, title, body, message_type)
-                    # print(respo)
-                    x=fcm_token.send_message(title="Title", body="Message", data={"test": "test"})
-                    print(x)
+                    data_message = {
+                        "data": {
+                            "body": text_data_json['message'],
+                            "title": first_name,
+                            "is_image": str(text_data_json['is_image']),
+                            "room_id": chat1.id
+                        }
+                    }
+                    respo = send_to_one(fcm_token, data_message)
+                    print(respo)
+                    title = first_name
+                    body = text_data_json['message']
+                    message_type = data_message
+                    respo = send_another(fcm_token, title, data_message)
+                    print(respo)
                 except Exception as e:
                     print('Inside fcm exception', e)
                     pass
@@ -118,27 +112,21 @@ class ChatRoomConsumer(WebsocketConsumer):
                     fcm_token = user.device_token
                     print('FCM TOKEN ', fcm_token)
                     print(email)
-                    # data_message = {"notification": {
-                    #     "body": text_data_json['message'],
-                    #     "title": first_name
-                    # }
-                    #     # "data": {
-                    #     #     "body": text_data_json['message'],
-                    #     #     "title": first_name,
-                    #     #     "is_image": str(text_data_json['is_image']),
-                    #     #     "room_id": chat1.id
-                    #     # }
-                    #
-                    # }
-                    # respo = send_to_one(fcm_token, data_message)
-                    # print(respo)
-                    # title = first_name
-                    # body = text_data_json['message']
-                    # message_type = data_message
-                    # respo = send_another(fcm_token, title, body, message_type)
-                    # print(respo)
-                    x=fcm_token.send_message(title="Title", body="Message", icon=..., data={"test": "test"})
-                    print(x)
+                    data_message = {
+                        "data": {
+                            "body": text_data_json['message'],
+                            "title": first_name,
+                            "is_image": str(text_data_json['is_image']),
+                            "room_id": chat1.id
+                        }
+                    }
+                    respo = send_to_one(fcm_token, data_message)
+                    print(respo)
+                    title = first_name
+                    body = text_data_json['message']
+                    message_type = data_message
+                    respo = send_another(fcm_token, title, data_message)
+                    print(respo)
                 except Exception as e:
                     print('inside FCM EXCEPTION', e)
                 async_to_sync(self.channel_layer.group_send)(
@@ -173,25 +161,22 @@ class ChatRoomConsumer(WebsocketConsumer):
                 print('FCM TOKEN ', fcm_token)
                 print(x.id)
                 print(email)
-                # data_message = {
-                #     "data": {
-                #         "body": text_data_json['message'],
-                #         "title": first_name,
-                #         "is_image": str(text_data_json['is_image']),
-                #         "room_id": x.id
-                #     }
-                #
-                #
-                # }
-                # respo = send_to_one(fcm_token, data_message)
-                # print(respo)
-                # title = first_name
-                # body = text_data_json['message']
-                # message_type = data_message
-                # respo = send_another(fcm_token, title, body, message_type)
-                # print(respo)
-                x=fcm_token.send_message(title="Title", body="Message", icon=..., data={"test": "test"})
-                print(x)
+                data_message = {
+                    "data": {
+                        "body": text_data_json['message'],
+                        "title": first_name,
+                        "is_image": str(text_data_json['is_image']),
+                        "room_id": x.id
+                    }
+                }
+                respo = send_to_one(fcm_token, data_message)
+                print(respo)
+                title = first_name
+                body = text_data_json['message']
+                message_type = data_message
+                respo = send_another(fcm_token, title, data_message)
+                print(respo)
+                fcm_token.send_message(title="Title", body="Message", icon=..., data={"test": "test"})
             except Exception as e:
                 print('INSIDE FCM EXCEPTION', e)
             async_to_sync(self.channel_layer.group_send)(
