@@ -2113,7 +2113,7 @@ class UserLikedList(APIView):
                 # z = RegisterUser.objects.get(id=user.id)
                 if z.id not in like_list:
                     print(z.id)
-                    if z.pic_1:
+                    if z.user.pic_1:
                         like_list.append(
                             {'id': z.user.id, 'first_name': z.user.first_name, 'last_name': z.user.last_name,
                              'liked_at': z.matched_at,
@@ -2133,7 +2133,7 @@ class UserLikedList(APIView):
                 for y in super_liked_users:
                     if y.id not in super_like_list:
                         print(z.id)
-                        if y.pic_1:
+                        if y.user.pic_1:
                             super_like_list.append(
                                 {'id': y.user.id, 'first_name': y.user.first_name, 'last_name': y.user.last_name,
                                  'liked_at': y.matched_at,
