@@ -1196,22 +1196,30 @@ class FilteredUserView(APIView):
             else:
                 pass
         print(' From if case Filtered users---------------', f_u)
-        qualification = self.request.POST.get('qualification' or None)
-        relationship_status = self.request.POST.get('relationship_status' or None)
-        religion = self.request.POST.get('religion' or None)
-        body_type = self.request.POST.get('body_type' or None)
-        gender = self.request.POST.get('gender' or None)
-        height = self.request.POST.get('height' or None)
-        zodiac_sign = self.request.POST.get('zodiac_sign' or None)
-        taste = self.request.POST.get('taste' or None)
-        print('qualification--->>>', qualification)
-        print('relationship_status---->>', relationship_status)
-        print('religion---->>', religion)
-        print('body_type--->>', body_type)
-        print('gender--->>>', gender)
-        print('height--->>>', height)
-        print('zodiac_sign--->>', zodiac_sign)
-        print('taste____>>>', taste)
+        # qualification = self.request.POST.get('qualification' or None)
+        # relationship_status = self.request.POST.get('relationship_status' or None)
+        # religion = self.request.POST.get('religion' or None)
+        # body_type = self.request.POST.get('body_type' or None)
+        # gender = self.request.POST.get('gender' or None)
+        # height = self.request.POST.get('height' or None)
+        # zodiac_sign = self.request.POST.get('zodiac_sign' or None)
+        # taste = self.request.POST.get('taste' or None)
+        # print('qualification--->>>', qualification)
+        # print('relationship_status---->>', relationship_status)
+        # print('religion---->>', religion)
+        # print('body_type--->>', body_type)
+        # print('gender--->>>', gender)
+        # print('height--->>>', height)
+        # print('zodiac_sign--->>', zodiac_sign)
+        # print('taste____>>>', taste)
+        filters = {
+            key: value
+            for key, value in request.post.items()
+            if
+            key in ['qualification', 'relationship_status', 'religion', 'body_type', 'gender', 'height', 'zodiac_sign',
+                    'taste']
+        }
+        print('FILTERS--------->>>', filters)
         z = []
         for x in f_u:
             print('XXXXXXXXXXXXXX-----------', x)
