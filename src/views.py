@@ -1214,7 +1214,7 @@ class FilteredUserView(APIView):
         # print('taste____>>>', taste)
         filters = {
             key: value
-            for key, value in self.request.post.items()
+            for key, value in self.request.POST.items()
             if
             key in ['qualification', 'relationship_status', 'religion', 'body_type', 'gender', 'height', 'zodiac_sign',
                     'taste']
