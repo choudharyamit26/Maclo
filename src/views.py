@@ -1220,6 +1220,7 @@ class FilteredUserView(APIView):
                     'taste']
         }
         print('FILTERS--------->>>', filters)
+        print('REGISTER USER OBJECTS',RegisterUser.objects.filter(**filters))
         z = []
         for x in f_u:
             print('XXXXXXXXXXXXXX-----------', x)
