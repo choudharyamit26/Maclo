@@ -705,9 +705,10 @@ class UserProfileUpdateView(UpdateAPIView):
         register_id.body_type = request.data.get("body_type")
         register_id.relationship_status = request.data.get("relationship_status")
         register_id.fav_quote = request.data.get("fav_quote")
+        register_id.height = request.data.get("height")
         register_id.save(
             update_fields=['date_of_birth', 'qualification', 'religion', 'body_type', 'relationship_status',
-                           'fav_quote'])
+                           'fav_quote','height'])
         print(register_id.pic_1)
         print(register_id.pic_2)
         print(register_id.pic_3)
