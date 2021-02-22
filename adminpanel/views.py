@@ -22,7 +22,7 @@ from django.conf.global_settings import DEFAULT_FROM_EMAIL
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import LoginForm, UserNotificationForm
 from src.models import RegisterUser, SubscriptionPlans, ScheduleMeeting, UserDetail, ContactUs, PrivacyPolicy
-from .filters import UserFilter
+from .filters import UserFilter, MeetingFilter
 from src.fcm_notification import send_to_one, send_another
 from django.utils.translation import gettext_lazy as _
 from weasyprint import HTML, CSS
@@ -402,6 +402,33 @@ class MeetupList(LoginRequiredMixin, ListView):
     model = ScheduleMeeting
     template_name = 'meet-management.html'
     login_url = 'adminpanel:login'
+
+    def get(self, request, *args, **kwargs):
+        qs = self.request.GET.get('qs')
+        if qs:
+            search = ScheduleMeeting.objects.filter(Q(scheduled_with__first_name__icontains=qs) |
+                                                    Q(scheduled_with__last_name__icontains=qs) |
+                                                    Q(scheduled_by__first_name__icontains=qs) |
+                                                    Q(scheduled_by__last_name__icontains=qs))
+            search_count = len(search)
+            context = {
+                'search': search
+            }
+            if search:
+                messages.info(self.request, str(search_count) + ' matches found')
+                return render(self.request, 'meet-management.html', context)
+            else:
+                messages.info(self.request, 'No results found')
+                return render(self.request, 'meet-management.html', context)
+        else:
+            meetings = ScheduleMeeting.objects.all()
+            filtered_meeting = MeetingFilter(self.request.GET, queryset=meetings)
+            meetings = filtered_meeting.qs
+            context = {
+                'object_list': meetings,
+                'myfilter': filtered_meeting
+            }
+        return render(self.request, 'meet-management.html',context)
 
 
 class TransactionsList(LoginRequiredMixin, ListView):

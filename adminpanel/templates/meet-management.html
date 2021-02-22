@@ -6,7 +6,7 @@
         <div class="Small-Wrapper">
             <div class="SearchBox">
                 <form action="">
-                    <input type="text" placeholder="Enter Key">
+                    <input type="text" placeholder="Enter Key" name="qs">
                     <button>Apply</button>
                 </form>
             </div>
@@ -27,38 +27,73 @@
                     <button class="Button">Apply</button>
                 </div>
             </div>
-
+            {% if search %}
             <div class="TableList">
                 <table>
                     <thead>
                     <tr>
                         <th>S.No</th>
                         <th>Date & time of the meeting</th>
-                        <th>User id of male user</th>
-                        <th>User id of female user</th>
-                        <th>Name of the male user</th>
-                        <th>Name of the female user</th>
+                        <th>User id of first user</th>
+                        <th>User id of second user</th>
+                        <th>Name of the first user</th>
+                        <th>Name of the second user</th>
                         <th>Venue</th>
                         <th>Description</th>
                         <th>Status</th>
                     </tr>
                     </thead>
                     <tbody>
+                    {% for object in search %}
                     <tr>
-                        <td>1</td>
-                        <td>01 July 2020 & <br> 02:30 P.M</td>
-                        <td>USER 35467</td>
-                        <td>USER 32153</td>
-                        <td>Lauren Molive</td>
-                        <td>Marsha Mello</td>
-                        <td></td>
-                        <td></td>
-                        <td><span class="red">Not Completed</span></td>
+                        <td>{{object.id}}</td>
+                        <td>{{object.meeting_date}} <br>{{object.meeting_time}}</td>
+                        <td>{{object.scheduled_with.id}}</td>
+                        <td>{{object.scheduled_by.id}}</td>
+                        <td>{{object.scheduled_with.first_name}}{{object.scheduled_with.last_name}}</td>
+                        <td>{{object.scheduled_by.first_name}}{{object.scheduled_by.last_name}}</td>
+                        <td>{{object.venue}}</td>
+                        <td>{{object.description}}</td>
+                        <td><span class="red">{{object.status}}</span></td>
                     </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>
-
+            {% else %}
+            <div class="TableList">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Date & time of the meeting</th>
+                        <th>User id of first user</th>
+                        <th>User id of second user</th>
+                        <th>Name of the first user</th>
+                        <th>Name of the second user</th>
+                        <th>Venue</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for object in object_list %}
+                    <tr>
+                        <td>{{object.id}}</td>
+                        <td>{{object.meeting_date}} <br>{{object.meeting_time}}</td>
+                        <td>{{object.scheduled_with.id}}</td>
+                        <td>{{object.scheduled_by.id}}</td>
+                        <td>{{object.scheduled_with.first_name}}{{object.scheduled_with.last_name}}</td>
+                        <td>{{object.scheduled_by.first_name}}{{object.scheduled_by.last_name}}</td>
+                        <td>{{object.venue}}</td>
+                        <td>{{object.description}}</td>
+                        <td><span class="red">{{object.status}}</span></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
