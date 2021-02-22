@@ -13,8 +13,8 @@ class UserFilter(django_filters.FilterSet):
 
 
 class MeetingFilter(django_filters.FilterSet):
-    from_date = DateFilter(field_name='created_at', lookup_expr='gte', label='From Date')
-    to_date = DateFilter(field_name='created_at', lookup_expr='lte', label='To Date')
+    from_date = DateFilter(field_name='meeting_date', lookup_expr='gte', label='From Date')
+    to_date = DateFilter(field_name='meeting_date', lookup_expr='lte', label='To Date')
 
     class Meta:
         model = ScheduleMeeting
