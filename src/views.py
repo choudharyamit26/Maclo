@@ -2118,7 +2118,9 @@ class UserLikedList(APIView):
         like_list = []
         super_like_list = []
         liked_users = MatchedUser.objects.filter(liked_by_me=r_user)
+        print('LIKED USERS ',liked_users)
         super_liked_users = MatchedUser.objects.filter(super_liked_by_me=r_user)
+        print('SUPER LIKED USERS',super_liked_users)
         for z in liked_users:
             if len(liked_users) > 0:
                 # print(user.liked_by_me.all()[0].id)
