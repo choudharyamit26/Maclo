@@ -708,7 +708,7 @@ class UserProfileUpdateView(UpdateAPIView):
         register_id.height = request.data.get("height")
         register_id.save(
             update_fields=['date_of_birth', 'qualification', 'religion', 'body_type', 'relationship_status',
-                           'fav_quote','height'])
+                           'fav_quote', 'height'])
         print(register_id.pic_1)
         print(register_id.pic_2)
         print(register_id.pic_3)
@@ -1221,7 +1221,7 @@ class FilteredUserView(APIView):
                     'taste']
         }
         print('FILTERS--------->>>', filters)
-        print('REGISTER USER OBJECTS',RegisterUser.objects.filter(**filters))
+        print('REGISTER USER OBJECTS', RegisterUser.objects.filter(**filters))
         z = []
         for x in f_u:
             print('XXXXXXXXXXXXXX-----------', x)
