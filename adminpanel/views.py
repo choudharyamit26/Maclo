@@ -21,7 +21,7 @@ from django.utils import timezone
 from django.conf.global_settings import DEFAULT_FROM_EMAIL
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import LoginForm, UserNotificationForm
-from src.models import RegisterUser, SubscriptionPlans, ScheduleMeeting, UserDetail, ContactUs, PrivacyPolicy
+from src.models import RegisterUser, SubscriptionPlans, ScheduleMeeting, UserDetail, ContactUs, PrivacyPolicy, AboutUs
 from .filters import UserFilter, MeetingFilter
 from src.fcm_notification import send_to_one, send_another
 from django.utils.translation import gettext_lazy as _
@@ -451,6 +451,11 @@ class StaticContentView(LoginRequiredMixin, ListView):
     template_name = 'content-management.html'
     login_url = 'adminpanel:login'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['contactus'] = ContactUs.objects.all()
+        context['aboutus'] = AboutUs.objects.all()
+        return context
     # def get(self, request, *args, **kwargs):
     #     return render(self.request, 'content-management.html')
 
