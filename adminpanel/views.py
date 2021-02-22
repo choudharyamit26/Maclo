@@ -20,7 +20,7 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.conf.global_settings import DEFAULT_FROM_EMAIL
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import LoginForm, UserNotificationForm
+from .forms import LoginForm, UserNotificationForm, UpdateAboutUsForm, UpdateContactUsForm
 from src.models import RegisterUser, SubscriptionPlans, ScheduleMeeting, UserDetail, ContactUs, PrivacyPolicy, AboutUs
 from .filters import UserFilter, MeetingFilter
 from src.fcm_notification import send_to_one, send_another
@@ -431,7 +431,7 @@ class MeetupList(LoginRequiredMixin, ListView):
                 'object_list': meetings,
                 'myfilter': filtered_meeting
             }
-        return render(self.request, 'meet-management.html',context)
+        return render(self.request, 'meet-management.html', context)
 
 
 class TransactionsList(LoginRequiredMixin, ListView):
@@ -458,6 +458,23 @@ class StaticContentView(LoginRequiredMixin, ListView):
         return context
     # def get(self, request, *args, **kwargs):
     #     return render(self.request, 'content-management.html')
+
+
+class UpdateAboutUs(LoginRequiredMixin, UpdateView):
+    model = AboutUs
+    template_name = 'update-about-us.html'
+    login_url = 'adminpanel:login'
+    form_class = UpdateAboutUsForm
+    success_url = reverse_lazy('adminpanel:static-content')
+
+
+class UpdateContactUs(LoginRequiredMixin, UpdateView):
+    model = ContactUs
+    form_class = UpdateContactUsForm
+    login_url = 'adminpanel:login'
+    success_url = reverse_lazy('adminpanel:static-content')
+    template_name = 'update-contact-us.html'
+
 
 
 class PrivacyPolicyUrl(View):

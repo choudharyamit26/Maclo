@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="WrapperArea">
+    <div class="WrapperBox">
+        <div class="Small-Wrapper">
+            <div class="row">
+                <form method="post">
+                    {% csrf_token %}
+                    <h4 class="Title">Update AboutUs</h4>
+                    {{form}}
+                    <br>
+                    <button type="submit" class="Button apply_btn">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

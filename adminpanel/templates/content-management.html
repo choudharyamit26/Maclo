@@ -15,11 +15,9 @@
                 <div class="tab-content">
                     <div id="About" class="tab-pane fade in active">
                         <div class="HelpContent">
-                            <a href="JavaScript:Void(0);" class="Edit" data-target="#EditModal"
-                               data-toggle="modal">Edit</a>
-
                             <h3>About us </h3>
                             {% for object in aboutus %}
+                            <a href="{% url 'adminpanel:update-about-us' object.id %}" class="Edit">Edit</a>
                             <p>{{object.about_us}}</p>
                             {% endfor %}
                         </div>
@@ -27,11 +25,9 @@
 
                     <div id="Contact" class="tab-pane fade">
                         <div class="HelpContent">
-                            <a href="JavaScript:Void(0);" data-toggle="modal" data-target="#EditModal"
-                               class="Edit">Edit</a>
-
                             <h3>Contact us</h3>
                             {% for object in contactus %}
+                            <a href="{% url 'adminpanel:update-contact-us' object.id %}" class="Edit">Edit</a>
                             <p>{{object.phone_number}}</p>
                             <p>{{object.email}}</p>
                             {% endfor %}
@@ -73,6 +69,8 @@
 <script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
 <script>
         CKEDITOR.replace( 'editor1' );
+
+
 
 
 </script>

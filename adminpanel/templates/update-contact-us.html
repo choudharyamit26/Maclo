@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="WrapperArea">
+    <div class="WrapperBox">
+        <div class="Small-Wrapper">
+            {% if form.errors %}
+            {% for field in form %}
+            {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+            {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+            {% endfor %}
+            {% endif %}
+            <div class="row">
+                <form method="post">
+                    {% csrf_token %}
+                    <h4 class="Title">Update AboutUs</h4>
+                    {{form}}
+                    <br>
+                    <button type="submit" class="Button apply_btn">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}
