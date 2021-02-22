@@ -422,8 +422,11 @@ class MeetupList(LoginRequiredMixin, ListView):
                 return render(self.request, 'meet-management.html', context)
         else:
             meetings = ScheduleMeeting.objects.all()
+            print(meetings)
             filtered_meeting = MeetingFilter(self.request.GET, queryset=meetings)
+            print(filtered_meeting)
             meetings = filtered_meeting.qs
+            print(meetings)
             context = {
                 'object_list': meetings,
                 'myfilter': filtered_meeting
