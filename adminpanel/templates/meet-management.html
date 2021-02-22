@@ -2,7 +2,16 @@
 {% block body %}
 <div class="WrapperArea">
     <div class="WrapperBox">
-
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-info" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+        {% endif %}
         <div class="Small-Wrapper">
             <div class="SearchBox">
                 <form action="">
