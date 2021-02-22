@@ -3203,6 +3203,7 @@ class GoogleSignupView(CreateAPIView):
                     "max_age_range": user_detail.max_age_range,
                     "interested": user_detail.interest
                 }
+                existing_user = User.objects.get(social_id=social_id)
                 r_user = RegisterUser.objects.get(email=existing_user.email)
                 account = DeactivateAccount.objects.get(user=r_user)
                 if account.deactivated:
