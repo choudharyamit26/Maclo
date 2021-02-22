@@ -23,18 +23,20 @@
             <h4 class="Title">Meet up Management</h4>
 
             <div class="Filter">
-                <div class="form-group">
-                    <label>From Date</label>
-                    <input type="date" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label>To Date</label>
-                    <input type="date" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label>&nbsp;</label>
-                    <button class="Button" type="submit">Apply</button>
-                </div>
+                <form method="get">
+                    <div class="form-group">
+                        <label>From Date</label>
+                        <input type="date" name="from_date" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>To Date</label>
+                        <input type="date" name="to_date" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <button class="Button" type="submit">Apply</button>
+                    </div>
+                </form>
             </div>
             {% if search %}
             <div class="TableList">
