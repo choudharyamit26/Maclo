@@ -2165,6 +2165,23 @@ class UserLikedList(APIView):
         return Response({'data': like_list + super_like_list, 'status': HTTP_200_OK})
 
 
+class LikedUserCount(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        r_user = RegisterUser.objects.get(email=user.email)
+        like_list = []
+        super_like_list = []
+        liked_users = MatchedUser.objects.filter(liked_by_me=r_user)
+        print('LIKED USERS ', liked_users)
+        print('LIKED USERS ', len(liked_users))
+        super_liked_users = MatchedUser.objects.filter(super_liked_by_me=r_user)
+        return Response({'message': 'Like count fetched successfully', 'count': len(liked_users | super_liked_users),
+                         'status': HTTP_200_OK})
+
+
 @method_decorator(csrf_exempt, name='dispatch')
 class DeleteMatchesAPIView(APIView):
     authentication_classes = (TokenAuthentication,)

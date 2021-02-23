@@ -15,7 +15,8 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     UpdateProfilePic_2, UpdateProfilePic_3, UpdateProfilePic_4, UpdateProfilePic_5, UpdateProfilePic_6, UpdateInterest, \
     UserLikedList, MeetingDetail, MettingList, UpdateMeetingStatus, UpdateUserLocation, UpdateDistanceRange, \
     UpdateAgeRange, UserAge, FilteredUserView, DislikeUser, DeleteAccount, DeactivateAccountView, CheckMeeting, \
-    UnMatchView, BlockUserView, BlockedUsersList, UnBlockUser, CheckDob, CheckEmail, CheckUserBlocked, FCMNotification
+    UnMatchView, BlockUserView, BlockedUsersList, UnBlockUser, CheckDob, CheckEmail, CheckUserBlocked, FCMNotification, \
+    LikedUserCount
 
 app_name = 'src'
 
@@ -105,7 +106,7 @@ urlpatterns = [
     path('check-users-email/', CheckEmail.as_view(), name='check-users-email'),
     path('check-users-blocked/', CheckUserBlocked.as_view(), name='check-users-blocked'),
     path('fcm-notification/', FCMNotification.as_view(), name='fcm-notification'),
-
+    path('like-count/', LikedUserCount.as_view(), name='like-count'),
 
 ]
 if settings.DEBUG:
