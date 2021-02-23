@@ -2147,21 +2147,21 @@ class UserLikedList(APIView):
                 # print(user.super_liked_by_me.all()[0].id)
                 # print(user.super_liked_by_me.all().first().id)
                 # z = RegisterUser.objects.get(id=user.super_liked_by_me.all().first().id)
-                for y in super_liked_users:
-                    if y.id not in super_like_list:
-                        print(y.id)
-                        if y.user.pic_1:
-                            super_like_list.append(
-                                {'id': y.user.id, 'first_name': y.user.first_name, 'last_name': y.user.last_name,
-                                 'liked_at': y.matched_at,
-                                 'profile_pic': y.user.pic_1.url, 'type': 'super_like'})
-                        else:
-                            super_like_list.append(
-                                {'id': y.id, 'first_name': y.user.first_name, 'last_name': y.user.last_name,
-                                 'liked_at': y.matched_at,
-                                 'profile_pic': '', 'type': 'super_like'})
+                # for y in super_liked_users:
+                if y.id not in super_like_list:
+                    print(y.id)
+                    if y.user.pic_1:
+                        super_like_list.append(
+                            {'id': y.user.id, 'first_name': y.user.first_name, 'last_name': y.user.last_name,
+                             'liked_at': y.matched_at,
+                             'profile_pic': y.user.pic_1.url, 'type': 'super_like'})
                     else:
-                        pass
+                        super_like_list.append(
+                            {'id': y.id, 'first_name': y.user.first_name, 'last_name': y.user.last_name,
+                             'liked_at': y.matched_at,
+                             'profile_pic': '', 'type': 'super_like'})
+                else:
+                    pass
         return Response({'data': like_list + super_like_list, 'status': HTTP_200_OK})
 
 
