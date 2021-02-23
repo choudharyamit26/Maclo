@@ -20,11 +20,11 @@ class ChatRoomConsumer(WebsocketConsumer):
         print('-------------------- ROOM GROUP NAME', self.room_group_name)
         # Join room group
         # count = getattr(self.channel_layer, self.room_group_name, 0)
-        c=len(self.channel_layer.groups.get(self.room_group_name, {}).items())
+        c = len(self.channel_layer.groups.get(self.room_group_name, {}).items())
         print(self.channel_layer.groups.get(self.room_group_name))
         print(self.channel_layer.groups.get(self.room_name))
-        print(self.channel_layer.groups.get(self.room_group_name,{}))
-        print(self.channel_layer.groups.get(self.room_group_name,{}).items())
+        print(self.channel_layer.groups.get(self.room_group_name, {}))
+        print(self.channel_layer.groups.get(self.room_group_name, {}).items())
         print([x for x in self.channel_layer.groups])
         print('CONNECTED USERS-----', c)
         if c > 0:
@@ -71,6 +71,54 @@ class ChatRoomConsumer(WebsocketConsumer):
                     is_image=text_data_json['is_image']
                 )
                 chat1.messages.add(m)
+                # try:
+                #     first_name = sender.first_name
+                #     email = receiver.email
+                #     user = User.objects.get(email=email)
+                #     fcm_token = user.device_token
+                #     print('FCM TOKEN', fcm_token)
+                #     print(email)
+                #     print(first_name)
+                #     # global CONNECTED
+                #     if CONNECTED:
+                #         print('DATA MESSAGE_____________________', CONNECTED)
+                #         data_message = {
+                #             "body": text_data_json['message'],
+                #             "title": first_name,
+                #             "is_image": str(text_data_json['is_image']),
+                #             "room_id": chat1.id
+                #         }
+                #         respo = send_to_one(fcm_token, data_message)
+                #         print(respo)
+                #     else:
+                #         print('NOTIFICATION MESSAGE____________', CONNECTED)
+                #         body = ''
+                #         if text_data_json['is_image']:
+                #             title = first_name
+                #             body = 'Image'
+                #             # message_type = data_message
+                #             respo = send_another(fcm_token, title, body)
+                #             print(respo)
+                #         else:
+                #             title = first_name
+                #             body = text_data_json['message']
+                #             # message_type = data_message
+                #             respo = send_another(fcm_token, title, body)
+                #             print(respo)
+                # except Exception as e:
+                #     print('Inside fcm exception', e)
+                #     pass
+                async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name,
+                    {
+                        'type': 'chat_message',
+                        'message': text_data_json['message'],
+                        'sender': text_data_json['sender'],
+                        'receiver': text_data_json['receiver'],
+                        'is_image': text_data_json['is_image'],
+                        'm': m
+                    }
+                )
                 try:
                     first_name = sender.first_name
                     email = receiver.email
@@ -108,17 +156,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                 except Exception as e:
                     print('Inside fcm exception', e)
                     pass
-                async_to_sync(self.channel_layer.group_send)(
-                    self.room_group_name,
-                    {
-                        'type': 'chat_message',
-                        'message': text_data_json['message'],
-                        'sender': text_data_json['sender'],
-                        'receiver': text_data_json['receiver'],
-                        'is_image': text_data_json['is_image'],
-                        'm': m
-                    }
-                )
+
             except Exception as e:
                 print('inside nested except', e)
                 chat1 = ChatRoom.objects.get(sender=RegisterUser.objects.get(id=text_data_json['receiver']),
@@ -133,6 +171,51 @@ class ChatRoomConsumer(WebsocketConsumer):
                     is_image=text_data_json['is_image']
                 )
                 chat1.messages.add(m)
+                # try:
+                #     email = receiver.email
+                #     first_name = sender.first_name
+                #     user = User.objects.get(email=email)
+                #     fcm_token = user.device_token
+                #     print('FCM TOKEN ', fcm_token)
+                #     print(email)
+                #     # global CONNECTED
+                #     if CONNECTED:
+                #         print('DATA MESSAGE______________', CONNECTED)
+                #         data_message = {
+                #             "body": text_data_json['message'],
+                #             "title": first_name,
+                #             "is_image": str(text_data_json['is_image']),
+                #             "room_id": chat1.id
+                #         }
+                #         respo = send_to_one(fcm_token, data_message)
+                #         print(respo)
+                #     else:
+                #         print('NOTIFICATION_____________', CONNECTED)
+                #         if text_data_json['is_image']:
+                #             title = first_name
+                #             body = 'Image'
+                #             # message_type = data_message
+                #             respo = send_another(fcm_token, title, body)
+                #             print(respo)
+                #         else:
+                #             title = first_name
+                #             body = text_data_json['message']
+                #             # message_type = data_message
+                #             respo = send_another(fcm_token, title, body)
+                #             print(respo)
+                # except Exception as e:
+                #     print('inside FCM EXCEPTION', e)
+                async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name,
+                    {
+                        'type': 'chat_message',
+                        'message': text_data_json['message'],
+                        'sender': text_data_json['receiver'],
+                        'receiver': text_data_json['sender'],
+                        'is_image': text_data_json['is_image'],
+                        'm': m,
+                    }
+                )
                 try:
                     email = receiver.email
                     first_name = sender.first_name
@@ -167,17 +250,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                             print(respo)
                 except Exception as e:
                     print('inside FCM EXCEPTION', e)
-                async_to_sync(self.channel_layer.group_send)(
-                    self.room_group_name,
-                    {
-                        'type': 'chat_message',
-                        'message': text_data_json['message'],
-                        'sender': text_data_json['receiver'],
-                        'receiver': text_data_json['sender'],
-                        'is_image': text_data_json['is_image'],
-                        'm': m,
-                    }
-                )
+
         except Exception as e:
             print('inside outer except', e)
             x = ChatRoom.objects.create(sender=RegisterUser.objects.get(id=text_data_json['sender']),
@@ -191,6 +264,53 @@ class ChatRoomConsumer(WebsocketConsumer):
                 is_image=text_data_json['is_image']
             )
             x.messages.add(m)
+            # try:
+            #     email = RegisterUser.objects.get(id=text_data_json['receiver']).email
+            #     first_name = RegisterUser.objects.get(id=text_data_json['sender']).first_name
+            #     user = User.objects.get(email=email)
+            #     fcm_token = user.device_token
+            #     print('FCM TOKEN ', fcm_token)
+            #     print(x.id)
+            #     print(email)
+            #     # global CONNECTED
+            #     if CONNECTED:
+            #         print('DATA MESSAGE____________', CONNECTED)
+            #         data_message = {
+            #             "body": text_data_json['message'],
+            #             "title": first_name,
+            #             "is_image": str(text_data_json['is_image']),
+            #             "room_id": x.id
+            #         }
+            #         respo = send_to_one(fcm_token, data_message)
+            #         print(respo)
+            #     else:
+            #         print('NOTIFICATION_____________', CONNECTED)
+            #         body = ''
+            #         if text_data_json['is_image']:
+            #             title = first_name
+            #             body = 'Image'
+            #             # message_type = data_message
+            #             respo = send_another(fcm_token, title, body)
+            #             print(respo)
+            #         else:
+            #             title = first_name
+            #             body = text_data_json['message']
+            #             # message_type = data_message
+            #             respo = send_another(fcm_token, title, body)
+            #             print(respo)
+            # except Exception as e:
+            #     print('INSIDE FCM EXCEPTION', e)
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    'type': 'chat_message',
+                    'message': text_data_json['message'],
+                    'sender': text_data_json['sender'],
+                    'receiver': text_data_json['receiver'],
+                    'is_image': text_data_json['is_image'],
+                    'm': m
+                }
+            )
             try:
                 email = RegisterUser.objects.get(id=text_data_json['receiver']).email
                 first_name = RegisterUser.objects.get(id=text_data_json['sender']).first_name
@@ -227,17 +347,6 @@ class ChatRoomConsumer(WebsocketConsumer):
                         print(respo)
             except Exception as e:
                 print('INSIDE FCM EXCEPTION', e)
-            async_to_sync(self.channel_layer.group_send)(
-                self.room_group_name,
-                {
-                    'type': 'chat_message',
-                    'message': text_data_json['message'],
-                    'sender': text_data_json['sender'],
-                    'receiver': text_data_json['receiver'],
-                    'is_image': text_data_json['is_image'],
-                    'm': m
-                }
-            )
 
     # Receive message from room group
     def chat_message(self, event):
