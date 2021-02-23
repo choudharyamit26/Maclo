@@ -2172,12 +2172,12 @@ class LikedUserCount(APIView):
     def get(self, request, *args, **kwargs):
         user = self.request.user
         r_user = RegisterUser.objects.get(email=user.email)
-        like_list = []
-        super_like_list = []
         liked_users = MatchedUser.objects.filter(liked_by_me=r_user)
         print('LIKED USERS ', liked_users)
         print('LIKED USERS ', len(liked_users))
         super_liked_users = MatchedUser.objects.filter(super_liked_by_me=r_user)
+        print('SUPER LIKED USERS ', super_liked_users)
+        print('SUPER LIKED USERS ', len(super_liked_users))
         return Response({'message': 'Like count fetched successfully', 'count': len(liked_users | super_liked_users),
                          'status': HTTP_200_OK})
 
