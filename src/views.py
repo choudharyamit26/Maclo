@@ -2142,14 +2142,14 @@ class UserLikedList(APIView):
                              'profile_pic': '', 'type': 'like'})
                 else:
                     pass
-
+        for y in super_liked_users:
             if len(super_liked_users) > 0:
                 # print(user.super_liked_by_me.all()[0].id)
                 # print(user.super_liked_by_me.all().first().id)
                 # z = RegisterUser.objects.get(id=user.super_liked_by_me.all().first().id)
                 for y in super_liked_users:
                     if y.id not in super_like_list:
-                        print(z.id)
+                        print(y.id)
                         if y.user.pic_1:
                             super_like_list.append(
                                 {'id': y.user.id, 'first_name': y.user.first_name, 'last_name': y.user.last_name,
