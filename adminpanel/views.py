@@ -22,7 +22,7 @@ from django.conf.global_settings import DEFAULT_FROM_EMAIL
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import LoginForm, UserNotificationForm, UpdateAboutUsForm, UpdateContactUsForm
 from src.models import RegisterUser, SubscriptionPlans, ScheduleMeeting, UserDetail, ContactUs, PrivacyPolicy, AboutUs, \
-    ContactUsQuery
+    ContactUsQuery, Feedback
 from .filters import UserFilter, MeetingFilter
 from src.fcm_notification import send_to_one, send_another
 from django.utils.translation import gettext_lazy as _
@@ -477,9 +477,10 @@ class UpdateContactUs(LoginRequiredMixin, UpdateView):
     template_name = 'update-contact-us.html'
 
 
-class PrivacyPolicyUrl(View):
+class PrivacyPolicyUrl(LoginRequiredMixin, View):
     model = PrivacyPolicy
     template = 'privacy-policy-url.html'
+    login_url = 'adminpanel:login'
 
     def get(self, request, *args, **kwargs):
         html_string = render_to_string('privacy-policy-url.html')
@@ -488,9 +489,19 @@ class PrivacyPolicyUrl(View):
         return HttpResponse(result, content_type='application/pdf')
 
 
-class QueriesList(View):
+class QueriesList(LoginRequiredMixin, View):
     model = ContactUsQuery
     template = 'query.html'
+    login_url = 'adminpanel:login'
 
     def get(self, request, *args, **kwargs):
         return render(self.request, 'query.html', {'object_list': ContactUsQuery.objects.all()})
+
+
+class FeedbackView(View):
+    model = Feedback
+    template = 'feedback.html'
+    login_url = 'adminpanel:login'
+
+    def get(self, request, *args, **kwargs):
+        return render(self.request, 'feedback.html', {'object_list': Feedback.objects.all()})

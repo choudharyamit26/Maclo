@@ -96,6 +96,11 @@
                 <span><i class="fa fa-question-circle"></i></span> User Queries
             </a>
         </li>
+        <li class="nav-item nav-link {% if request.resolver_match.view_name  == 'adminpanel:feedback' %}active{% endif %}">
+            <a href="{% url 'adminpanel:feedback' %}">
+                <span><i class="fa fa-comments-o"></i></span> Feedback
+            </a>
+        </li>
 
         <li class="nav-item nav-link {% if request.resolver_match.view_name  == 'adminpanel:change_password' %}active{% endif %}">
             <a href="{% url 'adminpanel:change_password' %}">
