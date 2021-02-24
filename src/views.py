@@ -1,5 +1,6 @@
 import os
 import shutil
+from datetime import timedelta
 
 import instaloader
 from django.contrib.auth import get_user_model
@@ -24,7 +25,7 @@ from rest_framework.views import APIView
 from .fcm_notification import send_to_one, send_another
 from adminpanel.models import UserNotification
 from .models import UserInstagramPic, UserDetail, RegisterUser, MatchedUser, RequestMeeting, ScheduleMeeting, Feedback, \
-    AboutUs, ContactUs, SubscriptionPlans, ContactUsQuery, DeactivateAccount, BlockedUsers
+    AboutUs, ContactUs, SubscriptionPlans, ContactUsQuery, DeactivateAccount, BlockedUsers, PopNotification
 from .serializers import (UserDetailSerializer, UserInstagramSerializer, RegisterSerializer,
                           MatchedUserSerializer, LikeSerializer, DeleteMatchSerializer, SuperLikeSerializer,
                           RequestMeetingSerializer, ScheduleMeetingSerializer, FeedbackSerializer, ContactUsSerializer,
@@ -3613,3 +3614,59 @@ class FCMNotification(APIView):
         x = device.send_message(title="Title", body="Message", icon=..., data={"test": "test"})
         print(x)
         return 'Sent Push Notification'
+
+
+class MeetupPopUs(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        r_user = RegisterUser.objects.get(email=user.email)
+        meetings_scheduled_by_me = ScheduleMeeting.objects.filter(scheduled_by=r_user)
+        meetings_scheduled_with_me = ScheduleMeeting.objects.filter(scheduled_with=r_user)
+        meetings = []
+        for meeting in meetings_scheduled_by_me | meetings_scheduled_with_me:
+            print('Meeting date and time---->>', str(meeting.meeting_date) + str(meeting.meeting_time))
+            # print(meeting.meeting_date + meeting.meeting_time)
+            print('Timezone------>>>', timezone.now().replace(microsecond=0))
+            import datetime
+            print('>>>>>>>>>>>',
+                  datetime.datetime.combine(meeting.meeting_date, meeting.meeting_time) + timedelta(hours=24))
+            print(timezone.now().replace(microsecond=0) > datetime.datetime.combine(meeting.meeting_date,
+                                                                                    meeting.meeting_time) + timedelta(
+                hours=24))
+            if timezone.now().replace(microsecond=0) > datetime.datetime.combine(meeting.meeting_date,
+                                                                                 meeting.meeting_time) + timedelta(
+                hours=24):
+                meetings.append({'meeting_id': meeting.id})
+            else:
+                pass
+        return Response({'data': meetings, 'status': HTTP_200_OK})
+
+
+class MeetupStatus(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        meeting_id = self.request.POST['meeting_id']
+        user1 = self.request.POST['user1']
+        user2 = self.request.POST['user2']
+        try:
+            x = PopNotification.objects.get(user1=user1, user2=user2, meeting=meeting_id)
+            return Response({'data': x.status, 'status': HTTP_200_OK})
+        except Exception as e:
+            try:
+                x = PopNotification.objects.get(user1=user2, user2=user1, meeting=meeting_id)
+                return Response({'data': x.status, 'status': HTTP_200_OK})
+            except Exception as e:
+                try:
+                    meeting_obj = ScheduleMeeting.objects.get(id=meeting_id)
+                    x = PopNotification.objects.create(user1=RegisterUser.objects.get(id=user1),
+                                                       user2=RegisterUser.objects.get(id=user2),
+                                                       meeting=meeting_obj, status=True)
+                except Exception as e:
+                    x = {'error': str(e)}
+                    return Response({'message': x['error'], 'status': HTTP_400_BAD_REQUEST})
+                return Response({'data': x.status, 'status': HTTP_200_OK})

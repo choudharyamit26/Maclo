@@ -274,7 +274,9 @@ class AboutUs(models.Model):
 class PopNotification(models.Model):
     user1 = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='user1')
     user2 = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
-    title = models.CharField(default='Met', max_length=100)
+    # title = models.CharField(default='Met', max_length=100)
+    meeting = models.ForeignKey(ScheduleMeeting, on_delete=models.CASCADE)
+    status = models.BooleanField(default=False)
 
 
 class PrivacyPolicy(models.Model):
@@ -288,4 +290,4 @@ class DeactivateAccount(models.Model):
 
 class BlockedUsers(models.Model):
     user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
-    blocked = models.ManyToManyField(RegisterUser,related_name='blocked')
+    blocked = models.ManyToManyField(RegisterUser, related_name='blocked')
