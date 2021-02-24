@@ -3636,10 +3636,13 @@ class MeetupPopUs(APIView):
             print(timezone.now().replace(microsecond=0) > datetime.datetime.combine(meeting.meeting_date,
                                                                                     meeting.meeting_time) + timedelta(
                 hours=24))
-            if meeting.status.lower() == 'accepted' and timezone.now().replace(microsecond=0) > datetime.datetime.combine(meeting.meeting_date,
-                                                                                 meeting.meeting_time) + timedelta(
+            if meeting.status.lower() == 'accepted' and timezone.now().replace(
+                    microsecond=0) > datetime.datetime.combine(meeting.meeting_date,
+                                                               meeting.meeting_time) + timedelta(
                 hours=24):
-                meetings.append({'meeting_id': meeting.id, 'scheduled_by': meeting.scheduled_by.first_name,
+                meetings.append({'meeting_id': meeting.id, 'scheduled_by_id': meeting.scheduled_by.id,
+                                 'scheduled_by': meeting.scheduled_by.first_name,
+                                 'scheduled_with_id': meeting.scheduled_with.id,
                                  'scheduled_with': meeting.scheduled_with.first_name})
             else:
                 pass
