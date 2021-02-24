@@ -2613,6 +2613,13 @@ class ContactUsApiView(ListAPIView):
     serializer_class = ContactUsSerializer
     queryset = ContactUs.objects.all()
 
+    def get(self, request, *args, **kwargs):
+        phone_number = ContactUs.objects.all().first().phone_number
+        email = ContactUs.objects.all().first().email
+        return Response(
+            {'message': 'Contact us details fetched successfully', 'phone_number': phone_number, 'email': email,
+             'status': HTTP_200_OK})
+
 
 class ContactUsQueryForm(CreateAPIView):
     authentication_classes = (TokenAuthentication,)
