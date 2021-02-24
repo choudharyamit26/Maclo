@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="WrapperArea">
+    <div class="WrapperBox">
+        <div class="Small-Wrapper">
+            <div class="content-wrapper">
+                <h4 class="Title">User Management</h4>
+                <div class="TableList">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>User ID</th>
+                            <th>Name of the user</th>
+                            <th>Email id</th>
+                            <th>Phone Number</th>
+                            <th>Date of Birth</th>
+                            <th>Reason</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for object in object_list %}
+                        <tr>
+                            <td>{{forloop.counter }}</td>
+                            <td>USER {{object.id}}</td>
+                            <td>{{object.first_name}}</td>
+                            <td>{{object.email}}</td>
+                            <td>{{object.phone_number}}</td>
+                            <td>{{object.date_of_birth}}</td>
+                            <td>{{object.reason}}</td>
+                            <td>{{object.description}}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

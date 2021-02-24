@@ -21,7 +21,8 @@ from django.utils import timezone
 from django.conf.global_settings import DEFAULT_FROM_EMAIL
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import LoginForm, UserNotificationForm, UpdateAboutUsForm, UpdateContactUsForm
-from src.models import RegisterUser, SubscriptionPlans, ScheduleMeeting, UserDetail, ContactUs, PrivacyPolicy, AboutUs
+from src.models import RegisterUser, SubscriptionPlans, ScheduleMeeting, UserDetail, ContactUs, PrivacyPolicy, AboutUs, \
+    ContactUsQuery
 from .filters import UserFilter, MeetingFilter
 from src.fcm_notification import send_to_one, send_another
 from django.utils.translation import gettext_lazy as _
@@ -476,7 +477,6 @@ class UpdateContactUs(LoginRequiredMixin, UpdateView):
     template_name = 'update-contact-us.html'
 
 
-
 class PrivacyPolicyUrl(View):
     model = PrivacyPolicy
     template = 'privacy-policy-url.html'
@@ -486,3 +486,11 @@ class PrivacyPolicyUrl(View):
         html = HTML(string=html_string)
         result = html.write_pdf()
         return HttpResponse(result, content_type='application/pdf')
+
+
+class QueriesList(View):
+    model = ContactUsQuery
+    template = 'query.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(self.request, 'query.html', {'object_list': ContactUsQuery.objects.all()})
