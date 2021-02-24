@@ -23,11 +23,11 @@
                         {% for object in object_list %}
                         <tr>
                             <td>{{forloop.counter }}</td>
-                            <td>{{object.user.id}}</td>
-                            <td>{{object.user.first_name}}</td>
-                            <td>{{object.user.email}}</td>
-                            <td>{{object.user.phone_number}}</td>
-                            <td>{{object.user.date_of_birth}}</td>
+                            <td>{{object.phone_number.id}}</td>
+                            <td>{{object.phone_number.first_name}}</td>
+                            <td>{{object.phone_number.email}}</td>
+                            <td>{{object.phone_number.phone_number}}</td>
+                            <td>{{object.phone_number.date_of_birth}}</td>
                             <td>{{object.feedback}}</td>
                             <td>{{object.stars}}</td>
                         </tr>
