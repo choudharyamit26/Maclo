@@ -3639,7 +3639,8 @@ class MeetupPopUs(APIView):
             if timezone.now().replace(microsecond=0) > datetime.datetime.combine(meeting.meeting_date,
                                                                                  meeting.meeting_time) + timedelta(
                 hours=24):
-                meetings.append({'meeting_id': meeting.id})
+                meetings.append({'meeting_id': meeting.id, 'scheduled_by': meeting.scheduled_by.first_name,
+                                 'scheduled_with': meeting.scheduled_with.first_name})
             else:
                 pass
         return Response({'data': meetings, 'status': HTTP_200_OK})
