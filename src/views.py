@@ -1244,6 +1244,7 @@ class FilteredUserView(APIView):
                         pass
             else:
                 pass
+        print('LLLLLLLLEEEEEEEEEEEEENN',len(incoming_filter_query_list))
         print('OR FILTERED LIST', or_filtered_data_list)
         # filters = {
         #     key: value
@@ -1281,6 +1282,7 @@ class FilteredUserView(APIView):
                 a = UserDetail.objects.get(phone_number=y.id)
                 final_list.append(a)
         elif incoming_filter_query_list:
+            print('<<<<<<_______inside elif------>>>')
             final_list = []
         else:
             for x in z:
