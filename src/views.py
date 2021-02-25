@@ -1281,7 +1281,11 @@ class FilteredUserView(APIView):
                 a = UserDetail.objects.get(phone_number=y.id)
                 final_list.append(a)
         else:
-            final_list = z
+            for x in z:
+                if x:
+                    final_list.append(x)
+                else:
+                    pass
             print('>>>>>>>>>>>>>>>>>>>>>', final_list)
         print('FINAL LIST ----->>>', final_list)
         filtered_users = []
