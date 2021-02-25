@@ -3657,6 +3657,7 @@ class MeetupStatus(APIView):
         meeting_id = self.request.POST['meeting_id']
         user1 = self.request.POST['user1']
         user2 = self.request.POST['user2']
+        status = self.request.POST['status']
         try:
             x = PopNotification.objects.get(user1=user1, user2=user2, meeting=meeting_id)
             return Response({'data': x.status, 'status': HTTP_200_OK})
@@ -3669,7 +3670,7 @@ class MeetupStatus(APIView):
                     meeting_obj = ScheduleMeeting.objects.get(id=meeting_id)
                     x = PopNotification.objects.create(user1=RegisterUser.objects.get(id=user1),
                                                        user2=RegisterUser.objects.get(id=user2),
-                                                       meeting=meeting_obj, status=True)
+                                                       meeting=meeting_obj, status=status)
                 except Exception as e:
                     x = {'error': str(e)}
                     return Response({'message': x['error'], 'status': HTTP_400_BAD_REQUEST})
