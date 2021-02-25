@@ -1283,15 +1283,17 @@ class FilteredUserView(APIView):
         else:
             for x in z:
                 if x:
-                    final_list.append(x)
+                    y = UserDetail.objects.get(id=x)
+                    final_list.append(y)
                 else:
                     pass
             print('>>>>>>>>>>>>>>>>>>>>>', final_list)
         print('FINAL LIST ----->>>', final_list)
         filtered_users = []
         for obj in final_list:
+            # obj = RegisterUser.objects
             print('inside last loop', obj)
-            # print('inside last loop register user id', obj.phone_number.id)
+            print('inside last loop register user id', obj.phone_number.id)
             id = obj.phone_number.id
             bio = obj.bio
             first_name = obj.phone_number.first_name
