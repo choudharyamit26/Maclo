@@ -1238,7 +1238,10 @@ class FilteredUserView(APIView):
             r = RegisterUser.objects.filter(**value)
             if r:
                 for x in r:
-                    or_filtered_data_list.append(x)
+                    if x:
+                        or_filtered_data_list.append(x)
+                    else:
+                        pass
             else:
                 pass
         print('OR FILTERED LIST',or_filtered_data_list)
