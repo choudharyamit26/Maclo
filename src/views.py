@@ -1753,7 +1753,7 @@ class LikeUserAPIView(CreateAPIView):
                 body = "You have been liked by " + from_user_name
                 message_type = "likeNotification"
                 # respo = send_to_one(fcm_token, data_message)
-                respo = send_another(fcm_token, title, body, message_type)
+                respo = send_another(fcm_token, title, body)
                 print("FCM Response===============>0", respo)
             except Exception as e:
                 pass
@@ -1786,7 +1786,7 @@ class LikeUserAPIView(CreateAPIView):
                     title = "Match Notification"
                     body = "You have been matched with " + from_user_name
                     message_type = "matchNotification"
-                    respo = send_another(fcm_token, title, body, message_type)
+                    respo = send_another(fcm_token, title, body)
                     print("FCM Response===============>0", respo)
                 except Exception as e:
                     pass
@@ -1857,7 +1857,7 @@ class SuperLikeUserAPIView(CreateAPIView):
                 title = "Super Like Notification"
                 body = "You have been super liked by " + from_user_name
                 message_type = "superLike"
-                respo = send_another(fcm_token, title, body, message_type)
+                respo = send_another(fcm_token, title, body)
                 print("FCM Response===============>0", respo)
             except Exception as e:
                 pass
@@ -1893,7 +1893,7 @@ class SuperLikeUserAPIView(CreateAPIView):
                     title = "Super Like Notification"
                     body = "You have been super matched with " + from_user_name
                     message_type = "superMatch"
-                    respo = send_another(fcm_token, title, body, message_type)
+                    respo = send_another(fcm_token, title, body)
                     print("FCM Response===============>0", respo)
                 except Exception as e:
                     pass
