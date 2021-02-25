@@ -1289,7 +1289,8 @@ class FilteredUserView(APIView):
             print('>>>>>>>>>>>>>>>>>>>>>', final_list)
         print('FINAL LIST ----->>>', final_list)
         filtered_users = []
-        for obj in final_list:
+        for x in final_list:
+            obj = RegisterUser.objects.get(id=x)
             print('inside last loop', obj)
             print('inside last loop register user id', obj.phone_number.id)
             id = obj.phone_number.id
