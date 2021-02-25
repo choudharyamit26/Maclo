@@ -1283,7 +1283,7 @@ class FilteredUserView(APIView):
         else:
             for x in z:
                 if x:
-                    y = UserDetail.objects.get(id=x)
+                    y = UserDetail.objects.get(phone_number=x)
                     final_list.append(y)
                 else:
                     pass
