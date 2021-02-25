@@ -1237,7 +1237,8 @@ class FilteredUserView(APIView):
         for value in incoming_filter_query_list:
             r = RegisterUser.objects.filter(**value)
             if r:
-                or_filtered_data_list.append(r.id)
+                for x in r:
+                    or_filtered_data_list.append(x)
             else:
                 pass
         print('OR FILTERED LIST',or_filtered_data_list)
