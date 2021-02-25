@@ -1310,7 +1310,8 @@ class FilteredUserView(APIView):
                 qs.append(user)
         else:
             print('>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<inside outer else>>>>>>>>>>>>>>>>')
-            qs = z
+            # qs = z
+            pass
         final_list = []
         print('QS_____________>>>>>>>>>>', qs)
         for y in qs:
