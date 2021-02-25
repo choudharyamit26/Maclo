@@ -1244,7 +1244,7 @@ class FilteredUserView(APIView):
                         pass
             else:
                 pass
-        print('OR FILTERED LIST',or_filtered_data_list)
+        print('OR FILTERED LIST', or_filtered_data_list)
         # filters = {
         #     key: value
         #     for key, value in self.request.POST.items()
@@ -1281,7 +1281,7 @@ class FilteredUserView(APIView):
                 a = UserDetail.objects.get(phone_number=y.id)
                 final_list.append(a)
         else:
-            final_list.append(z)
+            final_list = z
             print('>>>>>>>>>>>>>>>>>>>>>', final_list)
         print('FINAL LIST ----->>>', final_list)
         filtered_users = []
