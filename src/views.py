@@ -3435,13 +3435,13 @@ class CheckMeeting(APIView):
                 if len(meeting) > 0:
                     return Response({'meeting_exists': True, 'meeting_id': meeting.id, 'status': HTTP_200_OK})
                 else:
-                    return Response({'meeting_exists': False, 'meeting_id': '', 'status': HTTP_200_OK})
+                    return Response({'meeting_exists': False, 'meeting_id': '', 'status': HTTP_400_BAD_REQUEST})
             except Exception as e:
                 meeting = ScheduleMeeting.objects.filter(scheduled_with=user2, scheduled_by=user1).exclude(status='Rejected')
                 if len(meeting) > 0:
                     return Response({'meeting_exists': True, 'meeting_id': meeting.id, 'status': HTTP_200_OK})
                 else:
-                    return Response({'meeting_exists': False, 'meeting_id': '', 'status': HTTP_200_OK})
+                    return Response({'meeting_exists': False, 'meeting_id': '', 'status': HTTP_400_BAD_REQUEST})
         except Exception as e:
             return Response({'meeting_exists': False, 'status': HTTP_400_BAD_REQUEST})
 
