@@ -1266,45 +1266,6 @@ class FilteredUserView(APIView):
                 z.append(r_u)
         print('>>>>>>>>>>>>>>>>>>>>>>>>>zzzzzzzzzzz ', z)
         qs = []
-        # if qualification or relationship_status or height or gender or religion or zodiac_sign or taste or body_type:
-        #     print('inside filter if')
-        #     for y in z:
-        #         print('--------....>>>', y)
-        #         print('Qualification', y.qualification)
-        #         print('relationship_status', y.relationship_status)
-        #         print('height', y.height)
-        #         print('gender', y.gender)
-        #         print('religion', y.religion)
-        #         print('zodiac_sign', y.zodiac_sign)
-        #         print('body_type', y.body_type)
-        #         print('taste', y.taste)
-        #         if RegisterUser.objects.get(id=y.id).qualification == qualification or RegisterUser.objects.get(
-        #                 id=y.id).relationship_status == relationship_status or RegisterUser.objects.get(
-        #             id=y.id).height == height or RegisterUser.objects.get(
-        #             id=y.id).gender == gender or RegisterUser.objects.get(
-        #             id=y.id).religion == religion or RegisterUser.objects.get(
-        #             id=y.id).zodiac_sign == zodiac_sign or RegisterUser.objects.get(
-        #             id=y.id).body_type == body_type or RegisterUser.objects.get(id=y.id).taste == taste:
-        #             print('inside if case of filter')
-        #             print('Qualification', y.qualification == qualification)
-        #             print('relationship_status ', y.relationship_status == relationship_status)
-        #             print('height ', y.height == height)
-        #             print('gender ', y.gender == gender)
-        #             print('religion ', y.religion == religion)
-        #             print('zodiac_sign ', y.zodiac_sign == zodiac_sign)
-        #             print('body_type ', y.body_type == body_type)
-        #             print('body_type ', y.taste == taste)
-        #             # if RegisterUser.objects.get(id=y.id).qualification is not None and RegisterUser.objects.get(
-        #             #         id=y.id).relationship_status is not None or RegisterUser.objects.get(
-        #             #         id=y.id).height is not None and RegisterUser.objects.get(
-        #             #         id=y.id).gender is not None and RegisterUser.objects.get(
-        #             #         id=y.id).religion is not None and RegisterUser.objects.get(
-        #             #         id=y.id).zodiac_sign is not None and RegisterUser.objects.get(
-        #             #         id=y.id).body_type is not None and RegisterUser.objects.get(id=y.id).taste is not None:
-        #             qs.append(y)
-        #             print('QS--------------->>>', qs)
-        #         else:
-        #             pass
         if len(or_filtered_data_list) > 0:
             for user in or_filtered_data_list:
                 qs.append(user)
@@ -1314,19 +1275,13 @@ class FilteredUserView(APIView):
             pass
         final_list = []
         print('QS_____________>>>>>>>>>>', qs)
-        for y in qs:
-            print('between qs and final list', y)
-            a = UserDetail.objects.get(phone_number=y.id)
-            ### Check for empty string of logged in users interest
-            # print(user_detail_obj.interest)
-            # if user_detail_obj.interest:
-            #     if a.interest == user_detail_obj.interest:
-            #         print('FINAL LIST USER IN',a.interest)
-            #         final_list.append(a)
-            #     else:
-            #         pass
-            # else:
-            final_list.append(a)
+        if len(qs) > 0:
+            for y in qs:
+                print('between qs and final list', y)
+                a = UserDetail.objects.get(phone_number=y.id)
+                final_list.append(a)
+        else:
+            final_list.append(z)
             print('>>>>>>>>>>>>>>>>>>>>>', final_list)
         print('FINAL LIST ----->>>', final_list)
         filtered_users = []
