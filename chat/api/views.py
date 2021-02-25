@@ -114,12 +114,10 @@ class ChatList(APIView):
                         if message.sender.id in final_blocked_users_list or message.receiver.id in final_blocked_users_list:
                             sent_massage.append(
                                 {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.receiver_id).last_name,
+                                    id=message.receiver_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
@@ -134,12 +132,10 @@ class ChatList(APIView):
                                     pass
                             sent_massage.append(
                                 {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.receiver_id).last_name,
+                                    id=message.receiver_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
@@ -149,12 +145,10 @@ class ChatList(APIView):
                         if message.sender.id in final_blocked_users_list or message.receiver.id in final_blocked_users_list:
                             sent_massage.append(
                                 {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.receiver_id).last_name,
+                                    id=message.receiver_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                                  'last_message': '', 'is_image': '',
                                  'created_at': '', 'blocked': True})
@@ -168,12 +162,10 @@ class ChatList(APIView):
                                     pass
                             sent_massage.append(
                                 {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.receiver_id).last_name,
+                                    id=message.receiver_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                                  'last_message': '', 'is_image': '',
                                  'created_at': '', 'blocked': False, 'message_count': len(un_read_messages)})
@@ -182,12 +174,10 @@ class ChatList(APIView):
                         if message.sender.id in final_blocked_users_list or message.receiver.id in final_blocked_users_list:
                             sent_massage.append(
                                 {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.receiver_id).last_name,
+                                    id=message.receiver_id).first_name,
                                  'receiver_profile_pic': '',
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
@@ -202,12 +192,10 @@ class ChatList(APIView):
                                     pass
                             sent_massage.append(
                                 {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.receiver_id).last_name,
+                                    id=message.receiver_id).first_name,
                                  'receiver_profile_pic': '',
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
@@ -221,8 +209,7 @@ class ChatList(APIView):
                                     id=message.sender_id).last_name,
                                  'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.receiver_id).last_name,
+                                    id=message.receiver_id).first_name,
                                  'receiver_profile_pic': '',
                                  'last_message': '', 'is_image': '',
                                  'created_at': '', 'blocked': True})
@@ -240,8 +227,7 @@ class ChatList(APIView):
                                     id=message.sender_id).last_name,
                                  'sender_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.receiver_id).last_name,
+                                    id=message.receiver_id).first_name,
                                  'receiver_profile_pic': '',
                                  'last_message': '', 'is_image': '',
                                  'created_at': '', 'blocked': False, 'message_count': len(un_read_messages)})
@@ -250,12 +236,10 @@ class ChatList(APIView):
                         if message.sender.id in final_blocked_users_list or message.receiver in final_blocked_users_list:
                             sent_massage.append(
                                 {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'sender_profile_pic': '',
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.receiver_id).last_name,
+                                    id=message.receiver_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
@@ -270,12 +254,10 @@ class ChatList(APIView):
                                     pass
                             sent_massage.append(
                                 {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'sender_profile_pic': '',
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.receiver_id).last_name,
+                                    id=message.receiver_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
@@ -285,12 +267,10 @@ class ChatList(APIView):
                         if message.sender.id in final_blocked_users_list or message.receiver.id in final_blocked_users_list:
                             sent_massage.append(
                                 {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'sender_profile_pic': '',
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.receiver_id).last_name,
+                                    id=message.receiver_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                                  'last_message': '', 'is_image': '',
                                  'created_at': '', 'blocked': True})
@@ -304,12 +284,10 @@ class ChatList(APIView):
                                     pass
                             sent_massage.append(
                                 {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'sender_profile_pic': '',
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.receiver_id).last_name,
+                                    id=message.receiver_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                                  'last_message': '', 'is_image': '',
                                  'created_at': '', 'blocked': False, 'message_count': len(un_read_messages)})
@@ -318,12 +296,10 @@ class ChatList(APIView):
                         if message.sender.id in final_blocked_users_list or message.receiver.id in final_blocked_users_list:
                             sent_massage.append(
                                 {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'sender_profile_pic': '',
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.receiver_id).last_name,
+                                    id=message.receiver_id).first_name,
                                  'receiver_profile_pic': '',
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
@@ -338,12 +314,10 @@ class ChatList(APIView):
                                     pass
                             sent_massage.append(
                                 {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'sender_profile_pic': '',
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.receiver_id).last_name,
+                                    id=message.receiver_id).first_name,
                                  'receiver_profile_pic': '',
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
@@ -353,12 +327,10 @@ class ChatList(APIView):
                         if message.sender.id in final_blocked_users_list or message.receiver.id in final_blocked_users_list:
                             sent_massage.append(
                                 {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'sender_profile_pic': '',
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.receiver_id).last_name,
+                                    id=message.receiver_id).first_name,
                                  'receiver_profile_pic': '',
                                  'last_message': '', 'is_image': '',
                                  'created_at': '', 'blocked': True})
@@ -372,12 +344,10 @@ class ChatList(APIView):
                                     pass
                             sent_massage.append(
                                 {'id': message.id, 'sender': message.sender.id, 'sender_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'sender_profile_pic': '',
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.receiver_id).last_name,
+                                    id=message.receiver_id).first_name,
                                  'receiver_profile_pic': '',
                                  'last_message': '', 'is_image': '',
                                  'created_at': '', 'blocked': False, 'message_count': len(un_read_messages)})
@@ -393,12 +363,10 @@ class ChatList(APIView):
                             received_message.append(
                                 {'id': message.id, 'sender': message.receiver.id,
                                  'sender_name': RegisterUser.objects.get(
-                                     id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                     id=message.receiver_id).last_name,
+                                     id=message.receiver_id).first_name,
                                  'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
@@ -414,12 +382,10 @@ class ChatList(APIView):
                             received_message.append(
                                 {'id': message.id, 'sender': message.receiver.id,
                                  'sender_name': RegisterUser.objects.get(
-                                     id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                     id=message.receiver_id).last_name,
+                                     id=message.receiver_id).first_name,
                                  'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
@@ -430,12 +396,10 @@ class ChatList(APIView):
                             received_message.append(
                                 {'id': message.id, 'sender': message.receiver.id,
                                  'sender_name': RegisterUser.objects.get(
-                                     id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                     id=message.receiver_id).last_name,
+                                     id=message.receiver_id).first_name,
                                  'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                                  'last_message': '', 'is_image': '',
                                  'created_at': '', 'blocked': True})
@@ -450,12 +414,10 @@ class ChatList(APIView):
                             received_message.append(
                                 {'id': message.id, 'sender': message.receiver.id,
                                  'sender_name': RegisterUser.objects.get(
-                                     id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                     id=message.receiver_id).last_name,
+                                     id=message.receiver_id).first_name,
                                  'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                                  'last_message': '', 'is_image': '',
                                  'created_at': '', 'blocked': False, 'message_count': len(un_read_messages)})
@@ -465,12 +427,10 @@ class ChatList(APIView):
                             received_message.append(
                                 {'id': message.id, 'sender': message.receiver.id,
                                  'sender_name': RegisterUser.objects.get(
-                                     id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                     id=message.receiver_id).last_name,
+                                     id=message.receiver_id).first_name,
                                  'sender_profile_pic': '',
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
@@ -486,12 +446,10 @@ class ChatList(APIView):
                             received_message.append(
                                 {'id': message.id, 'sender': message.receiver.id,
                                  'sender_name': RegisterUser.objects.get(
-                                     id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                     id=message.receiver_id).last_name,
+                                     id=message.receiver_id).first_name,
                                  'sender_profile_pic': '',
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
@@ -502,12 +460,10 @@ class ChatList(APIView):
                             received_message.append(
                                 {'id': message.id, 'sender': message.receiver.id,
                                  'sender_name': RegisterUser.objects.get(
-                                     id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                     id=message.receiver_id).last_name,
+                                     id=message.receiver_id).first_name,
                                  'sender_profile_pic': '',
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                                  'last_message': '', 'is_image': '',
                                  'created_at': '', 'blocked': True})
@@ -522,12 +478,10 @@ class ChatList(APIView):
                             received_message.append(
                                 {'id': message.id, 'sender': message.receiver.id,
                                  'sender_name': RegisterUser.objects.get(
-                                     id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                     id=message.receiver_id).last_name,
+                                     id=message.receiver_id).first_name,
                                  'sender_profile_pic': '',
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                                  'last_message': '', 'is_image': '',
                                  'created_at': '', 'blocked': False, 'message_count': len(un_read_messages)})
@@ -537,12 +491,10 @@ class ChatList(APIView):
                             received_message.append(
                                 {'id': message.id, 'sender': message.receiver.id,
                                  'sender_name': RegisterUser.objects.get(
-                                     id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                     id=message.receiver_id).last_name,
+                                     id=message.receiver_id).first_name,
                                  'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'receiver_profile_pic': '',
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
@@ -558,12 +510,10 @@ class ChatList(APIView):
                             received_message.append(
                                 {'id': message.id, 'sender': message.receiver.id,
                                  'sender_name': RegisterUser.objects.get(
-                                     id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                     id=message.receiver_id).last_name,
+                                     id=message.receiver_id).first_name,
                                  'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'receiver_profile_pic': '',
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
@@ -574,12 +524,10 @@ class ChatList(APIView):
                             received_message.append(
                                 {'id': message.id, 'sender': message.receiver.id,
                                  'sender_name': RegisterUser.objects.get(
-                                     id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                     id=message.receiver_id).last_name,
+                                     id=message.receiver_id).first_name,
                                  'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'receiver_profile_pic': '',
                                  'last_message': '', 'is_image': '',
                                  'created_at': '', 'blocked': True})
@@ -594,12 +542,10 @@ class ChatList(APIView):
                             received_message.append(
                                 {'id': message.id, 'sender': message.receiver.id,
                                  'sender_name': RegisterUser.objects.get(
-                                     id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                     id=message.receiver_id).last_name,
+                                     id=message.receiver_id).first_name,
                                  'sender_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'receiver_profile_pic': '',
                                  'last_message': '', 'is_image': '',
                                  'created_at': '', 'blocked': False, 'message_count': len(un_read_messages)})
@@ -609,12 +555,10 @@ class ChatList(APIView):
                             received_message.append(
                                 {'id': message.id, 'sender': message.receiver.id,
                                  'sender_name': RegisterUser.objects.get(
-                                     id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                     id=message.receiver_id).last_name,
+                                     id=message.receiver_id).first_name,
                                  'sender_profile_pic': '',
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'receiver_profile_pic': '',
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
@@ -630,12 +574,10 @@ class ChatList(APIView):
                             received_message.append(
                                 {'id': message.id, 'sender': message.receiver.id,
                                  'sender_name': RegisterUser.objects.get(
-                                     id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                     id=message.receiver_id).last_name,
+                                     id=message.receiver_id).first_name,
                                  'sender_profile_pic': '',
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'receiver_profile_pic': '',
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
@@ -646,12 +588,10 @@ class ChatList(APIView):
                             received_message.append(
                                 {'id': message.id, 'sender': message.receiver.id,
                                  'sender_name': RegisterUser.objects.get(
-                                     id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                     id=message.receiver_id).last_name,
+                                     id=message.receiver_id).first_name,
                                  'sender_profile_pic': '',
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'receiver_profile_pic': '',
                                  'last_message': '', 'is_image': '',
                                  'created_at': '', 'blocked': True})
@@ -666,12 +606,10 @@ class ChatList(APIView):
                             received_message.append(
                                 {'id': message.id, 'sender': message.receiver.id,
                                  'sender_name': RegisterUser.objects.get(
-                                     id=message.receiver_id).first_name + ' ' + RegisterUser.objects.get(
-                                     id=message.receiver_id).last_name,
+                                     id=message.receiver_id).first_name,
                                  'sender_profile_pic': '',
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
-                                    id=message.sender_id).first_name + ' ' + RegisterUser.objects.get(
-                                    id=message.sender_id).last_name,
+                                    id=message.sender_id).first_name,
                                  'receiver_profile_pic': '',
                                  'last_message': '', 'is_image': '',
                                  'created_at': '', 'blocked': False, 'message_count': len(un_read_messages)})
