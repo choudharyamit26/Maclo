@@ -1235,7 +1235,11 @@ class FilteredUserView(APIView):
         if taste:
             incoming_filter_query_list.append({'taste': taste})
         for value in incoming_filter_query_list:
-            or_filtered_data_list.append(RegisterUser.objects.filter(**value))
+            r = RegisterUser.objects.filter(**value)
+            if r:
+                or_filtered_data_list.append(r.id)
+            else:
+                pass
         print('OR FILTERED LIST',or_filtered_data_list)
         # filters = {
         #     key: value
