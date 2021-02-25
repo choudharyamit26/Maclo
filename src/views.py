@@ -2374,7 +2374,7 @@ class ScheduleMeetingAPIView(CreateAPIView):
             title = "Meeting Request"
             body = "You have a meeting request from " + logged_in_user_id.first_name
             message_type = "meeting"
-            respo = send_another(fcm_token, title, body, message_type)
+            respo = send_another(fcm_token, title, body)
             print("FCM Response===============>0", respo)
         except Exception as e:
             pass
@@ -2565,7 +2565,7 @@ class UpdateMeetingStatus(APIView):
             title = "Meeting Status"
             body = "Your meeting request has been {} by {}".format(status, meeting.scheduled_with.first_name)
             message_type = "superLike"
-            respo = send_another(fcm_token, title, body, message_type)
+            respo = send_another(fcm_token, title, body)
             print("FCM Response===============>0", respo)
         except Exception as e:
             pass
