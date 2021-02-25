@@ -91,14 +91,12 @@ class RegisterUser(models.Model):
     phone_number = models.CharField(default='', max_length=13)
     first_name = models.CharField(default='', max_length=100)
     last_name = models.CharField(default='', max_length=100)
-    gender = models.CharField(choices=GENDER, default='', max_length=20, null=True, blank=True)
+    gender = models.CharField(default='', max_length=20, null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     job_profile = models.CharField(max_length=100, null=True, blank=True)
     company_name = models.CharField(max_length=200, null=True, blank=True)
-    qualification = models.CharField(
-        default="", choices=QUALIFICATION, max_length=100, null=True, blank=True)
-    relationship_status = models.CharField(
-        default='', choices=RELATIONSHIP_STATUS, max_length=100, null=True, blank=True)
+    qualification = models.CharField(default="", max_length=100, null=True, blank=True)
+    relationship_status = models.CharField(default='', max_length=100, null=True, blank=True)
     height = models.IntegerField(null=True, blank=True)
     fav_quote = models.CharField(default='', max_length=1000)
     religion = models.CharField(default='', max_length=100, null=True, blank=True)
