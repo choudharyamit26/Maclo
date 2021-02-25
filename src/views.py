@@ -3135,7 +3135,8 @@ class GoogleSignupView(CreateAPIView):
                 reg_usr = RegisterUser.objects.create(
                     email=email,
                     first_name=name,
-                    date_of_birth=dob
+                    date_of_birth=dob,
+                    pic_1=profile_pic
                 )
                 user = User.objects.create(
                     name=name,
