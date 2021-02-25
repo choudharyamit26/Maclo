@@ -1224,6 +1224,18 @@ class FilteredUserView(APIView):
                     'taste']
         }
         print('FILTERS--------->>>', filters)
+        from functools import reduce
+
+        values = [value for key, value in self.request.POST.items() if
+                  key in ['qualification', 'relationship_status', 'religion', 'body_type', 'gender', 'height',
+                          'zodiac_sign', 'taste']]
+
+        # Turn list of values into one big Q objects
+        query = reduce(lambda q, value: q | Q(pk=value), values, Q())
+
+        # Query the model
+        or_filter = RegisterUser.objects.filter(query)
+        print('OR FILTER----->>>',or_filter)
         print('REGISTER USER OBJECTS', RegisterUser.objects.filter(**filters))
         z = []
         for x in f_u:
@@ -3431,13 +3443,15 @@ class CheckMeeting(APIView):
         user2 = self.request.query_params.get('user2')
         try:
             try:
-                meeting = ScheduleMeeting.objects.filter(scheduled_with=user1, scheduled_by=user2).exclude(status='Rejected')
+                meeting = ScheduleMeeting.objects.filter(scheduled_with=user1, scheduled_by=user2).exclude(
+                    status='Rejected')
                 if len(meeting) > 0:
                     return Response({'meeting_exists': True, 'meeting_id': meeting.id, 'status': HTTP_200_OK})
                 else:
                     return Response({'meeting_exists': False, 'meeting_id': '', 'status': HTTP_400_BAD_REQUEST})
             except Exception as e:
-                meeting = ScheduleMeeting.objects.filter(scheduled_with=user2, scheduled_by=user1).exclude(status='Rejected')
+                meeting = ScheduleMeeting.objects.filter(scheduled_with=user2, scheduled_by=user1).exclude(
+                    status='Rejected')
                 if len(meeting) > 0:
                     return Response({'meeting_exists': True, 'meeting_id': meeting.id, 'status': HTTP_200_OK})
                 else:
