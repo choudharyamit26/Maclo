@@ -2777,7 +2777,7 @@ class FacebookSignupApiView(CreateAPIView):
         email = self.request.POST.get('email' or None)
         social_id = self.request.POST.get('social_id' or None)
         social_type = self.request.POST.get('social_type' or None)
-        # profile_pic = self.request.POST.get('profile_pic' or None)
+        profile_pic = self.request.POST.get('profile_pic' or None)
         device_token = self.request.POST.get('device_token' or None)
         lat = self.request.POST.get('lat' or None)
         lang = self.request.POST.get('lang' or None)
@@ -2894,7 +2894,8 @@ class FacebookSignupApiView(CreateAPIView):
                 reg_usr = RegisterUser.objects.create(
                     email=email,
                     first_name=name,
-                    date_of_birth=dob
+                    date_of_birth=dob,
+                    pic_1=profile_pic
                 )
                 user = User.objects.create(
                     name=name,
