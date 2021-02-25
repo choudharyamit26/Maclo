@@ -3431,11 +3431,17 @@ class CheckMeeting(APIView):
         user2 = self.request.query_params.get('user2')
         try:
             try:
-                meeting = ScheduleMeeting.objects.get(scheduled_with=user1, scheduled_by=user2)
-                return Response({'meeting_exists': True, 'meeting_id': meeting.id, 'status': HTTP_200_OK})
+                meeting = ScheduleMeeting.objects.filter(scheduled_with=user1, scheduled_by=user2).exclude(status='Rejected')
+                if len(meeting) > 0:
+                    return Response({'meeting_exists': True, 'meeting_id': meeting.id, 'status': HTTP_200_OK})
+                else:
+                    return Response({'meeting_exists': False, 'meeting_id': '', 'status': HTTP_200_OK})
             except Exception as e:
-                meeting = ScheduleMeeting.objects.get(scheduled_with=user2, scheduled_by=user1)
-                return Response({'meeting_exists': True, 'meeting_id': meeting.id, 'status': HTTP_200_OK})
+                meeting = ScheduleMeeting.objects.filter(scheduled_with=user2, scheduled_by=user1).exclude(status='Rejected')
+                if len(meeting) > 0:
+                    return Response({'meeting_exists': True, 'meeting_id': meeting.id, 'status': HTTP_200_OK})
+                else:
+                    return Response({'meeting_exists': False, 'meeting_id': '', 'status': HTTP_200_OK})
         except Exception as e:
             return Response({'meeting_exists': False, 'status': HTTP_400_BAD_REQUEST})
 
