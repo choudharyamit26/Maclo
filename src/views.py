@@ -1200,14 +1200,16 @@ class FilteredUserView(APIView):
             else:
                 pass
         print(' From if case Filtered users---------------', f_u)
-        # qualification = self.request.POST.get('qualification' or None)
-        # relationship_status = self.request.POST.get('relationship_status' or None)
-        # religion = self.request.POST.get('religion' or None)
-        # body_type = self.request.POST.get('body_type' or None)
-        # gender = self.request.POST.get('gender' or None)
-        # height = self.request.POST.get('height' or None)
-        # zodiac_sign = self.request.POST.get('zodiac_sign' or None)
-        # taste = self.request.POST.get('taste' or None)
+        incoming_filter_query_list = []
+        or_filtered_data_list = []
+        qualification = self.request.POST.get('qualification' or None)
+        relationship_status = self.request.POST.get('relationship_status' or None)
+        religion = self.request.POST.get('religion' or None)
+        body_type = self.request.POST.get('body_type' or None)
+        gender = self.request.POST.get('gender' or None)
+        height = self.request.POST.get('height' or None)
+        zodiac_sign = self.request.POST.get('zodiac_sign' or None)
+        taste = self.request.POST.get('taste' or None)
         # print('qualification--->>>', qualification)
         # print('relationship_status---->>', relationship_status)
         # print('religion---->>', religion)
@@ -1216,27 +1218,34 @@ class FilteredUserView(APIView):
         # print('height--->>>', height)
         # print('zodiac_sign--->>', zodiac_sign)
         # print('taste____>>>', taste)
-        filters = {
-            key: value
-            for key, value in self.request.POST.items()
-            if
-            key in ['qualification', 'relationship_status', 'religion', 'body_type', 'gender', 'height', 'zodiac_sign',
-                    'taste']
-        }
-        print('FILTERS--------->>>', filters)
-        from functools import reduce
-
-        values = [value for key, value in self.request.POST.items() if
-                  key in ['qualification', 'relationship_status', 'religion', 'body_type', 'gender', 'height',
-                          'zodiac_sign', 'taste']]
-
-        # Turn list of values into one big Q objects
-        query = reduce(lambda q, value: q | Q(pk=value), values, Q())
-
-        # Query the model
-        or_filter = RegisterUser.objects.filter(query)
-        print('OR FILTER----->>>',or_filter)
-        print('REGISTER USER OBJECTS', RegisterUser.objects.filter(**filters))
+        if qualification:
+            incoming_filter_query_list.append({'qualification': qualification})
+        if relationship_status:
+            incoming_filter_query_list.append({'relationship_status': relationship_status})
+        if religion:
+            incoming_filter_query_list.append({'religion': religion})
+        if body_type:
+            incoming_filter_query_list.append({'body_type': body_type})
+        if gender:
+            incoming_filter_query_list.append({'gender': gender})
+        if height:
+            incoming_filter_query_list.append({'height': height})
+        if zodiac_sign:
+            incoming_filter_query_list.append({'zodiac_sign': zodiac_sign})
+        if taste:
+            incoming_filter_query_list.append({'taste': taste})
+        for value in incoming_filter_query_list:
+            or_filtered_data_list.append(RegisterUser.objects.filter(**value))
+        print('OR FILTERED LIST',or_filtered_data_list)
+        # filters = {
+        #     key: value
+        #     for key, value in self.request.POST.items()
+        #     if
+        #     key in ['qualification', 'relationship_status', 'religion', 'body_type', 'gender', 'height', 'zodiac_sign',
+        #             'taste']
+        # }
+        # print('FILTERS--------->>>', filters)
+        # print('REGISTER USER OBJECTS', RegisterUser.objects.filter(**filters))
         z = []
         for x in f_u:
             print('XXXXXXXXXXXXXX-----------', x)
@@ -1288,8 +1297,8 @@ class FilteredUserView(APIView):
         #             print('QS--------------->>>', qs)
         #         else:
         #             pass
-        if filters:
-            for user in RegisterUser.objects.filter(**filters):
+        if len(or_filtered_data_list) > 0:
+            for user in or_filtered_data_list:
                 qs.append(user)
         else:
             print('>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<inside outer else>>>>>>>>>>>>>>>>')
