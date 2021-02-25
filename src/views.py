@@ -641,6 +641,7 @@ class UserProfileAPIView(ListCreateAPIView):
                 "qualification": user.phone_number.qualification,
                 "relationship_status": user.phone_number.relationship_status,
                 "height": user.phone_number.height,
+                "zodiac_sign": user.phone_number.zodiac_sign,
                 "fav_quote": user.phone_number.fav_quote,
                 "religion": user.phone_number.religion,
                 "body_type": user.phone_number.body_type,
@@ -707,9 +708,10 @@ class UserProfileUpdateView(UpdateAPIView):
         register_id.relationship_status = request.data.get("relationship_status")
         register_id.fav_quote = request.data.get("fav_quote")
         register_id.height = request.data.get("height")
+        register_id.zodiac_sign = request.data.get("zodiac_sign")
         register_id.save(
             update_fields=['date_of_birth', 'qualification', 'religion', 'body_type', 'relationship_status',
-                           'fav_quote', 'height'])
+                           'fav_quote', 'height', 'zodiac_sign'])
         print(register_id.pic_1)
         print(register_id.pic_2)
         print(register_id.pic_3)
@@ -1520,6 +1522,7 @@ class UserDetailAPIView(APIView):
             fav_quote = obj.phone_number.fav_quote
             religion = obj.phone_number.religion
             body_type = obj.phone_number.body_type
+            zodiac_sign = obj.phone_number.zodiac_sign
             verified = obj.phone_number.verified
             fb_signup = obj.phone_number.fb_signup
             if obj.phone_number.pic_1:
