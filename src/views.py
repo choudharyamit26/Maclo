@@ -3712,8 +3712,8 @@ class DisconnectWithInstagram(APIView):
             print(r_user)
             pics = UserInstagramPic.objects.filter(phone_number=r_user).last()
             pics.delete()
-            r_user.verified = False
-            r_user.save()
+            # r_user.verified = False
+            # r_user.save()
             return Response({'message': 'Disconnected instagram successfully', 'status': HTTP_200_OK})
         except Exception as e:
             x = {'error': str(e)}
