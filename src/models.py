@@ -3,6 +3,7 @@ from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.gis.db import models
 from django.utils import timezone
+from django.contrib.postgres.fields import ArrayField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -160,7 +161,8 @@ class UserDetail(models.Model):
     university = models.CharField(default='', max_length=200, null=True, blank=True)
     personality = models.CharField(default='', max_length=500, null=True, blank=True)
     food_type = models.CharField(default='', max_length=100, null=True, blank=True)
-    owns = models.CharField( default='', max_length=200, null=True, blank=True)
+    # owns = models.CharField(default='', max_length=200, null=True, blank=True)
+    owns = ArrayField(ArrayField(models.CharField(max_length=200, blank=True)))
     preference_first_date = models.CharField(default='', max_length=150, null=True, blank=True)
     fav_music = models.CharField(default='', max_length=500, null=True, blank=True)
     travelled_place = models.CharField(default='', max_length=500, null=True, blank=True)
