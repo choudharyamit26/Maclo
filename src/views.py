@@ -3697,9 +3697,11 @@ class DisconnectWithInstagram(APIView):
 
     def post(self, request, *args, **kwargs):
         id = self.request.GET.get('user_id')
+        print('iD------------',id)
         user = self.request.user
-        r_user = RegisterUser.objects.get(id=id)
         try:
+            r_user = RegisterUser.objects.get(id=id)
+            print(r_user)
             pics = UserInstagramPic.objects.filter(phone_number=r_user).last()
             pics.delete()
             return Response({'message': 'Disconnected instagram successfully', 'status': HTTP_200_OK})
