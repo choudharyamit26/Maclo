@@ -239,7 +239,7 @@ class ScheduleMeeting(models.Model):
     meeting_time = models.TimeField()
     venue = models.TextField()
     description = models.TextField()
-    status = models.CharField(default='Not Completed', choices=STATUS, max_length=100)
+    status = models.CharField(default='Not Completed', max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
