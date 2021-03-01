@@ -1244,7 +1244,7 @@ class FilteredUserView(APIView):
                         pass
             else:
                 pass
-        print('LLLLLLLLEEEEEEEEEEEEENN',len(incoming_filter_query_list))
+        print('LLLLLLLLEEEEEEEEEEEEENN', len(incoming_filter_query_list))
         print('OR FILTERED LIST', or_filtered_data_list)
         # filters = {
         #     key: value
@@ -3634,9 +3634,9 @@ class MeetupPopUs(APIView):
         meetings_scheduled_by_me = ScheduleMeeting.objects.filter(scheduled_by=r_user)
         meetings_scheduled_with_me = ScheduleMeeting.objects.filter(scheduled_with=r_user)
         meetings = []
-        print('Meetings scheduled by me----->>',meetings_scheduled_by_me )
-        print('Meetins scheduled with me ------>>>',meetings_scheduled_with_me)
-        print('Both Meeting----------',meetings_scheduled_by_me | meetings_scheduled_with_me)
+        print('Meetings scheduled by me----->>', meetings_scheduled_by_me)
+        print('Meetins scheduled with me ------>>>', meetings_scheduled_with_me)
+        print('Both Meeting----------', meetings_scheduled_by_me | meetings_scheduled_with_me)
         for meeting in meetings_scheduled_by_me | meetings_scheduled_with_me:
             print('Meeting date and time---->>', str(meeting.meeting_date) + str(meeting.meeting_time))
             # print(meeting.meeting_date + meeting.meeting_time)
@@ -3689,3 +3689,20 @@ class MeetupStatus(APIView):
                     x = {'error': str(e)}
                     return Response({'message': x['error'], 'status': HTTP_400_BAD_REQUEST})
                 return Response({'data': x.status, 'status': HTTP_200_OK})
+
+
+class DisconnectWithInstagram(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        id = self.request.GET.get('user_id')
+        user = self.request.user
+        r_user = RegisterUser.objects.get(id=id)
+        try:
+            pics = UserInstagramPic.objects.filter(phone_number=r_user).last()
+            pics.delete()
+            return Response({'message': 'Disconnected instagram successfully', 'status': HTTP_200_OK})
+        except Exception as e:
+            x = {'error': str(e)}
+            return Response({'message': x['error'], 'status': HTTP_400_BAD_REQUEST})

@@ -16,7 +16,7 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     UserLikedList, MeetingDetail, MettingList, UpdateMeetingStatus, UpdateUserLocation, UpdateDistanceRange, \
     UpdateAgeRange, UserAge, FilteredUserView, DislikeUser, DeleteAccount, DeactivateAccountView, CheckMeeting, \
     UnMatchView, BlockUserView, BlockedUsersList, UnBlockUser, CheckDob, CheckEmail, CheckUserBlocked, FCMNotification, \
-    LikedUserCount,MeetupPopUs,MeetupStatus
+    LikedUserCount, MeetupPopUs, MeetupStatus, DisconnectWithInstagram
 
 app_name = 'src'
 
@@ -109,6 +109,7 @@ urlpatterns = [
     path('like-count/', LikedUserCount.as_view(), name='like-count'),
     path('meetup-popup/', MeetupPopUs.as_view(), name='meetup-popup'),
     path('meetup-popup-update/', MeetupStatus.as_view(), name='meetup-popup-update'),
+    path('disconnect-instagram/', DisconnectWithInstagram.as_view(), name='disconnect-instagram'),
 
 ]
 if settings.DEBUG:
