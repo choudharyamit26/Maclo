@@ -162,7 +162,7 @@ class UserDetail(models.Model):
     personality = models.CharField(default='', max_length=500, null=True, blank=True)
     food_type = models.CharField(default='', max_length=100, null=True, blank=True)
     # owns = models.CharField(default='', max_length=200, null=True, blank=True)
-    owns = ArrayField(ArrayField(models.CharField(max_length=200, blank=True)))
+    owns = ArrayField(models.CharField(max_length=200, blank=True, null=True), default=list, blank=True, null=True)
     preference_first_date = models.CharField(default='', max_length=150, null=True, blank=True)
     fav_music = models.CharField(default='', max_length=500, null=True, blank=True)
     travelled_place = models.CharField(default='', max_length=500, null=True, blank=True)
