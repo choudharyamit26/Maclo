@@ -3634,6 +3634,9 @@ class MeetupPopUs(APIView):
         meetings_scheduled_by_me = ScheduleMeeting.objects.filter(scheduled_by=r_user)
         meetings_scheduled_with_me = ScheduleMeeting.objects.filter(scheduled_with=r_user)
         meetings = []
+        print('Meetings scheduled by me----->>',meetings_scheduled_by_me )
+        print('Meetins scheduled with me ------>>>',meetings_scheduled_with_me)
+        print('Both Meeting----------',meetings_scheduled_by_me | meetings_scheduled_with_me)
         for meeting in meetings_scheduled_by_me | meetings_scheduled_with_me:
             print('Meeting date and time---->>', str(meeting.meeting_date) + str(meeting.meeting_time))
             # print(meeting.meeting_date + meeting.meeting_time)
