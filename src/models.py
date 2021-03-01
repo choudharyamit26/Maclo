@@ -105,7 +105,7 @@ class RegisterUser(models.Model):
     zodiac_sign = models.CharField(default='', max_length=100)
     taste = models.CharField(default='', max_length=100)
     created_at = models.DateField(auto_now_add=True)
-    verified = models.CharField(default='No', choices=BOOL_CHOICES, max_length=10)
+    verified = models.CharField(default=False, max_length=10)
     fb_signup = models.CharField(default='No', choices=BOOL_CHOICES, max_length=10)
     pic_1 = models.ImageField(upload_to='media', null=True, blank=True)
     pic_2 = models.ImageField(upload_to='media', null=True, blank=True)

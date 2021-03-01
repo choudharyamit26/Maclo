@@ -848,6 +848,8 @@ class UserInstagramPicsAPIView(CreateAPIView):
             insta_pic_10=insta_pic_9,
             insta_connect=True
         )
+        p_no.verified = True
+        p_no.save()
         return Response({"Success": "Images uploaded from instagram successfully", "status": HTTP_200_OK})
 
 
@@ -2869,7 +2871,8 @@ class FacebookSignupApiView(CreateAPIView):
                     "distance_range": user_detail.distance_range,
                     "min_age_range": user_detail.min_age_range,
                     "max_age_range": user_detail.max_age_range,
-                    "interested": user_detail.interest
+                    "interested": user_detail.interest,
+                    "verified": user_data.verified
                 }
                 r_user = RegisterUser.objects.get(email=user.email)
                 account = DeactivateAccount.objects.get(user=r_user)
@@ -2890,7 +2893,8 @@ class FacebookSignupApiView(CreateAPIView):
                     email=email,
                     first_name=name,
                     date_of_birth=dob,
-                    pic_1=profile_pic
+                    pic_1=profile_pic,
+                    verified=True
                 )
                 user = User.objects.create(
                     name=name,
@@ -2984,7 +2988,8 @@ class FacebookSignupApiView(CreateAPIView):
                     "distance_range": user_detail.distance_range,
                     "min_age_range": user_detail.min_age_range,
                     "max_age_range": user_detail.max_age_range,
-                    "interested": user_detail.interest
+                    "interested": user_detail.interest,
+                    "verified": user_data.verified
                 }
                 r_user = RegisterUser.objects.get(email=user.email)
                 account = DeactivateAccount.objects.get(user=r_user)
@@ -3697,13 +3702,15 @@ class DisconnectWithInstagram(APIView):
 
     def post(self, request, *args, **kwargs):
         id = self.request.POST['user_id']
-        print('iD------------',id)
+        print('iD------------', id)
         user = self.request.user
         try:
             r_user = RegisterUser.objects.get(id=id)
             print(r_user)
             pics = UserInstagramPic.objects.filter(phone_number=r_user).last()
             pics.delete()
+            r_user.verified = False
+            r_user.save()
             return Response({'message': 'Disconnected instagram successfully', 'status': HTTP_200_OK})
         except Exception as e:
             x = {'error': str(e)}
