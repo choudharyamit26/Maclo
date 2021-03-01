@@ -1212,6 +1212,7 @@ class FilteredUserView(APIView):
         height = self.request.POST.get('height' or None)
         zodiac_sign = self.request.POST.get('zodiac_sign' or None)
         taste = self.request.POST.get('taste' or None)
+        verified = self.request.POST.get('verified' or None)
         # print('qualification--->>>', qualification)
         # print('relationship_status---->>', relationship_status)
         # print('religion---->>', religion)
@@ -1222,6 +1223,8 @@ class FilteredUserView(APIView):
         # print('taste____>>>', taste)
         if qualification:
             incoming_filter_query_list.append({'qualification': qualification})
+        if verified:
+            incoming_filter_query_list.append({'verified': verified})
         if relationship_status:
             incoming_filter_query_list.append({'relationship_status': relationship_status})
         if religion:
