@@ -3647,7 +3647,7 @@ class MeetupPopUs(APIView):
             print(timezone.now().replace(microsecond=0) > datetime.datetime.combine(meeting.meeting_date,
                                                                                     meeting.meeting_time) + timedelta(
                 hours=24))
-            if meeting.status.lower() == 'Accepted' and timezone.now().replace(
+            if meeting.status.lower() == 'accepted' and timezone.now().replace(
                     microsecond=0) > datetime.datetime.combine(meeting.meeting_date,
                                                                meeting.meeting_time) + timedelta(hours=24):
                 print('inside if ')
