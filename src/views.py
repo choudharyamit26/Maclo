@@ -3646,13 +3646,16 @@ class MeetupPopUs(APIView):
                 hours=24))
             if meeting.status.lower() == 'accepted' and timezone.now().replace(
                     microsecond=0) > datetime.datetime.combine(meeting.meeting_date,
-                                                               meeting.meeting_time) + timedelta(
-                hours=24):
+                                                               meeting.meeting_time) + timedelta(hours=24):
+                print('inside if ')
+                print(meeting)
+                print(meeting.id)
                 meetings.append({'meeting_id': meeting.id, 'scheduled_by_id': meeting.scheduled_by.id,
                                  'scheduled_by': meeting.scheduled_by.first_name,
                                  'scheduled_with_id': meeting.scheduled_with.id,
                                  'scheduled_with': meeting.scheduled_with.first_name})
             else:
+                print('else case')
                 pass
         return Response({'data': meetings, 'status': HTTP_200_OK})
 
