@@ -3696,7 +3696,7 @@ class DisconnectWithInstagram(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
-        id = self.request.GET.get('user_id')
+        id = self.request.POST['user_id']
         print('iD------------',id)
         user = self.request.user
         try:
