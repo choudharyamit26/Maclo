@@ -1225,8 +1225,10 @@ class FilteredUserView(APIView):
         # print('zodiac_sign--->>', zodiac_sign)
         # print('taste____>>>', taste)
         if smoke:
+            print('INSIDE SMOKE---->>>',smoke)
             user_detail_incoming_filter.append({'smoke': smoke})
         if drink:
+            print('INSIDE DRINK---->>>',drink)
             user_detail_incoming_filter.append({'drink': drink})
         if qualification:
             incoming_filter_query_list.append({'qualification': qualification})
@@ -1250,6 +1252,7 @@ class FilteredUserView(APIView):
             r = RegisterUser.objects.filter(**value)
             if r:
                 for x in r:
+                    print('__________________________XXXXXXXXXXXXX',x)
                     if x:
                         or_filtered_data_list.append(x)
                     else:
@@ -1258,9 +1261,14 @@ class FilteredUserView(APIView):
                 pass
         for value in user_detail_incoming_filter:
             u_d = UserDetail.objects.filter(**value)
+            print('INSIDE SMOKE AND DRINK FILTER---->>>',u_d)
             if u_d:
                 for y in u_d:
+                    print('YYYYYYYYYYYYY______',y)
+                    print('YYYYYYYYYYYYYYY PHONE NUMBER',y.phone_number)
+                    print('Y PHONENUMBER ID----',y.phone_number.id)
                     if y:
+                        print(RegisterUser.objects.get(id=y.phone_number.id))
                         or_filtered_data_list.append(RegisterUser.objects.get(id=y.phone_number.id))
                     else:
                         pass
