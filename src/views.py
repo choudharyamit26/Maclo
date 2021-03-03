@@ -1,12 +1,15 @@
 import os
 import shutil
 from datetime import timedelta
-
+import requests
+import os
+from django.core.files.base import ContentFile
 import instaloader
 from django.contrib.auth import get_user_model
 from django.contrib.gis.db.models.functions import GeometryDistance
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.measure import D
+from django.core.files.storage import FileSystemStorage
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -2936,33 +2939,24 @@ class FacebookSignupApiView(CreateAPIView):
             serializer = FacebookSerializer(data=request.data)
             if serializer.is_valid():
                 if profile_pic is not None and profile_pic != '':
-                    import urllib.request
-                    pic = urllib.request.urlretrieve(profile_pic, "media/{}.jpg".format(social_id))
-                    print(pic)
-                    print(type(pic))
-                    print(type(pic[0]))
-                    import os
-                    # print(os.path.abspath("{}.jpg".format(social_id)))
-                    pic_1 = os.path.abspath("{}.jpg".format(social_id))
-                    # pic_1 = "{}.jpg".format(social_id)
-                    print(type(pic_1))
-                    from PIL import Image
-                    # open method used to open different extension image file
-                    im = Image.open(r"".format(pic_1))
+                    pic = ''
+                    data = ''
+                    image_url = profile_pic
+                    img_data = requests.get(image_url).content
+                    with open(f'{social_id}.png', 'wb') as handler:
+                        handler.write(img_data)
+                        pic = handler.name
+                    with open(os.path.abspath(pic), 'rb') as f:
+                        print('FFFFFFFFFFFFFF_______________', f)
+                        data = f.read()
                     reg_usr = RegisterUser.objects.create(
                         email=email,
                         first_name=name,
                         date_of_birth=dob,
-                        # pic_1=pic_1,
-                        # pic_1=im,
-                        pic_1=urllib.request.urlretrieve(profile_pic, "media/{}.jpg".format(social_id))[0],
                         verified=True
                     )
+                    reg_usr.pic_1.save(f'{social_id}.png', ContentFile(data))
                     print(reg_usr.pic_1.url)
-                    if os.path.exists("{}.jpg".format(social_id)):
-                        os.remove("{}.jpg".format(social_id))
-                    else:
-                        print("The file does not exist")
                     user = User.objects.create(
                         name=name,
                         # last_name=last_name,
@@ -3069,9 +3063,6 @@ class FacebookSignupApiView(CreateAPIView):
                         {"Token": token.key, "user_id": reg_usr.id, 'data': Data, 'deactivated': account.deactivated,
                          "status": HTTP_200_OK})
                 else:
-                    # if profile_pic is not None and profile_pic != '':
-                        # import urllib.request
-                        # pic = urllib.request.urlretrieve(profile_pic, f"{name}.jpg")
                     reg_usr = RegisterUser.objects.create(
                         email=email,
                         first_name=name,
@@ -3182,9 +3173,9 @@ class FacebookSignupApiView(CreateAPIView):
                         user_detail.deactivated = False
                         user_detail.save()
                     return Response(
-                            {"Token": token.key, "user_id": reg_usr.id, 'data': Data,
-                             'deactivated': account.deactivated,
-                             "status": HTTP_200_OK})
+                        {"Token": token.key, "user_id": reg_usr.id, 'data': Data,
+                         'deactivated': account.deactivated,
+                         "status": HTTP_200_OK})
             else:
                 return Response({"message": serializer.errors, "status": HTTP_400_BAD_REQUEST})
 
