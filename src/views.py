@@ -1257,6 +1257,7 @@ class FilteredUserView(APIView):
                         if x in or_filtered_data_list:
                             pass
                         else:
+                            print('FROM FILTER',x==register_user)
                             if x == register_user:
                                 pass
                             else:
