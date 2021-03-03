@@ -2937,7 +2937,7 @@ class FacebookSignupApiView(CreateAPIView):
             if serializer.is_valid():
                 if profile_pic is not None and profile_pic != '':
                     import urllib.request
-                    pic = urllib.request.urlretrieve(profile_pic, "{}.jpg".format(social_id))
+                    pic = urllib.request.urlretrieve(profile_pic, "media/{}.jpg".format(social_id))
                     print(pic)
                     print(pic[0])
                     import os
