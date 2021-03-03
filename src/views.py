@@ -1257,7 +1257,10 @@ class FilteredUserView(APIView):
                         if x in or_filtered_data_list:
                             pass
                         else:
-                            or_filtered_data_list.append(x)
+                            if x == register_user:
+                                pass
+                            else:
+                                or_filtered_data_list.append(x)
                     else:
                         pass
             else:
