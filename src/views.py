@@ -1311,7 +1311,7 @@ class FilteredUserView(APIView):
                 print('between qs and final list', y)
                 a = UserDetail.objects.get(phone_number=y.id)
                 final_list.append(a)
-        elif incoming_filter_query_list:
+        elif incoming_filter_query_list or user_detail_incoming_filter:
             print('<<<<<<_______inside elif------>>>')
             final_list = []
         else:
