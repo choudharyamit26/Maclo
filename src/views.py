@@ -1254,7 +1254,10 @@ class FilteredUserView(APIView):
                 for x in r:
                     print('__________________________XXXXXXXXXXXXX',x)
                     if x:
-                        or_filtered_data_list.append(x)
+                        if x in or_filtered_data_list:
+                            pass
+                        else:
+                            or_filtered_data_list.append(x)
                     else:
                         pass
             else:
@@ -1270,7 +1273,10 @@ class FilteredUserView(APIView):
                     print('Y PHONENUMBER ID----',y.phone_number.id)
                     if y:
                         print(RegisterUser.objects.get(id=y.phone_number.id))
-                        or_filtered_data_list.append(RegisterUser.objects.get(id=y.phone_number.id))
+                        if RegisterUser.objects.get(id=y.phone_number.id) in or_filtered_data_list:
+                            pass
+                        else:
+                            or_filtered_data_list.append(RegisterUser.objects.get(id=y.phone_number.id))
                     else:
                         pass
             else:
