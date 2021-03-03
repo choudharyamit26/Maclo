@@ -1436,6 +1436,7 @@ class FilteredUserView(APIView):
                 "relationship_status": relationship_status,
                 "height": height,
                 "fav_quote": fav_quote,
+                "owns": obj.owns,
                 "religion": religion,
                 "body_type": body_type,
                 "verified": verified,
