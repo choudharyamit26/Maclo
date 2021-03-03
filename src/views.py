@@ -3484,6 +3484,7 @@ class CheckMeeting(APIView):
                 else:
                     return Response({'meeting_exists': False, 'meeting_id': '', 'status': HTTP_400_BAD_REQUEST})
             except Exception as e:
+                print('Exception',e)
                 meeting = ScheduleMeeting.objects.filter(scheduled_with=user2, scheduled_by=user1).exclude(
                     status='Rejected')
                 print('meetings inside except',meeting)
