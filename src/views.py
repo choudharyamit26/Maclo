@@ -2937,11 +2937,11 @@ class FacebookSignupApiView(CreateAPIView):
             if serializer.is_valid():
                 if profile_pic is not None and profile_pic != '':
                     import urllib.request
-                    pic = urllib.request.urlretrieve(profile_pic, f"{name}.jpg")
+                    pic = urllib.request.urlretrieve(profile_pic, f"{social_id}.jpg")
                     print(pic)
                     print(pic[0])
                     import os
-                    print(os.path.abspath(f"{name}.jpg"))
+                    print(os.path.abspath(f"{social_id}.jpg"))
                     reg_usr = RegisterUser.objects.create(
                         email=email,
                         first_name=name,
@@ -2949,8 +2949,8 @@ class FacebookSignupApiView(CreateAPIView):
                         pic_1=pic[0],
                         verified=True
                     )
-                    if os.path.exists(f"{name}.jpg"):
-                        os.remove(f"{name}.jpg")
+                    if os.path.exists(f"{social_id}.jpg"):
+                        os.remove(f"{social_id}.jpg")
                     else:
                         print("The file does not exist")
                     user = User.objects.create(
