@@ -1257,7 +1257,10 @@ class FilteredUserView(APIView):
                         if x in or_filtered_data_list:
                             pass
                         else:
-                            or_filtered_data_list.append(x)
+                            if x is register_user:
+                                pass
+                            else:
+                                or_filtered_data_list.append(x)
                     else:
                         pass
             else:
@@ -1276,7 +1279,10 @@ class FilteredUserView(APIView):
                         if RegisterUser.objects.get(id=y.phone_number.id) in or_filtered_data_list:
                             pass
                         else:
-                            or_filtered_data_list.append(RegisterUser.objects.get(id=y.phone_number.id))
+                            if RegisterUser.objects.get(id=y.phone_number.id) is register_user:
+                                pass
+                            else:
+                                or_filtered_data_list.append(RegisterUser.objects.get(id=y.phone_number.id))
                     else:
                         pass
             else:
