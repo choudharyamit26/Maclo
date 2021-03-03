@@ -2948,7 +2948,7 @@ class FacebookSignupApiView(CreateAPIView):
                         email=email,
                         first_name=name,
                         date_of_birth=dob,
-                        pic_1=pic_1,
+                        pic_1=str(profile_pic),
                         verified=True
                     )
                     print(reg_usr.pic_1.url)
