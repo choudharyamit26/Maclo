@@ -2200,6 +2200,7 @@ class LikedUserCount(APIView):
         print('SUPER LIKED USERS ', super_liked_users)
         print('SUPER LIKED USERS ', len(super_liked_users))
         return Response({'message': 'Like count fetched successfully', 'count': len(liked_users | super_liked_users),
+                         'verified': r_user.verified,
                          'status': HTTP_200_OK})
 
 
