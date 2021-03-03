@@ -2943,7 +2943,7 @@ class FacebookSignupApiView(CreateAPIView):
                     import os
                     # print(os.path.abspath("{}.jpg".format(social_id)))
                     # pic_1 = os.path.abspath("{}.jpg".format(social_id))
-                    pic_1 = "media/{}.jpg".format(social_id)
+                    pic_1 = "{}.jpg".format(social_id)
                     reg_usr = RegisterUser.objects.create(
                         email=email,
                         first_name=name,
