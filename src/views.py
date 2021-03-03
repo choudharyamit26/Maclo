@@ -2939,13 +2939,14 @@ class FacebookSignupApiView(CreateAPIView):
                     import urllib.request
                     pic = urllib.request.urlretrieve(profile_pic, f"{name}.jpg")
                     print(pic)
+                    print(pic[0])
                     import os
                     print(os.path.abspath(f"{name}.jpg"))
                     reg_usr = RegisterUser.objects.create(
                         email=email,
                         first_name=name,
                         date_of_birth=dob,
-                        pic_1=pic,
+                        pic_1=pic[0],
                         verified=True
                     )
                     if os.path.exists(f"{name}.jpg"):
