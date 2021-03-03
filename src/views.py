@@ -2939,7 +2939,8 @@ class FacebookSignupApiView(CreateAPIView):
                     import urllib.request
                     pic = urllib.request.urlretrieve(profile_pic, "media/{}.jpg".format(social_id))
                     print(pic)
-                    print(pic[0])
+                    print(type(pic))
+                    print(type(pic[0]))
                     import os
                     # print(os.path.abspath("{}.jpg".format(social_id)))
                     pic_1 = os.path.abspath("{}.jpg".format(social_id))
@@ -2953,7 +2954,8 @@ class FacebookSignupApiView(CreateAPIView):
                         first_name=name,
                         date_of_birth=dob,
                         # pic_1=pic_1,
-                        pic_1=im,
+                        # pic_1=im,
+                        pic_1=urllib.request.urlretrieve(profile_pic, "media/{}.jpg".format(social_id))[0],
                         verified=True
                     )
                     print(reg_usr.pic_1.url)
