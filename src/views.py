@@ -1280,7 +1280,8 @@ class FilteredUserView(APIView):
                         if RegisterUser.objects.get(id=y.phone_number.id) in or_filtered_data_list:
                             pass
                         else:
-                            if RegisterUser.objects.get(id=y.phone_number.id) is register_user:
+                            print('>>>>>>>>>>>>>>>>>>>',RegisterUser.objects.get(id=y.phone_number.id) == register_user)
+                            if RegisterUser.objects.get(id=y.phone_number.id) == register_user:
                                 pass
                             else:
                                 or_filtered_data_list.append(RegisterUser.objects.get(id=y.phone_number.id))
