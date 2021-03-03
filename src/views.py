@@ -1261,6 +1261,7 @@ class FilteredUserView(APIView):
                 pass
         for value in user_detail_incoming_filter:
             user_detail = UserDetail.objects.filter(**value)
+            print(UserDetail.objects.filter(smoke='No'))
             print('INSIDE SMOKE AND DRINK FILTER---->>>',user_detail)
             if user_detail:
                 for y in user_detail:
