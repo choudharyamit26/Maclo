@@ -2942,13 +2942,15 @@ class FacebookSignupApiView(CreateAPIView):
                     print(pic[0])
                     import os
                     print(os.path.abspath("{}.jpg".format(social_id)))
+                    pic_1 = os.path.abspath("{}.jpg".format(social_id))
                     reg_usr = RegisterUser.objects.create(
                         email=email,
                         first_name=name,
                         date_of_birth=dob,
-                        pic_1=pic[0],
+                        pic_1=pic_1,
                         verified=True
                     )
+                    print(reg_usr.pic_1.url)
                     if os.path.exists("{}.jpg".format(social_id)):
                         os.remove("{}.jpg".format(social_id))
                     else:
