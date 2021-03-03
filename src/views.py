@@ -1203,6 +1203,7 @@ class FilteredUserView(APIView):
                 pass
         print(' From if case Filtered users---------------', f_u)
         incoming_filter_query_list = []
+        user_detail_incoming_filter = []
         or_filtered_data_list = []
         qualification = self.request.POST.get('qualification' or None)
         relationship_status = self.request.POST.get('relationship_status' or None)
@@ -1213,6 +1214,8 @@ class FilteredUserView(APIView):
         zodiac_sign = self.request.POST.get('zodiac_sign' or None)
         taste = self.request.POST.get('taste' or None)
         verified = self.request.POST.get('verified' or None)
+        smoke = self.request.POST.get('smoke' or None)
+        drink = self.request.POST.get('drink' or None)
         # print('qualification--->>>', qualification)
         # print('relationship_status---->>', relationship_status)
         # print('religion---->>', religion)
@@ -1221,6 +1224,10 @@ class FilteredUserView(APIView):
         # print('height--->>>', height)
         # print('zodiac_sign--->>', zodiac_sign)
         # print('taste____>>>', taste)
+        if smoke:
+            user_detail_incoming_filter.append({'smoke': smoke})
+        if drink:
+            user_detail_incoming_filter.append({'drink': drink})
         if qualification:
             incoming_filter_query_list.append({'qualification': qualification})
         if verified:
@@ -1245,6 +1252,16 @@ class FilteredUserView(APIView):
                 for x in r:
                     if x:
                         or_filtered_data_list.append(x)
+                    else:
+                        pass
+            else:
+                pass
+        for value in user_detail_incoming_filter:
+            u_d = UserDetail.objects.filter(**value)
+            if u_d:
+                for y in u_d:
+                    if y:
+                        or_filtered_data_list.append(RegisterUser.objects.get(id=y.phone_number.id))
                     else:
                         pass
             else:
