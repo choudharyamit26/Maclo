@@ -3307,117 +3307,244 @@ class GoogleSignupView(CreateAPIView):
             # print('>>>>>>>>>>>>>>', self.request.data.POST('email'))
             serializer = GmailSerializer(data=request.data)
             if serializer.is_valid():
-                reg_usr = RegisterUser.objects.create(
-                    email=email,
-                    first_name=name,
-                    date_of_birth=dob,
-                    pic_1=profile_pic
-                )
-                user = User.objects.create(
-                    name=name,
-                    # last_name=last_name,
-                    email=email,
-                    social_id=social_id,
-                    social_type=social_type,
-                    device_token=device_token,
-                    # profile_pic=profile_pic
-                )
-                UserDetail.objects.create(
-                    phone_number=reg_usr,
-                    discovery=fromstr(f'POINT({lang} {lat})', srid=4326)
-                )
-                DeactivateAccount.objects.create(
-                    user=reg_usr
-                )
-                token = Token.objects.create(user=user)
-                # user_data = RegisterUser.objects.get(email=existing_user.email)
-                user_data = RegisterUser.objects.get(email=user.email)
-                user_detail = UserDetail.objects.get(phone_number=user_data)
-                pic_1 = ''
-                pic_2 = ''
-                pic_3 = ''
-                pic_4 = ''
-                pic_5 = ''
-                pic_6 = ''
-                pic_7 = ''
-                pic_8 = ''
-                pic_9 = ''
-                if user_data.pic_1:
-                    pic_1 = user_data.pic_1.url
-                else:
+                if profile_pic is not None and profile_pic != '':
+                    pic = ''
+                    data = ''
+                    image_url = profile_pic
+                    img_data = requests.get(image_url).content
+                    with open(f'{social_id}.png', 'wb') as handler:
+                        handler.write(img_data)
+                        pic = handler.name
+                    with open(os.path.abspath(pic), 'rb') as f:
+                        print('FFFFFFFFFFFFFF_______________', f)
+                        data = f.read()
+                    reg_usr = RegisterUser.objects.create(
+                        email=email,
+                        first_name=name,
+                        date_of_birth=dob,
+                        # pic_1=profile_pic
+                    )
+                    reg_usr.pic_1.save(f'{social_id}.png', ContentFile(data))
+                    print(reg_usr.pic_1.url)
+                    user = User.objects.create(
+                        name=name,
+                        # last_name=last_name,
+                        email=email,
+                        social_id=social_id,
+                        social_type=social_type,
+                        device_token=device_token,
+                        # profile_pic=profile_pic
+                    )
+                    UserDetail.objects.create(
+                        phone_number=reg_usr,
+                        discovery=fromstr(f'POINT({lang} {lat})', srid=4326)
+                    )
+                    DeactivateAccount.objects.create(
+                        user=reg_usr
+                    )
+                    token = Token.objects.create(user=user)
+                    # user_data = RegisterUser.objects.get(email=existing_user.email)
+                    user_data = RegisterUser.objects.get(email=user.email)
+                    user_detail = UserDetail.objects.get(phone_number=user_data)
                     pic_1 = ''
-                if user_data.pic_2:
-                    pic_2 = user_data.pic_2.url
-                else:
                     pic_2 = ''
-                if user_data.pic_3:
-                    pic_3 = user_data.pic_3.url
-                else:
                     pic_3 = ''
-                if user_data.pic_4:
-                    pic_4 = user_data.pic_4.url
-                else:
                     pic_4 = ''
-                if user_data.pic_5:
-                    pic_5 = user_data.pic_5.url
-                else:
                     pic_5 = ''
-                if user_data.pic_6:
-                    pic_6 = user_data.pic_6.url
-                else:
                     pic_6 = ''
-                # if user_data.pic_7:
-                #     pic_7 = user_data.pic_8.url
-                # else:
-                #     pic_7 = ''
-                # if user_data.pic_8:
-                #     pic_8 = user_data.pic_8.url
-                # else:
-                #     pic_8 = ''
-                # if user_data.pic_9:
-                #     pic_9 = user_data.pic_9.url
-                # else:
-                #     pic_9 = ''
-                Data = {
-                    "id": user_data.id,
-                    "email": user_data.email,
-                    "first_name": user_data.first_name,
-                    "last_name": user_data.last_name,
-                    "phone_number": user_data.phone_number,
-                    "gender": user_data.gender,
-                    "date_of_birth": user_data.date_of_birth,
-                    # "job_profile": user_data.job_profile,
-                    # "company_name": user_data.company_name,
-                    # "qualification": user_data.qualification,
-                    # "relationship_status": user_data.relationship_status,
-                    # "interests": user_data.interests,
-                    # "fav_quote": user_data.fav_quote,
-                    "pic_1": pic_1,
-                    "pic_2": pic_2,
-                    "pic_3": pic_3,
-                    "pic_4": pic_4,
-                    "pic_5": pic_5,
-                    "pic_6": pic_6,
-                    # "pic_7": pic_7,
-                    # "pic_8": pic_8,
-                    # "pic_9": pic_9,
-                    "discovery_lat": user_detail.discovery[0],
-                    "discovery_lang": user_detail.discovery[1],
-                    "distance_range": user_detail.distance_range,
-                    "min_age_range": user_detail.min_age_range,
-                    "max_age_range": user_detail.max_age_range,
-                    "interested": user_detail.interest
-                }
-                existing_user = User.objects.get(social_id=social_id)
-                r_user = RegisterUser.objects.get(email=existing_user.email)
-                account = DeactivateAccount.objects.get(user=r_user)
-                if account.deactivated:
-                    account.deactivated = False
-                    account.save()
-                    user_detail.deactivated = False
-                    user_detail.save()
-                return Response({"Token": token.key, "user_id": reg_usr.id, 'data': Data,
-                                 'deactivated': account.deactivated, "status": HTTP_200_OK})
+                    pic_7 = ''
+                    pic_8 = ''
+                    pic_9 = ''
+                    if user_data.pic_1:
+                        pic_1 = user_data.pic_1.url
+                    else:
+                        pic_1 = ''
+                    if user_data.pic_2:
+                        pic_2 = user_data.pic_2.url
+                    else:
+                        pic_2 = ''
+                    if user_data.pic_3:
+                        pic_3 = user_data.pic_3.url
+                    else:
+                        pic_3 = ''
+                    if user_data.pic_4:
+                        pic_4 = user_data.pic_4.url
+                    else:
+                        pic_4 = ''
+                    if user_data.pic_5:
+                        pic_5 = user_data.pic_5.url
+                    else:
+                        pic_5 = ''
+                    if user_data.pic_6:
+                        pic_6 = user_data.pic_6.url
+                    else:
+                        pic_6 = ''
+                    # if user_data.pic_7:
+                    #     pic_7 = user_data.pic_8.url
+                    # else:
+                    #     pic_7 = ''
+                    # if user_data.pic_8:
+                    #     pic_8 = user_data.pic_8.url
+                    # else:
+                    #     pic_8 = ''
+                    # if user_data.pic_9:
+                    #     pic_9 = user_data.pic_9.url
+                    # else:
+                    #     pic_9 = ''
+                    Data = {
+                        "id": user_data.id,
+                        "email": user_data.email,
+                        "first_name": user_data.first_name,
+                        "last_name": user_data.last_name,
+                        "phone_number": user_data.phone_number,
+                        "gender": user_data.gender,
+                        "date_of_birth": user_data.date_of_birth,
+                        # "job_profile": user_data.job_profile,
+                        # "company_name": user_data.company_name,
+                        # "qualification": user_data.qualification,
+                        # "relationship_status": user_data.relationship_status,
+                        # "interests": user_data.interests,
+                        # "fav_quote": user_data.fav_quote,
+                        "pic_1": pic_1,
+                        "pic_2": pic_2,
+                        "pic_3": pic_3,
+                        "pic_4": pic_4,
+                        "pic_5": pic_5,
+                        "pic_6": pic_6,
+                        # "pic_7": pic_7,
+                        # "pic_8": pic_8,
+                        # "pic_9": pic_9,
+                        "discovery_lat": user_detail.discovery[0],
+                        "discovery_lang": user_detail.discovery[1],
+                        "distance_range": user_detail.distance_range,
+                        "min_age_range": user_detail.min_age_range,
+                        "max_age_range": user_detail.max_age_range,
+                        "interested": user_detail.interest
+                    }
+                    existing_user = User.objects.get(social_id=social_id)
+                    r_user = RegisterUser.objects.get(email=existing_user.email)
+                    account = DeactivateAccount.objects.get(user=r_user)
+                    if account.deactivated:
+                        account.deactivated = False
+                        account.save()
+                        user_detail.deactivated = False
+                        user_detail.save()
+                    return Response({"Token": token.key, "user_id": reg_usr.id, 'data': Data,
+                                     'deactivated': account.deactivated, "status": HTTP_200_OK})
+                else:
+                    reg_usr = RegisterUser.objects.create(
+                        email=email,
+                        first_name=name,
+                        date_of_birth=dob,
+                        # pic_1=profile_pic
+                    )
+                    reg_usr.pic_1.save(f'{social_id}.png', ContentFile(data))
+                    print(reg_usr.pic_1.url)
+                    user = User.objects.create(
+                        name=name,
+                        # last_name=last_name,
+                        email=email,
+                        social_id=social_id,
+                        social_type=social_type,
+                        device_token=device_token,
+                        # profile_pic=profile_pic
+                    )
+                    UserDetail.objects.create(
+                        phone_number=reg_usr,
+                        discovery=fromstr(f'POINT({lang} {lat})', srid=4326)
+                    )
+                    DeactivateAccount.objects.create(
+                        user=reg_usr
+                    )
+                    token = Token.objects.create(user=user)
+                    # user_data = RegisterUser.objects.get(email=existing_user.email)
+                    user_data = RegisterUser.objects.get(email=user.email)
+                    user_detail = UserDetail.objects.get(phone_number=user_data)
+                    pic_1 = ''
+                    pic_2 = ''
+                    pic_3 = ''
+                    pic_4 = ''
+                    pic_5 = ''
+                    pic_6 = ''
+                    pic_7 = ''
+                    pic_8 = ''
+                    pic_9 = ''
+                    if user_data.pic_1:
+                        pic_1 = user_data.pic_1.url
+                    else:
+                        pic_1 = ''
+                    if user_data.pic_2:
+                        pic_2 = user_data.pic_2.url
+                    else:
+                        pic_2 = ''
+                    if user_data.pic_3:
+                        pic_3 = user_data.pic_3.url
+                    else:
+                        pic_3 = ''
+                    if user_data.pic_4:
+                        pic_4 = user_data.pic_4.url
+                    else:
+                        pic_4 = ''
+                    if user_data.pic_5:
+                        pic_5 = user_data.pic_5.url
+                    else:
+                        pic_5 = ''
+                    if user_data.pic_6:
+                        pic_6 = user_data.pic_6.url
+                    else:
+                        pic_6 = ''
+                    # if user_data.pic_7:
+                    #     pic_7 = user_data.pic_8.url
+                    # else:
+                    #     pic_7 = ''
+                    # if user_data.pic_8:
+                    #     pic_8 = user_data.pic_8.url
+                    # else:
+                    #     pic_8 = ''
+                    # if user_data.pic_9:
+                    #     pic_9 = user_data.pic_9.url
+                    # else:
+                    #     pic_9 = ''
+                    Data = {
+                        "id": user_data.id,
+                        "email": user_data.email,
+                        "first_name": user_data.first_name,
+                        "last_name": user_data.last_name,
+                        "phone_number": user_data.phone_number,
+                        "gender": user_data.gender,
+                        "date_of_birth": user_data.date_of_birth,
+                        # "job_profile": user_data.job_profile,
+                        # "company_name": user_data.company_name,
+                        # "qualification": user_data.qualification,
+                        # "relationship_status": user_data.relationship_status,
+                        # "interests": user_data.interests,
+                        # "fav_quote": user_data.fav_quote,
+                        "pic_1": pic_1,
+                        "pic_2": pic_2,
+                        "pic_3": pic_3,
+                        "pic_4": pic_4,
+                        "pic_5": pic_5,
+                        "pic_6": pic_6,
+                        # "pic_7": pic_7,
+                        # "pic_8": pic_8,
+                        # "pic_9": pic_9,
+                        "discovery_lat": user_detail.discovery[0],
+                        "discovery_lang": user_detail.discovery[1],
+                        "distance_range": user_detail.distance_range,
+                        "min_age_range": user_detail.min_age_range,
+                        "max_age_range": user_detail.max_age_range,
+                        "interested": user_detail.interest
+                    }
+                    existing_user = User.objects.get(social_id=social_id)
+                    r_user = RegisterUser.objects.get(email=existing_user.email)
+                    account = DeactivateAccount.objects.get(user=r_user)
+                    if account.deactivated:
+                        account.deactivated = False
+                        account.save()
+                        user_detail.deactivated = False
+                        user_detail.save()
+                    return Response({"Token": token.key, "user_id": reg_usr.id, 'data': Data,
+                                     'deactivated': account.deactivated, "status": HTTP_200_OK})
             else:
                 return Response({"message": serializer.errors, "status": HTTP_400_BAD_REQUEST})
 
