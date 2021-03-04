@@ -47,7 +47,7 @@ def unmatch_users():
                 print('INSIDE MEETING ELSE')
                 # if timezone.now() > obj.created_at + timedelta(days=30):
                 if timezone.now() > obj.created_at + timedelta(hours=1):
-                    print('INSIDE NESTED MEETING IF')
+                    # print('INSIDE NESTED MEETING IF')
                     meeting_obj = MatchedUser.objects.get(id=obj)
                     meeting_obj.delete()
                 else:
