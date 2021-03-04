@@ -22,25 +22,27 @@ def unmatch_users():
         print(obj)
         try:
             print('inside try block')
-            meeting = ScheduleMeeting.objects.filter(Q(scheduled_by=obj.user) | Q(scheduled_with=obj.user))
-            print('MEETING----->>', meeting)
-            if meeting:
+            meetings = ScheduleMeeting.objects.filter(Q(scheduled_by=obj.user) | Q(scheduled_with=obj.user))
+            print('MEETING----->>', meetings)
+            if len(meetings) > 0:
                 print('inside meeting if')
-                pop_up = PopNotification.objects.filter(
-                    Q(user1=meeting.scheduled_by) | Q(user2=meeting.scheduled_by) | Q(user1=meeting.scheduled_with) | Q(
-                        user2=meeting.scheduled_with))
-                print('POP UP----->>>', pop_up)
-                if pop_up.status:
-                    pass
-                else:
-                    print('INSIDE POP UP ELSE')
-                    # if timezone.now() > obj.created_at + timedelta(days=30):
-                    if timezone.now() > obj.created_at + timedelta(hours=1):
-                        print('INSIDE NESTED POP UP IF')
-                        meeting_obj = MatchedUser.objects.get(id=obj)
-                        meeting_obj.delete()
-                    else:
-                        pass
+                for meeting in meetings:
+                    pop_ups = PopNotification.objects.filter(
+                        Q(user1=meeting.scheduled_by) | Q(user2=meeting.scheduled_by) | Q(user1=meeting.scheduled_with) | Q(
+                            user2=meeting.scheduled_with))
+                    print('POP UP----->>>', pop_ups)
+                    for pop_up in pop_ups:
+                        if pop_up.status:
+                            pass
+                        else:
+                            print('INSIDE POP UP ELSE')
+                            # if timezone.now() > obj.created_at + timedelta(days=30):
+                            if timezone.now() > obj.created_at + timedelta(hours=1):
+                                print('INSIDE NESTED POP UP IF')
+                                meeting_obj = MatchedUser.objects.get(id=obj)
+                                meeting_obj.delete()
+                            else:
+                                pass
             else:
                 print('INSIDE MEETING ELSE')
                 # if timezone.now() > obj.created_at + timedelta(days=30):
