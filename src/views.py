@@ -3963,7 +3963,12 @@ class MeetupPopUs(APIView):
                 print('inside if ')
                 print(meeting)
                 print(meeting.id)
-                meetings.append({'meeting_id': meeting.id, 'scheduled_by_id': meeting.scheduled_by.id,
+                if meeting.status_update_count > 0:
+                    pass
+                else:
+                    meeting.status_update_count += 1
+                    meeting.save()
+                    meetings.append({'meeting_id': meeting.id, 'scheduled_by_id': meeting.scheduled_by.id,
                                  'scheduled_by': meeting.scheduled_by.first_name,
                                  'scheduled_with_id': meeting.scheduled_with.id,
                                  'scheduled_with': meeting.scheduled_with.first_name})

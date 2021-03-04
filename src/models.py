@@ -244,6 +244,7 @@ class ScheduleMeeting(models.Model):
     venue = models.TextField()
     description = models.TextField()
     status = models.CharField(default='Not Completed', max_length=100)
+    status_update_count = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
