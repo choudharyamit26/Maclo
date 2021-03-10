@@ -505,3 +505,10 @@ class FeedbackView(View):
 
     def get(self, request, *args, **kwargs):
         return render(self.request, 'feedback.html', {'object_list': Feedback.objects.all()})
+
+
+class PrivacyPolicyView(View):
+    template_name = 'privacy-policy.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(self.request, 'privacy-policy.html')
