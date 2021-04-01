@@ -16,7 +16,7 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     UserLikedList, MeetingDetail, MettingList, UpdateMeetingStatus, UpdateUserLocation, UpdateDistanceRange, \
     UpdateAgeRange, UserAge, FilteredUserView, DislikeUser, DeleteAccount, DeactivateAccountView, CheckMeeting, \
     UnMatchView, BlockUserView, BlockedUsersList, UnBlockUser, CheckDob, CheckEmail, CheckUserBlocked, FCMNotification, \
-    LikedUserCount, MeetupPopUs, MeetupStatus, DisconnectWithInstagram
+    LikedUserCount, MeetupPopUs, MeetupStatus, DisconnectWithInstagram, ClearNotification
 
 app_name = 'src'
 
@@ -79,6 +79,7 @@ urlpatterns = [
     path('users-liked-list/', UserLikedList.as_view(), name='users-liked-list'),
     path('delete-user-notification/', DeleteNotification.as_view(),
          name='delete-user-notification'),
+    path('delete-all-notifications/', ClearNotification.as_view(), name='delete-all-notifications'),
     path('update-user-notification/',
          UpdateNotification.as_view(), name='update-user-notification'),
     path('user-unread-message-count/', GetUnreadMessageCount.as_view(), name='user-unread-message-count'),

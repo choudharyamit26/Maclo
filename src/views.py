@@ -3969,9 +3969,9 @@ class MeetupPopUs(APIView):
                     meeting.status_update_count += 1
                     meeting.save()
                     meetings.append({'meeting_id': meeting.id, 'scheduled_by_id': meeting.scheduled_by.id,
-                                 'scheduled_by': meeting.scheduled_by.first_name,
-                                 'scheduled_with_id': meeting.scheduled_with.id,
-                                 'scheduled_with': meeting.scheduled_with.first_name})
+                                     'scheduled_by': meeting.scheduled_by.first_name,
+                                     'scheduled_with_id': meeting.scheduled_with.id,
+                                     'scheduled_with': meeting.scheduled_with.first_name})
             else:
                 print('else case')
                 pass
@@ -4025,3 +4025,16 @@ class DisconnectWithInstagram(APIView):
         except Exception as e:
             x = {'error': str(e)}
             return Response({'message': x['error'], 'status': HTTP_400_BAD_REQUEST})
+
+
+class ClearNotification(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    model = UserNotification
+
+    def get(self, request, *args, **kwargs):
+        # r_user = RegisterUser.objects.get(email=self.request.user.email)
+        notifications = UserNotification.objects.filter(to=self.request.user)
+        for notification in notifications:
+            notification.delete()
+        return Response({"message": "Notifications cleared successfully", 'status': HTTP_200_OK})

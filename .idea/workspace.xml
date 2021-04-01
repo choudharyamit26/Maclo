@@ -19,7 +19,23 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3174a45b-a532-4d52-8d32-0dbe8f4e1182" name="Default Changelist" comment="" />
+    <list default="true" id="3174a45b-a532-4d52-8d32-0dbe8f4e1182" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/234456789901.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/234456789901_2vHHQXm.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/234456789901_8QH0heF.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/234456789901_AgfQtiW.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/234456789901_Fqbb4Rb.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/234456789901_fJiQBHg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/234456789901_oRz7y7s.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/maclo/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/maclo/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/image_name.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/image_name.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/image_name2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/local-filename.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/views.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -28,8 +44,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
