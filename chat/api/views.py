@@ -1,23 +1,11 @@
-from datetime import datetime
-
-from django.contrib.auth import get_user_model
-from rest_framework import permissions
-from rest_framework.generics import (
-    ListAPIView,
-    RetrieveAPIView,
-    CreateAPIView,
-    DestroyAPIView,
-    UpdateAPIView
-)
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
-from chat.models import ChatRoom, Message
-from chat.views import get_user_contact
-from .serializers import ChatSerializer
-from src.models import RegisterUser, BlockedUsers
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
+from rest_framework.views import APIView
+
+from chat.models import ChatRoom, Message
+from src.models import RegisterUser, BlockedUsers
 
 User = RegisterUser()
 
@@ -647,3 +635,53 @@ class UnReadMessageCount(APIView):
     def get(self, request, *args, **kwargs):
         message_count = Message.objects.filter(read=False).count()
         return Response({'count': message_count, 'status': HTTP_200_OK})
+
+
+class DeleteChatRoom(APIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        r_user = RegisterUser.objects.get(email=user.email)
+        room_id = self.request.POST['room_id']
+        print(room_id)
+        try:
+            room_obj = ChatRoom.objects.get(id=room_id)
+            sender = room_obj.sender
+            receiver = room_obj.receiver
+            if room_obj.sender is r_user:
+                room_obj.sender = receiver
+                room_obj.save()
+            else:
+                room_obj.receiver = sender
+                room_obj.save()
+            return Response({'message': 'Chat room deleted successfully', 'status': HTTP_200_OK})
+        except Exception as e:
+            return Response({'message': str(e), 'status': HTTP_400_BAD_REQUEST})
+
+
+class DeleteChatMessages(APIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        r_user = RegisterUser.objects.get(email=user.email)
+        room_id = self.request.POST['room_id']
+        print(room_id)
+        try:
+            room_obj = ChatRoom.objects.get(id=room_id)
+            sender = room_obj.sender
+            receiver = room_obj.receiver
+            messages = room_obj.messages.all()
+            for message in messages:
+                if message.sender is r_user:
+                    message.sender = receiver
+                    message.save()
+                else:
+                    message.receiver = sender
+                    message.save()
+            return Response({"message": "Messages deleted successfully", 'status': HTTP_200_OK})
+        except Exception as e:
+            return Response({'message': str(e), 'status': HTTP_400_BAD_REQUEST})

@@ -112,17 +112,6 @@ CHANNEL_LAYERS = {
         'BACKEND': 'channels.layers.InMemoryChannelLayer',
     },
 }
-# Server database
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'maclo',
-#         'USER': 'maclo',
-#         'PASSWORD': 'maclo',
-#         'HOST': 'localhost',
-#         'PORT': '5432'
-#     }
-# }
 
 # local Geo database
 # DATABASES = {
@@ -135,7 +124,7 @@ CHANNEL_LAYERS = {
 #         'PORT': '5432'
 #     }
 # }
-# Production Geo Datbase
+# Production Geo Database
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
