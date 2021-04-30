@@ -36,7 +36,17 @@ class MessagesList(APIView):
         chat = ChatRoom.objects.get(id=room_id)
         messages = []
         for message in chat.messages.all():
-            messages.append({'id': message.id, 'sender': message.sender.id, 'receiver': message.receiver.id,
+            sender = None
+            receiver = None
+            if message.sender:
+                sender = message.sender.id
+            else:
+                sender = ''
+            if message.receiver:
+                receiver = message.receiver.id
+            else:
+                receiver = ''
+            messages.append({'id': message.id, 'sender': sender, 'receiver': receiver,
                              'message': message.message, 'is_image': message.is_image, 'read': message.read,
                              'created_at': str(message.created_at.replace(microsecond=0))})
         return Response({'messages': messages, 'status': HTTP_200_OK})
