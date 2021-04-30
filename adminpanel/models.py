@@ -65,6 +65,7 @@ class AdminNotificationSetting(models.Model):
 class UserNotification(models.Model):
     """Notification model"""
     to = models.ForeignKey(User, on_delete=models.CASCADE)
+    extra_text = models.CharField(default='', max_length=100)
     title = models.CharField(default='title', max_length=200)
     # title_in_arabic = models.CharField(default='title', max_length=200)
     body = models.CharField(default='body', max_length=200)

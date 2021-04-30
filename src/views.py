@@ -1545,7 +1545,10 @@ class UserDetailAPIView(APIView):
         phone_number = self.request.GET.get('id')
         print(phone_number)
         # queryset = UserDetail.objects.filter(id=phone_number).values()
-        queryset = UserDetail.objects.filter(id=phone_number)
+        # queryset = UserDetail.objects.filter(id=phone_number)
+        register_id = RegisterUser.objects.get(id=phone_number)
+        print(register_id)
+        queryset = UserDetail.objects.get(phone_number=register_id)
         print(queryset)
         for obj in queryset:
             bio = obj.bio
@@ -1644,6 +1647,7 @@ class UserDetailAPIView(APIView):
                 "qualification": qualification,
                 "relationship_status": relationship_status,
                 # "interests": interests,
+                "height": obj.phone_number.height,
                 "fav_quote": fav_quote,
                 "religion": religion,
                 "body_type": body_type,
@@ -1682,6 +1686,7 @@ class UserDetailAPIView(APIView):
                 "distance_range": distance_range,
                 "min_age_range": min_age_range,
                 "max_age_range": max_age_range,
+                # "deactivated": account.deactivated
                 # "subscription": subscription
             }
             return Response({"Details": detail}, status=HTTP_200_OK)
@@ -1785,7 +1790,8 @@ class LikeUserAPIView(CreateAPIView):
             UserNotification.objects.create(
                 to=User.objects.get(email=to_user_id.email),
                 title='Like Notification',
-                body="You have been liked by " + from_user_name
+                body="You have been liked by " + from_user_name,
+                extra_text=f'{register_user.id}'
             )
             fcm_token = User.objects.get(email=to_user_id.email).device_token
             print('FCM TOKEN ', fcm_token)
@@ -1824,7 +1830,8 @@ class LikeUserAPIView(CreateAPIView):
                 UserNotification.objects.create(
                     to=User.objects.get(email=to_user_id.email),
                     title='Match Notification',
-                    body="You have been matched by " + from_user_name
+                    body="You have been matched by " + from_user_name,
+                    extra_text=f'{register_user.id}'
                 )
                 fcm_token = User.objects.get(email=to_user_id.email).device_token
                 try:
@@ -1895,7 +1902,8 @@ class SuperLikeUserAPIView(CreateAPIView):
             UserNotification.objects.create(
                 to=User.objects.get(email=to_user_id.email),
                 title='Super Match Notification',
-                body="You have been super liked by " + from_user_name
+                body="You have been super liked by " + from_user_name,
+                extra_text=f'{register_user.id}'
             )
             fcm_token = User.objects.get(email=to_user_id.email).device_token
             try:
@@ -1931,7 +1939,8 @@ class SuperLikeUserAPIView(CreateAPIView):
                 UserNotification.objects.create(
                     to=User.objects.get(email=to_user_id.email),
                     title='Super Match Notification',
-                    body="You have been super matched by " + from_user_name
+                    body="You have been super matched by " + from_user_name,
+                    extra_text=f'{register_user.id}'
                 )
                 fcm_token = User.objects.get(email=to_user_id.email).device_token
                 try:
@@ -2336,8 +2345,8 @@ class RequestMeetingAPIView(CreateAPIView):
                 to_user_name=first_name,
                 notification_type="Meeting",
                 notification_title="Meeting request",
-                notification_body="You have a meeting request from " + first_name
-
+                notification_body="You have a meeting request from " + first_name,
+                extra_text=f'{from_user_id.id}'
             )
             return Response({"Request sent successfully"}, status=HTTP_200_OK)
         else:
@@ -2374,7 +2383,8 @@ class MeetingStatusAPIView(UpdateAPIView):
             notification_type='Meeting Status',
             notification_title='Meeting Status Update',
             notification_body='Your meeting request status with ' +
-                              from_user_name + ' has changed to  ' + status
+                              from_user_name + ' has changed to  ' + status,
+            extra_text=f'{from_user_id.id}'
         )
         return Response({"Meeting status has been updated successfully"}, status=HTTP_200_OK)
 
@@ -2413,7 +2423,8 @@ class ScheduleMeetingAPIView(CreateAPIView):
         UserNotification.objects.create(
             to=User.objects.get(email=requested_user.email),
             title='Meeting Request',
-            body="You have a meeting request from " + logged_in_user_id.first_name
+            body="You have a meeting request from " + logged_in_user_id.first_name,
+            extra_text=f'{from_user_id.id}'
         )
         fcm_token = User.objects.get(email=requested_user.email).device_token
         try:
@@ -2604,7 +2615,8 @@ class UpdateMeetingStatus(APIView):
         UserNotification.objects.create(
             to=User.objects.get(email=meeting.scheduled_by.email),
             title='Meeting Status',
-            body="Your meeting request has been {} by {}".format(status, meeting.scheduled_with.first_name)
+            body="Your meeting request has been {} by {}".format(status, meeting.scheduled_with.first_name),
+            extra_text=f'{meeting.scheduled_with.id}'
         )
         fcm_token = User.objects.get(email=meeting.scheduled_by.email).device_token
         try:
