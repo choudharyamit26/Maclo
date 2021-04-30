@@ -650,12 +650,23 @@ class DeleteChatRoom(APIView):
             room_obj = ChatRoom.objects.get(id=room_id)
             sender = room_obj.sender
             receiver = room_obj.receiver
-            if room_obj.sender is r_user:
-                room_obj.sender = receiver
-                room_obj.save()
+            # print(r_user,sender,receiver)
+            # print(room_obj.sender is r_user)
+            # print(room_obj.receiver is r_user)
+            # print(room_obj.sender is r_user and room_obj.receiver is r_user)
+            # print(room_obj.receiver)
+            # print(room_obj.sender)
+            if room_obj.sender == r_user and room_obj.receiver == r_user:
+                print('inside if')
+                room_obj.delete()
             else:
-                room_obj.receiver = sender
-                room_obj.save()
+                print('inside else')
+                if room_obj.sender is r_user:
+                    room_obj.sender = receiver
+                    room_obj.save()
+                else:
+                    room_obj.receiver = sender
+                    room_obj.save()
             return Response({'message': 'Chat room deleted successfully', 'status': HTTP_200_OK})
         except Exception as e:
             return Response({'message': str(e), 'status': HTTP_400_BAD_REQUEST})
@@ -674,14 +685,22 @@ class DeleteChatMessages(APIView):
             room_obj = ChatRoom.objects.get(id=room_id)
             sender = room_obj.sender
             receiver = room_obj.receiver
+            print(sender, receiver, r_user)
             messages = room_obj.messages.all()
             for message in messages:
-                if message.sender is r_user:
-                    message.sender = receiver
-                    message.save()
+                print('inside if')
+                if message.sender == r_user and message.receiver == r_user:
+                    message.delete()
                 else:
-                    message.receiver = sender
-                    message.save()
+                    print('inside else')
+                    if message.sender is r_user:
+                        print('inside nested if')
+                        message.sender = receiver
+                        message.save()
+                    else:
+                        print('inside nested else')
+                        message.receiver = sender
+                        message.save()
             return Response({"message": "Messages deleted successfully", 'status': HTTP_200_OK})
         except Exception as e:
             return Response({'message': str(e), 'status': HTTP_400_BAD_REQUEST})
