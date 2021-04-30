@@ -671,7 +671,7 @@ class DeleteChatRoom(APIView):
                 room_obj.delete()
             else:
                 print('inside else')
-                if room_obj.sender is r_user:
+                if room_obj.sender == r_user:
                     room_obj.sender = None
                     room_obj.save()
                 else:
