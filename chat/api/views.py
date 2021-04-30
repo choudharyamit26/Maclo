@@ -666,7 +666,7 @@ class DeleteChatRoom(APIView):
             # print(room_obj.sender is r_user and room_obj.receiver is r_user)
             # print(room_obj.receiver)
             # print(room_obj.sender)
-            if room_obj.sender == r_user and room_obj.receiver == r_user:
+            if room_obj.sender == None and room_obj.receiver == None:
                 print('inside if')
                 room_obj.delete()
             else:
@@ -698,11 +698,11 @@ class DeleteChatMessages(APIView):
             receiver = room_obj.receiver
             print(sender, receiver, r_user)
             messages = room_obj.messages.all()
-            print('All Messages---',messages)
+            print('All Messages---', messages)
             for message in messages:
                 print('Message id', message.id)
                 print('inside if')
-                if message.sender == r_user and message.receiver == r_user:
+                if message.sender == None and message.receiver == None:
                     message.delete()
                 else:
                     print('inside else')
