@@ -1548,7 +1548,7 @@ class UserDetailAPIView(APIView):
         # queryset = UserDetail.objects.filter(id=phone_number)
         register_id = RegisterUser.objects.get(id=phone_number)
         print(register_id)
-        queryset = UserDetail.objects.get(phone_number=register_id)
+        queryset = UserDetail.objects.filter(phone_number=register_id)
         print(queryset)
         for obj in queryset:
             bio = obj.bio
