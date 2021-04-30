@@ -674,7 +674,7 @@ class DeleteChatRoom(APIView):
                 if room_obj.sender == r_user:
                     room_obj.sender = None
                     room_obj.save()
-                else:
+                if room_obj.receiver == r_user:
                     room_obj.receiver = None
                     room_obj.save()
             return Response({'message': 'Chat room deleted successfully', 'status': HTTP_200_OK})
@@ -710,7 +710,7 @@ class DeleteChatMessages(APIView):
                         print('inside nested if')
                         message.sender = None
                         message.save()
-                    else:
+                    if message.receiver == r_user:
                         print('inside nested else')
                         message.receiver = None
                         message.save()
