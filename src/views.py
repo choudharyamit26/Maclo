@@ -4050,3 +4050,97 @@ class ClearNotification(APIView):
         for notification in notifications:
             notification.delete()
         return Response({"message": "Notifications cleared successfully", 'status': HTTP_200_OK})
+
+
+class CheckUserProfileCompleteStatus(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        r_user = RegisterUser.objects.get(email=user.email)
+        print(r_user.id)
+        user_detail_obj = UserDetail.objects.get(phone_number=r_user)
+        print(user_detail_obj.id)
+        pic_1 = ''
+        pic_2 = ''
+        pic_3 = ''
+        pic_4 = ''
+        pic_5 = ''
+        pic_6 = ''
+        if user_detail_obj.phone_number.pic_1:
+            pic_1 = user_detail_obj.phone_number.pic_1.url
+        else:
+            pic_1 = ''
+        if user_detail_obj.phone_number.pic_2:
+            pic_2 = user_detail_obj.phone_number.pic_2.url
+        else:
+            pic_2 = ''
+        if user_detail_obj.phone_number.pic_3:
+            pic_3 = user_detail_obj.phone_number.pic_3.url
+        else:
+            pic_3 = ''
+        if user_detail_obj.phone_number.pic_4:
+            pic_4 = user_detail_obj.phone_number.pic_4.url
+        else:
+            pic_4 = ''
+        if user_detail_obj.phone_number.pic_5:
+            pic_5 = user_detail_obj.phone_number.pic_5.url
+        else:
+            pic_5 = ''
+        if user_detail_obj.phone_number.pic_6:
+            pic_6 = user_detail_obj.phone_number.pic_6.url
+        else:
+            pic_6 = ''
+        id = user_detail_obj.phone_number.id
+        bio = user_detail_obj.bio
+        first_name = user_detail_obj.phone_number.first_name
+        last_name = user_detail_obj.phone_number.last_name
+        email = user_detail_obj.phone_number.email
+        gender = user_detail_obj.phone_number.gender
+        date_of_birth = user_detail_obj.phone_number.date_of_birth
+        job_profile = user_detail_obj.phone_number.job_profile
+        company_name = user_detail_obj.phone_number.company_name
+        qualification = user_detail_obj.phone_number.qualification
+        relationship_status = user_detail_obj.phone_number.relationship_status
+        height = user_detail_obj.phone_number.height
+        zodiac_sign = user_detail_obj.phone_number.zodiac_sign
+        fav_quote = user_detail_obj.phone_number.fav_quote
+        religion = user_detail_obj.phone_number.religion
+        body_type = user_detail_obj.phone_number.body_type
+        verified = user_detail_obj.phone_number.verified
+        fb_signup = user_detail_obj.phone_number.fb_signup
+        pic_1 = pic_1
+        pic_2 = pic_2
+        pic_3 = pic_3
+        pic_4 = pic_4
+        pic_5 = pic_5
+        pic_6 = pic_6
+        living_in = user_detail_obj.living_in
+        hometown = user_detail_obj.hometown
+        profession = user_detail_obj.profession
+        college_name = user_detail_obj.college_name
+        university = user_detail_obj.university
+        personality = user_detail_obj.personality
+        preference_first_date = user_detail_obj.preference_first_date
+        fav_music = user_detail_obj.fav_music
+        interest = user_detail_obj.interest
+        food_type = user_detail_obj.food_type
+        owns = user_detail_obj.owns
+        travelled_place = user_detail_obj.travelled_place
+        once_in_life = user_detail_obj.once_in_life
+        exercise = user_detail_obj.exercise
+        looking_for = user_detail_obj.looking_for
+        fav_food = user_detail_obj.fav_food
+        fav_pet = user_detail_obj.fav_pet
+        smoke = user_detail_obj.smoke
+        drink = user_detail_obj.drink
+        discovery_lat = user_detail_obj.discovery[0]
+        discovery_lang = user_detail_obj.discovery[1]
+        distance_range = user_detail_obj.distance_range
+        min_age_range = user_detail_obj.min_age_range
+        max_age_range = user_detail_obj.max_age_range
+        if pic_1 == "" or pic_2 == "" or pic_3 == "" or pic_4 == "" or pic_5 == "" or pic_6 == "" or living_in == "" or hometown == "" or profession == "" or college_name == "" or university == "" or personality == "" or preference_first_date == "" or fav_music == "" or interest == "" or food_type == "" or owns == "" or travelled_place == "" or once_in_life == "" or exercise == "" or looking_for == "" or fav_food == "" or fav_pet == "" or smoke == "" or drink == "" or bio == "" or first_name == "" or last_name == "" or email == "" or gender == "" or date_of_birth == "" or job_profile == "" or company_name == "" or qualification == "" or relationship_status == "" or height == "" or zodiac_sign == "" or fav_quote == "" or religion == "" or body_type == "":
+            return Response({'message':'Profile not complete','profile_complete_status': False, 'status': HTTP_400_BAD_REQUEST})
+        else:
+            return Response({'message':'Profile complete','profile_complete_status': True, 'status': HTTP_200_OK})
