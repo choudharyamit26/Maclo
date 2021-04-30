@@ -4141,6 +4141,7 @@ class CheckUserProfileCompleteStatus(APIView):
         min_age_range = user_detail_obj.min_age_range
         max_age_range = user_detail_obj.max_age_range
         if pic_1 == "" or pic_2 == "" or pic_3 == "" or pic_4 == "" or pic_5 == "" or pic_6 == "" or living_in == "" or hometown == "" or profession == "" or college_name == "" or university == "" or personality == "" or preference_first_date == "" or fav_music == "" or interest == "" or food_type == "" or owns == "" or travelled_place == "" or once_in_life == "" or exercise == "" or looking_for == "" or fav_food == "" or fav_pet == "" or smoke == "" or drink == "" or bio == "" or first_name == "" or last_name == "" or email == "" or gender == "" or date_of_birth == "" or job_profile == "" or company_name == "" or qualification == "" or relationship_status == "" or height == "" or zodiac_sign == "" or fav_quote == "" or religion == "" or body_type == "":
-            return Response({'message':'Profile not complete','profile_complete_status': False, 'status': HTTP_400_BAD_REQUEST})
+            return Response(
+                {'message': 'Profile not complete', 'profile_complete_status': False, 'status': HTTP_400_BAD_REQUEST})
         else:
-            return Response({'message':'Profile complete','profile_complete_status': True, 'status': HTTP_200_OK})
+            return Response({'message': 'Profile complete', 'profile_complete_status': True, 'status': HTTP_200_OK})

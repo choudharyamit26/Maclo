@@ -662,10 +662,10 @@ class DeleteChatRoom(APIView):
             else:
                 print('inside else')
                 if room_obj.sender is r_user:
-                    room_obj.sender = receiver
+                    room_obj.sender = None
                     room_obj.save()
                 else:
-                    room_obj.receiver = sender
+                    room_obj.receiver = None
                     room_obj.save()
             return Response({'message': 'Chat room deleted successfully', 'status': HTTP_200_OK})
         except Exception as e:
@@ -679,6 +679,7 @@ class DeleteChatMessages(APIView):
     def post(self, request, *args, **kwargs):
         user = self.request.user
         r_user = RegisterUser.objects.get(email=user.email)
+        print(r_user.id)
         room_id = self.request.POST['room_id']
         print(room_id)
         try:
@@ -687,20 +688,36 @@ class DeleteChatMessages(APIView):
             receiver = room_obj.receiver
             print(sender, receiver, r_user)
             messages = room_obj.messages.all()
+            print('All Messages---',messages)
             for message in messages:
+                print('Message id', message.id)
                 print('inside if')
                 if message.sender == r_user and message.receiver == r_user:
                     message.delete()
                 else:
                     print('inside else')
-                    if message.sender is r_user:
+                    if message.sender == r_user:
                         print('inside nested if')
-                        message.sender = receiver
+                        message.sender = None
                         message.save()
                     else:
                         print('inside nested else')
-                        message.receiver = sender
+                        message.receiver = None
                         message.save()
             return Response({"message": "Messages deleted successfully", 'status': HTTP_200_OK})
+        except Exception as e:
+            return Response({'message': str(e), 'status': HTTP_400_BAD_REQUEST})
+
+
+class DeleteMessage(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        message_id = self.request.POST['message_id']
+        try:
+            message_obj = Message.objects.get(id=message_id)
+            message_obj.delete()
+            return Response({'message': 'Message deleted successfully', 'status': HTTP_200_OK})
         except Exception as e:
             return Response({'message': str(e), 'status': HTTP_400_BAD_REQUEST})

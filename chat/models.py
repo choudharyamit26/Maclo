@@ -4,9 +4,11 @@ from src.models import RegisterUser
 
 
 class Message(models.Model):
-    sender = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='message_sender')
+    sender = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, null=True, blank=True,
+                               related_name='message_sender')
     # sender = models.CharField(max_length=10000)
-    receiver = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='message_receiver')
+    receiver = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, null=True, blank=True,
+                                 related_name='message_receiver')
     # receiver = models.CharField(max_length=10000)
     message = models.CharField(default='', null=True, blank=True, max_length=2000)
     # image = models.ImageField(null=True, blank=True)
@@ -16,8 +18,10 @@ class Message(models.Model):
 
 
 class ChatRoom(models.Model):
-    sender = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='chat_room_sender')
-    receiver = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='chat_room_receiver')
+    sender = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, null=True, blank=True,
+                               related_name='chat_room_sender')
+    receiver = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, null=True, blank=True,
+                                 related_name='chat_room_receiver')
     # sender = models.CharField(max_length=10000)
     # receiver = models.CharField(max_length=10000)
     messages = models.ManyToManyField(Message)
