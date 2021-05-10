@@ -2361,6 +2361,7 @@ class UpdateMeeting(APIView):
         meeting_id = self.request.POST['meeting_id']
         meeting_date = self.request.POST['meeting_date']
         meeting_time = self.request.POST['meeting_time']
+        venue = self.request.POST['venue']
         user = self.request.user
         print('user', user)
         logged_in_user_id = RegisterUser.objects.get(email=user.email)
@@ -2369,6 +2370,7 @@ class UpdateMeeting(APIView):
             meeting_obj = ScheduleMeeting.objects.get(id=meeting_id)
             meeting_obj.meeting_date = meeting_date
             meeting_obj.meeting_time = meeting_time
+            meeting_obj.venue = venue
             meeting_obj.save()
             scheduled_with = meeting_obj.scheduled_with
             scheduled_by = meeting_obj.scheduled_by
