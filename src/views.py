@@ -2353,6 +2353,65 @@ class RequestMeetingAPIView(CreateAPIView):
             return Response({"Cannot send request as the user is not a match"}, status=HTTP_400_BAD_REQUEST)
 
 
+class UpdateMeeting(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        meeting_id = self.request.POST['meeting_id']
+        meeting_date = self.request.POST['meeting_date']
+        meeting_time = self.request.POST['meeting_time']
+        user = self.request.user
+        print('user', user)
+        logged_in_user_id = RegisterUser.objects.get(email=user.email)
+        print('Logged in user', logged_in_user_id)
+        try:
+            meeting_obj = ScheduleMeeting.objects.get(id=meeting_id)
+            meeting_obj.meeting_date = meeting_date
+            meeting_obj.meeting_time = meeting_time
+            meeting_obj.save()
+            scheduled_with = meeting_obj.scheduled_with
+            scheduled_by = meeting_obj.scheduled_by
+            print(scheduled_with,scheduled_by)
+            print('scheduled with ',User.objects.get(email=scheduled_with.email))
+            print('schedule by ',User.objects.get(email=scheduled_by.email))
+            if logged_in_user_id == scheduled_with:
+                UserNotification.objects.create(
+                    to=User.objects.get(email=scheduled_by.email),
+                    title='Meeting Request',
+                    body="Your meeting has been updated by " + scheduled_with.first_name,
+                    extra_text=f'{scheduled_with.id}'
+                )
+                fcm_token = User.objects.get(email=scheduled_by.email).device_token
+                try:
+                    title = "Meeting Request"
+                    body = "Your meeting has been updated by " + scheduled_with.first_name
+                    message_type = "meeting"
+                    respo = send_another(fcm_token, title, body)
+                    print("FCM Response===============>0", respo)
+                except Exception as e:
+                    pass
+            else:
+                UserNotification.objects.create(
+                    to=User.objects.get(email=scheduled_with.email),
+                    title='Meeting Request',
+                    body="Your meeting has been updated by " + scheduled_by.first_name,
+                    extra_text=f'{scheduled_by.id}'
+                )
+                fcm_token = User.objects.get(email=scheduled_with.email).device_token
+                try:
+                    title = "Meeting Request"
+                    body = "Your meeting has been updated by " + logged_in_user_id.first_name
+                    message_type = "meeting"
+                    respo = send_another(fcm_token, title, body)
+                    print("FCM Response===============>0", respo)
+                except Exception as e:
+                    pass
+            return Response({'message': 'Meeting updated successfully', 'status': HTTP_200_OK})
+        except Exception as e:
+            return Response({'message': str(e), 'status': HTTP_400_BAD_REQUEST})
+
+
 class MeetingStatusAPIView(UpdateAPIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)

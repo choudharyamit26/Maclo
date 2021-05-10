@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'chat',
     'src',
     'fcm_django',
-    'django_celery_beat'
+    'django_celery_beat',
+    # 'django_extensions'
 ]
 
 MIDDLEWARE = [

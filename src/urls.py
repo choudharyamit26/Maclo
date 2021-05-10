@@ -17,7 +17,7 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     UpdateAgeRange, UserAge, FilteredUserView, DislikeUser, DeleteAccount, DeactivateAccountView, CheckMeeting, \
     UnMatchView, BlockUserView, BlockedUsersList, UnBlockUser, CheckDob, CheckEmail, CheckUserBlocked, FCMNotification, \
     LikedUserCount, MeetupPopUs, MeetupStatus, DisconnectWithInstagram, ClearNotification, \
-    CheckUserProfileCompleteStatus
+    CheckUserProfileCompleteStatus,UpdateMeeting
 
 app_name = 'src'
 
@@ -66,6 +66,7 @@ urlpatterns = [
     path('user-deletematches/', DeleteMatchesAPIView.as_view(), name='delete-match'),
     path('user-deletesupermatches/', DeleteSuperMatchesAPIView.as_view(), name='delete-supermatch'),
     path('request-meeting/', RequestMeetingAPIView.as_view(), name='request-meeting'),
+    path('update-meeting/', UpdateMeeting.as_view(), name='update-meeting'),
     path('meeting-status/<int:pk>/', MeetingStatusAPIView.as_view(), name='meeting-status'),
     path('meeting-detail/', MeetingDetail.as_view(), name='meeting-detail'),
     path('meeting-list/', MettingList.as_view(), name='meeting-list'),

@@ -23,7 +23,6 @@ class CreateChatroom(APIView):
             sender=sender_obj,
             receiver=receiver_obj
         )
-
         return Response({'room_id': chat_room.id, 'status': HTTP_200_OK})
 
 
