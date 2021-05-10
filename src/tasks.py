@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.utils import timezone
 
 from adminpanel.models import UserNotification, User
-from fcm_notification import send_another
+from .fcm_notification import send_another
 from .models import MatchedUser, PopNotification, ScheduleMeeting
 
 utc = pytz.UTC
