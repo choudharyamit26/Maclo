@@ -75,3 +75,7 @@ class UserNotification(models.Model):
 
     class Meta:
         ordering = ('-created_at',)
+
+
+class TermsCondition(models.Model):
+    content = models.TextField(default='')

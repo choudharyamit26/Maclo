@@ -10,6 +10,7 @@
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#About">About this App</a></li>
                     <li><a data-toggle="tab" href="#Contact">Contact US</a></li>
+                    <li><a data-toggle="tab" href="#Terms">Terms And Condition</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -30,6 +31,17 @@
                             <a href="{% url 'adminpanel:update-contact-us' object.id %}" class="Edit">Edit</a>
                             <p>{{object.phone_number}}</p>
                             <p>{{object.email}}</p>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                    <div id="Terms" class="tab-pane fade">
+                        <div class="HelpContent">
+                            <h3>Terms and Condition</h3>
+                            {% for object in terms %}
+                            <a href="{% url 'adminpanel:update-terms-condition' object.id %}" class="Edit">Edit</a>
+                            <p>{{object.content}}</p>
+<!--                            <p>{{object.email}}</p>-->
                             {% endfor %}
 
                         </div>

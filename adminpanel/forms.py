@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import UserNotification
+from .models import UserNotification, TermsCondition
 from src.models import AboutUs, ContactUs
 
 
@@ -34,3 +34,9 @@ class UpdateContactUsForm(forms.ModelForm):
     class Meta:
         model = ContactUs
         fields = ('phone_number', 'email')
+
+
+class UpdateTermsConditionForm(forms.ModelForm):
+    class Meta:
+        model = TermsCondition
+        fields = ('content',)

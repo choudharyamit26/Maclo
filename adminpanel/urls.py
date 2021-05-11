@@ -2,7 +2,7 @@ from django.urls import path
 from .views import Login, Dashboard, UsersList, UserDetailView, UserDelete, PasswordChangeView, PasswordChangeDoneView, \
     SendNotification, CreateSubscriptionPlan, SubscriptionsPlansList, PurchasedSubscriptionList, MeetupList, \
     TransactionsList, ReportsView, StaticContentView, PrivacyPolicyUrl, UpdateAboutUs, UpdateContactUs, QueriesList, \
-    FeedbackView,PrivacyPolicyView
+    FeedbackView,PrivacyPolicyView,UpdateTermsCondition,TermsandConditionView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -32,6 +32,8 @@ urlpatterns = [
     path('query-list/', QueriesList.as_view(), name='query-list'),
     path('feedback/', FeedbackView.as_view(), name='feedback'),
     path('privacy-policy/', PrivacyPolicyView.as_view(), name='privacy-policy'),
+    path('terms-condition/', TermsandConditionView.as_view(), name='terms-condition'),
+    path('update-terms-condition/<int:pk>/', UpdateTermsCondition.as_view(), name='update-terms-condition'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

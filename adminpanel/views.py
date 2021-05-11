@@ -20,14 +20,14 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.conf.global_settings import DEFAULT_FROM_EMAIL
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import LoginForm, UserNotificationForm, UpdateAboutUsForm, UpdateContactUsForm
+from .forms import LoginForm, UserNotificationForm, UpdateAboutUsForm, UpdateContactUsForm, UpdateTermsConditionForm
 from src.models import RegisterUser, SubscriptionPlans, ScheduleMeeting, UserDetail, ContactUs, PrivacyPolicy, AboutUs, \
     ContactUsQuery, Feedback
 from .filters import UserFilter, MeetingFilter
 from src.fcm_notification import send_to_one, send_another
 from django.utils.translation import gettext_lazy as _
 from weasyprint import HTML, CSS
-from .models import UserNotification, Transaction, User
+from .models import UserNotification, Transaction, User, TermsCondition
 
 user = get_user_model()
 
@@ -512,3 +512,17 @@ class PrivacyPolicyView(View):
 
     def get(self, request, *args, **kwargs):
         return render(self.request, 'privacy-policy.html')
+
+
+class UpdateTermsCondition(UpdateView):
+    template_name = 'update-terms-condition.html'
+    form_class = UpdateTermsConditionForm
+    model = TermsCondition
+
+
+class TermsandConditionView(View):
+    template_name = 'terms-condition.html'
+    model = TermsCondition
+
+    def get(self, request, *args, **kwargs):
+        return render(self.request, 'terms-condition.html', {'terms': TermsCondition.objects.all()[0]})
