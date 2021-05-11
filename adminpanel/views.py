@@ -456,6 +456,7 @@ class StaticContentView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['contactus'] = ContactUs.objects.all()
         context['aboutus'] = AboutUs.objects.all()
+        context['terms'] = TermsCondition.objects.all()
         return context
     # def get(self, request, *args, **kwargs):
     #     return render(self.request, 'content-management.html')
@@ -518,6 +519,7 @@ class UpdateTermsCondition(UpdateView):
     template_name = 'update-terms-condition.html'
     form_class = UpdateTermsConditionForm
     model = TermsCondition
+    success_url = reverse_lazy('adminpanel:static-content')
 
 
 class TermsandConditionView(View):
@@ -525,4 +527,4 @@ class TermsandConditionView(View):
     model = TermsCondition
 
     def get(self, request, *args, **kwargs):
-        return render(self.request, 'terms-condition.html', {'terms': TermsCondition.objects.all()})
+        return render(self.request, 'terms-condition.html', {'terms': TermsCondition.objects.all().first()})

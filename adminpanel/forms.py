@@ -37,6 +37,8 @@ class UpdateContactUsForm(forms.ModelForm):
 
 
 class UpdateTermsConditionForm(forms.ModelForm):
+    content = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control'}))
+
     class Meta:
         model = TermsCondition
         fields = ('content',)
