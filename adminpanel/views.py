@@ -525,4 +525,4 @@ class TermsandConditionView(View):
     model = TermsCondition
 
     def get(self, request, *args, **kwargs):
-        return render(self.request, 'terms-condition.html', {'terms': TermsCondition.objects.all().first()})
+        return render(self.request, 'terms-condition.html', {'terms': TermsCondition.objects.all()})
