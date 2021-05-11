@@ -1122,11 +1122,14 @@ class FilteredUserView(APIView):
         ### latest setting change
         show_only_liked_profiles_list = []
         users_liked_by_show_only_liked_profiles = []
+        users_details_liked_by_show_only_liked_profiles = []
         show_only_liked_profiles_obj = RegisterUser.objects.filter(show_only_to_liked=True)
         for user in show_only_liked_profiles_obj:
             liked_by_me = MatchedUser.objects.filter(user=user)
             if register_user in liked_by_me.all():
                 users_liked_by_show_only_liked_profiles.append(user)
+        for user in users_details_liked_by_show_only_liked_profiles:
+            users_details_liked_by_show_only_liked_profiles.append(UserDetail.objects.get(phone_number=user))
         # for user in show_only_liked_profiles_obj:
         #     show_only_liked_profiles_list.append(user)
         # for user in show_only_liked_profiles_list:
@@ -1203,10 +1206,16 @@ class FilteredUserView(APIView):
         if len(users_in_range) > 0:
             if len(set(liked_disliked_user_detail)) > 0:
                 for y in users_in_range:
-                    if y in [x for x in set(liked_disliked_user_detail)]:
+                    if y in [x for x in set(liked_disliked_user_detail)] :
                         pass
                     else:
-                        list_after_liked_disliked.append(y)
+                        if y.phone_number.show_only_to_liked:
+                            if y in users_details_liked_by_show_only_liked_profiles:
+                                list_after_liked_disliked.append(y)
+                            else:
+                                pass
+                        else:
+                            list_after_liked_disliked.append(y)
             else:
                 for y in users_in_range:
                     list_after_liked_disliked.append(y)
