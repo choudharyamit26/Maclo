@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import UserNotification, TermsCondition
+from .models import UserNotification, TermsCondition,SafetyTips
 from src.models import AboutUs, ContactUs
 
 
@@ -41,4 +41,11 @@ class UpdateTermsConditionForm(forms.ModelForm):
 
     class Meta:
         model = TermsCondition
+        fields = ('content',)
+
+class UpdateSafetyTipsForm(forms.ModelForm):
+    content = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = SafetyTips
         fields = ('content',)

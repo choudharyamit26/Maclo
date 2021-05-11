@@ -20,14 +20,15 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.conf.global_settings import DEFAULT_FROM_EMAIL
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import LoginForm, UserNotificationForm, UpdateAboutUsForm, UpdateContactUsForm, UpdateTermsConditionForm
+from .forms import LoginForm, UserNotificationForm, UpdateAboutUsForm, UpdateContactUsForm, UpdateTermsConditionForm, \
+    UpdateSafetyTipsForm
 from src.models import RegisterUser, SubscriptionPlans, ScheduleMeeting, UserDetail, ContactUs, PrivacyPolicy, AboutUs, \
     ContactUsQuery, Feedback
 from .filters import UserFilter, MeetingFilter
 from src.fcm_notification import send_to_one, send_another
 from django.utils.translation import gettext_lazy as _
 from weasyprint import HTML, CSS
-from .models import UserNotification, Transaction, User, TermsCondition
+from .models import UserNotification, Transaction, User, TermsCondition, SafetyTips
 
 user = get_user_model()
 
@@ -457,6 +458,7 @@ class StaticContentView(LoginRequiredMixin, ListView):
         context['contactus'] = ContactUs.objects.all()
         context['aboutus'] = AboutUs.objects.all()
         context['terms'] = TermsCondition.objects.all()
+        context['safety'] = SafetyTips.objects.all()
         return context
     # def get(self, request, *args, **kwargs):
     #     return render(self.request, 'content-management.html')
@@ -528,3 +530,18 @@ class TermsandConditionView(View):
 
     def get(self, request, *args, **kwargs):
         return render(self.request, 'terms-condition.html', {'terms': TermsCondition.objects.all().first()})
+
+
+class UpdateSafetyTips(UpdateView):
+    template_name = 'update-safety-tips.html'
+    form_class = UpdateSafetyTipsForm
+    model = SafetyTips
+    success_url = reverse_lazy('adminpanel:static-content')
+
+
+class SafetyTipsView(View):
+    template_name = 'safety-tips.html'
+    model = SafetyTips
+
+    def get(self, request, *args, **kwargs):
+        return render(self.request, 'terms-condition.html', {'object': SafetyTips.objects.all().first()})

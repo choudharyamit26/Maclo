@@ -79,3 +79,7 @@ class UserNotification(models.Model):
 
 class TermsCondition(models.Model):
     content = models.TextField(default='')
+
+
+class SafetyTips(models.Model):
+    content = models.TextField(default='')
