@@ -113,6 +113,7 @@ class RegisterUser(models.Model):
     pic_4 = models.ImageField(upload_to='media', null=True, blank=True)
     pic_5 = models.ImageField(upload_to='media', null=True, blank=True)
     pic_6 = models.ImageField(upload_to='media', null=True, blank=True)
+    show_only_to_liked = models.BooleanField(default=False)
 
     # pic_7 = models.ImageField(upload_to='media', null=True, blank=True)
     # pic_8 = models.ImageField(upload_to='media', null=True, blank=True)

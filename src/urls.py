@@ -17,7 +17,7 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     UpdateAgeRange, UserAge, FilteredUserView, DislikeUser, DeleteAccount, DeactivateAccountView, CheckMeeting, \
     UnMatchView, BlockUserView, BlockedUsersList, UnBlockUser, CheckDob, CheckEmail, CheckUserBlocked, FCMNotification, \
     LikedUserCount, MeetupPopUs, MeetupStatus, DisconnectWithInstagram, ClearNotification, \
-    CheckUserProfileCompleteStatus,UpdateMeeting
+    CheckUserProfileCompleteStatus, UpdateMeeting, ShowProfileToOnlyLikedUsers, GetShowProfileToOnlyLikedUsers,UpdateLookingFor
 
 app_name = 'src'
 
@@ -112,7 +112,10 @@ urlpatterns = [
     path('like-count/', LikedUserCount.as_view(), name='like-count'),
     path('meetup-popup/', MeetupPopUs.as_view(), name='meetup-popup'),
     path('meetup-popup-update/', MeetupStatus.as_view(), name='meetup-popup-update'),
+    path('update-lookingfor/', UpdateLookingFor.as_view(), name='update-lookingfor'),
     path('disconnect-instagram/', DisconnectWithInstagram.as_view(), name='disconnect-instagram'),
+    path('update-show-only-to-liked/', ShowProfileToOnlyLikedUsers.as_view(), name='update-show-only-to-liked'),
+    path('get-show-only-to-liked/', GetShowProfileToOnlyLikedUsers.as_view(), name='get-show-only-to-liked'),
     path('check-profile-complete-status/', CheckUserProfileCompleteStatus.as_view(),
          name='check-profile-complete-status'),
 

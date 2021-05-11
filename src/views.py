@@ -1118,6 +1118,20 @@ class FilteredUserView(APIView):
         print('USERS BLOCKED BY ME ', users_blocked_by_me)
         # users_blocked_by_me_list_2 = [x for x in users_blocked_by_me for y in x.blocked.all()]
         # print('BLOCKED LIST 2', users_blocked_by_me_list_2)
+
+        ### latest setting change
+        show_only_liked_profiles_list = []
+        users_liked_by_show_only_liked_profiles = []
+        show_only_liked_profiles_obj = RegisterUser.objects.filter(show_only_to_liked=True)
+        for user in show_only_liked_profiles_obj:
+            liked_by_me = MatchedUser.objects.filter(user=user)
+            if register_user in liked_by_me.all():
+                users_liked_by_show_only_liked_profiles.append(user)
+        # for user in show_only_liked_profiles_obj:
+        #     show_only_liked_profiles_list.append(user)
+        # for user in show_only_liked_profiles_list:
+        #     users_liked_by_show_only_liked_profiles.append(MatchedUser.objects.filter(user=user))
+        ### End latest setting block
         users_blocked_by_me_list = []
         for user in users_blocked_by_me:
             for u in user.blocked.all():
@@ -2376,9 +2390,9 @@ class UpdateMeeting(APIView):
             meeting_obj.save()
             scheduled_with = meeting_obj.scheduled_with
             scheduled_by = meeting_obj.scheduled_by
-            print(scheduled_with,scheduled_by)
-            print('scheduled with ',User.objects.get(email=scheduled_with.email))
-            print('schedule by ',User.objects.get(email=scheduled_by.email))
+            print(scheduled_with, scheduled_by)
+            print('scheduled with ', User.objects.get(email=scheduled_with.email))
+            print('schedule by ', User.objects.get(email=scheduled_by.email))
             if logged_in_user_id == scheduled_with:
                 UserNotification.objects.create(
                     to=User.objects.get(email=scheduled_by.email),
@@ -4208,3 +4222,46 @@ class CheckUserProfileCompleteStatus(APIView):
                 {'message': 'Profile not complete', 'profile_complete_status': False, 'status': HTTP_400_BAD_REQUEST})
         else:
             return Response({'message': 'Profile complete', 'profile_complete_status': True, 'status': HTTP_200_OK})
+
+
+class ShowProfileToOnlyLikedUsers(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        r_user = RegisterUser.objects.get(email=user.email)
+        print('>>>>>', r_user.show_only_to_liked)
+        if r_user.show_only_to_liked:
+            r_user.show_only_to_liked = False
+            r_user.save()
+        else:
+            r_user.show_only_to_liked = True
+            r_user.save()
+        print('<<<<<<', r_user.show_only_to_liked)
+        return Response({'message': 'Setting updated successfully', 'status': HTTP_200_OK})
+
+
+class GetShowProfileToOnlyLikedUsers(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        r_user = RegisterUser.objects.get(email=user.email)
+        return Response(
+            {'message': 'Setting fetched successfully', 'value': r_user.show_only_to_liked, 'status': HTTP_200_OK})
+
+
+class UpdateLookingFor(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        looking_for = self.request.POST['looking_for']
+        user = self.request.user
+        register_user = RegisterUser.objects.get(email=user.email)
+        user_detail_obj = UserDetail.objects.get(phone_number=register_user)
+        user_detail_obj.looking_for = looking_for
+        user_detail_obj.save()
+        return Response({'message': 'Looking for update successfully', 'status': HTTP_200_OK})
