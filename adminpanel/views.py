@@ -544,4 +544,4 @@ class SafetyTipsView(View):
     model = SafetyTips
 
     def get(self, request, *args, **kwargs):
-        return render(self.request, 'terms-condition.html', {'object': SafetyTips.objects.all().first()})
+        return render(self.request, 'safety-tips.html', {'object': SafetyTips.objects.all().first()})

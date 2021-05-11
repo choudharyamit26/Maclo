@@ -256,6 +256,13 @@ class Feedback(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
+class FeedbackWithoutStars(models.Model):
+    phone_number = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
+    feedback = models.TextField()
+    subject = models.CharField(default='', max_length=1000)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
 class ContactUs(models.Model):
     phone_number = models.BigIntegerField(default='+9199999')
     email = models.EmailField(default='support@maclo.com', max_length=100)

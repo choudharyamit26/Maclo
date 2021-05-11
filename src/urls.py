@@ -17,7 +17,8 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     UpdateAgeRange, UserAge, FilteredUserView, DislikeUser, DeleteAccount, DeactivateAccountView, CheckMeeting, \
     UnMatchView, BlockUserView, BlockedUsersList, UnBlockUser, CheckDob, CheckEmail, CheckUserBlocked, FCMNotification, \
     LikedUserCount, MeetupPopUs, MeetupStatus, DisconnectWithInstagram, ClearNotification, \
-    CheckUserProfileCompleteStatus, UpdateMeeting, ShowProfileToOnlyLikedUsers, GetShowProfileToOnlyLikedUsers,UpdateLookingFor
+    CheckUserProfileCompleteStatus, UpdateMeeting, ShowProfileToOnlyLikedUsers, GetShowProfileToOnlyLikedUsers, \
+    UpdateLookingFor, FeedbackWithoutStar
 
 app_name = 'src'
 
@@ -75,6 +76,7 @@ urlpatterns = [
     path('schedule-meeting/', ScheduleMeetingAPIView.as_view(), name='schedule-meeting'),
     path('purchase-subscription/', SubscriptionPlanAPIView.as_view(), name='subscription-purchase'),
     path('feedback/', FeedbackApiView.as_view(), name='feedback'),
+    path('feedback-without-star/', FeedbackWithoutStar.as_view(), name='feedback-without-star'),
     path('contactus/', ContactUsApiView.as_view(), name='contactus'),
     path('contactus-form/', ContactUsQueryForm.as_view(), name='contactus-form'),
     path('notification-list/', GetNotificationList.as_view(), name='notification-list'),

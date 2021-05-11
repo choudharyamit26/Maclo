@@ -28,7 +28,8 @@ from rest_framework.views import APIView
 from .fcm_notification import send_to_one, send_another
 from adminpanel.models import UserNotification
 from .models import UserInstagramPic, UserDetail, RegisterUser, MatchedUser, RequestMeeting, ScheduleMeeting, Feedback, \
-    AboutUs, ContactUs, SubscriptionPlans, ContactUsQuery, DeactivateAccount, BlockedUsers, PopNotification
+    AboutUs, ContactUs, SubscriptionPlans, ContactUsQuery, DeactivateAccount, BlockedUsers, PopNotification, \
+    FeedbackWithoutStars
 from .serializers import (UserDetailSerializer, UserInstagramSerializer, RegisterSerializer,
                           MatchedUserSerializer, LikeSerializer, DeleteMatchSerializer, SuperLikeSerializer,
                           RequestMeetingSerializer, ScheduleMeetingSerializer, FeedbackSerializer, ContactUsSerializer,
@@ -1206,7 +1207,7 @@ class FilteredUserView(APIView):
         if len(users_in_range) > 0:
             if len(set(liked_disliked_user_detail)) > 0:
                 for y in users_in_range:
-                    if y in [x for x in set(liked_disliked_user_detail)] :
+                    if y in [x for x in set(liked_disliked_user_detail)]:
                         pass
                     else:
                         if y.phone_number.show_only_to_liked:
@@ -2752,6 +2753,24 @@ class FeedbackApiView(CreateAPIView):
             return Response({'message': 'Feedback submitted successfully', 'status': HTTP_200_OK})
         else:
             return Response({'error': serializer.errors, 'status': HTTP_400_BAD_REQUEST})
+
+
+class FeedbackWithoutStar(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    model = FeedbackWithoutStars
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        reg_obj = RegisterUser.objects.get(email=user.email)
+        feedback = self.request.POST['feedback']
+        subject = self.request.POST['subject']
+        FeedbackWithoutStars.objects.create(
+            phone_number=reg_obj,
+            feedback=feedback,
+            subject=subject
+        )
+        return Response({'message': 'Feedback submitted successfully', 'status': HTTP_200_OK})
 
 
 class ContactUsApiView(ListAPIView):

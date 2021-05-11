@@ -49,7 +49,7 @@
                     </div>
                     <div id="Safety" class="tab-pane fade">
                         <div class="HelpContent">
-                            <h3>Terms and Condition</h3>
+                            <h3>Safety Tips</h3>
                             {% for object in safety %}
                             <a href="{% url 'adminpanel:update-safety-tips' object.id %}" class="Edit">Edit</a>
                             <p>{{object.content}}</p>
