@@ -36,7 +36,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('user-create/', UserCreateAPIView.as_view(), name='user-detail'),
+    path('user-create/', UserCreateAPIView.as_view(), name='user-create'),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', Logout.as_view(), name='logout'),
     path('update-phonenumber/', UpdatePhoneNumber.as_view(), name='update-phonenumber'),

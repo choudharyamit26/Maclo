@@ -1713,8 +1713,8 @@ class UserDetailAPIView(APIView):
                 # "deactivated": account.deactivated
                 # "subscription": subscription
             }
-            return Response({"Details": detail}, status=HTTP_200_OK)
-        return Response({"Details": queryset}, status=HTTP_200_OK)
+            return Response({"Details": detail,'status':HTTP_200_OK})
+        return Response({"Details": queryset,'status':HTTP_200_OK})
 
 
 class SnippetFilter(rest_framework.FilterSet):

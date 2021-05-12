@@ -23,6 +23,7 @@ SECRET_KEY = '&fmi_gxw86%5_tm-35_ell!d4rh2e8!bkfon4qq9(xh2d5y&f1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
