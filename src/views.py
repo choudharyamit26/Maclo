@@ -705,7 +705,7 @@ class UserProfileUpdateView(UpdateAPIView):
         print(user)
         print(self.request.data)
         register_id = RegisterUser.objects.get(email=user.email)
-        register_id.date_of_birth = request.data.get("date_of_birth")
+        # register_id.date_of_birth = request.data.get("date_of_birth")
         register_id.qualification = request.data.get("qualification")
         register_id.religion = request.data.get("religion")
         register_id.body_type = request.data.get("body_type")
@@ -714,7 +714,7 @@ class UserProfileUpdateView(UpdateAPIView):
         register_id.height = request.data.get("height")
         register_id.zodiac_sign = request.data.get("zodiac_sign")
         register_id.save(
-            update_fields=['date_of_birth', 'qualification', 'religion', 'body_type', 'relationship_status',
+            update_fields=['qualification', 'religion', 'body_type', 'relationship_status',
                            'fav_quote', 'height', 'zodiac_sign'])
         print(register_id.pic_1)
         print(register_id.pic_2)
