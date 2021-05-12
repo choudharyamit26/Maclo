@@ -635,6 +635,7 @@ class UserProfileAPIView(ListCreateAPIView):
             detail = {
                 "id": user.phone_number.id,
                 "bio": user.bio,
+                "hashtag": user.hashtag,
                 "first_name": user.phone_number.first_name,
                 "last_name": user.phone_number.last_name,
                 "email": user.phone_number.email,
@@ -712,16 +713,17 @@ class UserProfileUpdateView(UpdateAPIView):
         register_id.relationship_status = request.data.get("relationship_status")
         register_id.fav_quote = request.data.get("fav_quote")
         register_id.height = request.data.get("height")
+        register_id.hashtag = request.data.get("hashtag")
         register_id.zodiac_sign = request.data.get("zodiac_sign")
         register_id.save(
             update_fields=['qualification', 'religion', 'body_type', 'relationship_status',
-                           'fav_quote', 'height', 'zodiac_sign'])
-        print(register_id.pic_1)
-        print(register_id.pic_2)
-        print(register_id.pic_3)
-        print(register_id.pic_4)
-        print(register_id.pic_5)
-        print(register_id.pic_6)
+                           'fav_quote', 'height', 'zodiac_sign', 'hashtag'])
+        # print(register_id.pic_1)
+        # print(register_id.pic_2)
+        # print(register_id.pic_3)
+        # print(register_id.pic_4)
+        # print(register_id.pic_5)
+        # print(register_id.pic_6)
         userdetail_obj = UserDetail.objects.get(phone_number=register_id)
         # instance = self.get_object()
         userdetail_obj.bio = request.data.get("bio")
@@ -1713,8 +1715,8 @@ class UserDetailAPIView(APIView):
                 # "deactivated": account.deactivated
                 # "subscription": subscription
             }
-            return Response({"Details": detail,'status':HTTP_200_OK})
-        return Response({"Details": queryset,'status':HTTP_200_OK})
+            return Response({"Details": detail, 'status': HTTP_200_OK})
+        return Response({"Details": queryset, 'status': HTTP_200_OK})
 
 
 class SnippetFilter(rest_framework.FilterSet):

@@ -104,6 +104,7 @@ class RegisterUser(models.Model):
     body_type = models.CharField(default='', max_length=100)
     zodiac_sign = models.CharField(default='', max_length=100)
     taste = models.CharField(default='', max_length=100)
+    hashtag = models.CharField(default='', max_length=1000)
     created_at = models.DateField(auto_now_add=True)
     verified = models.BooleanField(default=False, max_length=10)
     fb_signup = models.CharField(default='No', choices=BOOL_CHOICES, max_length=10)
