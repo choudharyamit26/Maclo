@@ -5,61 +5,65 @@
             <div class="Small-Wrapper"> 
                 <h4 class="Title">Transaction Management</h4>          
 
-                <div class="Filter">                     
-                    <div class="form-group">
-                        <label>From Date</label>
-                        <input type="date" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>To Date</label>
-                        <input type="date" class="form-control">
-                    </div>  
-                    <div class="form-group">
-                        <label>Transaction Reports</label>
-                        <select class="form-control"> 
-                            <option>Select Reports</option>
-                            <option>Weekly</option>
-                            <option>Monthly</option>
-                            <option>Yearly</option> 
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>&nbsp;</label>
-                        <button class="Button">Apply</button>
-                    </div>
-                     
-                </div>
-                <div class="fltR"> 
-                    <a href="javascript:void(0);" class="Export">
-                        <i class="fa fa-file-pdf-o"></i>
-                        Export
-                    </a>
-                    <div class="clear"> </div>
-                </div>
+<!--                <div class="Filter">                     -->
+<!--                    <div class="form-group">-->
+<!--                        <label>From Date</label>-->
+<!--                        <input type="date" class="form-control">-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label>To Date</label>-->
+<!--                        <input type="date" class="form-control">-->
+<!--                    </div>  -->
+<!--                    <div class="form-group">-->
+<!--                        <label>Transaction Reports</label>-->
+<!--                        <select class="form-control"> -->
+<!--                            <option>Select Reports</option>-->
+<!--                            <option>Weekly</option>-->
+<!--                            <option>Monthly</option>-->
+<!--                            <option>Yearly</option> -->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label>&nbsp;</label>-->
+<!--                        <button class="Button">Apply</button>-->
+<!--                    </div>-->
+<!--                     -->
+<!--                </div>-->
+<!--                <div class="fltR"> -->
+<!--                    <a href="javascript:void(0);" class="Export">-->
+<!--                        <i class="fa fa-file-pdf-o"></i>-->
+<!--                        Export-->
+<!--                    </a>-->
+<!--                    <div class="clear"> </div>-->
+<!--                </div>-->
 
                 <div class="TableList">
                     <table>
                         <thead>
                             <tr>
-                                <th>S.No</th> 
+                                <th>S.No</th>
+                                <th>Order Id</th>
                                 <th>Payment Id </th>
-                                <th>Order Id</th>  
+                                <th>Package Name </th>
                                 <th>Order Date</th>
-                                <th>Order Time</th> 
-                                <th>Total Amount</th>
-                                <th>Mode of Payment</th>
+                                <th>Duration</th>
+                                <th>Amount</th>
+                                <th>Auto Renew</th>
                             </tr>
                         </thead>
                         <tbody>
+                        {% for obj in object_list %}
                             <tr>
-                                <td>1</td>
-                                <td>PAYMENT 2503</td>
-                                <td>CDT 2548</td>
-                                <td>05 March, 2020 </td>
-                                <td>10:00AM - 02:00PM</td>
-                                <td>$ 2,500</td>
-                                <td>Visa Card</td>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{obj.order_id}}</td>
+                                <td>{{obj.purchase_token}}</td>
+                                <td>{{obj.package_name}}</td>
+                                <td>{{obj.order_date}}</td>
+                                <td>{{obj.duration}}</td>
+                                <td>{{obj.amount}}</td>
+                                <td>{{obj.auto_renewing}}</td>
                             </tr>
+                        {% endfor %}
                         </tbody> 
                     </table>
                 </div>
