@@ -18,7 +18,7 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     UnMatchView, BlockUserView, BlockedUsersList, UnBlockUser, CheckDob, CheckEmail, CheckUserBlocked, FCMNotification, \
     LikedUserCount, MeetupPopUs, MeetupStatus, DisconnectWithInstagram, ClearNotification, \
     CheckUserProfileCompleteStatus, UpdateMeeting, ShowProfileToOnlyLikedUsers, GetShowProfileToOnlyLikedUsers, \
-    UpdateLookingFor, FeedbackWithoutStar
+    UpdateLookingFor, FeedbackWithoutStar,TransactionDataView
 
 app_name = 'src'
 
@@ -114,6 +114,7 @@ urlpatterns = [
     path('like-count/', LikedUserCount.as_view(), name='like-count'),
     path('meetup-popup/', MeetupPopUs.as_view(), name='meetup-popup'),
     path('meetup-popup-update/', MeetupStatus.as_view(), name='meetup-popup-update'),
+    path('transaction-detail/', TransactionDataView.as_view(), name='transaction-detail'),
     path('update-lookingfor/', UpdateLookingFor.as_view(), name='update-lookingfor'),
     path('disconnect-instagram/', DisconnectWithInstagram.as_view(), name='disconnect-instagram'),
     path('update-show-only-to-liked/', ShowProfileToOnlyLikedUsers.as_view(), name='update-show-only-to-liked'),

@@ -50,12 +50,14 @@ class AdminNotification(models.Model):
 
 
 class Transaction(models.Model):
-    payment_id = models.CharField(default='0000', max_length=100)
-    order_id = models.CharField(default='0000', max_length=100)
+    purchase_token = models.CharField(default='0000', max_length=100)
+    package_name = models.CharField(default='', max_length=100)
+    duration = models.CharField(default='', max_length=1000)
+    order_id = models.CharField(default='', max_length=1000)
     order_date = models.DateField()
-    order_time = models.TimeField()
-    total_amount = models.IntegerField()
-    payment_mode = models.CharField(default='Visa', max_length=100)
+    # order_time = models.TimeField()
+    amount = models.CharField(default='', max_length=1000)
+    auto_renewing = models.BooleanField(default=False)
 
 
 class AdminNotificationSetting(models.Model):

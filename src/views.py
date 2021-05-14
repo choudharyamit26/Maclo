@@ -26,7 +26,7 @@ from rest_framework.settings import api_settings
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.views import APIView
 from .fcm_notification import send_to_one, send_another
-from adminpanel.models import UserNotification
+from adminpanel.models import UserNotification, Transaction
 from .models import UserInstagramPic, UserDetail, RegisterUser, MatchedUser, RequestMeeting, ScheduleMeeting, Feedback, \
     AboutUs, ContactUs, SubscriptionPlans, ContactUsQuery, DeactivateAccount, BlockedUsers, PopNotification, \
     FeedbackWithoutStars
@@ -4295,3 +4295,28 @@ class UpdateLookingFor(APIView):
         user_detail_obj.looking_for = looking_for
         user_detail_obj.save()
         return Response({'message': 'Looking for update successfully', 'status': HTTP_200_OK})
+
+
+class TransactionDataView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    model = Transaction
+
+    def post(self, request, *args, **kwargs):
+        order_id = self.request.POST['order_id']
+        purchase_token = self.request.POST['purchase_token']
+        package_name = self.request.POST['package_name']
+        duration = self.request.POST['duration']
+        amount = self.request.POST['amount']
+        auto_renewing = self.request.POST['auto_renewing']
+        order_date = self.request.POST['order_date']
+        Transaction.objects.create(
+            order_id=order_id,
+            purchase_token=purchase_token,
+            package_name=package_name,
+            duration=duration,
+            amount=amount,
+            auto_renewing=auto_renewing,
+            order_date=order_date
+        )
+        return Response({'message': 'Transaction data inserted successfully', 'status': HTTP_200_OK})
