@@ -1,4 +1,3 @@
-import os
 import shutil
 from datetime import timedelta
 import requests
@@ -9,7 +8,6 @@ from django.contrib.auth import get_user_model
 from django.contrib.gis.db.models.functions import GeometryDistance
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.measure import D
-from django.core.files.storage import FileSystemStorage
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -25,8 +23,47 @@ from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.views import APIView
-from .fcm_notification import send_to_one, send_another
+from .fcm_notification import send_another
 from adminpanel.models import UserNotification, Transaction
+from .models import UserInstagramPic, UserDetail, RegisterUser, MatchedUser, RequestMeeting, ScheduleMeeting, Feedback, \
+    AboutUs, ContactUs, SubscriptionPlans, ContactUsQuery, DeactivateAccount, BlockedUsers, PopNotification, \
+    FeedbackWithoutStars
+from .serializers import (UserDetailSerializer, UserInstagramSerializer, RegisterSerializer,
+                          MatchedUserSerializer, LikeSerializer, DeleteMatchSerializer, SuperLikeSerializer,
+                          RequestMeetingSerializer, ScheduleMeetingSerializer, FeedbackSerializer, ContactUsSerializer,
+                          AboutUsSerializer, MeetingStatusSerializer, PopUpNotificationSerializer,
+                          SubscriptionPlanSerializer, DeleteSuperMatchSerializer, SearchSerializer,
+                          GetInstagramPicSerializer, ShowInstaPics, AuthTokenSerializer,
+                          FacebookSerializer, GmailSerializer)
+import os
+import shutil
+from datetime import timedelta
+
+import instaloader
+import requests
+from django.contrib.auth import get_user_model
+from django.contrib.gis.db.models.functions import GeometryDistance
+from django.contrib.gis.geos import fromstr
+from django.contrib.gis.measure import D
+from django.core.files.base import ContentFile
+from django.db.models import Q
+from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from django_filters import rest_framework
+from fcm_django.models import FCMDevice
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView, ListCreateAPIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.settings import api_settings
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
+from rest_framework.views import APIView
+
+from adminpanel.models import UserNotification, Transaction
+from .fcm_notification import send_another
 from .models import UserInstagramPic, UserDetail, RegisterUser, MatchedUser, RequestMeeting, ScheduleMeeting, Feedback, \
     AboutUs, ContactUs, SubscriptionPlans, ContactUsQuery, DeactivateAccount, BlockedUsers, PopNotification, \
     FeedbackWithoutStars
@@ -4041,7 +4078,6 @@ class UserAge(APIView):
 
 
 class FCMNotification(APIView):
-    from fcm_django.models import FCMDevice
 
     def get(self, request, *args, **kwargs):
         FCMDevice.objects.create(
@@ -4324,3 +4360,13 @@ class TransactionDataView(APIView):
             order_date=order_date
         )
         return Response({'message': 'Transaction data inserted successfully', 'status': HTTP_200_OK})
+
+
+class GetAwsCred(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        return Response(
+            {'ACCESS_KEY_ID': 'AKIAYC6UDNTP4JZJHA6C', 'SECRET_KEY_ID': 'Nr5QCRn6Ne8uKEPxi3VpNaKrbF4cObIjqSy70qEH',
+             'status': HTTP_200_OK})
