@@ -370,7 +370,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                 "receiver": event['m'].receiver.id,
                 "message": event['m'].message,
                 "is_image": event['m'].is_image,
-                "message_id": event['m'].id,
+                "id": event['m'].id,
                 "created_at": str(event['m'].created_at.replace(microsecond=0))
                 # 'sender': event['m'],
                 # 'receiver': event['receiver'],
