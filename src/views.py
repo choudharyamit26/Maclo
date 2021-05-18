@@ -3856,7 +3856,7 @@ class CheckMeeting(APIView):
                     status='Rejected')
                 meeting_2 = ScheduleMeeting.objects.filter(scheduled_with=user2, scheduled_by=user1).exclude(
                     status='Rejected')
-                print('meetings inside try', meeting,meeting_2)
+                print('meetings inside try', meeting, meeting_2)
                 if len(meeting) > 0 or len(meeting_2) > 0:
                     return Response({'meeting_exists': True, 'meeting_id': meeting.first().id, 'status': HTTP_200_OK})
                 else:
@@ -3865,9 +3865,9 @@ class CheckMeeting(APIView):
                 print('Exception', e)
                 meeting = ScheduleMeeting.objects.filter(scheduled_with=user2, scheduled_by=user1).exclude(
                     status='Rejected')
-                meeting_2 = ScheduleMeeting.objects.filter(scheduled_with=user2, scheduled_by=user1).exclude(
+                meeting_2 = ScheduleMeeting.objects.filter(scheduled_with=user1, scheduled_by=user2).exclude(
                     status='Rejected')
-                print('meetings inside except', meeting,meeting_2)
+                print('meetings inside except', meeting, meeting_2)
                 if len(meeting) > 0 or len(meeting_2) > 0:
                     return Response({'meeting_exists': True, 'meeting_id': meeting.first().id, 'status': HTTP_200_OK})
                 else:
