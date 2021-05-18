@@ -3854,8 +3854,10 @@ class CheckMeeting(APIView):
             try:
                 meeting = ScheduleMeeting.objects.filter(scheduled_with=user1, scheduled_by=user2).exclude(
                     status='Rejected')
-                print('meetings inside try', meeting)
-                if len(meeting) > 0:
+                meeting_2 = ScheduleMeeting.objects.filter(scheduled_with=user2, scheduled_by=user1).exclude(
+                    status='Rejected')
+                print('meetings inside try', meeting,meeting_2)
+                if len(meeting) > 0 or len(meeting_2) > 0:
                     return Response({'meeting_exists': True, 'meeting_id': meeting.first().id, 'status': HTTP_200_OK})
                 else:
                     return Response({'meeting_exists': False, 'meeting_id': '', 'status': HTTP_400_BAD_REQUEST})
@@ -3863,8 +3865,10 @@ class CheckMeeting(APIView):
                 print('Exception', e)
                 meeting = ScheduleMeeting.objects.filter(scheduled_with=user2, scheduled_by=user1).exclude(
                     status='Rejected')
-                print('meetings inside except', meeting)
-                if len(meeting) > 0:
+                meeting_2 = ScheduleMeeting.objects.filter(scheduled_with=user2, scheduled_by=user1).exclude(
+                    status='Rejected')
+                print('meetings inside except', meeting,meeting_2)
+                if len(meeting) > 0 or len(meeting_2) > 0:
                     return Response({'meeting_exists': True, 'meeting_id': meeting.first().id, 'status': HTTP_200_OK})
                 else:
                     return Response({'meeting_exists': False, 'meeting_id': '', 'status': HTTP_400_BAD_REQUEST})
