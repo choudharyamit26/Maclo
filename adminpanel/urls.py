@@ -2,7 +2,8 @@ from django.urls import path
 from .views import Login, Dashboard, UsersList, UserDetailView, UserDelete, PasswordChangeView, PasswordChangeDoneView, \
     SendNotification, CreateSubscriptionPlan, SubscriptionsPlansList, PurchasedSubscriptionList, MeetupList, \
     TransactionsList, ReportsView, StaticContentView, PrivacyPolicyUrl, UpdateAboutUs, UpdateContactUs, QueriesList, \
-    FeedbackView, PrivacyPolicyView, UpdateTermsCondition, TermsandConditionView, UpdateSafetyTips,SafetyTipsView
+    FeedbackView, PrivacyPolicyView, UpdateTermsCondition, TermsandConditionView, UpdateSafetyTips, SafetyTipsView, \
+    TestingForms
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -35,6 +36,7 @@ urlpatterns = [
     path('privacy-policy/', PrivacyPolicyView.as_view(), name='privacy-policy'),
     path('terms-condition/', TermsandConditionView.as_view(), name='terms-condition'),
     path('safety-tips/', SafetyTipsView.as_view(), name='safety-tips'),
+    path('testing-forms/', TestingForms.as_view(), name='testing-forms'),
     path('update-terms-condition/<int:pk>/', UpdateTermsCondition.as_view(), name='update-terms-condition'),
 ]
 if settings.DEBUG:

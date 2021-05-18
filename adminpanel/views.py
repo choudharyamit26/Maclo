@@ -21,7 +21,7 @@ from django.utils import timezone
 from django.conf.global_settings import DEFAULT_FROM_EMAIL
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import LoginForm, UserNotificationForm, UpdateAboutUsForm, UpdateContactUsForm, UpdateTermsConditionForm, \
-    UpdateSafetyTipsForm
+    UpdateSafetyTipsForm, TestForm
 from src.models import RegisterUser, SubscriptionPlans, ScheduleMeeting, UserDetail, ContactUs, PrivacyPolicy, AboutUs, \
     ContactUsQuery, Feedback
 from .filters import UserFilter, MeetingFilter
@@ -545,3 +545,19 @@ class SafetyTipsView(View):
 
     def get(self, request, *args, **kwargs):
         return render(self.request, 'safety-tips.html', {'object': SafetyTips.objects.all().first()})
+
+
+class TestingForms(View):
+    template_name = 'test.html'
+    form_class = TestForm
+
+    def get(self, request, *args, **kwargs):
+        return render(self.request, 'test.html', {'form': self.form_class})
+
+    def post(self, request, *args, **kwargs):
+        form = TestForm(self.request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            return redirect("adminpanel:static-content")
+        else:
+            return render(self.request, 'test.html', {'form': form})

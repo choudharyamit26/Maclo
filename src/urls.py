@@ -4,7 +4,8 @@ from django.urls import path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
-
+from rest_framework.documentation import include_docs_urls
+from rest_framework.schemas import get_schema_view
 from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIView, UserslistAPIView, UserProfileAPIView, \
     SearchUser, GetMatchesAPIView, LikeUserAPIView, DeleteMatchesAPIView, RequestMeetingAPIView, MeetingStatusAPIView, \
     ScheduleMeetingAPIView, FeedbackApiView, ContactUsApiView, AboutUsApiView, EditAboutUsAPIView, EditContactUsApiView, \
@@ -18,23 +19,25 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     UnMatchView, BlockUserView, BlockedUsersList, UnBlockUser, CheckDob, CheckEmail, CheckUserBlocked, FCMNotification, \
     LikedUserCount, MeetupPopUs, MeetupStatus, DisconnectWithInstagram, ClearNotification, \
     CheckUserProfileCompleteStatus, UpdateMeeting, ShowProfileToOnlyLikedUsers, GetShowProfileToOnlyLikedUsers, \
-    UpdateLookingFor, FeedbackWithoutStar,TransactionDataView
+    UpdateLookingFor, FeedbackWithoutStar, TransactionDataView
 
 app_name = 'src'
 
-schema_view = get_schema_view(
-    openapi.Info(
-        title="Maclo  API",
-        default_version='v1',
-        description="APIs for Maclo Dating App",
-        terms_of_service="https://www.maclo.com",
-        contact=openapi.Contact(email="maclodatingapp@gmail.com"),
-        license=openapi.License(name="BSD License"),
-    ),
-    public=True,
-    permission_classes=(permissions.AllowAny,),
-)
-
+# schema_view = get_schema_view(
+#     openapi.Info(
+#         title="Maclo  API",
+#         default_version='v1',
+#         description="APIs for Maclo Dating App",
+#         terms_of_service="https://www.maclo.com",
+#         contact=openapi.Contact(email="maclodatingapp@gmail.com"),
+#         license=openapi.License(name="BSD License"),
+#     ),
+#     public=True,
+#     permission_classes=(permissions.AllowAny,),
+# )
+API_TITLE = 'Maclo API'
+API_DESCRIPTION = 'Web API for Maclo dating app'
+schema_view = get_schema_view(title=API_TITLE)
 urlpatterns = [
     path('user-create/', UserCreateAPIView.as_view(), name='user-create'),
     path('login/', LoginView.as_view(), name='login'),
@@ -95,8 +98,8 @@ urlpatterns = [
     path('facebook-signup/', FacebookSignupApiView.as_view(), name='fb-signup'),
     path('google-signup/', GoogleSignupView.as_view(), name='google-signup'),
     path('content/', GetMediaContent.as_view(), name='media-content'),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    # path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    # path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('check-number/', CheckNumber.as_view(), name='check-number'),
     path('user-age/', UserAge.as_view(), name='user-age'),
     path('home-or-filter/', FilteredUserView.as_view(), name='home-or-filter'),
@@ -121,6 +124,9 @@ urlpatterns = [
     path('get-show-only-to-liked/', GetShowProfileToOnlyLikedUsers.as_view(), name='get-show-only-to-liked'),
     path('check-profile-complete-status/', CheckUserProfileCompleteStatus.as_view(),
          name='check-profile-complete-status'),
+    # path('docs/', include_docs_urls(title=API_TITLE,
+    #                                 description=API_DESCRIPTION)),
+    # path('schema/', schema_view),
 
 ]
 if settings.DEBUG:

@@ -192,6 +192,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         # 'src.CustomTokenAuthentication.CustomTokenAuthentication'
     ),
+
     # 'DEFAULT_PERMISSION_CLASSES': (
     #     'rest_framework.permissions.IsAuthenticated',)
 }

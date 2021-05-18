@@ -363,13 +363,14 @@ class ChatRoomConsumer(WebsocketConsumer):
         message_sender_obj = event['m'].sender
         message_receiver_obj = event['m'].receiver
         message_content = event['m'].message
-        print('Message---->>>', message_sender_obj, message_receiver_obj, message_content)
+        print('Message---->>>', message_sender_obj, message_receiver_obj, message_content, event['m'].id)
         self.send(
             text_data=json.dumps({
                 "sender": event['m'].sender.id,
                 "receiver": event['m'].receiver.id,
                 "message": event['m'].message,
                 "is_image": event['m'].is_image,
+                "message_id": event['m'].id,
                 "created_at": str(event['m'].created_at.replace(microsecond=0))
                 # 'sender': event['m'],
                 # 'receiver': event['receiver'],
