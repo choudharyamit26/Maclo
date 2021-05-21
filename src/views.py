@@ -672,6 +672,7 @@ class UserProfileAPIView(ListCreateAPIView):
             detail = {
                 "id": user.phone_number.id,
                 "bio": user.bio,
+                "address":user.address,
                 "hashtag": user.phone_number.hashtag,
                 "first_name": user.phone_number.first_name,
                 "last_name": user.phone_number.last_name,

@@ -154,6 +154,7 @@ class UserDetail(models.Model):
     hometown = models.CharField(default='', max_length=300, null=True, blank=True)
     living_in = models.CharField(default='', max_length=300, null=True, blank=True)
     profession = models.CharField(default="", max_length=100, null=True, blank=True)
+    address = models.CharField(default="", max_length=500, null=True, blank=True)
     college_name = models.CharField(default='', max_length=100, null=True, blank=True)
     university = models.CharField(default='', max_length=200, null=True, blank=True)
     personality = models.CharField(default='', max_length=500, null=True, blank=True)
