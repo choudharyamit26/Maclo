@@ -1210,7 +1210,7 @@ class FilteredUserView(APIView):
             phone_number=register_user.id).order_by(
             "id").exclude(deactivated=True)
         print('<<<-----XXXXXXXXXXXXXXXXXXXXXXXXXX------>>>>>>', x)
-        print('LOGGED IN USER ID',register_user.id)
+        print('LOGGED IN USER ID',UserDetail.objects.get(phone_number=register_user.id).id)
         print('USER DETAIL 46', UserDetail.objects.get(id=46).discovery[0], UserDetail.objects.get(id=46).discovery[1])
         print('USER DETAIL 47', UserDetail.objects.get(id=47).discovery[0], UserDetail.objects.get(id=47).discovery[1])
         print('USER DETAIL 44', UserDetail.objects.get(id=44).discovery[0], UserDetail.objects.get(id=44).discovery[1])
