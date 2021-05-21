@@ -1236,6 +1236,22 @@ class FilteredUserView(APIView):
         # users_in_range = UserDetail.objects.annotate(
         #     discovery__distance=GeometryDistance("discovery__distance", users_location)).filter(
         #     discovery__distance_lte=(int(distance_range)) * 1000)
+
+        #### TESTING PURPOSRE
+        from django.contrib.gis.geos import Point
+        from django.contrib.gis.measure import Distance
+
+        lat = 52.5
+        lng = 1.0
+        radius = 10
+        # point = Point(lng, lat)
+        xyz = (int(distance_range) * 1000)
+        point = users_location
+        x = UserDetail.objects.filter(location__distance_lte=(point, Distance(km=xyz)))
+        print('<<<-----XXXXXXXXXXXXXXXXXXXXXXXXXX------>>>>>>', x)
+        #### END TESTING PURPOSE
+
+
         d = (int(distance_range) * 1000)
         users_in_range = UserDetail.objects.filter(discovery__dwithin=(users_location, d)).annotate(
             distance=GeometryDistance("discovery", users_location)).exclude(phone_number=register_user.id).order_by(
