@@ -1247,16 +1247,16 @@ class FilteredUserView(APIView):
         # point = Point(lng, lat)
         xyz = (int(distance_range) * 1000)
         point = users_location
-        x = UserDetail.objects.filter(discovery__distance_lte=(point, Distance(km=xyz))).exclude(phone_number=register_user.id).order_by(
+        users_in_range = UserDetail.objects.filter(discovery__distance_lte=(point, Distance(km=xyz))).exclude(phone_number=register_user.id).order_by(
             "id").exclude(deactivated=True)
-        print('<<<-----XXXXXXXXXXXXXXXXXXXXXXXXXX------>>>>>>', x)
+        print('<<<-----XXXXXXXXXXXXXXXXXXXXXXXXXX------>>>>>>', users_in_range)
         #### END TESTING PURPOSE
 
 
-        d = (int(distance_range) * 1000)
-        users_in_range = UserDetail.objects.filter(discovery__dwithin=(users_location, d)).annotate(
-            distance=GeometryDistance("discovery", users_location)).exclude(phone_number=register_user.id).order_by(
-            "distance").exclude(deactivated=True)
+        # d = (int(distance_range) * 1000)
+        # users_in_range = UserDetail.objects.filter(discovery__dwithin=(users_location, d)).annotate(
+        #     distance=GeometryDistance("discovery", users_location)).exclude(phone_number=register_user.id).order_by(
+        #     "distance").exclude(deactivated=True)
         # print(users_in_range.filter(min_age_range__gte=obj.phone_number.get_user_age(),max_age_range__lte=))
         print('>>>>>>>>>>>>>>>> Filtered Users -->', users_in_range)
         print('-----------------------------', len(liked_disliked_user_detail))
