@@ -636,7 +636,7 @@ class UserProfileAPIView(ListCreateAPIView):
             detail = {
                 "id": user.phone_number.id,
                 "bio": user.bio,
-                "address":user.address,
+                "address": user.address,
                 "hashtag": user.phone_number.hashtag,
                 "first_name": user.phone_number.first_name,
                 "last_name": user.phone_number.last_name,
@@ -1206,11 +1206,13 @@ class FilteredUserView(APIView):
 
         xyz = (int(distance_range))
         point = users_location
-        x = UserDetail.objects.filter(discovery__distance_lte=(point, Distance(km=xyz))).exclude(phone_number=register_user.id).order_by(
+        x = UserDetail.objects.filter(discovery__distance_lte=(point, Distance(km=xyz))).exclude(
+            phone_number=register_user.id).order_by(
             "id").exclude(deactivated=True)
         print('<<<-----XXXXXXXXXXXXXXXXXXXXXXXXXX------>>>>>>', x)
+        print('USER DETAIL 46', UserDetail.objects.get(id=46).discovery[0], UserDetail.objects.get(id=46).discovery[1])
+        print('USER DETAIL 47', UserDetail.objects.get(id=47).discovery[0], UserDetail.objects.get(id=47).discovery[1])
         #### END TESTING PURPOSE
-
 
         d = (int(distance_range) * 1000)
         users_in_range = UserDetail.objects.filter(discovery__dwithin=(users_location, d)).annotate(
