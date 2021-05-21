@@ -1212,6 +1212,7 @@ class FilteredUserView(APIView):
         print('<<<-----XXXXXXXXXXXXXXXXXXXXXXXXXX------>>>>>>', x)
         print('USER DETAIL 46', UserDetail.objects.get(id=46).discovery[0], UserDetail.objects.get(id=46).discovery[1])
         print('USER DETAIL 47', UserDetail.objects.get(id=47).discovery[0], UserDetail.objects.get(id=47).discovery[1])
+        print('USER DETAIL 44', UserDetail.objects.get(id=44).discovery[0], UserDetail.objects.get(id=44).discovery[1])
         #### END TESTING PURPOSE
 
         d = (int(distance_range) * 1000)
