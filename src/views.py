@@ -1248,7 +1248,7 @@ class FilteredUserView(APIView):
         xyz = (int(distance_range) * 1000)
         point = users_location
         x = UserDetail.objects.filter(discovery__distance_lte=(point, Distance(km=xyz))).exclude(phone_number=register_user.id).order_by(
-            "distance").exclude(deactivated=True)
+            "id").exclude(deactivated=True)
         print('<<<-----XXXXXXXXXXXXXXXXXXXXXXXXXX------>>>>>>', x)
         #### END TESTING PURPOSE
 
