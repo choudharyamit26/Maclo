@@ -1247,7 +1247,7 @@ class FilteredUserView(APIView):
         # point = Point(lng, lat)
         xyz = (int(distance_range) * 1000)
         point = users_location
-        x = UserDetail.objects.filter(location__distance_lte=(point, Distance(km=xyz)))
+        x = UserDetail.objects.filter(discovery__distance_lte=(point, Distance(km=xyz)))
         print('<<<-----XXXXXXXXXXXXXXXXXXXXXXXXXX------>>>>>>', x)
         #### END TESTING PURPOSE
 
