@@ -1630,7 +1630,7 @@ class UserDetailAPIView(APIView):
             company_name = obj.phone_number.company_name
             qualification = obj.phone_number.qualification
             relationship_status = obj.phone_number.relationship_status
-            # interests = obj.phone_number.interests
+            interests = obj.interests
             fav_quote = obj.phone_number.fav_quote
             religion = obj.phone_number.religion
             body_type = obj.phone_number.body_type
@@ -1710,7 +1710,7 @@ class UserDetailAPIView(APIView):
                 "company_name": company_name,
                 "qualification": qualification,
                 "relationship_status": relationship_status,
-                # "interests": interests,
+                "interests": interests,
                 "height": obj.phone_number.height,
                 "fav_quote": fav_quote,
                 "religion": religion,
