@@ -1,44 +1,8 @@
-import shutil
-from datetime import timedelta
-import requests
 import os
-from django.core.files.base import ContentFile
-import instaloader
-from django.contrib.auth import get_user_model
-from django.contrib.gis.db.models.functions import GeometryDistance
-from django.contrib.gis.geos import fromstr
-from django.contrib.gis.measure import D
-from django.db.models import Q
-from django.utils import timezone
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
-from django_filters import rest_framework
-from fcm_django.models import FCMDevice
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.authtoken.models import Token
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView, ListCreateAPIView
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.settings import api_settings
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
-from rest_framework.views import APIView
-from .fcm_notification import send_another
-from adminpanel.models import UserNotification, Transaction
-from .models import UserInstagramPic, UserDetail, RegisterUser, MatchedUser, RequestMeeting, ScheduleMeeting, Feedback, \
-    AboutUs, ContactUs, SubscriptionPlans, ContactUsQuery, DeactivateAccount, BlockedUsers, PopNotification, \
-    FeedbackWithoutStars
-from .serializers import (UserDetailSerializer, UserInstagramSerializer, RegisterSerializer,
-                          MatchedUserSerializer, LikeSerializer, DeleteMatchSerializer, SuperLikeSerializer,
-                          RequestMeetingSerializer, ScheduleMeetingSerializer, FeedbackSerializer, ContactUsSerializer,
-                          AboutUsSerializer, MeetingStatusSerializer, PopUpNotificationSerializer,
-                          SubscriptionPlanSerializer, DeleteSuperMatchSerializer, SearchSerializer,
-                          GetInstagramPicSerializer, ShowInstaPics, AuthTokenSerializer,
-                          FacebookSerializer, GmailSerializer)
 import os
 import shutil
 from datetime import timedelta
-
+from django.contrib.gis.measure import Distance
 import instaloader
 import requests
 from django.contrib.auth import get_user_model
@@ -1199,6 +1163,7 @@ class FilteredUserView(APIView):
         if user_detail_obj.distance_range:
             distance_range = user_detail_obj.distance_range
         distance_range = user_detail_obj.distance_range
+        print(distance_range)
         max_age_range = user_detail_obj.max_age_range
         min_age_range = user_detail_obj.min_age_range
         print('MIN AND MAX AGE RANGE---- ', min_age_range, max_age_range)
@@ -1238,14 +1203,8 @@ class FilteredUserView(APIView):
         #     discovery__distance_lte=(int(distance_range)) * 1000)
 
         #### TESTING PURPOSRE
-        from django.contrib.gis.geos import Point
-        from django.contrib.gis.measure import Distance
 
-        lat = 52.5
-        lng = 1.0
-        radius = 10
-        # point = Point(lng, lat)
-        xyz = (int(distance_range) * 1000)
+        xyz = (int(distance_range))
         point = users_location
         x = UserDetail.objects.filter(discovery__distance_lte=(point, Distance(km=xyz))).exclude(phone_number=register_user.id).order_by(
             "id").exclude(deactivated=True)
