@@ -2765,9 +2765,11 @@ class UpdateUserLocation(APIView):
     def post(self, request, *args, **kwargs):
         lat = self.request.POST['lat']
         lang = self.request.POST['lang']
+        address = self.request.POST['address']
         r_user = RegisterUser.objects.get(email=self.request.user.email)
         user_detail = UserDetail.objects.get(phone_number=r_user)
         user_detail.discovery = fromstr(f'POINT({lang} {lat})', srid=4326)
+        user_detail.address = address
         user_detail.save()
         return Response({'message': 'Location updated successfully', 'status': HTTP_200_OK})
 
