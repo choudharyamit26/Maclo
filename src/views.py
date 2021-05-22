@@ -1210,7 +1210,7 @@ class FilteredUserView(APIView):
         # y = latitude
         from django.contrib.gis.geos import Point
         xyz = (int(distance_range))
-        point = Point(lang, lat)
+        point = Point(lat, lang)
         x = UserDetail.objects.filter(discovery__distance_lte=(point, Distance(km=xyz))).exclude(
             phone_number=register_user.id).order_by(
             "id").exclude(deactivated=True)
