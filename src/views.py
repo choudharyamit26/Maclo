@@ -1203,9 +1203,14 @@ class FilteredUserView(APIView):
         #     discovery__distance_lte=(int(distance_range)) * 1000)
 
         #### TESTING PURPOSRE
-
+        # Point(x, y)
+        #
+        # x = longitude
+        #
+        # y = latitude
+        from django.contrib.gis.geos import Point
         xyz = (int(distance_range))
-        point = users_location
+        point = Point(lang, lat)
         x = UserDetail.objects.filter(discovery__distance_lte=(point, Distance(km=xyz))).exclude(
             phone_number=register_user.id).order_by(
             "id").exclude(deactivated=True)
@@ -1218,7 +1223,7 @@ class FilteredUserView(APIView):
         # print('<<<<<<<<<<-------------ZZZZZZZZZZZZZZ----------->>>>>>>', z)
         print('<<<<<<<<<<-------------YYYYYYYYYYYYYY----------->>>>>>>', y)
         print('<<<-----XXXXXXXXXXXXXXXXXXXXXXXXXX------>>>>>>', x)
-        print('LOGGED IN USER ID',UserDetail.objects.get(phone_number=register_user.id).id)
+        print('LOGGED IN USER ID', UserDetail.objects.get(phone_number=register_user.id).id)
         print('USER DETAIL 46', UserDetail.objects.get(id=46).discovery[0], UserDetail.objects.get(id=46).discovery[1])
         print('USER DETAIL 47', UserDetail.objects.get(id=47).discovery[0], UserDetail.objects.get(id=47).discovery[1])
         print('USER DETAIL 44', UserDetail.objects.get(id=44).discovery[0], UserDetail.objects.get(id=44).discovery[1])
