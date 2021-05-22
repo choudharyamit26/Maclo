@@ -1227,6 +1227,10 @@ class FilteredUserView(APIView):
         print('USER DETAIL 46', UserDetail.objects.get(id=46).discovery[0], UserDetail.objects.get(id=46).discovery[1])
         print('USER DETAIL 47', UserDetail.objects.get(id=47).discovery[0], UserDetail.objects.get(id=47).discovery[1])
         print('USER DETAIL 44', UserDetail.objects.get(id=44).discovery[0], UserDetail.objects.get(id=44).discovery[1])
+        users_in_range = UserDetail.objects.filter(discovery__dwithin=(users_location, int(distance_range))).annotate(
+            distance=GeometryDistance("discovery", users_location)).exclude(phone_number=register_user.id).order_by(
+            "distance").exclude(deactivated=True)
+        print('--------------------------', users_in_range)
         #### END TESTING PURPOSE
 
         d = (int(distance_range) * 1000)
