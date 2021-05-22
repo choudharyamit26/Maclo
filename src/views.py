@@ -1209,6 +1209,14 @@ class FilteredUserView(APIView):
         x = UserDetail.objects.filter(discovery__distance_lte=(point, Distance(km=xyz))).exclude(
             phone_number=register_user.id).order_by(
             "id").exclude(deactivated=True)
+        y = UserDetail.objects.filter(discovery__distance_lte=(point, D(km=xyz))).exclude(
+            phone_number=register_user.id).order_by(
+            "id").exclude(deactivated=True)
+        z = UserDetail.objects.filter(discovery__distance_dwithin=(point, D(km=xyz))).exclude(
+            phone_number=register_user.id).order_by(
+            "id").exclude(deactivated=True)
+        print('<<<<<<<<<<-------------ZZZZZZZZZZZZZZ----------->>>>>>>', z)
+        print('<<<<<<<<<<-------------YYYYYYYYYYYYYY----------->>>>>>>', y)
         print('<<<-----XXXXXXXXXXXXXXXXXXXXXXXXXX------>>>>>>', x)
         print('LOGGED IN USER ID',UserDetail.objects.get(phone_number=register_user.id).id)
         print('USER DETAIL 46', UserDetail.objects.get(id=46).discovery[0], UserDetail.objects.get(id=46).discovery[1])
