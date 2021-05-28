@@ -50,8 +50,8 @@ class AdminNotification(models.Model):
 
 
 class Transaction(models.Model):
-    purchase_token = models.CharField(default='0000', max_length=100)
-    package_name = models.CharField(default='', max_length=100)
+    purchase_token = models.CharField(default='0000', max_length=1000)
+    package_name = models.CharField(default='', max_length=1000)
     duration = models.CharField(default='', max_length=1000)
     order_id = models.CharField(default='', max_length=1000)
     order_date = models.DateField()
