@@ -4379,3 +4379,45 @@ class GetAwsCred(APIView):
         return Response(
             {'ACCESS_KEY_ID': 'AKIAYC6UDNTP4JZJHA6C', 'SECRET_KEY_ID': 'Nr5QCRn6Ne8uKEPxi3VpNaKrbF4cObIjqSy70qEH',
              'status': HTTP_200_OK})
+
+
+
+class VerifyApplePurchase(APIView):
+
+    def get(self, request, *args, **kwargs):
+        # https://sandbox.itunes.apple.com/verifyReceipt
+        from inapppy import AppStoreValidator, InAppPyValidationError
+
+        bundle_id = 'com.maclo.app'
+        auto_retry_wrong_env_request = False  # if True, automatically query sandbox endpoint if
+        # validation fails on production endpoint
+        validator = AppStoreValidator(bundle_id, auto_retry_wrong_env_request=auto_retry_wrong_env_request)
+
+        try:
+            exclude_old_transactions = False  # if True, include only the latest renewal transaction
+            validation_result = validator.validate('receipt', '099eddbf89bf4c53b2ec8d9bce1df11d',
+                                                   exclude_old_transactions=exclude_old_transactions)
+        except InAppPyValidationError as ex:
+            # handle validation error
+            response_from_apple = ex.raw_response  # contains actual response from AppStore service.
+            pass
+        return Response({'message': 'success', 'status': HTTP_200_OK})
+
+
+class VerfiyGooglePurchase(APIView):
+
+    def get(self, request, *args, **kwargs):
+        from inapppy import GooglePlayValidator, InAppPyValidationError
+
+        bundle_id = 'com.yourcompany.yourapp'
+        api_key = 'API key from the developer console'
+        validator = GooglePlayValidator(bundle_id, api_key)
+
+        try:
+            # receipt means `androidData` in result of purchase
+            # signature means `signatureAndroid` in result of purchase
+            validation_result = validator.validate('receipt', 'signature')
+        except InAppPyValidationError:
+            # handle validation error
+            pass
+        return Response({'message': 'success', 'status': HTTP_200_OK})
