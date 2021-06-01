@@ -1,7 +1,9 @@
-import os
+import json
 import os
 import shutil
 from datetime import timedelta
+
+import urllib3
 from django.contrib.gis.measure import Distance
 import instaloader
 import requests
@@ -4381,27 +4383,44 @@ class GetAwsCred(APIView):
              'status': HTTP_200_OK})
 
 
-
 class VerifyApplePurchase(APIView):
-
     def get(self, request, *args, **kwargs):
-        # https://sandbox.itunes.apple.com/verifyReceipt
-        from inapppy import AppStoreValidator, InAppPyValidationError
+        requestBody = {}
+        receipt_id = self.request.GET.get('receipt_id')
+        requestBody["receipt-data"] = receipt_id
+        url = 'https://sandbox.itunes.apple.com/verifyReceipt'
+        shared_secret = '099eddbf89bf4c53b2ec8d9bce1df11d'
+        requestBody["password"] = shared_secret
 
-        bundle_id = 'com.maclo.app'
-        auto_retry_wrong_env_request = False  # if True, automatically query sandbox endpoint if
-        # validation fails on production endpoint
-        validator = AppStoreValidator(bundle_id, auto_retry_wrong_env_request=auto_retry_wrong_env_request)
-
-        try:
-            exclude_old_transactions = False  # if True, include only the latest renewal transaction
-            validation_result = validator.validate('receipt', '099eddbf89bf4c53b2ec8d9bce1df11d',
-                                                   exclude_old_transactions=exclude_old_transactions)
-        except InAppPyValidationError as ex:
-            # handle validation error
-            response_from_apple = ex.raw_response  # contains actual response from AppStore service.
-            pass
-        return Response({'message': 'success', 'status': HTTP_200_OK})
+        http = urllib3.PoolManager()
+        response = http.request("POST", url, headers={"content-type": "application/json"},
+                                body=json.dumps(requestBody).encode("utf-8"))
+        print(json.loads(response.data))
+        if response.status == 200:
+            responseBody = json.loads(response.data)
+            status = responseBody.get("status")
+            print(status)
+            return Response({'message': responseBody})
+        else:
+            print(f"💣 Error: {response.status}")
+            return Response({'Error': response.status, 'status': HTTP_400_BAD_REQUEST})
+    # def get(self, request, *args, **kwargs):
+    #     from inapppy import AppStoreValidator, InAppPyValidationError
+    #     receipt_id = self.request.GET.get('receipt_id')
+    #     bundle_id = 'com.maclo.app'
+    #     auto_retry_wrong_env_request = False  # if True, automatically query sandbox endpoint if
+    #     # validation fails on production endpoint
+    #     validator = AppStoreValidator(bundle_id, auto_retry_wrong_env_request=auto_retry_wrong_env_request)
+    #
+    #     try:
+    #         exclude_old_transactions = False  # if True, include only the latest renewal transaction
+    #         validation_result = validator.validate(receipt_id, '099eddbf89bf4c53b2ec8d9bce1df11d',
+    #                                                exclude_old_transactions=exclude_old_transactions)
+    #     except InAppPyValidationError as ex:
+    #         # handle validation error
+    #         response_from_apple = ex.raw_response  # contains actual response from AppStore service.
+    #         # pass
+    #         return Response({'data':response_from_apple})
 
 
 class VerfiyGooglePurchase(APIView):

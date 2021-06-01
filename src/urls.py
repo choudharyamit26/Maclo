@@ -19,7 +19,7 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     UnMatchView, BlockUserView, BlockedUsersList, UnBlockUser, CheckDob, CheckEmail, CheckUserBlocked, FCMNotification, \
     LikedUserCount, MeetupPopUs, MeetupStatus, DisconnectWithInstagram, ClearNotification, \
     CheckUserProfileCompleteStatus, UpdateMeeting, ShowProfileToOnlyLikedUsers, GetShowProfileToOnlyLikedUsers, \
-    UpdateLookingFor, FeedbackWithoutStar, TransactionDataView, GetAwsCred
+    UpdateLookingFor, FeedbackWithoutStar, TransactionDataView, GetAwsCred, VerifyApplePurchase
 
 app_name = 'src'
 
@@ -124,7 +124,8 @@ urlpatterns = [
     path('get-show-only-to-liked/', GetShowProfileToOnlyLikedUsers.as_view(), name='get-show-only-to-liked'),
     path('check-profile-complete-status/', CheckUserProfileCompleteStatus.as_view(),
          name='check-profile-complete-status'),
-    path('get-aws-creds/', GetAwsCred.as_view(), name='get-aws-creds')
+    path('get-aws-creds/', GetAwsCred.as_view(), name='get-aws-creds'),
+    path('verify-apple-purchase/', VerifyApplePurchase.as_view(), name='verify-apple-purchase'),
     # path('docs/', include_docs_urls(title=API_TITLE,
     #                                 description=API_DESCRIPTION)),
     # path('schema/', schema_view),
