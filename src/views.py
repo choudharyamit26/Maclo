@@ -4473,16 +4473,23 @@ class SubscriptionBasedSuperLike(APIView):
         print(users_liked_me_list + users_liked_by_me_list)
         print(int(super_liked_by_me) in users_liked_me_list + users_liked_by_me_list)
         try:
+            print('inside first try block--->>>')
             print(UserHeartBeatsPerDay.objects.filter(user=r_user))
-            user_heartbeats = UserHeartBeatsPerDay.objects.filter(user=r_user)[-1]
+            user_heartbeats = UserHeartBeatsPerDay.objects.filter(user=r_user).last()
+            # print('user_heartbeats.number_of_heart_beats---', user_heartbeats)
+            print('user_heartbeats.number_of_heart_beats---', user_heartbeats.number_of_heart_beats > 0)
             if user_heartbeats.number_of_heart_beats > 0:
+                print('inside try if block')
+                print('user_heartbeats.number_of_heart_beats---', user_heartbeats.number_of_heart_beats)
                 if int(super_liked_by_me) not in users_liked_by_me_list + users_liked_me_list:
                     register_user = RegisterUser.objects.get(id=r_user.id)
                     from_user_name = register_user.first_name
                     user = MatchedUser.objects.create(user=register_user, super_matched='No')
                     user.super_liked_by_me.add(RegisterUser.objects.get(id=int(super_liked_by_me)))
-                    user_heartbeats -= 1
+                    print('Left number_of_heart_beats---', user_heartbeats.number_of_heart_beats)
+                    user_heartbeats.number_of_heart_beats -= 1
                     user_heartbeats.save()
+                    print('---Left number_of_heart_beats---', user_heartbeats.number_of_heart_beats)
                     to_user_id = RegisterUser.objects.get(id=int(super_liked_by_me))
                     UserNotification.objects.create(
                         to=User.objects.get(email=to_user_id.email),
@@ -4502,7 +4509,9 @@ class SubscriptionBasedSuperLike(APIView):
                     return Response({"message": "You have super liked a user", "status": HTTP_200_OK})
                 else:
                     try:
+                        print('inside sencond try block')
                         try:
+                            print('inside third try block')
                             m = MatchedUser.objects.get(user=r_user, super_matched='Yes',
                                                         super_liked_by_me=int(super_liked_by_me))
                             print(m.id)
@@ -4521,8 +4530,10 @@ class SubscriptionBasedSuperLike(APIView):
                         from_user_name = register_user.first_name
                         user = MatchedUser.objects.create(user=register_user, super_matched='Yes')
                         user.super_liked_by_me.add(RegisterUser.objects.get(id=int(super_liked_by_me)))
-                        user_heartbeats -= 1
+                        print('<<<<<<<---Left number_of_heart_beats---', user_heartbeats.number_of_heart_beats)
+                        user_heartbeats.number_of_heart_beats -= 1
                         user_heartbeats.save()
+                        print('Left number_of_heart_beats--->>>>', user_heartbeats.number_of_heart_beats)
                         to_user_id = RegisterUser.objects.get(id=int(super_liked_by_me))
                         # to_user_name = to_user_id.first_name
                         UserNotification.objects.create(
@@ -4543,14 +4554,17 @@ class SubscriptionBasedSuperLike(APIView):
                         return Response({"message": "You have super matched with a user", "status": HTTP_200_OK})
             else:
                 try:
-                    extra_heartbeat = ExtraHeartBeats.objects.filter(user=r_user)[-1]
+                    print('inside extra heartbeat try case')
+                    extra_heartbeat = ExtraHeartBeats.objects.filter(user=r_user).last()
+                    print('---', extra_heartbeat.extra_heartbeats > 0)
                     if extra_heartbeat.extra_heartbeats > 0:
+                        print('>>>>>>>>>>>')
                         if int(super_liked_by_me) not in users_liked_by_me_list + users_liked_me_list:
                             register_user = RegisterUser.objects.get(id=r_user.id)
                             from_user_name = register_user.first_name
                             user = MatchedUser.objects.create(user=register_user, super_matched='No')
                             user.super_liked_by_me.add(RegisterUser.objects.get(id=int(super_liked_by_me)))
-                            extra_heartbeat -= 1
+                            extra_heartbeat.extra_heartbeats -= 1
                             extra_heartbeat.save()
                             to_user_id = RegisterUser.objects.get(id=int(super_liked_by_me))
                             UserNotification.objects.create(
@@ -4591,7 +4605,7 @@ class SubscriptionBasedSuperLike(APIView):
                                 from_user_name = register_user.first_name
                                 user = MatchedUser.objects.create(user=register_user, super_matched='Yes')
                                 user.super_liked_by_me.add(RegisterUser.objects.get(id=int(super_liked_by_me)))
-                                extra_heartbeat -= 1
+                                extra_heartbeat.extra_heartbeats -= 1
                                 extra_heartbeat.save()
                                 to_user_id = RegisterUser.objects.get(id=int(super_liked_by_me))
                                 # to_user_name = to_user_id.first_name
@@ -4614,13 +4628,16 @@ class SubscriptionBasedSuperLike(APIView):
                                     {"message": "You have super matched with a user", "status": HTTP_200_OK})
                     else:
                         return Response({
-                                            'message': 'You have run out of superlikes. Please wait till tommorow or buy extra superlikes',
-                                            'status': HTTP_400_BAD_REQUEST})
+                            'message': 'You have run out of superlikes. Please wait till tomorrow or buy extra '
+                                       'superlikes',
+                            'status': HTTP_400_BAD_REQUEST})
                 except Exception as e:
+                    print('', e)
                     return Response(
-                        {'message': 'You have run out of superlikes. Please wait till tommorow or buy extra superlikes',
+                        {'message': str(e),
                          'status': HTTP_400_BAD_REQUEST})
         except Exception as e:
+            print('Outer most exception--->>>', e)
             return Response({'message': 'You do not have an active subscription plan', 'status': HTTP_400_BAD_REQUEST})
 
 
