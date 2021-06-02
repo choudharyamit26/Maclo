@@ -60,6 +60,7 @@ class Transaction(models.Model):
     # order_time = models.TimeField()
     amount = models.CharField(default='', max_length=1000)
     auto_renewing = models.BooleanField(default=False)
+    signature = models.CharField(default='', max_length=10000)
 
 
 class UserHeartBeatsPerDay(models.Model):

@@ -4364,6 +4364,7 @@ class TransactionDataView(APIView):
         amount = self.request.POST['amount']
         auto_renewing = self.request.POST['auto_renewing']
         order_date = self.request.POST['order_date']
+        signature = self.request.POST['signature']
         Transaction.objects.create(
             user=r_user,
             plan_type=plan_type,
@@ -4373,9 +4374,10 @@ class TransactionDataView(APIView):
             duration=duration,
             amount=amount,
             auto_renewing=auto_renewing,
-            order_date=order_date
+            order_date=order_date,
+            signature=signature
         )
-        if plan_type == 'Start' or plan_type == 'star' or plan_type == 'Star':
+        if plan_type == 'Star' or plan_type == 'star' or plan_type == 'Star':
             UserHeartBeatsPerDay.objects.create(
                 user=r_user,
                 number_of_heart_beats=5
@@ -4400,6 +4402,7 @@ class ExtraHeartBeatsView(APIView):
         amount = self.request.POST['amount']
         auto_renewing = self.request.POST['auto_renewing']
         order_date = self.request.POST['order_date']
+        signature = self.request.POST['signature']
         try:
             extra_heartbeat_obj = ExtraHeartBeats.objects.get(user=r_user)
             print(extra_heartbeat_obj)
@@ -4414,7 +4417,8 @@ class ExtraHeartBeatsView(APIView):
                 duration=duration,
                 amount=amount,
                 auto_renewing=auto_renewing,
-                order_date=order_date
+                order_date=order_date,
+                signature=signature
             )
         except Exception as e:
             print(e)
@@ -4428,7 +4432,8 @@ class ExtraHeartBeatsView(APIView):
                 duration=duration,
                 amount=amount,
                 auto_renewing=auto_renewing,
-                order_date=order_date
+                order_date=order_date,
+                signature=signature
             )
         return Response({'message': 'Transaction successful', 'status': HTTP_200_OK})
 
