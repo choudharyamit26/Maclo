@@ -50,14 +50,26 @@ class AdminNotification(models.Model):
 
 
 class Transaction(models.Model):
-    purchase_token = models.CharField(default='0000', max_length=1000)
+    user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
+    plan_type = models.CharField(default='', max_length=100)
+    purchase_token = models.CharField(default='0000', max_length=10000)
     package_name = models.CharField(default='', max_length=1000)
     duration = models.CharField(default='', max_length=1000)
-    order_id = models.CharField(default='', max_length=1000)
+    order_id = models.CharField(default='', max_length=10000)
     order_date = models.DateField()
     # order_time = models.TimeField()
     amount = models.CharField(default='', max_length=1000)
     auto_renewing = models.BooleanField(default=False)
+
+
+class UserHeartBeatsPerDay(models.Model):
+    user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
+    number_of_heart_beats = models.IntegerField()
+
+
+class ExtraHeartBeats(models.Model):
+    user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
+    extra_heartbeats = models.IntegerField()
 
 
 class AdminNotificationSetting(models.Model):

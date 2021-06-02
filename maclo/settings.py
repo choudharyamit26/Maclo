@@ -115,7 +115,7 @@ CHANNEL_LAYERS = {
     },
 }
 
-# # local Geo database
+# local Geo database
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.contrib.gis.db.backends.postgis',

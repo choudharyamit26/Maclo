@@ -19,7 +19,8 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     UnMatchView, BlockUserView, BlockedUsersList, UnBlockUser, CheckDob, CheckEmail, CheckUserBlocked, FCMNotification, \
     LikedUserCount, MeetupPopUs, MeetupStatus, DisconnectWithInstagram, ClearNotification, \
     CheckUserProfileCompleteStatus, UpdateMeeting, ShowProfileToOnlyLikedUsers, GetShowProfileToOnlyLikedUsers, \
-    UpdateLookingFor, FeedbackWithoutStar, TransactionDataView, GetAwsCred, VerifyApplePurchase
+    UpdateLookingFor, FeedbackWithoutStar, TransactionDataView, GetAwsCred, VerifyApplePurchase, ExtraHeartBeatsView, \
+    SubscriptionBasedSuperLike
 
 app_name = 'src'
 
@@ -67,6 +68,7 @@ urlpatterns = [
     path('like-user/', LikeUserAPIView.as_view(), name='like-user'),
     path('dislike-user/', DislikeUser.as_view(), name='dislike-user'),
     path('superlike-user/', SuperLikeUserAPIView.as_view(), name='superlike-user'),
+    path('subscription-based-superlike-user/', SubscriptionBasedSuperLike.as_view(), name='subscription-based-superlike-user'),
     path('user-deletematches/', DeleteMatchesAPIView.as_view(), name='delete-match'),
     path('user-deletesupermatches/', DeleteSuperMatchesAPIView.as_view(), name='delete-supermatch'),
     path('request-meeting/', RequestMeetingAPIView.as_view(), name='request-meeting'),
@@ -118,6 +120,7 @@ urlpatterns = [
     path('meetup-popup/', MeetupPopUs.as_view(), name='meetup-popup'),
     path('meetup-popup-update/', MeetupStatus.as_view(), name='meetup-popup-update'),
     path('transaction-detail/', TransactionDataView.as_view(), name='transaction-detail'),
+    path('extra-heart-beat-transaction/', ExtraHeartBeatsView.as_view(), name='extra-heart-beat-transaction'),
     path('update-lookingfor/', UpdateLookingFor.as_view(), name='update-lookingfor'),
     path('disconnect-instagram/', DisconnectWithInstagram.as_view(), name='disconnect-instagram'),
     path('update-show-only-to-liked/', ShowProfileToOnlyLikedUsers.as_view(), name='update-show-only-to-liked'),
