@@ -1,5 +1,7 @@
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from src.models import RegisterUser
 from django.urls import reverse
@@ -73,6 +75,12 @@ class ExtraHeartBeats(models.Model):
     extra_heartbeats = models.IntegerField()
 
 
+class SubscriptionStatus(models.Model):
+    user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
+    active = models.BooleanField(default=False)
+    purchase_token = models.CharField(default='', max_length=2000)
+
+
 class AdminNotificationSetting(models.Model):
     notification = models.CharField(default='Yes', choices=BOOL_CHOICES, max_length=100)
 
@@ -98,3 +106,12 @@ class TermsCondition(models.Model):
 
 class SafetyTips(models.Model):
     content = models.TextField(default='')
+
+
+@receiver(post_save, sender=RegisterUser)
+def setting(sender, instance, created, **kwargs):
+    if created:
+        user_id = instance.id
+        user = RegisterUser.objects.get(id=user_id)
+        subscription_obj = SubscriptionStatus.objects.create(user=user)
+        return subscription_obj

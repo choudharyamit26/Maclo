@@ -6,7 +6,7 @@ from celery import shared_task
 from django.db.models import Q
 from django.utils import timezone
 
-from adminpanel.models import UserNotification, User
+from adminpanel.models import UserNotification, User, SubscriptionStatus, UserHeartBeatsPerDay
 from .fcm_notification import send_another
 from .models import MatchedUser, PopNotification, ScheduleMeeting
 
@@ -134,3 +134,8 @@ def send_meeting_notification():
                     pass
             else:
                 pass
+
+@shared_task
+
+def updatesuperlikes():
+    pass

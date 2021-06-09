@@ -1,5 +1,5 @@
 from .models import User, UserNotification, TermsCondition, SafetyTips, Transaction, UserHeartBeatsPerDay, \
-    ExtraHeartBeats
+    ExtraHeartBeats, SubscriptionStatus
 
 from django.contrib import admin
 
@@ -10,3 +10,4 @@ admin.site.register(SafetyTips)
 admin.site.register(Transaction)
 admin.site.register(UserHeartBeatsPerDay)
 admin.site.register(ExtraHeartBeats)
+admin.site.register(SubscriptionStatus)

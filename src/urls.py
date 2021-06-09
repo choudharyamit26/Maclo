@@ -19,8 +19,9 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     UnMatchView, BlockUserView, BlockedUsersList, UnBlockUser, CheckDob, CheckEmail, CheckUserBlocked, FCMNotification, \
     LikedUserCount, MeetupPopUs, MeetupStatus, DisconnectWithInstagram, ClearNotification, \
     CheckUserProfileCompleteStatus, UpdateMeeting, ShowProfileToOnlyLikedUsers, GetShowProfileToOnlyLikedUsers, \
-    UpdateLookingFor, FeedbackWithoutStar, TransactionDataView, GetAwsCred, VerifyApplePurchase, ExtraHeartBeatsView, \
-    SubscriptionBasedSuperLike
+    UpdateLookingFor, FeedbackWithoutStar, TransactionDataView, GetAwsCred, ExtraHeartBeatsView, \
+    SubscriptionBasedSuperLike, UpdateSubscriptionStatus \
+    #  VerfiyGooglePurchase, GoogleVerification, TestVerifyInappPurchase, VerifyApplePurchase
 
 app_name = 'src'
 
@@ -68,7 +69,8 @@ urlpatterns = [
     path('like-user/', LikeUserAPIView.as_view(), name='like-user'),
     path('dislike-user/', DislikeUser.as_view(), name='dislike-user'),
     path('superlike-user/', SuperLikeUserAPIView.as_view(), name='superlike-user'),
-    path('subscription-based-superlike-user/', SubscriptionBasedSuperLike.as_view(), name='subscription-based-superlike-user'),
+    path('subscription-based-superlike-user/', SubscriptionBasedSuperLike.as_view(),
+         name='subscription-based-superlike-user'),
     path('user-deletematches/', DeleteMatchesAPIView.as_view(), name='delete-match'),
     path('user-deletesupermatches/', DeleteSuperMatchesAPIView.as_view(), name='delete-supermatch'),
     path('request-meeting/', RequestMeetingAPIView.as_view(), name='request-meeting'),
@@ -128,7 +130,11 @@ urlpatterns = [
     path('check-profile-complete-status/', CheckUserProfileCompleteStatus.as_view(),
          name='check-profile-complete-status'),
     path('get-aws-creds/', GetAwsCred.as_view(), name='get-aws-creds'),
-    path('verify-apple-purchase/', VerifyApplePurchase.as_view(), name='verify-apple-purchase'),
+    path('update-subscription-status/', UpdateSubscriptionStatus.as_view(), name='update-subscription-status')
+    # path('verify-apple-purchase/', VerifyApplePurchase.as_view(), name='verify-apple-purchase'),
+    # path('verify-google-purchase/', VerfiyGooglePurchase.as_view(), name='verify-google-purchase'),
+    # path('verify-google/', GoogleVerification.as_view(), name='verify-google'),
+    # path('test-verify-google/', TestVerifyInappPurchase.as_view(), name='test-verify-google'),
     # path('docs/', include_docs_urls(title=API_TITLE,
     #                                 description=API_DESCRIPTION)),
     # path('schema/', schema_view),

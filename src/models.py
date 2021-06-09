@@ -5,6 +5,7 @@ from django.utils import timezone
 # Create your models here.
 # from rest_framework.response import Response
 # from rest_framework.status import HTTP_200_OK
+# from adminpanel.models import SubscriptionStatus
 
 RELATIONSHIP_STATUS = (
     ("Single", "Single"),
@@ -295,3 +296,12 @@ class DeactivateAccount(models.Model):
 class BlockedUsers(models.Model):
     user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
     blocked = models.ManyToManyField(RegisterUser, related_name='blocked')
+
+
+# @receiver(post_save, sender=RegisterUser)
+# def setting(sender, instance, created, **kwargs):
+#     if created:
+#         user_id = instance.id
+#         user = RegisterUser.objects.get(id=user_id)
+#         subscription_obj = SubscriptionStatus.objects.create(user=user)
+#         return subscription_obj

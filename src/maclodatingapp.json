@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "maclodatingapp-8f717",
+  "private_key_id": "7c47e5f42f005e679a2a2e725c9b02506bfba998",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCIZ5JJkPmvb0DK\nNvqhVFMol1co6UpWe2jtPAF8KRS4QBwQaAjKBOCHSc3Nw2BkqRSMdKYetjS0/ThT\nMLCMsXyjGcr0LpcrzhQIZySp6jGzxK/rwAggJluo9cMDRrUNojAiaF7AGcTjxtir\nsd9IqTSeRmba8y8MYBzwiYvnd8H3AbO/zH0lweOsICTtGGM3PeWQHH686h+b65Xs\nWIwuOufphxM+by8+ESfGQthuG5Fd9NpZ5XAveCgurSFHagEzTVztlj79LDTIfYvk\n4bzYzDUj0ooa7U5nXmDPc1Z6ciDEGmyLDArcyIW1oL/L+Qc12mqiNtN8/Qt9TSZ0\nbz3KGAzTAgMBAAECggEANxzd2vKEJ9GENI/9ORT4mpR3Z3THD+VCEmRl1zREBmQE\n0s4uCu3oiFEWIdaYimNUhaGWAx+scRpE2Tv5gYcu7Dl+KqXud4kGyBRgmHSjC1bj\nm5XV0qOc8koGNrspaS5IU4anDef7iOqtXcX7CQEw3OhmI34RWuc0mi2BBQ96o+GJ\nrJrPg/0ucsfGZM9KcCxEY3/7u5KHUIh43UPsBOgBCLwZ+KC9DlwznZdIWogYXmCw\nNUDBtXnuZprKENNdTvHbjLxtTY2vdROHGTt7PQV24ysrOFs/7jNlcenTirOCQaal\nQlx5eo5FjsJ6radpCkRXvVM9INq/qzIDfhw5oe0U5QKBgQC7kbuXw7M1Iuz81N5B\n5tiQstsgoiMO6vxLe+ctb0DLWRTrIS6dhtzSDsgwOijRlaxqPMSzRDzEIX/MPRkV\nZbo8CPGr/4LwRyXzNtFXrl2Vs+GTqVjcDhfqn5tyDy69QP2Wct/jkgO8mf6Z+KW0\nvVDlWIgQMOiW1taPLFvlSjA5dQKBgQC6Kz96u+iTl4yy2M3cvEcG6iOVYUme+2iF\nmDQ32VsDWSFF/tIUDUjXMM6PYK6RS3N3/5y8/nSGMq+/+uzwjn7EngxkX2YElC9a\nLfgQ+SN68xIYcf21IAYcavglCKpFBeVAeEONHlP16c9K21+EKrAa4bvtFel/Duh9\nsIUof0ycJwKBgQCmbWqMAIL0NOcedyo2Q0QJMAmqbPK6e9och/XZpItTYtliv/CC\nqXUplSAfWpt5S1rOcNj/Tx6z0B169QNarwaN2knFGVPvKtILeapKKFa1TARtZqeH\nqaGi9reQftQz7ISVh5wMajSSlfkIWU1+jzRGK0WfSCY4IKwEIZHwYuFjOQKBgFu7\n1cK/duHLClxSMlYzO/hvROtljeZV0XIKxqhCZPNoZtnbr16METlf5liF9l7Hw/T8\nMhp6c6ZwsWMy3K/INzThABAxZc6Zyh9wiUyrxszdmywKd05Zokk8eFufQm9ScV1s\nJTUTHaIN/MPRBubUNgR4+KXhZzXhfbP5WBPVbkV/AoGAdUDsEN6zyNPX1fgu9wnK\nUow1L/Wf/GEn8zjBbnqXeXUYpR1V0GcTgPrOzWOxmRsyh2Zcyc8X4dZ1Dxx2o5OE\n7UjiVuI8q1xQafMVfQ/5IfHi5x7iEArbWDaiJajbVdMZm0jz7tYKbLdH/QjdfDky\nofV+gPHLu+Mh3cr32tvaXSw=\n-----END PRIVATE KEY-----\n",
+  "client_email": "mymaclodatingappserviceaccount@maclodatingapp-8f717.iam.gserviceaccount.com",
+  "client_id": "105508196365826675423",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/mymaclodatingappserviceaccount%40maclodatingapp-8f717.iam.gserviceaccount.com"
+}
