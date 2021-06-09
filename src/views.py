@@ -4671,6 +4671,7 @@ class UpdateSubscriptionStatus(APIView):
                 return Response({'message': 'Subscription status updated successfully', 'purchased_status': False,
                                  'status': HTTP_400_BAD_REQUEST})
         except Exception as e:
+            print(e)
             return Response({'message': str(e), 'status': HTTP_400_BAD_REQUEST})
 
 # class VerifyApplePurchase(APIView):

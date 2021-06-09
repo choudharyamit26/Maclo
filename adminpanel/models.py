@@ -114,4 +114,6 @@ def setting(sender, instance, created, **kwargs):
         user_id = instance.id
         user = RegisterUser.objects.get(id=user_id)
         subscription_obj = SubscriptionStatus.objects.create(user=user)
+        UserHeartBeatsPerDay.objects.create(user=user, number_of_heart_beats=0)
+        ExtraHeartBeats.objects.create(user=user, extra_heartbeats=0)
         return subscription_obj

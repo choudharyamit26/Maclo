@@ -135,8 +135,7 @@ urlpatterns = [
     # path('verify-google-purchase/', VerfiyGooglePurchase.as_view(), name='verify-google-purchase'),
     # path('verify-google/', GoogleVerification.as_view(), name='verify-google'),
     # path('test-verify-google/', TestVerifyInappPurchase.as_view(), name='test-verify-google'),
-    # path('docs/', include_docs_urls(title=API_TITLE,
-    #                                 description=API_DESCRIPTION)),
+    # path('docs/', include_docs_urls(title=API_TITLE,description=API_DESCRIPTION)),
     # path('schema/', schema_view),
 
 ]
