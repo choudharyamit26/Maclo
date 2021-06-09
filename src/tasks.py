@@ -6,9 +6,9 @@ from celery import shared_task
 from django.db.models import Q
 from django.utils import timezone
 
-from adminpanel.models import UserNotification, User, SubscriptionStatus, UserHeartBeatsPerDay
+from adminpanel.models import UserNotification, User, SubscriptionStatus, UserHeartBeatsPerDay, Transaction
 from .fcm_notification import send_another
-from .models import MatchedUser, PopNotification, ScheduleMeeting
+from .models import MatchedUser, PopNotification, ScheduleMeeting, RegisterUser
 
 utc = pytz.UTC
 
@@ -135,7 +135,20 @@ def send_meeting_notification():
             else:
                 pass
 
-@shared_task
 
-def updatesuperlikes():
-    pass
+@shared_task
+def updatesuperlikescount():
+    users = RegisterUser.objects.all()
+    # transactions = Transaction.objects.all()
+    for user in users:
+        try:
+            subs_obj = SubscriptionStatus.objects.get(user=user)
+            transaction_obj = Transaction.objects.get(purchase_token=subs_obj.purchase_token)
+            if subs_obj.purchase_token == transaction_obj.purchase_token and subs_obj.active:
+                user_heart_beats = UserHeartBeatsPerDay.objects.get(user=user)
+                user_heart_beats.number_of_heart_beats += 5
+                user_heart_beats.save()
+            else:
+                pass
+        except Exception as e:
+            print(e)

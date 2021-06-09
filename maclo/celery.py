@@ -18,7 +18,7 @@ app.conf.beat_schedule = {
     'unmatch_users': {
         'task': 'src.tasks.unmatch_users',
         # 'schedule': 10,
-        'schedule': crontab(hour=6, minute=0),
+        'schedule': crontab(hour=0, minute=0),
     },
     'send_meeting_notification': {
         'task': 'src.tasks.send_meeting_notification',
@@ -28,6 +28,10 @@ app.conf.beat_schedule = {
         # 'schedule': 10,
         # 'args': (3, 4)
     },
+    'updatesuperlikescount': {
+        'task': 'src.tasks.updatesuperlikescount',
+        'schedule': crontab(hour=0, minute=0)
+    }
 }
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()
