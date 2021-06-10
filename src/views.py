@@ -1210,38 +1210,38 @@ class FilteredUserView(APIView):
         # x = longitude
         #
         # y = latitude
-        from django.contrib.gis.geos import Point
-        xyz = (int(distance_range))
-        point = Point(lang, lat)
-        x = UserDetail.objects.filter(discovery__distance_lte=(point, Distance(km=xyz))).exclude(
-            phone_number=register_user.id).order_by(
-            "id").exclude(deactivated=True)
-        y = UserDetail.objects.filter(discovery__distance_lte=(point, D(km=xyz))).exclude(
-            phone_number=register_user.id).order_by(
-            "id").exclude(deactivated=True)
+        # from django.contrib.gis.geos import Point
+        # xyz = (int(distance_range))
+        # point = Point(lang, lat)
+        # x = UserDetail.objects.filter(discovery__distance_lte=(point, Distance(km=xyz))).exclude(
+        #     phone_number=register_user.id).order_by(
+        #     "id").exclude(deactivated=True)
+        # y = UserDetail.objects.filter(discovery__distance_lte=(point, D(km=xyz))).exclude(
+        #     phone_number=register_user.id).order_by(
+        #     "id").exclude(deactivated=True)
         # z = UserDetail.objects.filter(discovery__distance_dwithin=(point, D(km=xyz))).exclude(
         #     phone_number=register_user.id).order_by(
         #     "id").exclude(deactivated=True)
         # print('<<<<<<<<<<-------------ZZZZZZZZZZZZZZ----------->>>>>>>', z)
-        print('<<<<<<<<<<-------------YYYYYYYYYYYYYY----------->>>>>>>', y)
-        print('<<<-----XXXXXXXXXXXXXXXXXXXXXXXXXX------>>>>>>', x)
+        # print('<<<<<<<<<<-------------YYYYYYYYYYYYYY----------->>>>>>>', y)
+        # print('<<<-----XXXXXXXXXXXXXXXXXXXXXXXXXX------>>>>>>', x)
         # print('LOGGED IN USER ID', UserDetail.objects.get(phone_number=register_user.id).id)
         # print('USER DETAIL 46', UserDetail.objects.get(id=46).discovery[0], UserDetail.objects.get(id=46).discovery[1])
         # print('USER DETAIL 47', UserDetail.objects.get(id=47).discovery[0], UserDetail.objects.get(id=47).discovery[1])
         # print('USER DETAIL 44', UserDetail.objects.get(id=44).discovery[0], UserDetail.objects.get(id=44).discovery[1])
-        users_in_range = UserDetail.objects.filter(
-            discovery__dwithin=(users_location, (int(distance_range) * 1000))).annotate(
-            distance=GeometryDistance("discovery", users_location)).exclude(phone_number=register_user.id).order_by(
-            "distance").exclude(deactivated=True)
-        print('--------------------------', [x.id for x in users_in_range])
-        from django.contrib.gis.geos import Point
-        p1 = Point(UserDetail.objects.get(id=46).discovery[0], UserDetail.objects.get(id=46).discovery[1])
-        p2 = Point(UserDetail.objects.get(id=47).discovery[0], UserDetail.objects.get(id=47).discovery[1])
-        p3 = Point(UserDetail.objects.get(id=44).discovery[0], UserDetail.objects.get(id=44).discovery[1])
-        # distance = p1.distance(p2)
-        distance = p1.distance(p3)
-        distance_in_km = distance * 100
-        print('DISTANCE BETWEEN USER 46 , 47', distance_in_km)
+        # users_in_range = UserDetail.objects.filter(
+        #     discovery__dwithin=(users_location, (int(distance_range) * 1000))).annotate(
+        #     distance=GeometryDistance("discovery", users_location)).exclude(phone_number=register_user.id).order_by(
+        #     "distance").exclude(deactivated=True)
+        # print('--------------------------', [x.id for x in users_in_range])
+        # from django.contrib.gis.geos import Point
+        # p1 = Point(UserDetail.objects.get(id=46).discovery[0], UserDetail.objects.get(id=46).discovery[1])
+        # p2 = Point(UserDetail.objects.get(id=47).discovery[0], UserDetail.objects.get(id=47).discovery[1])
+        # p3 = Point(UserDetail.objects.get(id=44).discovery[0], UserDetail.objects.get(id=44).discovery[1])
+        # # distance = p1.distance(p2)
+        # distance = p1.distance(p3)
+        # distance_in_km = distance * 100
+        # print('DISTANCE BETWEEN USER 46 , 47', distance_in_km)
         #### END TESTING PURPOSE
 
         d = (int(distance_range) * 1000)
