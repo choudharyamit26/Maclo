@@ -1643,6 +1643,8 @@ class UserDetailAPIView(APIView):
             religion = obj.phone_number.religion
             body_type = obj.phone_number.body_type
             zodiac_sign = obj.phone_number.zodiac_sign
+            hashtag = obj.phone_number.zodiac_sign
+            hashtag = obj.phone_number.hashtag
             verified = obj.phone_number.verified
             fb_signup = obj.phone_number.fb_signup
             if obj.phone_number.pic_1:
@@ -1758,6 +1760,8 @@ class UserDetailAPIView(APIView):
                 "distance_range": distance_range,
                 "min_age_range": min_age_range,
                 "max_age_range": max_age_range,
+                "zodiac_sign":zodiac_sign,
+                "hashtag":hashtag,
                 # "deactivated": account.deactivated
                 # "subscription": subscription
             }
