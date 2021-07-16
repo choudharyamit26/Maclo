@@ -1,3 +1,4 @@
+from django.db.models import Count
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -33,10 +34,14 @@ class MessagesList(APIView):
     def get(self, request, *args, **kwargs):
         room_id = self.request.query_params.get('room_id')
         chat = ChatRoom.objects.get(id=room_id)
+        # print(chat.values('created_at__date').annotate(total=Count('*')))
         messages = []
+        grouped_messages = {}
         for message in chat.messages.all():
             sender = None
             receiver = None
+            if message.created_at.date() not in grouped_messages:
+                grouped_messages[f'{message.created_at.date()}'] = []
             if message.sender:
                 sender = message.sender.id
             else:
@@ -48,7 +53,13 @@ class MessagesList(APIView):
             messages.append({'id': message.id, 'sender': sender, 'receiver': receiver,
                              'message': message.message, 'is_image': message.is_image, 'read': message.read,
                              'created_at': str(message.created_at.replace(microsecond=0))})
-        return Response({'messages': messages, 'status': HTTP_200_OK})
+        for message in chat.messages.all():
+            if str(message.created_at.date()) in grouped_messages:
+                grouped_messages[f'{message.created_at.date()}'].append(
+                    {'id': message.id, 'sender': sender, 'receiver': receiver,
+                     'message': message.message, 'is_image': message.is_image, 'read': message.read})
+        print(grouped_messages)
+        return Response({'messages': grouped_messages, 'status': HTTP_200_OK})
 
 
 class UpdateUnReadMessage(APIView):
