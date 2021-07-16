@@ -54,10 +54,21 @@ class MessagesList(APIView):
                              'message': message.message, 'is_image': message.is_image, 'read': message.read,
                              'created_at': str(message.created_at.replace(microsecond=0))})
         for message in chat.messages.all():
+            sender = None
+            receiver = None
+            if message.sender:
+                sender = message.sender.id
+            else:
+                sender = ''
+            if message.receiver:
+                receiver = message.receiver.id
+            else:
+                receiver = ''
             if str(message.created_at.date()) in grouped_messages:
                 grouped_messages[f'{message.created_at.date()}'].append(
                     {'id': message.id, 'sender': sender, 'receiver': receiver,
-                     'message': message.message, 'is_image': message.is_image, 'read': message.read})
+                     'message': message.message, 'is_image': message.is_image, 'time': message.created_at.time(),
+                     'read': message.read})
         print(grouped_messages)
         return Response({'messages': grouped_messages, 'status': HTTP_200_OK})
 
@@ -741,4 +752,3 @@ class DeleteMessage(APIView):
             return Response({'message': 'Message deleted successfully', 'status': HTTP_200_OK})
         except Exception as e:
             return Response({'message': str(e), 'status': HTTP_400_BAD_REQUEST})
-
