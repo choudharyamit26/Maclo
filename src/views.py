@@ -881,12 +881,13 @@ class GetVerifiedStatus(APIView):
     permission_classes = (IsAuthenticated,)
     model = RegisterUser
 
-    def post(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         user = self.request.user
         p_no = RegisterUser.objects.get(email=user.email)
         # p_no.verified = True
         # p_no.save()
-        return Response({"message": 'Verified successfully', 'verified': p_no.verified, 'status': HTTP_200_OK})
+        return Response(
+            {"message": 'Verified status fetched successfully', 'verified': p_no.verified, 'status': HTTP_200_OK})
 
 
 class ShowInstagramPics(ListAPIView):
