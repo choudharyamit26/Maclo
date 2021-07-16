@@ -20,7 +20,7 @@ from .views import UserCreateAPIView, UserInstagramPicsAPIView, UserDetailAPIVie
     LikedUserCount, MeetupPopUs, MeetupStatus, DisconnectWithInstagram, ClearNotification, \
     CheckUserProfileCompleteStatus, UpdateMeeting, ShowProfileToOnlyLikedUsers, GetShowProfileToOnlyLikedUsers, \
     UpdateLookingFor, FeedbackWithoutStar, TransactionDataView, GetAwsCred, ExtraHeartBeatsView, \
-    SubscriptionBasedSuperLike, UpdateSubscriptionStatus \
+    SubscriptionBasedSuperLike, UpdateSubscriptionStatus, UpdateVerifiedStatus, GetVerifiedStatus \
     #  VerfiyGooglePurchase, GoogleVerification, TestVerifyInappPurchase, VerifyApplePurchase
 
 app_name = 'src'
@@ -130,7 +130,9 @@ urlpatterns = [
     path('check-profile-complete-status/', CheckUserProfileCompleteStatus.as_view(),
          name='check-profile-complete-status'),
     path('get-aws-creds/', GetAwsCred.as_view(), name='get-aws-creds'),
-    path('update-subscription-status/', UpdateSubscriptionStatus.as_view(), name='update-subscription-status')
+    path('update-subscription-status/', UpdateSubscriptionStatus.as_view(), name='update-subscription-status'),
+    path('update-verified-status/', UpdateVerifiedStatus.as_view(), name='update-verified-status'),
+    path('get-verified-status/', GetVerifiedStatus.as_view(), name='get-verified-status'),
     # path('verify-apple-purchase/', VerifyApplePurchase.as_view(), name='verify-apple-purchase'),
     # path('verify-google-purchase/', VerfiyGooglePurchase.as_view(), name='verify-google-purchase'),
     # path('verify-google/', GoogleVerification.as_view(), name='verify-google'),

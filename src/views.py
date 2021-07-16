@@ -863,6 +863,32 @@ class UserInstagramPicsAPIView(CreateAPIView):
         return Response({"Success": "Images uploaded from instagram successfully", "status": HTTP_200_OK})
 
 
+class UpdateVerifiedStatus(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    model = RegisterUser
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        p_no = RegisterUser.objects.get(email=user.email)
+        p_no.verified = True
+        p_no.save()
+        return Response({"message": 'Verified successfully', 'status': HTTP_200_OK})
+
+
+class GetVerifiedStatus(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    model = RegisterUser
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        p_no = RegisterUser.objects.get(email=user.email)
+        # p_no.verified = True
+        # p_no.save()
+        return Response({"message": 'Verified successfully', 'verified': p_no.verified, 'status': HTTP_200_OK})
+
+
 class ShowInstagramPics(ListAPIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
@@ -1760,8 +1786,8 @@ class UserDetailAPIView(APIView):
                 "distance_range": distance_range,
                 "min_age_range": min_age_range,
                 "max_age_range": max_age_range,
-                "zodiac_sign":zodiac_sign,
-                "hashtag":hashtag,
+                "zodiac_sign": zodiac_sign,
+                "hashtag": hashtag,
                 # "deactivated": account.deactivated
                 # "subscription": subscription
             }
@@ -2611,7 +2637,7 @@ class MeetingDetail(APIView):
                 {'invited_by': meeting_obj.scheduled_by.id, 'invited_by_pic': meeting_obj.scheduled_by.pic_1.url,
                  'invited_by_first_name': meeting_obj.scheduled_by.first_name,
                  'invited_by_last_name': meeting_obj.scheduled_by.last_name,
-                 'invitee_id': meeting_obj.scheduled_with.id, 'invitee_pic':'',
+                 'invitee_id': meeting_obj.scheduled_with.id, 'invitee_pic': '',
                  'invitee_first_name': meeting_obj.scheduled_with.first_name,
                  'invitee_last_name': meeting_obj.scheduled_with.last_name, 'time': meeting_obj.meeting_time,
                  'date': meeting_obj.meeting_date, 'description': meeting_obj.description, 'venue': meeting_obj.venue,
@@ -2621,7 +2647,7 @@ class MeetingDetail(APIView):
                 {'invited_by': meeting_obj.scheduled_by.id, 'invited_by_pic': '',
                  'invited_by_first_name': meeting_obj.scheduled_by.first_name,
                  'invited_by_last_name': meeting_obj.scheduled_by.last_name,
-                 'invitee_id': meeting_obj.scheduled_with.id, 'invitee_pic':meeting_obj.scheduled_with.pic_1.url ,
+                 'invitee_id': meeting_obj.scheduled_with.id, 'invitee_pic': meeting_obj.scheduled_with.pic_1.url,
                  'invitee_first_name': meeting_obj.scheduled_with.first_name,
                  'invitee_last_name': meeting_obj.scheduled_with.last_name, 'time': meeting_obj.meeting_time,
                  'date': meeting_obj.meeting_date, 'description': meeting_obj.description, 'venue': meeting_obj.venue,
@@ -2631,7 +2657,7 @@ class MeetingDetail(APIView):
                 {'invited_by': meeting_obj.scheduled_by.id, 'invited_by_pic': '',
                  'invited_by_first_name': meeting_obj.scheduled_by.first_name,
                  'invited_by_last_name': meeting_obj.scheduled_by.last_name,
-                 'invitee_id': meeting_obj.scheduled_with.id, 'invitee_pic':meeting_obj.scheduled_with.pic_1.url ,
+                 'invitee_id': meeting_obj.scheduled_with.id, 'invitee_pic': meeting_obj.scheduled_with.pic_1.url,
                  'invitee_first_name': meeting_obj.scheduled_with.first_name,
                  'invitee_last_name': meeting_obj.scheduled_with.last_name, 'time': meeting_obj.meeting_time,
                  'date': meeting_obj.meeting_date, 'description': meeting_obj.description, 'venue': meeting_obj.venue,
