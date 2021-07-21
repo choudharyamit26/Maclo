@@ -2623,7 +2623,9 @@ class MeetingDetail(APIView):
             print(y.user, y.liked_by_me.all(), y.matched)
             print(meeting_obj.scheduled_with.id, meeting_obj.scheduled_with.id in [x.id for x in y.liked_by_me.all()],
                   meeting_obj.scheduled_by.id, meeting_obj.scheduled_by.id in [x.id for x in y.liked_by_me.all()])
-            if meeting_obj.scheduled_with.id in [x.id for x in y.liked_by_me.all()]:
+            if meeting_obj.scheduled_with.id in [x.id for x in
+                                                 y.liked_by_me.all()] or meeting_obj.scheduled_by.id in [x.id for x in
+                                                                                                         y.liked_by_me.all()]:
                 if meeting_obj.scheduled_by.pic_1 and meeting_obj.scheduled_with.pic_1:
                     return Response(
                         {'invited_by': meeting_obj.scheduled_by.id,
