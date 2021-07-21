@@ -2618,6 +2618,13 @@ class MeetingDetail(APIView):
         meeting_obj = ScheduleMeeting.objects.get(id=meeting_id)
         match_with = MatchedUser.objects.filter(liked_by_me=meeting_obj.scheduled_with, matched='Yes').distinct()
         match_by = MatchedUser.objects.filter(user=meeting_obj.scheduled_by, matched='Yes').distinct()
+        matched = None
+        try:
+            matched = MatchedUser.objects.get(user=r_user, liked_by_me=meeting_obj.scheduled_with, matched='Yes')
+        except Exception as e:
+            matched = MatchedUser.objects.get(user=meeting_obj.scheduled_with, liked_by_me=r_user, matched='Yes')
+        print('>>>>>>', matched, matched.user, [x.id for x in matched.liked_by_me.all()])
+        print(len(match_with | match_by))
         for y in match_with | match_by:
             print(y, r_user.id)
             print(y.user, r_user.id, [x.id for x in y.liked_by_me.all()], y.matched)
