@@ -93,7 +93,7 @@ urlpatterns = [
     path('delete-all-notifications/', ClearNotification.as_view(), name='delete-all-notifications'),
     path('update-user-notification/',
          UpdateNotification.as_view(), name='update-user-notification'),
-    path('user-unread-message-count/', GetUnreadMessageCount.as_view(), name='user-unread-message-count'),
+    path('user-unread-notification-count/', GetUnreadMessageCount.as_view(), name='user-unread-notification-count'),
     path('aboutus/', AboutUsApiView.as_view(), name='aboutus'),
     path('edit-aboutus/', EditAboutUsAPIView.as_view(), name='edit-aboutus'),
     path('edit-contactus/', EditContactUsApiView.as_view(), name='edit-contactus'),

@@ -37,22 +37,24 @@ class MessagesList(APIView):
         # print(chat.values('created_at__date').annotate(total=Count('*')))
         messages = []
         grouped_messages = {}
+        dates = {}
         for message in chat.messages.all():
-            sender = None
-            receiver = None
+            # sender = None
+            # receiver = None
             if message.created_at.date() not in grouped_messages:
                 grouped_messages[f'{message.created_at.date()}'] = []
-            if message.sender:
-                sender = message.sender.id
-            else:
-                sender = ''
-            if message.receiver:
-                receiver = message.receiver.id
-            else:
-                receiver = ''
-            messages.append({'id': message.id, 'sender': sender, 'receiver': receiver,
-                             'message': message.message, 'is_image': message.is_image, 'read': message.read,
-                             'created_at': str(message.created_at.replace(microsecond=0))})
+
+            # if message.sender:
+            #     sender = message.sender.id
+            # else:
+            #     sender = ''
+            # if message.receiver:
+            #     receiver = message.receiver.id
+            # else:
+            #     receiver = ''
+            # messages.append({'id': message.id, 'sender': sender, 'receiver': receiver,
+            #                  'message': message.message, 'is_image': message.is_image, 'read': message.read,
+            #                  'created_at': str(message.created_at.replace(microsecond=0))})
         for message in chat.messages.all():
             sender = None
             receiver = None
@@ -69,7 +71,7 @@ class MessagesList(APIView):
                     {'id': message.id, 'sender': sender, 'receiver': receiver,
                      'message': message.message, 'is_image': message.is_image, 'time': message.created_at.time(),
                      'read': message.read})
-        print(grouped_messages)
+        # print(grouped_messages)
         return Response({'messages': grouped_messages, 'status': HTTP_200_OK})
 
 

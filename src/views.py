@@ -2476,6 +2476,7 @@ class UpdateMeeting(APIView):
             meeting_obj.meeting_time = meeting_time
             meeting_obj.venue = venue
             meeting_obj.description = description
+            meeting_obj.status = 'Not Completed'
             meeting_obj.save()
             scheduled_with = meeting_obj.scheduled_with
             scheduled_by = meeting_obj.scheduled_by
