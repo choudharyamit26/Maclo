@@ -2620,7 +2620,7 @@ class MeetingDetail(APIView):
         match_by = MatchedUser.objects.filter(user=meeting_obj.scheduled_with, matched='Yes').distinct()
         for y in match_with | match_by:
             print(y)
-            print(y.user, y.liked_by_me.all(), y.matched)
+            print(y.user,r_user.id, y.liked_by_me.all(), y.matched)
             print(meeting_obj.scheduled_with.id, meeting_obj.scheduled_with.id in [x.id for x in y.liked_by_me.all()],
                   meeting_obj.scheduled_by.id, meeting_obj.scheduled_by.id in [x.id for x in y.liked_by_me.all()])
             if meeting_obj.scheduled_with.id in [x.id for x in
