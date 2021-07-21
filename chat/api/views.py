@@ -34,27 +34,7 @@ class MessagesList(APIView):
     def get(self, request, *args, **kwargs):
         room_id = self.request.query_params.get('room_id')
         chat = ChatRoom.objects.get(id=room_id)
-        # print(chat.values('created_at__date').annotate(total=Count('*')))
         messages = []
-        grouped_messages = {}
-        dates = {}
-        for message in chat.messages.all():
-            # sender = None
-            # receiver = None
-            if message.created_at.date() not in grouped_messages:
-                grouped_messages[f'{message.created_at.date()}'] = []
-
-            # if message.sender:
-            #     sender = message.sender.id
-            # else:
-            #     sender = ''
-            # if message.receiver:
-            #     receiver = message.receiver.id
-            # else:
-            #     receiver = ''
-            # messages.append({'id': message.id, 'sender': sender, 'receiver': receiver,
-            #                  'message': message.message, 'is_image': message.is_image, 'read': message.read,
-            #                  'created_at': str(message.created_at.replace(microsecond=0))})
         for message in chat.messages.all():
             sender = None
             receiver = None
@@ -66,13 +46,10 @@ class MessagesList(APIView):
                 receiver = message.receiver.id
             else:
                 receiver = ''
-            if str(message.created_at.date()) in grouped_messages:
-                grouped_messages[f'{message.created_at.date()}'].append(
-                    {'id': message.id, 'sender': sender, 'receiver': receiver,
-                     'message': message.message, 'is_image': message.is_image, 'time': message.created_at.time(),
-                     'read': message.read})
-        # print(grouped_messages)
-        return Response({'messages': grouped_messages, 'status': HTTP_200_OK})
+            messages.append({'id': message.id, 'sender': sender, 'receiver': receiver,
+                             'message': message.message, 'is_image': message.is_image, 'read': message.read,
+                             'created_at': str(message.created_at.replace(microsecond=0))})
+        return Response({'messages': messages, 'status': HTTP_200_OK})
 
 
 class UpdateUnReadMessage(APIView):
