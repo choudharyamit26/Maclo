@@ -2612,58 +2612,85 @@ class MeetingDetail(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
+        user_id = self.request.user
+        r_user = RegisterUser.objects.get(email=user_id.email)
         meeting_id = self.request.data['meeting_id']
         meeting_obj = ScheduleMeeting.objects.get(id=meeting_id)
-        if meeting_obj.scheduled_by.pic_1 and meeting_obj.scheduled_with.pic_1:
-            return Response(
-                {'invited_by': meeting_obj.scheduled_by.id, 'invited_by_pic': meeting_obj.scheduled_by.pic_1.url,
-                 'invited_by_first_name': meeting_obj.scheduled_by.first_name,
-                 'invited_by_last_name': meeting_obj.scheduled_by.last_name,
-                 'invitee_id': meeting_obj.scheduled_with.id, 'invitee_pic': meeting_obj.scheduled_with.pic_1.url,
-                 'invitee_first_name': meeting_obj.scheduled_with.first_name,
-                 'invitee_last_name': meeting_obj.scheduled_with.last_name, 'time': meeting_obj.meeting_time,
-                 'date': meeting_obj.meeting_date, 'description': meeting_obj.description, 'venue': meeting_obj.venue,
-                 'status': HTTP_200_OK})
-        elif not meeting_obj.scheduled_by.pic_1 and not meeting_obj.scheduled_with.pic_1:
-            return Response(
-                {'invited_by': meeting_obj.scheduled_by.id, 'invited_by_pic': '',
-                 'invited_by_first_name': meeting_obj.scheduled_by.first_name,
-                 'invited_by_last_name': meeting_obj.scheduled_by.last_name,
-                 'invitee_id': meeting_obj.scheduled_with.id, 'invitee_pic': '',
-                 'invitee_first_name': meeting_obj.scheduled_with.first_name,
-                 'invitee_last_name': meeting_obj.scheduled_with.last_name, 'time': meeting_obj.meeting_time,
-                 'date': meeting_obj.meeting_date, 'description': meeting_obj.description, 'venue': meeting_obj.venue,
-                 'status': HTTP_200_OK})
-        elif meeting_obj.scheduled_by.pic_1 and not meeting_obj.scheduled_with.pic_1:
-            return Response(
-                {'invited_by': meeting_obj.scheduled_by.id, 'invited_by_pic': meeting_obj.scheduled_by.pic_1.url,
-                 'invited_by_first_name': meeting_obj.scheduled_by.first_name,
-                 'invited_by_last_name': meeting_obj.scheduled_by.last_name,
-                 'invitee_id': meeting_obj.scheduled_with.id, 'invitee_pic': '',
-                 'invitee_first_name': meeting_obj.scheduled_with.first_name,
-                 'invitee_last_name': meeting_obj.scheduled_with.last_name, 'time': meeting_obj.meeting_time,
-                 'date': meeting_obj.meeting_date, 'description': meeting_obj.description, 'venue': meeting_obj.venue,
-                 'status': HTTP_200_OK})
-        elif meeting_obj.scheduled_with.pic_1 and not meeting_obj.scheduled_by.pic_1:
-            return Response(
-                {'invited_by': meeting_obj.scheduled_by.id, 'invited_by_pic': '',
-                 'invited_by_first_name': meeting_obj.scheduled_by.first_name,
-                 'invited_by_last_name': meeting_obj.scheduled_by.last_name,
-                 'invitee_id': meeting_obj.scheduled_with.id, 'invitee_pic': meeting_obj.scheduled_with.pic_1.url,
-                 'invitee_first_name': meeting_obj.scheduled_with.first_name,
-                 'invitee_last_name': meeting_obj.scheduled_with.last_name, 'time': meeting_obj.meeting_time,
-                 'date': meeting_obj.meeting_date, 'description': meeting_obj.description, 'venue': meeting_obj.venue,
-                 'status': HTTP_200_OK})
-        else:
-            return Response(
-                {'invited_by': meeting_obj.scheduled_by.id, 'invited_by_pic': '',
-                 'invited_by_first_name': meeting_obj.scheduled_by.first_name,
-                 'invited_by_last_name': meeting_obj.scheduled_by.last_name,
-                 'invitee_id': meeting_obj.scheduled_with.id, 'invitee_pic': meeting_obj.scheduled_with.pic_1.url,
-                 'invitee_first_name': meeting_obj.scheduled_with.first_name,
-                 'invitee_last_name': meeting_obj.scheduled_with.last_name, 'time': meeting_obj.meeting_time,
-                 'date': meeting_obj.meeting_date, 'description': meeting_obj.description, 'venue': meeting_obj.venue,
-                 'status': HTTP_200_OK})
+        match_with = MatchedUser.objects.filter(liked_by_me=meeting_obj.scheduled_by, matched='Yes').distinct()
+        match_by = MatchedUser.objects.filter(user=meeting_obj.scheduled_with, matched='Yes').distinct()
+        z = []
+        a = []
+        #                 z.append(
+        #                     {'match_id': y.id, 'id': y.liked_by_me.all().last().id,
+        #                      'first_name': RegisterUser.objects.get(
+        #                          id=y.liked_by_me.all().last().id).first_name,
+        #                      'last_name': RegisterUser.objects.get(id=y.liked_by_me.all().last().id).last_name,
+        #                      'profile_pic': RegisterUser.objects.get(
+        #                          id=y.liked_by_me.all().last().id).pic_1.url,
+        #                      'matched_at': y.matched_at,
+        #                      'type': 'match', 'blocked': True})
+        for y in match_with | match_by:
+            if y.user.id == r_user.id:
+                if meeting_obj.scheduled_by.pic_1 and meeting_obj.scheduled_with.pic_1:
+                    return Response(
+                        {'invited_by': meeting_obj.scheduled_by.id,
+                         'invited_by_pic': meeting_obj.scheduled_by.pic_1.url,
+                         'invited_by_first_name': meeting_obj.scheduled_by.first_name,
+                         'invited_by_last_name': meeting_obj.scheduled_by.last_name,
+                         'invitee_id': meeting_obj.scheduled_with.id,
+                         'invitee_pic': meeting_obj.scheduled_with.pic_1.url,
+                         'invitee_first_name': meeting_obj.scheduled_with.first_name,
+                         'invitee_last_name': meeting_obj.scheduled_with.last_name, 'time': meeting_obj.meeting_time,
+                         'date': meeting_obj.meeting_date, 'description': meeting_obj.description,
+                         'venue': meeting_obj.venue,
+                         'status': HTTP_200_OK, 'matched_at': y.matched_at})
+                elif not meeting_obj.scheduled_by.pic_1 and not meeting_obj.scheduled_with.pic_1:
+                    return Response(
+                        {'invited_by': meeting_obj.scheduled_by.id, 'invited_by_pic': '',
+                         'invited_by_first_name': meeting_obj.scheduled_by.first_name,
+                         'invited_by_last_name': meeting_obj.scheduled_by.last_name,
+                         'invitee_id': meeting_obj.scheduled_with.id, 'invitee_pic': '',
+                         'invitee_first_name': meeting_obj.scheduled_with.first_name,
+                         'invitee_last_name': meeting_obj.scheduled_with.last_name, 'time': meeting_obj.meeting_time,
+                         'date': meeting_obj.meeting_date, 'description': meeting_obj.description,
+                         'venue': meeting_obj.venue,
+                         'status': HTTP_200_OK, 'matched_at': y.matched_at})
+                elif meeting_obj.scheduled_by.pic_1 and not meeting_obj.scheduled_with.pic_1:
+                    return Response(
+                        {'invited_by': meeting_obj.scheduled_by.id,
+                         'invited_by_pic': meeting_obj.scheduled_by.pic_1.url,
+                         'invited_by_first_name': meeting_obj.scheduled_by.first_name,
+                         'invited_by_last_name': meeting_obj.scheduled_by.last_name,
+                         'invitee_id': meeting_obj.scheduled_with.id, 'invitee_pic': '',
+                         'invitee_first_name': meeting_obj.scheduled_with.first_name,
+                         'invitee_last_name': meeting_obj.scheduled_with.last_name, 'time': meeting_obj.meeting_time,
+                         'date': meeting_obj.meeting_date, 'description': meeting_obj.description,
+                         'venue': meeting_obj.venue,
+                         'status': HTTP_200_OK, 'matched_at': y.matched_at})
+                elif meeting_obj.scheduled_with.pic_1 and not meeting_obj.scheduled_by.pic_1:
+                    return Response(
+                        {'invited_by': meeting_obj.scheduled_by.id, 'invited_by_pic': '',
+                         'invited_by_first_name': meeting_obj.scheduled_by.first_name,
+                         'invited_by_last_name': meeting_obj.scheduled_by.last_name,
+                         'invitee_id': meeting_obj.scheduled_with.id,
+                         'invitee_pic': meeting_obj.scheduled_with.pic_1.url,
+                         'invitee_first_name': meeting_obj.scheduled_with.first_name,
+                         'invitee_last_name': meeting_obj.scheduled_with.last_name, 'time': meeting_obj.meeting_time,
+                         'date': meeting_obj.meeting_date, 'description': meeting_obj.description,
+                         'venue': meeting_obj.venue,
+                         'status': HTTP_200_OK, 'matched_at': y.matched_at})
+                else:
+                    return Response(
+                        {'invited_by': meeting_obj.scheduled_by.id, 'invited_by_pic': '',
+                         'invited_by_first_name': meeting_obj.scheduled_by.first_name,
+                         'invited_by_last_name': meeting_obj.scheduled_by.last_name,
+                         'invitee_id': meeting_obj.scheduled_with.id,
+                         'invitee_pic': meeting_obj.scheduled_with.pic_1.url,
+                         'invitee_first_name': meeting_obj.scheduled_with.first_name,
+                         'invitee_last_name': meeting_obj.scheduled_with.last_name, 'time': meeting_obj.meeting_time,
+                         'date': meeting_obj.meeting_date, 'description': meeting_obj.description,
+                         'venue': meeting_obj.venue,
+                         'status': HTTP_200_OK, 'matched_at': y.matched_at})
 
 
 class MettingList(APIView):
