@@ -2616,8 +2616,8 @@ class MeetingDetail(APIView):
         r_user = RegisterUser.objects.get(email=user_id.email)
         meeting_id = self.request.data['meeting_id']
         meeting_obj = ScheduleMeeting.objects.get(id=meeting_id)
-        match_with = MatchedUser.objects.filter(liked_by_me=meeting_obj.scheduled_by, matched='Yes').distinct()
-        match_by = MatchedUser.objects.filter(user=meeting_obj.scheduled_with, matched='Yes').distinct()
+        match_with = MatchedUser.objects.filter(liked_by_me=meeting_obj.scheduled_with, matched='Yes').distinct()
+        match_by = MatchedUser.objects.filter(user=meeting_obj.scheduled_by, matched='Yes').distinct()
         for y in match_with | match_by:
             print(y, r_user.id)
             print(y.user, r_user.id, [x.id for x in y.liked_by_me.all()], y.matched)
