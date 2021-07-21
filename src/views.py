@@ -2621,6 +2621,8 @@ class MeetingDetail(APIView):
         for y in match_with | match_by:
             print(y)
             print(y.user, y.liked_by_me.all(), y.matched)
+            print(meeting_obj.scheduled_with.id, meeting_obj.scheduled_with.id in [x.id for x in y.liked_by_me.all()],
+                  meeting_obj.scheduled_by.id, meeting_obj.scheduled_by.id in [x.id for x in y.liked_by_me.all()])
             if meeting_obj.scheduled_with.id in [x.id for x in y.liked_by_me.all()]:
                 if meeting_obj.scheduled_by.pic_1 and meeting_obj.scheduled_with.pic_1:
                     return Response(
@@ -2742,7 +2744,7 @@ class MeetingDetail(APIView):
                          'invitee_last_name': meeting_obj.scheduled_with.last_name, 'time': meeting_obj.meeting_time,
                          'date': meeting_obj.meeting_date, 'description': meeting_obj.description,
                          'venue': meeting_obj.venue,
-                         'status': HTTP_200_OK,})
+                         'status': HTTP_200_OK, })
 
 
 class MettingList(APIView):
