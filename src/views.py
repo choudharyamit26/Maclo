@@ -2616,6 +2616,7 @@ class MeetingDetail(APIView):
         r_user = RegisterUser.objects.get(email=user_id.email)
         meeting_id = self.request.data['meeting_id']
         meeting_obj = ScheduleMeeting.objects.get(id=meeting_id)
+        print(r_user, meeting_obj.scheduled_with.id, meeting_obj.scheduled_by.id)
         match_with = MatchedUser.objects.filter(liked_by_me=meeting_obj.scheduled_with, matched='Yes').distinct()
         match_by = MatchedUser.objects.filter(user=meeting_obj.scheduled_by, matched='Yes').distinct()
         matched = None
@@ -2632,8 +2633,8 @@ class MeetingDetail(APIView):
         #           meeting_obj.scheduled_by.id, meeting_obj.scheduled_by.id in [x.id for x in y.liked_by_me.all()])
         if meeting_obj.scheduled_with.id in [x.id for x in
                                              matched.liked_by_me.all()] or meeting_obj.scheduled_by.id in [x.id for x
-                                                                                                             in
-                                                                                                             matched.liked_by_me.all()]:
+                                                                                                           in
+                                                                                                           matched.liked_by_me.all()]:
             if meeting_obj.scheduled_by.pic_1 and meeting_obj.scheduled_with.pic_1:
                 return Response(
                     {'invited_by': meeting_obj.scheduled_by.id,
