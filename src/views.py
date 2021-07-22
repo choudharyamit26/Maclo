@@ -2621,9 +2621,16 @@ class MeetingDetail(APIView):
         match_by = MatchedUser.objects.filter(user=meeting_obj.scheduled_by, matched='Yes').distinct()
         matched = None
         try:
-            matched = MatchedUser.objects.get(user=r_user, liked_by_me=meeting_obj.scheduled_with, matched='Yes')
+            matched = MatchedUser.objects.get(Q(liked_by_me=meeting_obj.scheduled_with) | Q(
+                liked_by_me=meeting_obj.scheduled_by), user=r_user, matched='Yes')
         except Exception as e:
-            matched = MatchedUser.objects.get(user=meeting_obj.scheduled_with, liked_by_me=r_user, matched='Yes')
+            matched = MatchedUser.objects.get(Q(user=meeting_obj.scheduled_with) | Q(user=meeting_obj.scheduled_by),
+                                              liked_by_me=r_user, matched='Yes')
+        # try:
+        #     matched = MatchedUser.objects.get(user=meeting_obj.scheduled_by, liked_by_me=r_user, matched='Yes')
+        # except:
+        #     pass
+
         print('>>>>>>', matched, matched.user, [x.id for x in matched.liked_by_me.all()])
         print(len(match_with | match_by))
         # for y in match_with | match_by:
