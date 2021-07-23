@@ -29,6 +29,7 @@ from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.views import APIView
 
 from adminpanel.models import UserNotification, Transaction, UserHeartBeatsPerDay, ExtraHeartBeats, SubscriptionStatus
+from chat.models import ChatRoom
 from .fcm_notification import send_another
 from .models import UserInstagramPic, UserDetail, RegisterUser, MatchedUser, RequestMeeting, ScheduleMeeting, Feedback, \
     AboutUs, ContactUs, SubscriptionPlans, ContactUsQuery, DeactivateAccount, BlockedUsers, PopNotification, \
@@ -2626,18 +2627,7 @@ class MeetingDetail(APIView):
         except Exception as e:
             matched = MatchedUser.objects.get(Q(user=meeting_obj.scheduled_with) | Q(user=meeting_obj.scheduled_by),
                                               liked_by_me=r_user, matched='Yes')
-        # try:
-        #     matched = MatchedUser.objects.get(user=meeting_obj.scheduled_by, liked_by_me=r_user, matched='Yes')
-        # except:
-        #     pass
 
-        print('>>>>>>', matched, matched.user, [x.id for x in matched.liked_by_me.all()])
-        print(len(match_with | match_by))
-        # for y in match_with | match_by:
-        #     print(y, r_user.id)
-        #     print(y.user, r_user.id, [x.id for x in y.liked_by_me.all()], y.matched)
-        #     print(meeting_obj.scheduled_with.id, meeting_obj.scheduled_with.id in [x.id for x in y.liked_by_me.all()],
-        #           meeting_obj.scheduled_by.id, meeting_obj.scheduled_by.id in [x.id for x in y.liked_by_me.all()])
         if meeting_obj.scheduled_with.id in [x.id for x in
                                              matched.liked_by_me.all()] or meeting_obj.scheduled_by.id in [x.id for x
                                                                                                            in
@@ -4083,7 +4073,21 @@ class UnMatchView(APIView):
         try:
             match_id = self.request.POST['match_id']
             match = MatchedUser.objects.get(id=match_id)
+            user_1 = match.user
+            user_2 = match.liked_by_me.all()
+            other_matched_obj = MatchedUser.objects.filter(
+                Q(user=user_1, liked_by_me=user_2) | Q(user=user_2, liked_by_me=user_1))
+            for obj in other_matched_obj:
+                obj.delete()
+            meeting_obj = ScheduleMeeting.objects.filter(Q(user=user_1) | Q(user=user_2),
+                                                         Q(liked_by_me=user_2) | Q(liked_by_me=user_1), matched='Yes')
+            for obj in meeting_obj:
+                obj.delete()
+            chat_obj = ChatRoom.objects.filter(Q(sender=user_1, receiver=user_2) | Q(sender=user_2, receiver=user_1))
+            for obj in chat_obj:
+                obj.delete()
             match.delete()
+
             return Response({'message': 'Unmatched successfully', 'status': HTTP_200_OK})
         except Exception as e:
             x = {'error': str(e)}
