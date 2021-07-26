@@ -4076,6 +4076,9 @@ class UnMatchView(APIView):
             user_1 = match.user
             user_2 = match.liked_by_me.all()
             other_matched_obj = None
+            chat_obj = None
+            meeting_obj = None
+
             try:
                 other_matched_obj = MatchedUser.objects.filter(user=user_1, liked_by_me=user_2)
             except Exception as e:
@@ -4083,8 +4086,14 @@ class UnMatchView(APIView):
                 other_matched_obj = MatchedUser.objects.filter(user=user_2, liked_by_me=user_1)
             for obj in other_matched_obj:
                 obj.delete()
-            meeting_obj = ScheduleMeeting.objects.filter(Q(user=user_1) | Q(user=user_2),
-                                                         Q(liked_by_me=user_2) | Q(liked_by_me=user_1), matched='Yes')
+
+            meeting_obj = ScheduleMeeting.objects.filter(
+                    Q(user=user_1, liked_by_me=user_2, matched='Yes') | Q(user=user_2, liked_by_me=user_1,
+                                                                          matched='Yes'))
+            # except Exception as e:
+            #     meeting_obj = ScheduleMeeting.objects.filter(Q(user=user_1) | Q(user=user_2),
+            #                                                  Q(liked_by_me=user_2) | Q(liked_by_me=user_1),
+            #                                                  matched='Yes')
             for obj in meeting_obj:
                 obj.delete()
             chat_obj = ChatRoom.objects.filter(Q(sender=user_1, receiver=user_2) | Q(sender=user_2, receiver=user_1))
