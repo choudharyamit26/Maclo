@@ -4084,10 +4084,11 @@ class UnMatchView(APIView):
 
             try:
                 other_matched_obj = MatchedUser.objects.filter(user=user_1, liked_by_me__id=[x.id for x in user_2][0])
-                print('----', other_matched_obj)
+                print('----other_matched_obj ', other_matched_obj)
             except Exception as e:
                 print('INSIDE OTHER MATCHED EXCEPTION', e)
                 other_matched_obj = MatchedUser.objects.filter(user__id=[x.id for x in user_2][0], liked_by_me=user_1)
+                print('other_matched_obj---',other_matched_obj)
             for obj in other_matched_obj:
                 obj.delete()
             try:
