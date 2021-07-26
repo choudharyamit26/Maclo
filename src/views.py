@@ -4091,28 +4091,6 @@ class UnMatchView(APIView):
             other_matched_obj_2 = MatchedUser.objects.get(user=user_liked_me, liked_by_me=user_1)
             other_matched_obj_2.delete()
             print(users_liked_me, users_liked_by_me, other_matched_obj_2)
-            # try:
-            #     other_matched_obj = MatchedUser.objects.filter(user=user_1, liked_by_me__id=[x.id for x in user_2][0])
-            #     print('----other_matched_obj ', other_matched_obj)
-            # except Exception as e:
-            #     print('INSIDE OTHER MATCHED EXCEPTION', e)
-            #     other_matched_obj = MatchedUser.objects.filter(user__id=[x.id for x in user_2][0], liked_by_me=user_1)
-            #     print('other_matched_obj---', other_matched_obj)
-            # for obj in other_matched_obj:
-            #     obj.delete()
-            #
-            #
-            # try:
-            #     other_matched_obj_2 = MatchedUser.objects.filter(user__id=[x.id for x in user_2][0], liked_by_me=user_1)
-            #
-            #     print('----other_matched_obj2 ', other_matched_obj)
-            # except Exception as e:
-            #     print('INSIDE OTHER MATCHED EXCEPTION2 ', e)
-            #     other_matched_obj_2 = MatchedUser.objects.filter(user=user_1, liked_by_me__id=[x.id for x in user_2][0])
-            #     print('other_matched_obj2---', other_matched_obj)
-            # for obj in other_matched_obj_2:
-            #     obj.delete()
-
             try:
                 meeting_obj = ScheduleMeeting.objects.filter(scheduled_by=user_1,
                                                              scheduled_with__id=[x.id for x in user_2][0])
@@ -4144,6 +4122,7 @@ class BlockUserView(APIView):
 
     def post(self, request, *args, **kwargs):
         user_id = self.request.POST['id']
+        matched_id = self.request.POST['matched_id']
         try:
             r_user = RegisterUser.objects.get(email=self.request.user.email)
             print('inside try')
@@ -4151,6 +4130,8 @@ class BlockUserView(APIView):
             blocked_user_obj = BlockedUsers.objects.get(user=r_user)
             if blocked_user_obj:
                 blocked_user_obj.blocked.add(RegisterUser.objects.get(id=int(user_id)))
+                matched_obj = MatchedUser.objects.get(id=matched_id)
+                matched_obj.delete()
                 return Response({'message': 'User blocked successfully', 'status': HTTP_200_OK})
         except Exception as e:
             print('Inside exception', e)
@@ -4160,6 +4141,8 @@ class BlockUserView(APIView):
                 # blocked=RegisterUser.objects.get(id=int(user_id))
             )
             block.blocked.add(RegisterUser.objects.get(id=int(user_id)))
+            matched_obj = MatchedUser.objects.get(id=matched_id)
+            matched_obj.delete()
             return Response({'message': 'User blocked successfully', 'status': HTTP_200_OK})
 
 
