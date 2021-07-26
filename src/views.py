@@ -4073,6 +4073,7 @@ class UnMatchView(APIView):
         try:
             match_id = self.request.POST['match_id']
             match = MatchedUser.objects.get(id=match_id)
+            print('---', match)
             user_1 = match.user
             user_2 = match.liked_by_me.all()
             other_matched_obj = None
