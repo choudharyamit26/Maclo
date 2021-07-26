@@ -4076,14 +4076,15 @@ class UnMatchView(APIView):
             print('---', match)
             user_1 = match.user
             user_2 = match.liked_by_me.all()
-            print('users',user_2,user_1)
+            print('users', [x.id for x in user_2], user_1)
+            print('users', [x.id for x in user_2][0])
             other_matched_obj = None
             chat_obj = None
             meeting_obj = None
 
             try:
                 other_matched_obj = MatchedUser.objects.filter(user=user_1, liked_by_me=user_2)
-                print('----',other_matched_obj)
+                print('----', other_matched_obj)
             except Exception as e:
                 print('INSIDE OTHER MATCHED EXCEPTION', e)
                 other_matched_obj = MatchedUser.objects.filter(user=user_2, liked_by_me=user_1)
