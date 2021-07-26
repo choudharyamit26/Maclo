@@ -4088,7 +4088,7 @@ class UnMatchView(APIView):
             users_liked_me = MatchedUser.objects.filter(liked_by_me=r_user)
             user_liked_me = RegisterUser.objects.get(id=[x.id for x in user_2][0])
             print('USER LIKED ME', user_liked_me)
-            other_matched_obj_2 = MatchedUser.objects.get(user=users_liked_me, liked_by_me=r_user)
+            other_matched_obj_2 = MatchedUser.objects.get(user=user_liked_me, liked_by_me=r_user)
             other_matched_obj_2.delete()
             print(users_liked_me, users_liked_by_me, other_matched_obj_2)
             # try:
