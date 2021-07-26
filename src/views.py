@@ -4070,6 +4070,8 @@ class UnMatchView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
+        user = self.request.user
+        r_user = RegisterUser.objects.get(email=user.email)
         try:
             match_id = self.request.POST['match_id']
             match = MatchedUser.objects.get(id=match_id)
@@ -4082,31 +4084,34 @@ class UnMatchView(APIView):
             other_matched_obj_2 = None
             chat_obj = None
             meeting_obj = None
-
-            try:
-                other_matched_obj = MatchedUser.objects.filter(user=user_1, liked_by_me__id=[x.id for x in user_2][0])
-                print('----other_matched_obj ', other_matched_obj)
-            except Exception as e:
-                print('INSIDE OTHER MATCHED EXCEPTION', e)
-                other_matched_obj = MatchedUser.objects.filter(user__id=[x.id for x in user_2][0], liked_by_me=user_1)
-                print('other_matched_obj---', other_matched_obj)
-            for obj in other_matched_obj:
-                obj.delete()
-
-
-            try:
-                other_matched_obj_2 = MatchedUser.objects.filter(user__id=[x.id for x in user_2][0], liked_by_me=user_1)
-
-                # other_matched_obj_2 = MatchedUser.objects.filter(user=user_1, liked_by_me__id=[x.id for x in user_2][0])
-                print('----other_matched_obj2 ', other_matched_obj)
-            except Exception as e:
-                print('INSIDE OTHER MATCHED EXCEPTION2 ', e)
-                other_matched_obj_2 = MatchedUser.objects.filter(user=user_1, liked_by_me__id=[x.id for x in user_2][0])
-                # other_matched_obj_2 = MatchedUser.objects.filter(user__id=[x.id for x in user_2][0], liked_by_me=user_1)
-                print('other_matched_obj2---', other_matched_obj)
-            for obj in other_matched_obj_2:
-                obj.delete()
-
+            users_liked_by_me = MatchedUser.objects.filter(user=r_user)
+            users_liked_me = MatchedUser.objects.filter(liked_by_me=r_user)
+            user_liked_me = RegisterUser.objects.get(id=[x.id for x in user_2][0])
+            print('USER LIKED ME', user_liked_me)
+            other_matched_obj_2 = MatchedUser.objects.get(user=users_liked_me, liked_by_me=r_user)
+            other_matched_obj_2.delete()
+            print(users_liked_me, users_liked_by_me, other_matched_obj_2)
+            # try:
+            #     other_matched_obj = MatchedUser.objects.filter(user=user_1, liked_by_me__id=[x.id for x in user_2][0])
+            #     print('----other_matched_obj ', other_matched_obj)
+            # except Exception as e:
+            #     print('INSIDE OTHER MATCHED EXCEPTION', e)
+            #     other_matched_obj = MatchedUser.objects.filter(user__id=[x.id for x in user_2][0], liked_by_me=user_1)
+            #     print('other_matched_obj---', other_matched_obj)
+            # for obj in other_matched_obj:
+            #     obj.delete()
+            #
+            #
+            # try:
+            #     other_matched_obj_2 = MatchedUser.objects.filter(user__id=[x.id for x in user_2][0], liked_by_me=user_1)
+            #
+            #     print('----other_matched_obj2 ', other_matched_obj)
+            # except Exception as e:
+            #     print('INSIDE OTHER MATCHED EXCEPTION2 ', e)
+            #     other_matched_obj_2 = MatchedUser.objects.filter(user=user_1, liked_by_me__id=[x.id for x in user_2][0])
+            #     print('other_matched_obj2---', other_matched_obj)
+            # for obj in other_matched_obj_2:
+            #     obj.delete()
 
             try:
                 meeting_obj = ScheduleMeeting.objects.filter(scheduled_by=user_1,
