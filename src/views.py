@@ -4081,17 +4081,18 @@ class UnMatchView(APIView):
             meeting_obj = None
 
             try:
-                other_matched_obj = MatchedUser.objects.filter(user=user_1, liked_by_me=user_2)
+                other_matched_obj = MatchedUser.objects.filter(user=user_1, liked_by_me__id=user_2.id)
+                print('----',other_matched_obj)
             except Exception as e:
                 print('INSIDE OTHER MATCHED EXCEPTION', e)
-                other_matched_obj = MatchedUser.objects.filter(user=user_2, liked_by_me=user_1)
+                other_matched_obj = MatchedUser.objects.filter(user=user_2, liked_by_me__id=user_1.id)
             for obj in other_matched_obj:
                 obj.delete()
             try:
-                meeting_obj = ScheduleMeeting.objects.filter(user=user_1, liked_by_me=user_2, matched='Yes')
+                meeting_obj = ScheduleMeeting.objects.filter(scheduled_by=user_1, scheduled_with=user_2)
             except Exception as e:
                 print('INSIDE MEETING OBJ EXCEPTION', e)
-                meeting_obj = ScheduleMeeting.objects.filter(user=user_2, liked_by_me=user_1, matched='Yes')
+                meeting_obj = ScheduleMeeting.objects.filter(scheduled_by=user_2, scheduled_with=user_1)
             for obj in meeting_obj:
                 obj.delete()
             try:
