@@ -4083,25 +4083,27 @@ class UnMatchView(APIView):
             meeting_obj = None
 
             try:
-                other_matched_obj = MatchedUser.objects.filter(user=user_1, liked_by_me=user_2)
+                other_matched_obj = MatchedUser.objects.filter(user=user_1, liked_by_me__id=[x.id for x in user_2][0])
                 print('----', other_matched_obj)
             except Exception as e:
                 print('INSIDE OTHER MATCHED EXCEPTION', e)
-                other_matched_obj = MatchedUser.objects.filter(user=user_2, liked_by_me=user_1)
+                other_matched_obj = MatchedUser.objects.filter(user__id=[x.id for x in user_2][0], liked_by_me=user_1)
             for obj in other_matched_obj:
                 obj.delete()
             try:
-                meeting_obj = ScheduleMeeting.objects.filter(scheduled_by=user_1, scheduled_with=user_2)
+                meeting_obj = ScheduleMeeting.objects.filter(scheduled_by=user_1,
+                                                             scheduled_with__id=[x.id for x in user_2][0])
             except Exception as e:
                 print('INSIDE MEETING OBJ EXCEPTION', e)
-                meeting_obj = ScheduleMeeting.objects.filter(scheduled_by=user_2, scheduled_with=user_1)
+                meeting_obj = ScheduleMeeting.objects.filter(scheduled_by__id=[x.id for x in user_2][0],
+                                                             scheduled_with=user_1)
             for obj in meeting_obj:
                 obj.delete()
             try:
-                chat_obj = ChatRoom.objects.filter(sender=user_1, receiver=user_2)
+                chat_obj = ChatRoom.objects.filter(sender=user_1, receiver__id=[x.id for x in user_2][0])
             except Exception as e:
                 print('INSIDE CHAT OBJ EXCEPTIONS', e)
-                chat_obj = ChatRoom.objects.filter(sender=user_2, receiver=user_1)
+                chat_obj = ChatRoom.objects.filter(sender__id=[x.id for x in user_2][0], receiver=user_1)
             for obj in chat_obj:
                 obj.delete()
             match.delete()
