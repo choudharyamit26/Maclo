@@ -1883,7 +1883,7 @@ class LikeUserAPIView(CreateAPIView):
                 users_liked_by_me_list.append(x.liked_by_me.all()[0].id)
         for x in users_super_liked_by_me:
             if x.super_liked_by_me.all():
-                users_super_liked_by_me_list.append(x.liked_by_me.all()[0].id)
+                users_super_liked_by_me_list.append(x.super_liked_by_me.all()[0].id)
         print('USERS SUPER LIKED BY ME LIST ', users_super_liked_by_me_list)
         print('USERS LIKED BY ME LIST ', users_liked_by_me_list)
         print('USERS LIKED ME LIST', users_liked_me_list)
@@ -1891,7 +1891,7 @@ class LikeUserAPIView(CreateAPIView):
         print(type(liked_by_me))
         print(users_liked_me_list + users_liked_by_me_list)
         print(int(liked_by_me) in users_liked_me_list + users_liked_by_me_list)
-        if int(liked_by_me) not in users_liked_by_me_list + users_liked_me_list + users_super_liked_by_me:
+        if int(liked_by_me) not in users_liked_by_me_list + users_liked_me_list + users_super_liked_by_me_list:
             register_user = RegisterUser.objects.get(id=r_user.id)
             from_user_name = register_user.first_name
             user = MatchedUser.objects.create(user=register_user, matched='No')
@@ -1905,7 +1905,6 @@ class LikeUserAPIView(CreateAPIView):
             )
             fcm_token = User.objects.get(email=to_user_id.email).device_token
             print('FCM TOKEN ', fcm_token)
-
             try:
                 # data_message = {"data": {"title": "Like Notification",
                 #                          "body": "You have been liked by " + from_user_name,
@@ -1984,26 +1983,28 @@ class SuperLikeUserAPIView(CreateAPIView):
         user = self.request.user
         r_user = RegisterUser.objects.get(email=user.email)
         print(r_user.id)
-        users_liked_by_me = MatchedUser.objects.filter(user=r_user)
-        users_liked_me = MatchedUser.objects.filter(super_liked_by_me=r_user)
+        users_super_liked_by_me = MatchedUser.objects.filter(user=r_user)
+        users_super_liked_me = MatchedUser.objects.filter(super_liked_by_me=r_user)
+        users_liked_me = MatchedUser.objects.filter(iked_by_me=r_user)
         super_liked_by_me = self.request.data['super_liked_by_me']
-        users_liked_by_me_list = []
+        users_super_liked_by_me_list = []
+        users_super_liked_me_list = []
         users_liked_me_list = []
-        for x in users_liked_me:
+        for x in users_super_liked_me:
             if x.super_liked_by_me.all():
                 print('Many to Many field ', x.super_liked_by_me.all()[0].id)
                 print('LIKED BY USER', x.user.id)
-                users_liked_me_list.append(x.user.id)
-        for x in users_liked_by_me:
+                users_super_liked_me_list.append(x.user.id)
+        for x in users_super_liked_by_me:
             if x.super_liked_by_me.all():
-                users_liked_by_me_list.append(x.super_liked_by_me.all()[0].id)
-        print('USERS LIKED BY ME LIST ', users_liked_by_me_list)
-        print('USERS LIKED ME LIST', users_liked_me_list)
-        print(super_liked_by_me)
-        print(type(super_liked_by_me))
-        print(users_liked_me_list + users_liked_by_me_list)
-        print(int(super_liked_by_me) in users_liked_me_list + users_liked_by_me_list)
-        if int(super_liked_by_me) not in users_liked_by_me_list + users_liked_me_list:
+                users_super_liked_by_me_list.append(x.super_liked_by_me.all()[0].id)
+
+        for x in users_liked_me:
+            if x.liked_by_me.all():
+                users_liked_me_list.append(x.super_liked_by_me.all()[0].id)
+        print('USERS LIKED BY ME LIST ', users_super_liked_by_me_list)
+        print('USERS LIKED ME LIST', users_super_liked_me_list)
+        if int(super_liked_by_me) not in users_super_liked_by_me_list + users_super_liked_me_list + users_liked_me_list:
             register_user = RegisterUser.objects.get(id=r_user.id)
             from_user_name = register_user.first_name
             user = MatchedUser.objects.create(user=register_user, super_matched='No')
@@ -2011,7 +2012,7 @@ class SuperLikeUserAPIView(CreateAPIView):
             to_user_id = RegisterUser.objects.get(id=int(super_liked_by_me))
             UserNotification.objects.create(
                 to=User.objects.get(email=to_user_id.email),
-                title='Super Match Notification',
+                title='Super Like Notification',
                 body="You have been super liked by " + from_user_name,
                 extra_text=f'{register_user.id}'
             )
