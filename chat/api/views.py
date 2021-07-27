@@ -48,6 +48,7 @@ class MessagesList(APIView):
                 receiver = ''
             messages.append({'id': message.id, 'sender': sender, 'receiver': receiver,
                              'message': message.message, 'is_image': message.is_image, 'read': message.read,
+                             'cleared_by': message.cleared_by,
                              'created_at': str(message.created_at.replace(microsecond=0))})
         return Response({'messages': messages, 'status': HTTP_200_OK})
 
@@ -707,9 +708,9 @@ class DeleteChatMessages(APIView):
                 #     message.delete()
                 # else:
                 #     print('inside else')
-                    # if message.sender == r_user:
-                    #     print('inside nested if')
-                        # message.sender = None
+                # if message.sender == r_user:
+                #     print('inside nested if')
+                # message.sender = None
                 if message.cleared_by == '':
                     message.cleared_by = cleared_by
                     message.save()
