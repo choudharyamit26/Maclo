@@ -692,7 +692,7 @@ class DeleteChatMessages(APIView):
         r_user = RegisterUser.objects.get(email=user.email)
         print(r_user.id)
         room_id = self.request.POST['room_id']
-        cleared_by = self.request.POST['cleared_by']
+        # cleared_by = self.request.POST['cleared_by']
         print(room_id)
         try:
             room_obj = ChatRoom.objects.get(id=room_id)
@@ -712,7 +712,7 @@ class DeleteChatMessages(APIView):
                 #     print('inside nested if')
                 # message.sender = None
                 if message.cleared_by == '':
-                    message.cleared_by = cleared_by
+                    message.cleared_by = r_user.id
                     message.save()
                 elif message.cleared_by:
                     message.delete()
