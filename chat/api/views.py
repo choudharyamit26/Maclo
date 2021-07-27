@@ -691,6 +691,7 @@ class DeleteChatMessages(APIView):
         r_user = RegisterUser.objects.get(email=user.email)
         print(r_user.id)
         room_id = self.request.POST['room_id']
+        cleared_by = self.request.POST['cleared_by']
         print(room_id)
         try:
             room_obj = ChatRoom.objects.get(id=room_id)
@@ -702,18 +703,22 @@ class DeleteChatMessages(APIView):
             for message in messages:
                 print('Message id', message.id)
                 print('inside if')
-                if message.sender == None and message.receiver == None:
+                # if message.sender == None and message.receiver == None:
+                #     message.delete()
+                # else:
+                #     print('inside else')
+                    # if message.sender == r_user:
+                    #     print('inside nested if')
+                        # message.sender = None
+                if message.cleared_by == '':
+                    message.cleared_by = cleared_by
+                    message.save()
+                elif message.cleared_by:
                     message.delete()
-                else:
-                    print('inside else')
-                    if message.sender == r_user:
-                        print('inside nested if')
-                        message.sender = None
-                        message.save()
-                    if message.receiver == r_user:
-                        print('inside nested else')
-                        message.receiver = None
-                        message.save()
+                    # if message.receiver == r_user:
+                    #     print('inside nested else')
+                    #     message.receiver = None
+                    #     message.save()
             return Response({"message": "Messages deleted successfully", 'status': HTTP_200_OK})
         except Exception as e:
             return Response({'message': str(e), 'status': HTTP_400_BAD_REQUEST})

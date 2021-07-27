@@ -14,6 +14,7 @@ class Message(models.Model):
     # image = models.ImageField(null=True, blank=True)
     is_image = models.BooleanField(default=False)
     read = models.BooleanField(default=False)
+    cleared_by = models.CharField(default='', max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
