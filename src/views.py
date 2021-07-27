@@ -1868,9 +1868,11 @@ class LikeUserAPIView(CreateAPIView):
         print(r_user.id)
         users_liked_by_me = MatchedUser.objects.filter(user=r_user)
         users_liked_me = MatchedUser.objects.filter(liked_by_me=r_user)
+        users_super_liked_by_me = MatchedUser.objects.filter(super_liked_by_me=r_user)
         liked_by_me = self.request.data['liked_by_me']
         users_liked_by_me_list = []
         users_liked_me_list = []
+        users_super_liked_by_me_list = []
         for x in users_liked_me:
             if x.liked_by_me.all():
                 print('Many to Many field ', x.liked_by_me.all()[0].id)
@@ -1879,13 +1881,17 @@ class LikeUserAPIView(CreateAPIView):
         for x in users_liked_by_me:
             if x.liked_by_me.all():
                 users_liked_by_me_list.append(x.liked_by_me.all()[0].id)
+        for x in users_super_liked_by_me:
+            if x.super_liked_by_me.all():
+                users_super_liked_by_me_list.append(x.liked_by_me.all()[0].id)
+        print('USERS SUPER LIKED BY ME LIST ', users_super_liked_by_me_list)
         print('USERS LIKED BY ME LIST ', users_liked_by_me_list)
         print('USERS LIKED ME LIST', users_liked_me_list)
         print(liked_by_me)
         print(type(liked_by_me))
         print(users_liked_me_list + users_liked_by_me_list)
         print(int(liked_by_me) in users_liked_me_list + users_liked_by_me_list)
-        if int(liked_by_me) not in users_liked_by_me_list + users_liked_me_list:
+        if int(liked_by_me) not in users_liked_by_me_list + users_liked_me_list + users_super_liked_by_me:
             register_user = RegisterUser.objects.get(id=r_user.id)
             from_user_name = register_user.first_name
             user = MatchedUser.objects.create(user=register_user, matched='No')
@@ -2131,7 +2137,6 @@ class GetMatchesAPIView(ListAPIView):
                              'profile_pic': RegisterUser.objects.get(id=y.user.id).pic_1.url,
                              'matched_at': y.matched_at,
                              'type': 'match', 'blocked': False})
-
             except Exception as e:
                 # print('EXCEPT BLOCK Match--------------', len(match_with | match_by))
                 # print('ID BLOCK Match--------------', [x.id for x in y.liked_by_me.all()])
@@ -2306,10 +2311,6 @@ class UserLikedList(APIView):
                     pass
         for y in super_liked_users:
             if len(super_liked_users) > 0:
-                # print(user.super_liked_by_me.all()[0].id)
-                # print(user.super_liked_by_me.all().first().id)
-                # z = RegisterUser.objects.get(id=user.super_liked_by_me.all().first().id)
-                # for y in super_liked_users:
                 if y.id not in super_like_list:
                     print(y.id)
                     if y.user.pic_1:
@@ -2335,11 +2336,7 @@ class LikedUserCount(APIView):
         user = self.request.user
         r_user = RegisterUser.objects.get(email=user.email)
         liked_users = MatchedUser.objects.filter(liked_by_me=r_user)
-        print('LIKED USERS ', liked_users)
-        print('LIKED USERS ', len(liked_users))
         super_liked_users = MatchedUser.objects.filter(super_liked_by_me=r_user)
-        print('SUPER LIKED USERS ', super_liked_users)
-        print('SUPER LIKED USERS ', len(super_liked_users))
         return Response({'message': 'Like count fetched successfully', 'count': len(liked_users | super_liked_users),
                          'verified': r_user.verified,
                          'status': HTTP_200_OK})
@@ -4122,7 +4119,7 @@ class BlockUserView(APIView):
 
     def post(self, request, *args, **kwargs):
         user_id = self.request.POST['id']
-        matched_id = self.request.POST['matched_id']
+        matched_id = self.request.POST.get('matched_id')
         try:
             r_user = RegisterUser.objects.get(email=self.request.user.email)
             print('inside try')
