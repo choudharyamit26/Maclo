@@ -120,6 +120,7 @@ class ChatList(APIView):
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
+                                 'cleared_by': message.messages.last().cleared_by,
                                  'created_at': str(message.messages.last().created_at), 'blocked': True})
                         else:
                             un_read_messages = []
@@ -138,6 +139,7 @@ class ChatList(APIView):
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
+                                 'cleared_by': message.messages.last().cleared_by,
                                  'created_at': str(message.messages.last().created_at), 'blocked': False,
                                  'message_count': len(un_read_messages)})
                     else:
@@ -149,7 +151,7 @@ class ChatList(APIView):
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
                                     id=message.receiver_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
-                                 'last_message': '', 'is_image': '',
+                                 'last_message': '', 'is_image': '', 'cleared_by': message.messages.last().cleared_by,
                                  'created_at': '', 'blocked': True})
                         else:
                             un_read_messages = []
@@ -166,7 +168,7 @@ class ChatList(APIView):
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
                                     id=message.receiver_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
-                                 'last_message': '', 'is_image': '',
+                                 'last_message': '', 'is_image': '', 'cleared_by': message.messages.last().cleared_by,
                                  'created_at': '', 'blocked': False, 'message_count': len(un_read_messages)})
                 elif RegisterUser.objects.get(id=message.sender_id).pic_1:
                     if message.messages.last():
@@ -180,6 +182,7 @@ class ChatList(APIView):
                                  'receiver_profile_pic': '',
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
+                                 'cleared_by': message.messages.last().cleared_by,
                                  'created_at': str(message.messages.last().created_at), 'blocked': True})
                         else:
                             un_read_messages = []
@@ -198,6 +201,7 @@ class ChatList(APIView):
                                  'receiver_profile_pic': '',
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
+                                 'cleared_by': message.messages.last().cleared_by,
                                  'created_at': str(message.messages.last().created_at), 'blocked': False,
                                  'message_count': len(un_read_messages)})
                     else:
@@ -210,7 +214,7 @@ class ChatList(APIView):
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
                                     id=message.receiver_id).first_name,
                                  'receiver_profile_pic': '',
-                                 'last_message': '', 'is_image': '',
+                                 'last_message': '', 'is_image': '', 'cleared_by': message.messages.last().cleared_by,
                                  'created_at': '', 'blocked': True})
                         else:
                             un_read_messages = []
@@ -228,7 +232,7 @@ class ChatList(APIView):
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
                                     id=message.receiver_id).first_name,
                                  'receiver_profile_pic': '',
-                                 'last_message': '', 'is_image': '',
+                                 'last_message': '', 'is_image': '', 'cleared_by': message.messages.last().cleared_by,
                                  'created_at': '', 'blocked': False, 'message_count': len(un_read_messages)})
                 elif RegisterUser.objects.get(id=message.receiver_id).pic_1:
                     if message.messages.last():
@@ -242,6 +246,7 @@ class ChatList(APIView):
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
+                                 'cleared_by': message.messages.last().cleared_by,
                                  'created_at': str(message.messages.last().created_at), 'blocked': True})
                         else:
                             un_read_messages = []
@@ -260,6 +265,7 @@ class ChatList(APIView):
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
+                                 'cleared_by': message.messages.last().cleared_by,
                                  'created_at': str(message.messages.last().created_at), 'blocked': False,
                                  'message_count': len(un_read_messages)})
                     else:
@@ -271,7 +277,7 @@ class ChatList(APIView):
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
                                     id=message.receiver_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
-                                 'last_message': '', 'is_image': '',
+                                 'last_message': '', 'is_image': '', 'cleared_by': message.messages.last().cleared_by,
                                  'created_at': '', 'blocked': True})
                         else:
                             un_read_messages = []
@@ -288,7 +294,7 @@ class ChatList(APIView):
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
                                     id=message.receiver_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.receiver_id).pic_1.url,
-                                 'last_message': '', 'is_image': '',
+                                 'last_message': '', 'is_image': '', 'cleared_by': message.messages.last().cleared_by,
                                  'created_at': '', 'blocked': False, 'message_count': len(un_read_messages)})
                 else:
                     if message.messages.last():
@@ -302,6 +308,7 @@ class ChatList(APIView):
                                  'receiver_profile_pic': '',
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
+                                 'cleared_by': message.messages.last().cleared_by,
                                  'created_at': str(message.messages.last().created_at), 'blocked': True})
                         else:
                             un_read_messages = []
@@ -320,6 +327,7 @@ class ChatList(APIView):
                                  'receiver_profile_pic': '',
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
+                                 'cleared_by': message.messages.last().cleared_by,
                                  'created_at': str(message.messages.last().created_at), 'blocked': False,
                                  'message_count': len(un_read_messages)})
                     else:
@@ -331,7 +339,7 @@ class ChatList(APIView):
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
                                     id=message.receiver_id).first_name,
                                  'receiver_profile_pic': '',
-                                 'last_message': '', 'is_image': '',
+                                 'last_message': '', 'is_image': '', 'cleared_by': message.messages.last().cleared_by,
                                  'created_at': '', 'blocked': True})
                         else:
                             un_read_messages = []
@@ -348,7 +356,7 @@ class ChatList(APIView):
                                  'receiver': message.receiver.id, 'receiver_name': RegisterUser.objects.get(
                                     id=message.receiver_id).first_name,
                                  'receiver_profile_pic': '',
-                                 'last_message': '', 'is_image': '',
+                                 'last_message': '', 'is_image': '', 'cleared_by': message.messages.last().cleared_by,
                                  'created_at': '', 'blocked': False, 'message_count': len(un_read_messages)})
             except Exception as e:
                 print(e)
@@ -369,6 +377,7 @@ class ChatList(APIView):
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
+                                 'cleared_by': message.messages.last().cleared_by,
                                  'created_at': str(message.messages.last().created_at), 'blocked': True})
                         else:
                             un_read_messages = []
@@ -388,6 +397,7 @@ class ChatList(APIView):
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                                  'last_message': message.messages.last().message,
                                  'is_image': message.messages.last().is_image,
+                                 'cleared_by': message.messages.last().cleared_by,
                                  'created_at': str(message.messages.last().created_at), 'blocked': False,
                                  'message_count': len(un_read_messages)})
                     else:
@@ -400,7 +410,7 @@ class ChatList(APIView):
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
                                     id=message.sender_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
-                                 'last_message': '', 'is_image': '',
+                                 'last_message': '', 'is_image': '', 'cleared_by': message.messages.last().cleared_by,
                                  'created_at': '', 'blocked': True})
                         else:
                             un_read_messages = []
@@ -418,7 +428,7 @@ class ChatList(APIView):
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
                                     id=message.sender_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
-                                 'last_message': '', 'is_image': '',
+                                 'last_message': '', 'is_image': '','cleared_by': message.messages.last().cleared_by,
                                  'created_at': '', 'blocked': False, 'message_count': len(un_read_messages)})
                 elif RegisterUser.objects.get(id=message.sender_id).pic_1:
                     if message.messages.last():
@@ -432,7 +442,7 @@ class ChatList(APIView):
                                     id=message.sender_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                                  'last_message': message.messages.last().message,
-                                 'is_image': message.messages.last().is_image,
+                                 'is_image': message.messages.last().is_image,'cleared_by': message.messages.last().cleared_by,
                                  'created_at': str(message.messages.last().created_at), 'blocked': True})
                         else:
                             un_read_messages = []
@@ -451,7 +461,7 @@ class ChatList(APIView):
                                     id=message.sender_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
                                  'last_message': message.messages.last().message,
-                                 'is_image': message.messages.last().is_image,
+                                 'is_image': message.messages.last().is_image,'cleared_by': message.messages.last().cleared_by,
                                  'created_at': str(message.messages.last().created_at), 'blocked': False,
                                  'message_count': len(un_read_messages)})
                     else:
@@ -464,7 +474,7 @@ class ChatList(APIView):
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
                                     id=message.sender_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
-                                 'last_message': '', 'is_image': '',
+                                 'last_message': '', 'is_image': '','cleared_by': message.messages.last().cleared_by,
                                  'created_at': '', 'blocked': True})
                         else:
                             un_read_messages = []
@@ -482,7 +492,7 @@ class ChatList(APIView):
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
                                     id=message.sender_id).first_name,
                                  'receiver_profile_pic': RegisterUser.objects.get(id=message.sender_id).pic_1.url,
-                                 'last_message': '', 'is_image': '',
+                                 'last_message': '', 'is_image': '','cleared_by': message.messages.last().cleared_by,
                                  'created_at': '', 'blocked': False, 'message_count': len(un_read_messages)})
                 elif RegisterUser.objects.get(id=message.receiver_id).pic_1:
                     if message.messages.last():
@@ -496,7 +506,7 @@ class ChatList(APIView):
                                     id=message.sender_id).first_name,
                                  'receiver_profile_pic': '',
                                  'last_message': message.messages.last().message,
-                                 'is_image': message.messages.last().is_image,
+                                 'is_image': message.messages.last().is_image,'cleared_by': message.messages.last().cleared_by,
                                  'created_at': str(message.messages.last().created_at), 'blocked': True})
                         else:
                             un_read_messages = []
@@ -515,7 +525,7 @@ class ChatList(APIView):
                                     id=message.sender_id).first_name,
                                  'receiver_profile_pic': '',
                                  'last_message': message.messages.last().message,
-                                 'is_image': message.messages.last().is_image,
+                                 'is_image': message.messages.last().is_image,'cleared_by': message.messages.last().cleared_by,
                                  'created_at': str(message.messages.last().created_at), 'blocked': False,
                                  'message_count': len(un_read_messages)})
                     else:
@@ -528,7 +538,7 @@ class ChatList(APIView):
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
                                     id=message.sender_id).first_name,
                                  'receiver_profile_pic': '',
-                                 'last_message': '', 'is_image': '',
+                                 'last_message': '', 'is_image': '','cleared_by': message.messages.last().cleared_by,
                                  'created_at': '', 'blocked': True})
                         else:
                             un_read_messages = []
@@ -546,7 +556,7 @@ class ChatList(APIView):
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
                                     id=message.sender_id).first_name,
                                  'receiver_profile_pic': '',
-                                 'last_message': '', 'is_image': '',
+                                 'last_message': '', 'is_image': '','cleared_by': message.messages.last().cleared_by,
                                  'created_at': '', 'blocked': False, 'message_count': len(un_read_messages)})
                 else:
                     if message.messages.last():
@@ -560,7 +570,7 @@ class ChatList(APIView):
                                     id=message.sender_id).first_name,
                                  'receiver_profile_pic': '',
                                  'last_message': message.messages.last().message,
-                                 'is_image': message.messages.last().is_image,
+                                 'is_image': message.messages.last().is_image,'cleared_by': message.messages.last().cleared_by,
                                  'created_at': str(message.messages.last().created_at), 'blocked': True})
                         else:
                             un_read_messages = []
@@ -579,7 +589,7 @@ class ChatList(APIView):
                                     id=message.sender_id).first_name,
                                  'receiver_profile_pic': '',
                                  'last_message': message.messages.last().message,
-                                 'is_image': message.messages.last().is_image,
+                                 'is_image': message.messages.last().is_image,'cleared_by': message.messages.last().cleared_by,
                                  'created_at': str(message.messages.last().created_at), 'blocked': False,
                                  'message_count': len(un_read_messages)})
                     else:
@@ -592,7 +602,7 @@ class ChatList(APIView):
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
                                     id=message.sender_id).first_name,
                                  'receiver_profile_pic': '',
-                                 'last_message': '', 'is_image': '',
+                                 'last_message': '', 'is_image': '','cleared_by': message.messages.last().cleared_by,
                                  'created_at': '', 'blocked': True})
                         else:
                             un_read_messages = []
@@ -610,7 +620,7 @@ class ChatList(APIView):
                                  'receiver': message.sender.id, 'receiver_name': RegisterUser.objects.get(
                                     id=message.sender_id).first_name,
                                  'receiver_profile_pic': '',
-                                 'last_message': '', 'is_image': '',
+                                 'last_message': '', 'is_image': '','cleared_by': message.messages.last().cleared_by,
                                  'created_at': '', 'blocked': False, 'message_count': len(un_read_messages)})
             except Exception as e:
                 print('Exception', e)
