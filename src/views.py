@@ -4087,7 +4087,6 @@ class UnMatchView(APIView):
             user_liked_me = RegisterUser.objects.get(id=[x.id for x in user_2][0])
             print('USER LIKED ME', user_liked_me)
             other_matched_obj_2 = MatchedUser.objects.get(user=user_liked_me, liked_by_me=user_1)
-            other_matched_obj_2.delete()
             # print(users_liked_me, users_liked_by_me, other_matched_obj_2)
             try:
                 meeting_obj = ScheduleMeeting.objects.filter(scheduled_by=user_1,
@@ -4105,7 +4104,11 @@ class UnMatchView(APIView):
                 chat_obj = ChatRoom.objects.filter(sender__id=[x.id for x in user_2][0], receiver=user_1)
             for obj in chat_obj:
                 obj.delete()
-            match.delete()
+            try:
+                match.delete()
+                other_matched_obj_2.delete()
+            except:
+                print('match delete')
 
             return Response({'message': 'Unmatched successfully', 'status': HTTP_200_OK})
         except Exception as e:
