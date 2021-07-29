@@ -4088,7 +4088,7 @@ class UnMatchView(APIView):
             print('USER LIKED ME', user_liked_me)
             other_matched_obj_2 = MatchedUser.objects.get(user=user_liked_me, liked_by_me=user_1)
             other_matched_obj_2.delete()
-            print(users_liked_me, users_liked_by_me, other_matched_obj_2)
+            # print(users_liked_me, users_liked_by_me, other_matched_obj_2)
             try:
                 meeting_obj = ScheduleMeeting.objects.filter(scheduled_by=user_1,
                                                              scheduled_with__id=[x.id for x in user_2][0])
