@@ -2152,21 +2152,25 @@ class SuperLikeUserAPIView(APIView):
         r_user = RegisterUser.objects.get(email=user.email)
         print(r_user.id)
         users_super_liked_by_me = MatchedUser.objects.filter(user=r_user)
-        users_super_liked_me = MatchedUser.objects.filter(super_liked_by_me=r_user)
-        users_liked_me = MatchedUser.objects.filter(liked_by_me=r_user)
+        users_super_liked_me = MatchedUser.objects.filter(super_liked_by_me__id=r_user.id)
+        users_liked_me = MatchedUser.objects.filter(liked_by_me__id=r_user.id)
         users_super_liked_by_me_list = []
         users_super_liked_me_list = []
         users_liked_me_list = []
+        print('users_super_liked_by_me---', users_super_liked_by_me)
+        print('users_super_liked_me---', users_super_liked_me)
+        print('users_liked_me---', users_liked_me)
         for x in users_super_liked_me:
             if x.super_liked_by_me.all():
                 users_super_liked_me_list.append(x.user.id)
         for x in users_super_liked_by_me:
-            print('super liked by me  ',x.super_liked_by_me.all())
+            print('super liked by me  ', x.super_liked_by_me.all())
             if len(x.super_liked_by_me.all()) > 0:
                 users_super_liked_by_me_list.append(x.super_liked_by_me.all()[0].id)
         for x in users_liked_me:
             if len(x.liked_by_me.all()) > 0:
                 users_liked_me_list.append(x.liked_by_me.all()[0].id)
+        print('----------', users_super_liked_me_list, users_liked_me_list, users_super_liked_by_me_list)
         if int(super_liked_by_me) not in (
                 users_super_liked_me_list + users_super_liked_by_me_list + users_liked_me_list):
             register_user = RegisterUser.objects.get(id=r_user.id)
