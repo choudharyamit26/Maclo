@@ -4796,30 +4796,52 @@ class SubscriptionBasedSuperLike(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
+        super_liked_by_me = self.request.data['super_liked_by_me']
         user = self.request.user
         r_user = RegisterUser.objects.get(email=user.email)
         print(r_user.id)
         print(UserHeartBeatsPerDay.objects.filter(user=r_user))
         print(ExtraHeartBeats.objects.filter(user=r_user))
-        users_liked_by_me = MatchedUser.objects.filter(user=r_user)
-        users_liked_me = MatchedUser.objects.filter(super_liked_by_me=r_user)
-        super_liked_by_me = self.request.data['super_liked_by_me']
-        users_liked_by_me_list = []
+        # users_liked_by_me = MatchedUser.objects.filter(user=r_user)
+        # users_liked_me = MatchedUser.objects.filter(super_liked_by_me=r_user)
+        # users_liked_by_me_list = []
+        # users_liked_me_list = []
+        # for x in users_liked_me:
+        #     if x.super_liked_by_me.all():
+        #         print('Many to Many field ', x.super_liked_by_me.all()[0].id)
+        #         print('LIKED BY USER', x.user.id)
+        #         users_liked_me_list.append(x.user.id)
+        # for x in users_liked_by_me:
+        #     if x.super_liked_by_me.all():
+        #         users_liked_by_me_list.append(x.super_liked_by_me.all()[0].id)
+        # print('USERS LIKED BY ME LIST ', users_liked_by_me_list)
+        # print('USERS LIKED ME LIST', users_liked_me_list)
+        # print(super_liked_by_me)
+        # print(type(super_liked_by_me))
+        # print(users_liked_me_list + users_liked_by_me_list)
+        # print(int(super_liked_by_me) in users_liked_me_list + users_liked_by_me_list)
+        users_super_liked_by_me = MatchedUser.objects.filter(user=r_user)
+        users_super_liked_me = MatchedUser.objects.filter(super_liked_by_me__id=r_user.id)
+        users_liked_me = MatchedUser.objects.filter(liked_by_me__id=r_user.id)
+        users_super_liked_by_me_list = []
+        users_super_liked_me_list = []
         users_liked_me_list = []
+        print('users_super_liked_by_me---', users_super_liked_by_me)
+        print('users_super_liked_me---', users_super_liked_me)
+        print('users_liked_me---', users_liked_me)
+        for x in users_super_liked_me:
+            if x.super_liked_by_me.all():
+                users_super_liked_me_list.append(x.user.id)
+        print('users_super_liked_me_list---', users_super_liked_me_list)
+        for x in users_super_liked_by_me:
+            print('super liked by me  ', x.super_liked_by_me.all())
+            if len(x.super_liked_by_me.all()) > 0:
+                users_super_liked_by_me_list.append(x.super_liked_by_me.all()[0].id)
+        print('users_super_liked_by_me_list--', users_super_liked_by_me_list)
         for x in users_liked_me:
-            if x.super_liked_by_me.all():
-                print('Many to Many field ', x.super_liked_by_me.all()[0].id)
-                print('LIKED BY USER', x.user.id)
+            if len(x.liked_by_me.all()) > 0:
                 users_liked_me_list.append(x.user.id)
-        for x in users_liked_by_me:
-            if x.super_liked_by_me.all():
-                users_liked_by_me_list.append(x.super_liked_by_me.all()[0].id)
-        print('USERS LIKED BY ME LIST ', users_liked_by_me_list)
-        print('USERS LIKED ME LIST', users_liked_me_list)
-        print(super_liked_by_me)
-        print(type(super_liked_by_me))
-        print(users_liked_me_list + users_liked_by_me_list)
-        print(int(super_liked_by_me) in users_liked_me_list + users_liked_by_me_list)
+        print('users_liked_me_list----', users_liked_me_list)
         try:
             print('inside first try block--->>>')
             print(UserHeartBeatsPerDay.objects.filter(user=r_user))
@@ -4829,7 +4851,7 @@ class SubscriptionBasedSuperLike(APIView):
             if user_heartbeats.number_of_heart_beats > 0:
                 print('inside try if block')
                 print('user_heartbeats.number_of_heart_beats---', user_heartbeats.number_of_heart_beats)
-                if int(super_liked_by_me) not in users_liked_by_me_list + users_liked_me_list:
+                if int(super_liked_by_me) not in users_super_liked_me_list + users_super_liked_by_me_list + users_liked_me_list:
                     register_user = RegisterUser.objects.get(id=r_user.id)
                     from_user_name = register_user.first_name
                     user = MatchedUser.objects.create(user=register_user, super_matched='No')
@@ -4855,51 +4877,78 @@ class SubscriptionBasedSuperLike(APIView):
                     except Exception as e:
                         pass
                     return Response({"message": "You have super liked a user", "status": HTTP_200_OK})
-                else:
+                elif int(super_liked_by_me) in (users_super_liked_me_list + users_liked_me_list):
+                    register_user = RegisterUser.objects.get(id=r_user.id)
+                    from_user_name = register_user.first_name
+                    user = MatchedUser.objects.create(user=register_user, super_matched='Yes')
+                    user.super_liked_by_me.add(RegisterUser.objects.get(id=int(super_liked_by_me)))
+                    to_user_id = RegisterUser.objects.get(id=int(super_liked_by_me))
+                    # to_user_name = to_user_id.first_name
+                    UserNotification.objects.create(
+                        to=User.objects.get(email=to_user_id.email),
+                        title='Super Match Notification',
+                        body="You have been super matched by " + from_user_name,
+                        extra_text=f'{register_user.id}'
+                    )
+                    fcm_token = User.objects.get(email=to_user_id.email).device_token
                     try:
-                        print('inside sencond try block')
-                        try:
-                            print('inside third try block')
-                            m = MatchedUser.objects.get(user=r_user, super_matched='Yes',
-                                                        super_liked_by_me=int(super_liked_by_me))
-                            print(m.id)
-                            print(m.super_matched)
-                            return Response(
-                                {'message': 'You have already super matched with this user', 'status': HTTP_200_OK})
-                        except Exception as e:
-                            m = MatchedUser.objects.get(user=r_user, super_liked_by_me=int(super_liked_by_me))
-                            print('--', m.id)
-                            print(m.super_matched)
-                            return Response(
-                                {'message': 'You have already super liked this user', 'status': HTTP_200_OK})
+                        title = "Super Like Notification"
+                        body = "You have been super matched with " + from_user_name
+                        message_type = "superMatch"
+                        respo = send_another(fcm_token, title, body)
+                        print("FCM Response===============>0", respo)
                     except Exception as e:
-                        print(e)
-                        register_user = RegisterUser.objects.get(id=r_user.id)
-                        from_user_name = register_user.first_name
-                        user = MatchedUser.objects.create(user=register_user, super_matched='Yes')
-                        user.super_liked_by_me.add(RegisterUser.objects.get(id=int(super_liked_by_me)))
-                        print('<<<<<<<---Left number_of_heart_beats---', user_heartbeats.number_of_heart_beats)
-                        user_heartbeats.number_of_heart_beats -= 1
-                        user_heartbeats.save()
-                        print('Left number_of_heart_beats--->>>>', user_heartbeats.number_of_heart_beats)
-                        to_user_id = RegisterUser.objects.get(id=int(super_liked_by_me))
-                        # to_user_name = to_user_id.first_name
-                        UserNotification.objects.create(
-                            to=User.objects.get(email=to_user_id.email),
-                            title='Super Match Notification',
-                            body="You have been super matched by " + from_user_name,
-                            extra_text=f'{register_user.id}'
-                        )
-                        fcm_token = User.objects.get(email=to_user_id.email).device_token
-                        try:
-                            title = "Super Like Notification"
-                            body = "You have been super matched with " + from_user_name
-                            message_type = "superMatch"
-                            respo = send_another(fcm_token, title, body)
-                            print("FCM Response===============>0", respo)
-                        except Exception as e:
-                            pass
-                        return Response({"message": "You have super matched with a user", "status": HTTP_200_OK})
+                        pass
+                    return Response({"message": "You have super matched with a user", "status": HTTP_200_OK})
+                else:
+                    return Response({'message': 'You have already super liked this user', 'status': HTTP_200_OK})
+
+                # else:
+                    # try:
+                    #     print('inside sencond try block')
+                    #     try:
+                    #         print('inside third try block')
+                    #         m = MatchedUser.objects.get(user=r_user, super_matched='Yes',
+                    #                                     super_liked_by_me=int(super_liked_by_me))
+                    #         print(m.id)
+                    #         print(m.super_matched)
+                    #         return Response(
+                    #             {'message': 'You have already super matched with this user', 'status': HTTP_200_OK})
+                    #     except Exception as e:
+                    #         m = MatchedUser.objects.get(user=r_user, super_liked_by_me=int(super_liked_by_me))
+                    #         print('--', m.id)
+                    #         print(m.super_matched)
+                    #         return Response(
+                    #             {'message': 'You have already super liked this user', 'status': HTTP_200_OK})
+                    # except Exception as e:
+                    #     print(e)
+                    #     register_user = RegisterUser.objects.get(id=r_user.id)
+                    #     from_user_name = register_user.first_name
+                    #     user = MatchedUser.objects.create(user=register_user, super_matched='Yes')
+                    #     user.super_liked_by_me.add(RegisterUser.objects.get(id=int(super_liked_by_me)))
+                    #     print('<<<<<<<---Left number_of_heart_beats---', user_heartbeats.number_of_heart_beats)
+                    #     user_heartbeats.number_of_heart_beats -= 1
+                    #     user_heartbeats.save()
+                    #     print('Left number_of_heart_beats--->>>>', user_heartbeats.number_of_heart_beats)
+                    #     to_user_id = RegisterUser.objects.get(id=int(super_liked_by_me))
+                    #     # to_user_name = to_user_id.first_name
+                    #     UserNotification.objects.create(
+                    #         to=User.objects.get(email=to_user_id.email),
+                    #         title='Super Match Notification',
+                    #         body="You have been super matched by " + from_user_name,
+                    #         extra_text=f'{register_user.id}'
+                    #     )
+                    #     fcm_token = User.objects.get(email=to_user_id.email).device_token
+                    #     try:
+                    #         title = "Super Like Notification"
+                    #         body = "You have been super matched with " + from_user_name
+                    #         message_type = "superMatch"
+                    #         respo = send_another(fcm_token, title, body)
+                    #         print("FCM Response===============>0", respo)
+                    #     except Exception as e:
+                    #         pass
+                    #     return Response({"message": "You have super matched with a user", "status": HTTP_200_OK})
+
             else:
                 try:
                     print('inside extra heartbeat try case')
@@ -4907,7 +4956,7 @@ class SubscriptionBasedSuperLike(APIView):
                     print('---', extra_heartbeat.extra_heartbeats > 0)
                     if extra_heartbeat.extra_heartbeats > 0:
                         print('>>>>>>>>>>>')
-                        if int(super_liked_by_me) not in users_liked_by_me_list + users_liked_me_list:
+                        if int(super_liked_by_me) not in users_super_liked_me_list + users_super_liked_by_me_list + users_liked_me_list:
                             register_user = RegisterUser.objects.get(id=r_user.id)
                             from_user_name = register_user.first_name
                             user = MatchedUser.objects.create(user=register_user, super_matched='No')
@@ -4931,49 +4980,76 @@ class SubscriptionBasedSuperLike(APIView):
                             except Exception as e:
                                 pass
                             return Response({"message": "You have super liked a user", "status": HTTP_200_OK})
-                        else:
+                        elif int(super_liked_by_me) in (users_super_liked_me_list + users_liked_me_list):
+                            register_user = RegisterUser.objects.get(id=r_user.id)
+                            from_user_name = register_user.first_name
+                            user = MatchedUser.objects.create(user=register_user, super_matched='Yes')
+                            user.super_liked_by_me.add(RegisterUser.objects.get(id=int(super_liked_by_me)))
+                            to_user_id = RegisterUser.objects.get(id=int(super_liked_by_me))
+                            # to_user_name = to_user_id.first_name
+                            UserNotification.objects.create(
+                                to=User.objects.get(email=to_user_id.email),
+                                title='Super Match Notification',
+                                body="You have been super matched by " + from_user_name,
+                                extra_text=f'{register_user.id}'
+                            )
+                            fcm_token = User.objects.get(email=to_user_id.email).device_token
                             try:
-                                try:
-                                    m = MatchedUser.objects.get(user=r_user, super_matched='Yes',
-                                                                super_liked_by_me=int(super_liked_by_me))
-                                    print(m.id)
-                                    print(m.super_matched)
-                                    return Response(
-                                        {'message': 'You have already super matched with this user',
-                                         'status': HTTP_200_OK})
-                                except Exception as e:
-                                    m = MatchedUser.objects.get(user=r_user, super_liked_by_me=int(super_liked_by_me))
-                                    print('--', m.id)
-                                    print(m.super_matched)
-                                    return Response(
-                                        {'message': 'You have already super liked this user', 'status': HTTP_200_OK})
+                                title = "Super Like Notification"
+                                body = "You have been super matched with " + from_user_name
+                                message_type = "superMatch"
+                                respo = send_another(fcm_token, title, body)
+                                print("FCM Response===============>0", respo)
                             except Exception as e:
-                                print(e)
-                                register_user = RegisterUser.objects.get(id=r_user.id)
-                                from_user_name = register_user.first_name
-                                user = MatchedUser.objects.create(user=register_user, super_matched='Yes')
-                                user.super_liked_by_me.add(RegisterUser.objects.get(id=int(super_liked_by_me)))
-                                extra_heartbeat.extra_heartbeats -= 1
-                                extra_heartbeat.save()
-                                to_user_id = RegisterUser.objects.get(id=int(super_liked_by_me))
-                                # to_user_name = to_user_id.first_name
-                                UserNotification.objects.create(
-                                    to=User.objects.get(email=to_user_id.email),
-                                    title='Super Match Notification',
-                                    body="You have been super matched by " + from_user_name,
-                                    extra_text=f'{register_user.id}'
-                                )
-                                fcm_token = User.objects.get(email=to_user_id.email).device_token
-                                try:
-                                    title = "Super Like Notification"
-                                    body = "You have been super matched with " + from_user_name
-                                    message_type = "superMatch"
-                                    respo = send_another(fcm_token, title, body)
-                                    print("FCM Response===============>0", respo)
-                                except Exception as e:
-                                    pass
-                                return Response(
-                                    {"message": "You have super matched with a user", "status": HTTP_200_OK})
+                                pass
+                            return Response({"message": "You have super matched with a user", "status": HTTP_200_OK})
+                        else:
+                            return Response(
+                                {'message': 'You have already super liked this user', 'status': HTTP_200_OK})
+
+                        # else:
+                        #     try:
+                        #         try:
+                        #             m = MatchedUser.objects.get(user=r_user, super_matched='Yes',
+                        #                                         super_liked_by_me=int(super_liked_by_me))
+                        #             print(m.id)
+                        #             print(m.super_matched)
+                        #             return Response(
+                        #                 {'message': 'You have already super matched with this user',
+                        #                  'status': HTTP_200_OK})
+                        #         except Exception as e:
+                        #             m = MatchedUser.objects.get(user=r_user, super_liked_by_me=int(super_liked_by_me))
+                        #             print('--', m.id)
+                        #             print(m.super_matched)
+                        #             return Response(
+                        #                 {'message': 'You have already super liked this user', 'status': HTTP_200_OK})
+                        #     except Exception as e:
+                        #         print(e)
+                        #         register_user = RegisterUser.objects.get(id=r_user.id)
+                        #         from_user_name = register_user.first_name
+                        #         user = MatchedUser.objects.create(user=register_user, super_matched='Yes')
+                        #         user.super_liked_by_me.add(RegisterUser.objects.get(id=int(super_liked_by_me)))
+                        #         extra_heartbeat.extra_heartbeats -= 1
+                        #         extra_heartbeat.save()
+                        #         to_user_id = RegisterUser.objects.get(id=int(super_liked_by_me))
+                        #         # to_user_name = to_user_id.first_name
+                        #         UserNotification.objects.create(
+                        #             to=User.objects.get(email=to_user_id.email),
+                        #             title='Super Match Notification',
+                        #             body="You have been super matched by " + from_user_name,
+                        #             extra_text=f'{register_user.id}'
+                        #         )
+                        #         fcm_token = User.objects.get(email=to_user_id.email).device_token
+                        #         try:
+                        #             title = "Super Like Notification"
+                        #             body = "You have been super matched with " + from_user_name
+                        #             message_type = "superMatch"
+                        #             respo = send_another(fcm_token, title, body)
+                        #             print("FCM Response===============>0", respo)
+                        #         except Exception as e:
+                        #             pass
+                        #         return Response(
+                        #             {"message": "You have super matched with a user", "status": HTTP_200_OK})
                     else:
                         return Response({
                             'message': 'You have run out of superlikes. Please wait till tomorrow or buy extra '
