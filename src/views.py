@@ -2166,7 +2166,7 @@ class SuperLikeUserAPIView(APIView):
                 users_super_liked_by_me_list.append(x.super_liked_by_me.all()[0].id)
         for x in users_liked_me:
             if len(x.liked_by_me.all()) > 0:
-                users_liked_me_list.append(x.super_liked_by_me.all()[0].id)
+                users_liked_me_list.append(x.liked_by_me.all()[0].id)
         if int(super_liked_by_me) not in (
                 users_super_liked_me_list + users_super_liked_by_me_list + users_liked_me_list):
             register_user = RegisterUser.objects.get(id=r_user.id)
