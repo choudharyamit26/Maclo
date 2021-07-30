@@ -2200,7 +2200,6 @@ class SuperLikeUserAPIView(APIView):
             user = MatchedUser.objects.create(user=register_user, super_matched='Yes')
             user.super_liked_by_me.add(RegisterUser.objects.get(id=int(super_liked_by_me)))
             to_user_id = RegisterUser.objects.get(id=int(super_liked_by_me))
-            # to_user_name = to_user_id.first_name
             UserNotification.objects.create(
                 to=User.objects.get(email=to_user_id.email),
                 title='Super Match Notification',
