@@ -4292,8 +4292,11 @@ class BlockUserView(APIView):
             blocked_user_obj = BlockedUsers.objects.get(user=r_user)
             if blocked_user_obj:
                 blocked_user_obj.blocked.add(RegisterUser.objects.get(id=int(user_id)))
-                matched_obj = MatchedUser.objects.get(id=matched_id)
-                matched_obj.delete()
+                try:
+                    matched_obj = MatchedUser.objects.get(id=matched_id)
+                    matched_obj.delete()
+                except:
+                    pass
                 return Response({'message': 'User blocked successfully', 'status': HTTP_200_OK})
         except Exception as e:
             print('Inside exception', e)
@@ -4303,8 +4306,11 @@ class BlockUserView(APIView):
                 # blocked=RegisterUser.objects.get(id=int(user_id))
             )
             block.blocked.add(RegisterUser.objects.get(id=int(user_id)))
-            matched_obj = MatchedUser.objects.get(id=matched_id)
-            matched_obj.delete()
+            try:
+                matched_obj = MatchedUser.objects.get(id=matched_id)
+                matched_obj.delete()
+            except:
+                pass
             return Response({'message': 'User blocked successfully', 'status': HTTP_200_OK})
 
 
