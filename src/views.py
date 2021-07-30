@@ -1979,7 +1979,7 @@ class LikeUserAPIView(APIView):
                 users_liked_by_me_list.append(x.liked_by_me.all()[0].id)
         for x in users_super_liked_me:
             if x.super_liked_by_me.all():
-                users_super_liked_me_list.append(x.super_liked_by_me.all()[0].id)
+                users_super_liked_me_list.append(x.user.id)
         if int(liked_by_me) not in (users_liked_me_list + users_super_liked_me_list + users_liked_by_me_list):
             register_user = RegisterUser.objects.get(id=r_user.id)
             from_user_name = register_user.first_name
@@ -2171,7 +2171,7 @@ class SuperLikeUserAPIView(APIView):
         print('users_super_liked_by_me_list--', users_super_liked_by_me_list)
         for x in users_liked_me:
             if len(x.liked_by_me.all()) > 0:
-                users_liked_me_list.append(x.user.all()[0].id)
+                users_liked_me_list.append(x.user.id)
         print('users_liked_me_list----', users_liked_me_list)
         if int(super_liked_by_me) not in (
                 users_super_liked_me_list + users_super_liked_by_me_list + users_liked_me_list):
