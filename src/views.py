@@ -2161,6 +2161,7 @@ class SuperLikeUserAPIView(APIView):
             if x.super_liked_by_me.all():
                 users_super_liked_me_list.append(x.user.id)
         for x in users_super_liked_by_me:
+            print('super liked by me  ',x.super_liked_by_me.all())
             if len(x.super_liked_by_me.all()) > 0:
                 users_super_liked_by_me_list.append(x.super_liked_by_me.all()[0].id)
         for x in users_liked_me:
