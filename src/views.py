@@ -4721,10 +4721,13 @@ class TransactionDataView(APIView):
             signature=signature
         )
         if plan_type == 'Star' or plan_type == 'star' or plan_type == 'Star':
-            UserHeartBeatsPerDay.objects.create(
-                user=r_user,
-                number_of_heart_beats=5
-            )
+            # UserHeartBeatsPerDay.objects.create(
+            #     user=r_user,
+            #     number_of_heart_beats=5
+            # )
+            heart_beat = UserHeartBeatsPerDay.objects.get(user=r_user)
+            heart_beat +=5
+            heart_beat.save()
         return Response({'message': 'Transaction data inserted successfully', 'status': HTTP_200_OK})
 
 
@@ -5092,158 +5095,3 @@ class UpdateSubscriptionStatus(APIView):
         except Exception as e:
             print(e)
             return Response({'message': str(e), 'status': HTTP_400_BAD_REQUEST})
-
-# class VerifyApplePurchase(APIView):
-#     def get(self, request, *args, **kwargs):
-#         requestBody = {}
-#         receipt_id = self.request.GET.get('receipt_id')
-#         requestBody["receipt-data"] = receipt_id
-#         url = 'https://sandbox.itunes.apple.com/verifyReceipt'
-#         shared_secret = '099eddbf89bf4c53b2ec8d9bce1df11d'
-#         requestBody["password"] = shared_secret
-#
-#         http = urllib3.PoolManager()
-#         response = http.request("POST", url, headers={"content-type": "application/json"},
-#                                 body=json.dumps(requestBody).encode("utf-8"))
-#         print(json.loads(response.data))
-#         if response.status == 200:
-#             responseBody = json.loads(response.data)
-#             status = responseBody.get("status")
-#             print(status)
-#             return Response({'message': responseBody})
-#         else:
-#             print(f" Error: {response.status}")
-#             return Response({'Error': response.status, 'status': HTTP_400_BAD_REQUEST})
-#     # def get(self, request, *args, **kwargs):
-#     #     from inapppy import AppStoreValidator, InAppPyValidationError
-#     #     receipt_id = self.request.GET.get('receipt_id')
-#     #     bundle_id = 'com.maclo.app'
-#     #     auto_retry_wrong_env_request = False  # if True, automatically query sandbox endpoint if
-#     #     # validation fails on production endpoint
-#     #     validator = AppStoreValidator(bundle_id, auto_retry_wrong_env_request=auto_retry_wrong_env_request)
-#     #
-#     #     try:
-#     #         exclude_old_transactions = False  # if True, include only the latest renewal transaction
-#     #         validation_result = validator.validate(receipt_id, '099eddbf89bf4c53b2ec8d9bce1df11d',
-#     #                                                exclude_old_transactions=exclude_old_transactions)
-#     #     except InAppPyValidationError as ex:
-#     #         # handle validation error
-#     #         response_from_apple = ex.raw_response  # contains actual response from AppStore service.
-#     #         # pass
-#     #         return Response({'data':response_from_apple})
-#
-#
-# def process_purchases(purchases):
-#     process(*purchases) if isinstance(purchases, list) else process(purchases)
-#
-#
-# def process(*purchases):
-#     for p in purchases:
-#         print(p)
-#
-#
-# class VerfiyGooglePurchase(APIView):
-#
-#     # def get(self, request, *args, **kwargs):
-#     #     from google.oauth2.credentials import Credentials
-#     #     from googleapiclient.discovery import build
-#     #     credentials = Credentials.from_service_account_file(
-#     #         "service_account.json")
-#     #     service = googleapiclient.discovery.build("androidpublisher", "v3", credentials=credentials)
-#     #
-#     #     # Use the token your API got from the app to verify the purchase
-#     #     result = service.purchases().subscriptions().get(packageName="com.dating.maclo", subscriptionId="maclo_star_1month",
-#     #                                                      token="ifefnfdopngciodhgkfkojfa.AO-J1OwnDmM0FqeiCjs7eF3G7bK6pG2--WzzUIB2JQyGTMFskw9x1dsW00FXIzYma1epgca_WDdmq2bU5nr9gxE8kTWHHJXfeg").execute()
-#     #     return Response({'message': result, 'status': HTTP_200_OK})
-#     def get(self, request, *args, **kwargs):
-#         from inapppy import GooglePlayValidator, InAppPyValidationError
-#
-#         # bundle_id = 'com.dating.maclo'
-#         bundle_id = 'com.dating.maclo'
-#         api_key = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp14BNCg9jbkAXFV102f4dMUm+/e7vCu05cpedD3Oq5PvPhT5fn4jo6XuA3mVhYQymWIEVK+7zh7Ok994jFBOWVAWyGoD3WjDCd+knb9A3QqP3tFD+Ph8cxqifzyx6UWsH/+PDV8OZNIxJGpKrEaXYmLZB4tNMJjFSxC6zMtEsKsTTXTT2Tngh066CwUX1e4pFNuHud90dFs8sysY+7oYLZz1F079pWiQLTX973a74AiGlkwOMOWHOe0G6dOslbXfhRBMHjP4SNurs+6+vhdVkFREiPcFhRELVmUcKUw5zSiqNKi4h+vun8lcxQ6MmLjb45enS6iE73KbHSmZe6JDCwIDAQAB'
-#         # validator = GooglePlayValidator(bundle_id, api_key)
-#         # d = '{ "type": "service_account","project_id":"pc-api-4867801607121608246-604","private_key_id":"bf4e9a7684bc510ffb643b61f367d97bc41ecc3e","private_key":"-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDI1jt90AVCmhyj\nJ4olx+B8pO9cgLlIovFZw5UQF2ZYXmUSp66p9yj53UnomXufNNGizZPKF7xzKO7p\n4BcsR1L/rK+hUtrIQzqWVzSxNzLVdMS0Xv1jSjJLRYlX9R7M99Hrk/rgIOpgy8mi\nmNatTA/AmsKOjgFSE++u9j/d5tUgAn8ROQ6aErgxIVggfOFFImHsLWDYb+JX9Coa\nkHSlWCIc64A1b5fQHvP8Y/dbNvHBnAkZ183bK90gLqT2gZtqnT36X2gsTTFHe/1u\nLeaPTqphQxl3f5KR9HKsyQhWQDy0tF+qELHSQUvTXj0YwQGqnXMz9+80O7iSHSNe\n2RWbDfobAgMBAAECggEANa41Vop8bXHdx6ow3apQEWDQbawmWgjbc7+4HwXyIBqS\n72qMX/elJywDrj0f8szeX6KNJw4zG6DMQwzXhMlHoPkaNId93NtDVJ3YgqmbV7yP\nOxrMpXZWfRIIBM+KvQRcQphaDQAfRWIS8ffiIY3cBAIZkJraNYMIpH5DUd96BcTL\nsuql/g/nw4/G16laYz5rd40r6IEa7F7+vScmpr1tGiiOzad9bQWD99yZzsXh2W38\nkLa5/Ncb7ijWEIqDN1J6b3Q4WKhlzzy1G0UopsCgfybytspfNa4CPW2XrESSVffX\no+pM0V+eB//cM4+Hu6KOme5oeylJuuFxJ3E13ZcngQKBgQDtqGcOsFfKMD4Xzs6G\nzZqeUeSwyvhXzlKNDR62ggu4NkQ1gUjz4iqRPboAffFrgzDg6djREfWLRsJjgJTL\nK2vaQr+7pQWhwtk4xSsGTbNpUM1ZzIcmGWB1l1ozVq0jzYiHOhQ6614pQ2oBCFTI\nZwc3qZ87vADbFBjKA3TzjQWm2wKBgQDYVlP7MmE2795g9g+Jy02AM5vOu6BS2ZK4\nRuUgRmatklVg+RFrSpTWS42D1EJQk0WkV0oyh4TnkdSZXE/uhAB6j39oh4+aR5WC\nCJmYXpUrwoAY/qarwCB6TtN3EuQnhixN4dGER2EtllAY/4SRI0jrSSbQ8ELcYQx9\nHrx1Mus9wQKBgQDqt4WBFly+DcNllBSZQnrQniT1DqETZ2xUbn7E1c9pUf8vsM4y\nQE62P3ZygfBrtJgTqiE+6zPNKEdYKmfJ+Mp+N6pRUvwq9NvAm8qQYTEudGU7qSpZ\nUHrZ6G9ngNVjJN0QYSYVwtuueSw6dNX3Tvnr2ZSwVE+sDz8kVSGuYLsSPQKBgEn2\nScQJ116252py9aEAlsCL5GrrjsaEiDrkUhWUvCn/a505yhDKcNRLBFjbyshNcXPc\nPAvGdVPOccb03ocHLjq4sLCGGDyA2MaaNhj3zTwmxTDGbyktCG2IYZfGJ6azopYF\n7GGzHbA+QagqQ6JzU8zNN64bVmCN9X0ZcwkGnZKBAoGAIMRohAWOJTt2tGOgIr6m\nz8/pqT8STBqKZZ9SwTilPMSzfaISdiayBC3M9h7V6XYeZQ6VBpnDmeohZJP0pfd8\nIDkYYAV9iIADDjXljolbrVKkozvabpi/MA/q6QAxBzRyKpwXYJBiEniGw1pz22+i\nqS+MnxKej5nUaButhe6XVQM=\n-----END PRIVATE KEY-----\n","client_email":"mymacloserviceaccount@pc-api-4867801607121608246-604.iam.gserviceaccount.com","client_id":"100730210319475150612","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_x509_cert_url":"https://www.googleapis.com/robot/v1/metadata/x509/mymacloserviceaccount%40pc-api-4867801607121608246-604.iam.gserviceaccount.com"}'
-#         # d = '{''"type": "service_account",'\
-#         #         '"project_id": "pc-api-4867801607121608246-604",'\
-#         #         '"private_key_id": "bf4e9a7684bc510ffb643b61f367d97bc41ecc3e",'\
-#         #         '"private_key": "-----BEGIN PRIVATE KEY-----\nnMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDI1jt90AVCmhyj\nJ4olx+B8pO9cgLlIovFZw5UQF2ZYXmUSp66p9yj53UnomXufNNGizZPKF7xzKO7p\n4BcsR1L/rK+hUtrIQzqWVzSxNzLVdMS0Xv1jSjJLRYlX9R7M99Hrk/rgIOpgy8mi\nmNatTA/AmsKOjgFSE++u9j/d5tUgAn8ROQ6aErgxIVggfOFFImHsLWDYb+JX9Coa\nkHSlWCIc64A1b5fQHvP8Y/dbNvHBnAkZ183bK90gLqT2gZtqnT36X2gsTTFHe/1u\nLeaPTqphQxl3f5KR9HKsyQhWQDy0tF+qELHSQUvTXj0YwQGqnXMz9+80O7iSHSNe\n2RWbDfobAgMBAAECggEANa41Vop8bXHdx6ow3apQEWDQbawmWgjbc7+4HwXyIBqS\n72qMX/elJywDrj0f8szeX6KNJw4zG6DMQwzXhMlHoPkaNId93NtDVJ3YgqmbV7yP\nOxrMpXZWfRIIBM+KvQRcQphaDQAfRWIS8ffiIY3cBAIZkJraNYMIpH5DUd96BcTL\nsuql/g/nw4/G16laYz5rd40r6IEa7F7+vScmpr1tGiiOzad9bQWD99yZzsXh2W38\nkLa5/Ncb7ijWEIqDN1J6b3Q4WKhlzzy1G0UopsCgfybytspfNa4CPW2XrESSVffX\no+pM0V+eB//cM4+Hu6KOme5oeylJuuFxJ3E13ZcngQKBgQDtqGcOsFfKMD4Xzs6G\nzZqeUeSwyvhXzlKNDR62ggu4NkQ1gUjz4iqRPboAffFrgzDg6djREfWLRsJjgJTL\nK2vaQr+7pQWhwtk4xSsGTbNpUM1ZzIcmGWB1l1ozVq0jzYiHOhQ6614pQ2oBCFTI\nZwc3qZ87vADbFBjKA3TzjQWm2wKBgQDYVlP7MmE2795g9g+Jy02AM5vOu6BS2ZK4\nRuUgRmatklVg+RFrSpTWS42D1EJQk0WkV0oyh4TnkdSZXE/uhAB6j39oh4+aR5WC\nCJmYXpUrwoAY/qarwCB6TtN3EuQnhixN4dGER2EtllAY/4SRI0jrSSbQ8ELcYQx9\nHrx1Mus9wQKBgQDqt4WBFly+DcNllBSZQnrQniT1DqETZ2xUbn7E1c9pUf8vsM4y\nQE62P3ZygfBrtJgTqiE+6zPNKEdYKmfJ+Mp+N6pRUvwq9NvAm8qQYTEudGU7qSpZ\nUHrZ6G9ngNVjJN0QYSYVwtuueSw6dNX3Tvnr2ZSwVE+sDz8kVSGuYLsSPQKBgEn2\nScQJ116252py9aEAlsCL5GrrjsaEiDrkUhWUvCn/a505yhDKcNRLBFjbyshNcXPc\nPAvGdVPOccb03ocHLjq4sLCGGDyA2MaaNhj3zTwmxTDGbyktCG2IYZfGJ6azopYF\n7GGzHbA+QagqQ6JzU8zNN64bVmCN9X0ZcwkGnZKBAoGAIMRohAWOJTt2tGOgIr6m\nz8/pqT8STBqKZZ9SwTilPMSzfaISdiayBC3M9h7V6XYeZQ6VBpnDmeohZJP0pfd8\nIDkYYAV9iIADDjXljolbrVKkozvabpi/MA/q6QAxBzRyKpwXYJBiEniGw1pz22+i\nqS+MnxKej5nUaButhe6XVQM==\n-----END PRIVATE KEY-----\n",''   "client_email": "mymacloserviceaccount@pc-api-4867801607121608246-604.iam.gserviceaccount.com",''   "client_id": "100730210319475150612",''   "auth_uri": "https://accounts.google.com/o/oauth2/auth",''   "token_uri": "https://oauth2.googleapis.com/token",'\
-#         #         '"auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",'\
-#         #         '"client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/mymacloserviceaccount%40pc-api-4867801607121608246-604.iam.gserviceaccount.com"'\
-#         #         '}'
-#         # api_credentials = json.loads(d)
-#         # validator = GooglePlayValidator(bundle_id, api_credentials)
-#         validator = GooglePlayValidator(bundle_id, api_key)
-#
-#         # try:
-#         #     # receipt means `androidData` in result of purchase
-#         #     # signature means `signatureAndroid` in result of purchase
-#         #     receipt = {"orderId": "GPA.3372-9954-3755-32447", "packageName": "com.dating.maclo",
-#         #                "productId": "maclo_star_1month", "purchaseTime": 1623130886567, "purchaseState": 0,
-#         #                "purchaseToken": "dhjialflfogjpogmnjjfadke.AO-J1OwBi1-UZOzXYAfAhBsrtsPxC4Qz8QEwj6sVIlF1fdHRzZedB64sJuqkUYvj74NmH3A5UkZw5mfOBBMDbtyo5Y85GoaWzQ",
-#         #                "autoRenewing": True, "acknowledged": False}
-#         #     signature = {
-#         #         'signature': 'RGFV/yJuAB5FXhsuBRMULtUhR4kCCG8+HixM1XTY4BN2lDDmRI5TNAY4PPFbLBpUjWrRbY3Atsovnw3N+EsdCtRsZPaTbiEQtsT5ky1OB3IxUgbo93KkLEym1zfwS+k8IBg+HCAYpiL0wSaqH8Z9Y58XPYyvP3nurL5EWTKf8aqT8NCpgqaBIopQ3i8W6CGwHVAF54+dyeFbQH2tKbBun0jjnXCa1tTs/wUeS3vYyOXDvKqmBm8/ji75fIL/5prxeGeccusV4sH6aiJ0MD6cFD9495IQ2euN+qaqfxYnhHIpgPnC054HVUNyI4qQBJ9qAK4Pv6GUOZTE+WByA76D7w=='}
-#         #     validation_result = validator.validate('dhjialflfogjpogmnjjfadke.AO-J1OwBi1-UZOzXYAfAhBsrtsPxC4Qz8QEwj6sVIlF1fdHRzZedB64sJuqkUYvj74NmH3A5UkZw5mfOBBMDbtyo5Y85GoaWzQ', 'RGFV/yJuAB5FXhsuBRMULtUhR4kCCG8+HixM1XTY4BN2lDDmRI5TNAY4PPFbLBpUjWrRbY3Atsovnw3N+EsdCtRsZPaTbiEQtsT5ky1OB3IxUgbo93KkLEym1zfwS+k8IBg+HCAYpiL0wSaqH8Z9Y58XPYyvP3nurL5EWTKf8aqT8NCpgqaBIopQ3i8W6CGwHVAF54+dyeFbQH2tKbBun0jjnXCa1tTs/wUeS3vYyOXDvKqmBm8/ji75fIL/5prxeGeccusV4sH6aiJ0MD6cFD9495IQ2euN+qaqfxYnhHIpgPnC054HVUNyI4qQBJ9qAK4Pv6GUOZTE+WByA76D7w==')
-#         #     print(validation_result)
-#         # except InAppPyValidationError as e:
-#         # handle validation error
-#         # pass
-#         # print(e)
-#         from pyinapp import GooglePlayValidator, InAppValidationError
-#
-#         bundle_id = 'com.dating.maclo'
-#         api_key = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp14BNCg9jbkAXFV102f4dMUm+/e7vCu05cpedD3Oq5PvPhT5fn4jo6XuA3mVhYQymWIEVK+7zh7Ok994jFBOWVAWyGoD3WjDCd+knb9A3QqP3tFD+Ph8cxqifzyx6UWsH/+PDV8OZNIxJGpKrEaXYmLZB4tNMJjFSxC6zMtEsKsTTXTT2Tngh066CwUX1e4pFNuHud90dFs8sysY+7oYLZz1F079pWiQLTX973a74AiGlkwOMOWHOe0G6dOslbXfhRBMHjP4SNurs+6+vhdVkFREiPcFhRELVmUcKUw5zSiqNKi4h+vun8lcxQ6MmLjb45enS6iE73KbHSmZe6JDCwIDAQAB'
-#         validator = GooglePlayValidator(bundle_id, api_key)
-#         receipt = {"orderId": "GPA.3372-9954-3755-32447", "packageName": "com.dating.maclo",
-#                    "productId": "maclo_star_1month", "purchaseTime": 1623130886567, "purchaseState": 0,
-#                    "purchaseToken": "dhjialflfogjpogmnjjfadke.AO-J1OwBi1-UZOzXYAfAhBsrtsPxC4Qz8QEwj6sVIlF1fdHRzZedB64sJuqkUYvj74NmH3A5UkZw5mfOBBMDbtyo5Y85GoaWzQ",
-#                    "autoRenewing": True, "acknowledged": False}
-#         try:
-#             purchases = validator.validate(
-#                 'dhjialflfogjpogmnjjfadke.AO-J1OwBi1-UZOzXYAfAhBsrtsPxC4Qz8QEwj6sVIlF1fdHRzZedB64sJuqkUYvj74NmH3A5UkZw5mfOBBMDbtyo5Y85GoaWzQ',
-#                 'RGFV/yJuAB5FXhsuBRMULtUhR4kCCG8+HixM1XTY4BN2lDDmRI5TNAY4PPFbLBpUjWrRbY3Atsovnw3N+EsdCtRsZPaTbiEQtsT5ky1OB3IxUgbo93KkLEym1zfwS+k8IBg+HCAYpiL0wSaqH8Z9Y58XPYyvP3nurL5EWTKf8aqT8NCpgqaBIopQ3i8W6CGwHVAF54+dyeFbQH2tKbBun0jjnXCa1tTs/wUeS3vYyOXDvKqmBm8/ji75fIL/5prxeGeccusV4sH6aiJ0MD6cFD9495IQ2euN+qaqfxYnhHIpgPnC054HVUNyI4qQBJ9qAK4Pv6GUOZTE+WByA76D7w==')
-#             process_purchases(purchases)
-#         except InAppValidationError as e:
-#             """ handle validation error """
-#             return Response({'message': str(e), 'status': HTTP_400_BAD_REQUEST})
-#
-#
-# class GoogleVerification(APIView):
-#     def get(self, request, *args, **kwargs):
-#         from googleapiclient.discovery import build
-#         from googleapiclient.errors import HttpError
-#         from oauth2client.service_account import ServiceAccountCredentials
-#         DEFAULT_AUTH_SCOPE = "https://www.googleapis.com/auth/androidpublisher"
-#         credentials = ServiceAccountCredentials.from_json_keyfile_name("service_account.json")
-#         service = googleapiclient.discovery.build("androidpublisher", "v3", credentials=credentials)
-#
-#         # Use the token your API got from the app to verify the purchase
-#         result = service.purchases().subscriptions().get(packageName="pc-api-4867801607121608246-604",
-#                                                          subscriptionId="sku.name",
-#                                                          token="ipdpjbllgieimolmjhogncdh.AO-J1OyJGhyOIy_IWPBP4ri3vQ5XklebY5sgutSHXlnlylQzHCYb4nbA-VDe4hNkb_dV-BVrfy0DEkHJPGM37s8pOf7bsz51-A").execute()
-#         print(result)
-#         return Response(str(result))
-#
-#
-# class TestVerifyInappPurchase(APIView):
-#     def get(self, request, *args, **kwargs):
-#         from oauth2client.service_account import ServiceAccountCredentials
-#         from httplib2 import Http
-#         from googleapiclient.discovery import build
-#
-#         scopes = ['https://www.googleapis.com/auth/androidpublisher']
-#         # with open('/home/mobulous/Desktop/Maclo-Dating-App/src/service_account.json', 'r') as f:
-#         credentials = ServiceAccountCredentials.from_json_keyfile_name('/home/mobulous/Desktop/Maclo-Dating-App/src/maclodatingapp.json', scopes)
-#
-#         http_auth = credentials.authorize(Http())
-#
-#         androidpublisher = build('androidpublisher', 'v3', http=http_auth)
-#         product = androidpublisher.purchases().products().get(productId="maclo_star_1month",
-#                                                               packageName="com.dating.maclo",
-#                                                               token="gpklhdcaicndfeifpnocnijd.AO-J1OxAGbm4K8uFeLTQL3Ya1a5XyfjMX3rrgH3wOxX7E8eJJmRGZNp8L1HV8dA6GoEXsas7UYtp918hjwIlvIzvy5PbEsVKLg")
-#
-#         purchase = product.execute()
-#         print(purchase.data)
-#         # https: // androidpublisher.googleapis.com / androidpublisher / v3 / applications / {
-#         #     packageName} / purchases / subscriptions / {subscriptionId} / tokens / {token}
-#         return Response(str(purchase))
