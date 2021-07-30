@@ -1966,20 +1966,23 @@ class LikeUserAPIView(APIView):
         r_user = RegisterUser.objects.get(email=user.email)
         print(r_user.id)
         users_liked_by_me = MatchedUser.objects.filter(user=r_user)
-        users_liked_me = MatchedUser.objects.filter(liked_by_me=r_user)
-        users_super_liked_me = MatchedUser.objects.filter(super_liked_by_me=r_user)
+        users_liked_me = MatchedUser.objects.filter(liked_by_me__id=r_user.id)
+        users_super_liked_me = MatchedUser.objects.filter(super_liked_by_me__id=r_user.id)
         users_liked_by_me_list = []
         users_liked_me_list = []
         users_super_liked_me_list = []
         for x in users_liked_me:
             if x.liked_by_me.all():
                 users_liked_me_list.append(x.user.id)
+        print('users_liked_me_list---', users_liked_me_list)
         for x in users_liked_by_me:
             if x.liked_by_me.all():
                 users_liked_by_me_list.append(x.liked_by_me.all()[0].id)
+        print('users_liked_by_me_list---', users_liked_by_me_list)
         for x in users_super_liked_me:
             if x.super_liked_by_me.all():
                 users_super_liked_me_list.append(x.user.id)
+        print('users_super_liked_me_list--', users_super_liked_me_list)
         if int(liked_by_me) not in (users_liked_me_list + users_super_liked_me_list + users_liked_by_me_list):
             register_user = RegisterUser.objects.get(id=r_user.id)
             from_user_name = register_user.first_name
@@ -2003,7 +2006,7 @@ class LikeUserAPIView(APIView):
             except Exception as e:
                 pass
             return Response({"message": "You have liked a user", "status": HTTP_200_OK})
-        elif (int(liked_by_me) in users_liked_me_list) or (int(liked_by_me) in users_super_liked_me_list):
+        elif (int(liked_by_me) in users_liked_me_list + users_super_liked_me_list):
             register_user = RegisterUser.objects.get(id=r_user.id)
             from_user_name = register_user.first_name
             user = MatchedUser.objects.create(user=register_user, matched='Yes')
