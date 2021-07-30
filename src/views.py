@@ -2163,14 +2163,16 @@ class SuperLikeUserAPIView(APIView):
         for x in users_super_liked_me:
             if x.super_liked_by_me.all():
                 users_super_liked_me_list.append(x.user.id)
+        print('users_super_liked_me_list---', users_super_liked_me_list)
         for x in users_super_liked_by_me:
             print('super liked by me  ', x.super_liked_by_me.all())
             if len(x.super_liked_by_me.all()) > 0:
                 users_super_liked_by_me_list.append(x.super_liked_by_me.all()[0].id)
+        print('users_super_liked_by_me_list--', users_super_liked_by_me_list)
         for x in users_liked_me:
             if len(x.liked_by_me.all()) > 0:
-                users_liked_me_list.append(x.liked_by_me.all()[0].id)
-        print('----------', users_super_liked_me_list, users_liked_me_list, users_super_liked_by_me_list)
+                users_liked_me_list.append(x.user.all()[0].id)
+        print('users_liked_me_list----', users_liked_me_list)
         if int(super_liked_by_me) not in (
                 users_super_liked_me_list + users_super_liked_by_me_list + users_liked_me_list):
             register_user = RegisterUser.objects.get(id=r_user.id)
@@ -2200,6 +2202,7 @@ class SuperLikeUserAPIView(APIView):
             user = MatchedUser.objects.create(user=register_user, super_matched='Yes')
             user.super_liked_by_me.add(RegisterUser.objects.get(id=int(super_liked_by_me)))
             to_user_id = RegisterUser.objects.get(id=int(super_liked_by_me))
+            # to_user_name = to_user_id.first_name
             UserNotification.objects.create(
                 to=User.objects.get(email=to_user_id.email),
                 title='Super Match Notification',
