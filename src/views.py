@@ -2267,7 +2267,8 @@ class GetMatchesAPIView(ListAPIView):
                                                                            scheduled_by=y.liked_by_me.all().last().id) | Q(
                                 scheduled_with=y.liked_by_me.all().last().id,
                                 scheduled_by=y.user.id))
-                            meeting_exists = True
+                            if meeting_obj:
+                                meeting_exists = True
                         except Exception as e:
                             meeting_exists = False
                         z.append(
@@ -2286,7 +2287,8 @@ class GetMatchesAPIView(ListAPIView):
                                                                            scheduled_by=y.liked_by_me.all().last().id) | Q(
                                 scheduled_with=y.liked_by_me.all().last().id,
                                 scheduled_by=y.user.id))
-                            meeting_exists = True
+                            if meeting_obj:
+                                meeting_exists = True
                         except Exception as e:
                             meeting_exists = False
                         z.append(
@@ -2306,7 +2308,8 @@ class GetMatchesAPIView(ListAPIView):
                                                                            scheduled_by=y.liked_by_me.all().last().id) | Q(
                                 scheduled_with=y.liked_by_me.all().last().id,
                                 scheduled_by=y.user.id))
-                            meeting_exists = True
+                            if meeting_obj:
+                                meeting_exists = True
                         except Exception as e:
                             meeting_exists = False
                         z.append(
@@ -2323,7 +2326,8 @@ class GetMatchesAPIView(ListAPIView):
                                                                            scheduled_by=y.liked_by_me.all().last().id) | Q(
                                 scheduled_with=y.liked_by_me.all().last().id,
                                 scheduled_by=y.user.id))
-                            meeting_exists = True
+                            if meeting_obj:
+                                meeting_exists = True
                         except Exception as e:
                             meeting_exists = False
                         z.append(
@@ -2346,7 +2350,8 @@ class GetMatchesAPIView(ListAPIView):
                                                                                    scheduled_by=y.liked_by_me.all().last().id) | Q(
                                         scheduled_with=y.liked_by_me.all().last().id,
                                         scheduled_by=y.user.id))
-                                    meeting_exists = True
+                                    if meeting_obj:
+                                        meeting_exists = True
                                 except Exception as e:
                                     meeting_exists = False
                                 z.append(
@@ -2365,7 +2370,8 @@ class GetMatchesAPIView(ListAPIView):
                                                                                    scheduled_by=y.liked_by_me.all().last().id) | Q(
                                         scheduled_with=y.liked_by_me.all().last().id,
                                         scheduled_by=y.user.id))
-                                    meeting_exists = True
+                                    if meeting_obj:
+                                        meeting_exists = True
                                 except Exception as e:
                                     meeting_exists = False
                                 z.append(
@@ -2385,7 +2391,8 @@ class GetMatchesAPIView(ListAPIView):
                                                                                    scheduled_by=y.liked_by_me.all().last().id) | Q(
                                         scheduled_with=y.liked_by_me.all().last().id,
                                         scheduled_by=y.user.id))
-                                    meeting_exists = True
+                                    if meeting_obj:
+                                        meeting_exists = True
                                 except Exception as e:
                                     meeting_exists = False
                                 z.append(
@@ -2402,7 +2409,8 @@ class GetMatchesAPIView(ListAPIView):
                                                                                    scheduled_by=y.liked_by_me.all().last().id) | Q(
                                         scheduled_with=y.liked_by_me.all().last().id,
                                         scheduled_by=y.user.id))
-                                    meeting_exists = True
+                                    if meeting_obj:
+                                        meeting_exists = True
                                 except Exception as e:
                                     meeting_exists = False
                                 z.append(
@@ -2428,7 +2436,8 @@ class GetMatchesAPIView(ListAPIView):
                                                                            scheduled_by=y.super_liked_by_me.all().last().id) | Q(
                                 scheduled_with=y.super_liked_by_me.all().last().id,
                                 scheduled_by=y.user.id))
-                            meeting_exists = True
+                            if meeting_obj:
+                                meeting_exists = True
                         except Exception as e:
                             meeting_exists = False
                         a.append(
@@ -2447,7 +2456,8 @@ class GetMatchesAPIView(ListAPIView):
                                                                            scheduled_by=y.super_liked_by_me.all().last().id) | Q(
                                 scheduled_with=y.super_liked_by_me.all().last().id,
                                 scheduled_by=y.user.id))
-                            meeting_exists = True
+                            if meeting_obj:
+                                meeting_exists = True
                         except Exception as e:
                             meeting_exists = False
                         a.append(
@@ -2467,7 +2477,8 @@ class GetMatchesAPIView(ListAPIView):
                                                                            scheduled_by=y.super_liked_by_me.all().last().id) | Q(
                                 scheduled_with=y.super_liked_by_me.all().last().id,
                                 scheduled_by=y.user.id))
-                            meeting_exists = True
+                            if meeting_obj:
+                                meeting_exists = True
                         except Exception as e:
                             meeting_exists = False
                         a.append(
@@ -2484,7 +2495,8 @@ class GetMatchesAPIView(ListAPIView):
                                                                            scheduled_by=y.super_liked_by_me.all().last().id) | Q(
                                 scheduled_with=y.super_liked_by_me.all().last().id,
                                 scheduled_by=y.user.id))
-                            meeting_exists = True
+                            if meeting_obj:
+                                meeting_exists = True
                         except Exception as e:
                             meeting_exists = False
                         a.append(
@@ -2506,7 +2518,8 @@ class GetMatchesAPIView(ListAPIView):
                                                                                    scheduled_by=y.super_liked_by_me.all().last().id) | Q(
                                         scheduled_with=y.super_liked_by_me.all().last().id,
                                         scheduled_by=y.user.id))
-                                    meeting_exists = True
+                                    if meeting_obj:
+                                        meeting_exists = True
                                 except Exception as e:
                                     meeting_exists = False
                                 z.append(
@@ -2525,7 +2538,8 @@ class GetMatchesAPIView(ListAPIView):
                                                                                    scheduled_by=y.super_liked_by_me.all().last().id) | Q(
                                         scheduled_with=y.super_liked_by_me.all().last().id,
                                         scheduled_by=y.user.id))
-                                    meeting_exists = True
+                                    if meeting_obj:
+                                        meeting_exists = True
                                 except Exception as e:
                                     meeting_exists = False
                                 z.append(
@@ -2545,7 +2559,8 @@ class GetMatchesAPIView(ListAPIView):
                                                                                    scheduled_by=y.super_liked_by_me.all().last().id) | Q(
                                         scheduled_with=y.super_liked_by_me.all().last().id,
                                         scheduled_by=y.user.id))
-                                    meeting_exists = True
+                                    if meeting_obj:
+                                        meeting_exists = True
                                 except Exception as e:
                                     meeting_exists = False
                                 a.append(
@@ -2562,7 +2577,8 @@ class GetMatchesAPIView(ListAPIView):
                                                                                    scheduled_by=y.super_liked_by_me.all().last().id) | Q(
                                         scheduled_with=y.super_liked_by_me.all().last().id,
                                         scheduled_by=y.user.id))
-                                    meeting_exists = True
+                                    if meeting_obj:
+                                        meeting_exists = True
                                 except Exception as e:
                                     meeting_exists = False
                                 a.append(
