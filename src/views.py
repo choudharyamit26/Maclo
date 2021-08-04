@@ -2,7 +2,6 @@ import json
 import os
 import shutil
 from datetime import timedelta
-
 import urllib3
 from django.contrib.gis.measure import Distance
 import instaloader
@@ -1671,7 +1670,6 @@ class UserDetailAPIView(APIView):
             religion = obj.phone_number.religion
             body_type = obj.phone_number.body_type
             zodiac_sign = obj.phone_number.zodiac_sign
-            hashtag = obj.phone_number.zodiac_sign
             hashtag = obj.phone_number.hashtag
             verified = obj.phone_number.verified
             fb_signup = obj.phone_number.fb_signup
@@ -2263,6 +2261,15 @@ class GetMatchesAPIView(ListAPIView):
             try:
                 if y.user.id == r_user.id:
                     if y.liked_by_me.all().last().id in final_blocked_users_list:
+                        meeting_exists = None
+                        try:
+                            meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
+                                                                           scheduled_by=y.liked_by_me.all().last().id) | Q(
+                                scheduled_with=y.liked_by_me.all().last().id,
+                                scheduled_by=y.user.id))
+                            meeting_exists = True
+                        except Exception as e:
+                            meeting_exists = False
                         z.append(
                             {'match_id': y.id, 'id': y.liked_by_me.all().last().id,
                              'first_name': RegisterUser.objects.get(
@@ -2271,8 +2278,17 @@ class GetMatchesAPIView(ListAPIView):
                              'profile_pic': RegisterUser.objects.get(
                                  id=y.liked_by_me.all().last().id).pic_1.url,
                              'matched_at': y.matched_at,
-                             'type': 'match', 'blocked': True})
+                             'type': 'match', 'blocked': True, 'meeting_exists': meeting_exists})
                     else:
+                        meeting_exists = None
+                        try:
+                            meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
+                                                                           scheduled_by=y.liked_by_me.all().last().id) | Q(
+                                scheduled_with=y.liked_by_me.all().last().id,
+                                scheduled_by=y.user.id))
+                            meeting_exists = True
+                        except Exception as e:
+                            meeting_exists = False
                         z.append(
                             {'match_id': y.id, 'id': y.liked_by_me.all().last().id,
                              'first_name': RegisterUser.objects.get(
@@ -2281,24 +2297,42 @@ class GetMatchesAPIView(ListAPIView):
                              'profile_pic': RegisterUser.objects.get(
                                  id=y.liked_by_me.all().last().id).pic_1.url,
                              'matched_at': y.matched_at,
-                             'type': 'match', 'blocked': False})
+                             'type': 'match', 'blocked': False,'meeting_exists':meeting_exists})
                 else:
                     if y.user.id in final_blocked_users_list:
+                        meeting_exists = None
+                        try:
+                            meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
+                                                                           scheduled_by=y.liked_by_me.all().last().id) | Q(
+                                scheduled_with=y.liked_by_me.all().last().id,
+                                scheduled_by=y.user.id))
+                            meeting_exists = True
+                        except Exception as e:
+                            meeting_exists = False
                         z.append(
                             {'match_id': y.id, 'id': y.user.id,
                              'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
                              'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                              'profile_pic': RegisterUser.objects.get(id=y.user.id).pic_1.url,
                              'matched_at': y.matched_at,
-                             'type': 'match', 'blocked': True})
+                             'type': 'match', 'blocked': True,'meeting_exists':meeting_exists})
                     else:
+                        meeting_exists = None
+                        try:
+                            meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
+                                                                           scheduled_by=y.liked_by_me.all().last().id) | Q(
+                                scheduled_with=y.liked_by_me.all().last().id,
+                                scheduled_by=y.user.id))
+                            meeting_exists = True
+                        except Exception as e:
+                            meeting_exists = False
                         z.append(
                             {'match_id': y.id, 'id': y.user.id,
                              'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
                              'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                              'profile_pic': RegisterUser.objects.get(id=y.user.id).pic_1.url,
                              'matched_at': y.matched_at,
-                             'type': 'match', 'blocked': False})
+                             'type': 'match', 'blocked': False,'meeting_exists':meeting_exists})
             except Exception as e:
                 # print('EXCEPT BLOCK Match--------------', len(match_with | match_by))
                 # print('ID BLOCK Match--------------', [x.id for x in y.liked_by_me.all()])
@@ -2306,6 +2340,15 @@ class GetMatchesAPIView(ListAPIView):
                     try:
                         if y.user.id == r_user.id:
                             if y.liked_by_me.all().last().id in final_blocked_users_list:
+                                meeting_exists = None
+                                try:
+                                    meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
+                                                                                   scheduled_by=y.liked_by_me.all().last().id) | Q(
+                                        scheduled_with=y.liked_by_me.all().last().id,
+                                        scheduled_by=y.user.id))
+                                    meeting_exists = True
+                                except Exception as e:
+                                    meeting_exists = False
                                 z.append(
                                     {'match_id': y.id, 'id': y.liked_by_me.all().last().id,
                                      'first_name': RegisterUser.objects.get(
@@ -2314,8 +2357,17 @@ class GetMatchesAPIView(ListAPIView):
                                          id=y.liked_by_me.all().last().id).last_name,
                                      'profile_pic': '',
                                      'matched_at': y.matched_at,
-                                     'type': 'match', 'blocked': True})
+                                     'type': 'match', 'blocked': True,'meeting_exists':meeting_exists})
                             else:
+                                meeting_exists = None
+                                try:
+                                    meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
+                                                                                   scheduled_by=y.liked_by_me.all().last().id) | Q(
+                                        scheduled_with=y.liked_by_me.all().last().id,
+                                        scheduled_by=y.user.id))
+                                    meeting_exists = True
+                                except Exception as e:
+                                    meeting_exists = False
                                 z.append(
                                     {'match_id': y.id, 'id': y.liked_by_me.all().last().id,
                                      'first_name': RegisterUser.objects.get(
@@ -2324,24 +2376,42 @@ class GetMatchesAPIView(ListAPIView):
                                          id=y.liked_by_me.all().last().id).last_name,
                                      'profile_pic': '',
                                      'matched_at': y.matched_at,
-                                     'type': 'match', 'blocked': False})
+                                     'type': 'match', 'blocked': False,'meeting_exists':meeting_exists})
                         else:
                             if y.user.id in final_blocked_users_list:
+                                meeting_exists = None
+                                try:
+                                    meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
+                                                                                   scheduled_by=y.liked_by_me.all().last().id) | Q(
+                                        scheduled_with=y.liked_by_me.all().last().id,
+                                        scheduled_by=y.user.id))
+                                    meeting_exists = True
+                                except Exception as e:
+                                    meeting_exists = False
                                 z.append(
                                     {'match_id': y.id, 'id': y.user.id,
                                      'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
                                      'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                                      'profile_pic': '',
                                      'matched_at': y.matched_at,
-                                     'type': 'match', 'blocked': True})
+                                     'type': 'match', 'blocked': True,'meeting_exists':meeting_exists})
                             else:
+                                meeting_exists = None
+                                try:
+                                    meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
+                                                                                   scheduled_by=y.liked_by_me.all().last().id) | Q(
+                                        scheduled_with=y.liked_by_me.all().last().id,
+                                        scheduled_by=y.user.id))
+                                    meeting_exists = True
+                                except Exception as e:
+                                    meeting_exists = False
                                 z.append(
                                     {'match_id': y.id, 'id': y.user.id,
                                      'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
                                      'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                                      'profile_pic': '',
                                      'matched_at': y.matched_at,
-                                     'type': 'match', 'blocked': False})
+                                     'type': 'match', 'blocked': False,'meeting_exists':meeting_exists})
                     except Exception as e:
                         print(e)
                         pass
@@ -2352,6 +2422,15 @@ class GetMatchesAPIView(ListAPIView):
             try:
                 if y.user.id == r_user.id:
                     if y.super_liked_by_me.all().last().id in final_blocked_users_list:
+                        meeting_exists = None
+                        try:
+                            meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
+                                                                           scheduled_by=y.super_liked_by_me.all().last().id) | Q(
+                                scheduled_with=y.super_liked_by_me.all().last().id,
+                                scheduled_by=y.user.id))
+                            meeting_exists = True
+                        except Exception as e:
+                            meeting_exists = False
                         a.append(
                             {'match_id': y.id, 'id': y.super_liked_by_me.all().last().id,
                              'first_name': RegisterUser.objects.get(
@@ -2360,8 +2439,17 @@ class GetMatchesAPIView(ListAPIView):
                              'profile_pic': RegisterUser.objects.get(
                                  id=y.super_liked_by_me.all().last().id).pic_1.url,
                              'matched_at': y.matched_at,
-                             'type': 'super_match', 'blocked': True})
+                             'type': 'super_match', 'blocked': True,'meeting_exists':meeting_exists})
                     else:
+                        meeting_exists = None
+                        try:
+                            meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
+                                                                           scheduled_by=y.super_liked_by_me.all().last().id) | Q(
+                                scheduled_with=y.super_liked_by_me.all().last().id,
+                                scheduled_by=y.user.id))
+                            meeting_exists = True
+                        except Exception as e:
+                            meeting_exists = False
                         a.append(
                             {'match_id': y.id, 'id': y.super_liked_by_me.all().last().id,
                              'first_name': RegisterUser.objects.get(
@@ -2370,30 +2458,57 @@ class GetMatchesAPIView(ListAPIView):
                              'profile_pic': RegisterUser.objects.get(
                                  id=y.super_liked_by_me.all().last().id).pic_1.url,
                              'matched_at': y.matched_at,
-                             'type': 'super_match', 'blocked': False})
+                             'type': 'super_match', 'blocked': False,'meeting_exists':meeting_exists})
                 else:
                     if y.user.id in final_blocked_users_list:
+                        meeting_exists = None
+                        try:
+                            meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
+                                                                           scheduled_by=y.super_liked_by_me.all().last().id) | Q(
+                                scheduled_with=y.super_liked_by_me.all().last().id,
+                                scheduled_by=y.user.id))
+                            meeting_exists = True
+                        except Exception as e:
+                            meeting_exists = False
                         a.append(
                             {'match_id': y.id, 'id': y.user.id,
                              'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
                              'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                              'profile_pic': RegisterUser.objects.get(id=y.user.id).pic_1.url,
                              'matched_at': y.matched_at,
-                             'type': 'super_match', 'blocked': True})
+                             'type': 'super_match', 'blocked': True,'meeting_exists':meeting_exists})
                     else:
+                        meeting_exists = None
+                        try:
+                            meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
+                                                                           scheduled_by=y.super_liked_by_me.all().last().id) | Q(
+                                scheduled_with=y.super_liked_by_me.all().last().id,
+                                scheduled_by=y.user.id))
+                            meeting_exists = True
+                        except Exception as e:
+                            meeting_exists = False
                         a.append(
                             {'match_id': y.id, 'id': y.user.id,
                              'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
                              'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                              'profile_pic': RegisterUser.objects.get(id=y.user.id).pic_1.url,
                              'matched_at': y.matched_at,
-                             'type': 'super_match', 'blocked': False})
+                             'type': 'super_match', 'blocked': False,'meeting_exists':meeting_exists})
             except Exception as e:
                 try:
                     print('EXCEPT BLOCK Match--------------', y)
                     if len(super_match_with | super_match_by) > 0:
                         if y.user.id == r_user.id:
                             if y.super_liked_by_me.all().last().id in final_blocked_users_list:
+                                meeting_exists = None
+                                try:
+                                    meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
+                                                                                   scheduled_by=y.super_liked_by_me.all().last().id) | Q(
+                                        scheduled_with=y.super_liked_by_me.all().last().id,
+                                        scheduled_by=y.user.id))
+                                    meeting_exists = True
+                                except Exception as e:
+                                    meeting_exists = False
                                 z.append(
                                     {'match_id': y.id, 'id': y.super_liked_by_me.all().last().id,
                                      'first_name': RegisterUser.objects.get(
@@ -2402,8 +2517,17 @@ class GetMatchesAPIView(ListAPIView):
                                          id=y.super_liked_by_me.all().last().id).last_name,
                                      'profile_pic': '',
                                      'matched_at': y.matched_at,
-                                     'type': 'super_match', 'block': True})
+                                     'type': 'super_match', 'block': True,'meeting_exists':meeting_exists})
                             else:
+                                meeting_exists = None
+                                try:
+                                    meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
+                                                                                   scheduled_by=y.super_liked_by_me.all().last().id) | Q(
+                                        scheduled_with=y.super_liked_by_me.all().last().id,
+                                        scheduled_by=y.user.id))
+                                    meeting_exists = True
+                                except Exception as e:
+                                    meeting_exists = False
                                 z.append(
                                     {'match_id': y.id, 'id': y.super_liked_by_me.all().last().id,
                                      'first_name': RegisterUser.objects.get(
@@ -2412,24 +2536,42 @@ class GetMatchesAPIView(ListAPIView):
                                          id=y.super_liked_by_me.all().last().id).last_name,
                                      'profile_pic': '',
                                      'matched_at': y.matched_at,
-                                     'type': 'super_match', 'block': False})
+                                     'type': 'super_match', 'block': False,'meeting_exists':meeting_exists})
                         else:
                             if y.user.id in final_blocked_users_list:
+                                meeting_exists = None
+                                try:
+                                    meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
+                                                                                   scheduled_by=y.super_liked_by_me.all().last().id) | Q(
+                                        scheduled_with=y.super_liked_by_me.all().last().id,
+                                        scheduled_by=y.user.id))
+                                    meeting_exists = True
+                                except Exception as e:
+                                    meeting_exists = False
                                 a.append(
                                     {'match_id': y.id, 'id': y.user.id,
                                      'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
                                      'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                                      'profile_pic': '',
                                      'matched_at': y.matched_at,
-                                     'type': 'super_match', 'blocked': True})
+                                     'type': 'super_match', 'blocked': True,'meeting_exists':meeting_exists})
                             else:
+                                meeting_exists = None
+                                try:
+                                    meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
+                                                                                   scheduled_by=y.super_liked_by_me.all().last().id) | Q(
+                                        scheduled_with=y.super_liked_by_me.all().last().id,
+                                        scheduled_by=y.user.id))
+                                    meeting_exists = True
+                                except Exception as e:
+                                    meeting_exists = False
                                 a.append(
                                     {'match_id': y.id, 'id': y.user.id,
                                      'first_name': RegisterUser.objects.get(id=y.user.id).first_name,
                                      'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                                      'profile_pic': '',
                                      'matched_at': y.matched_at,
-                                     'type': 'super_match', 'blocked': False})
+                                     'type': 'super_match', 'blocked': False,'meeting_exists':meeting_exists})
                     else:
                         pass
                 except Exception as e:

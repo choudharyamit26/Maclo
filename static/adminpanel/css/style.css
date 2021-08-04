@@ -335,3 +335,4 @@ ul.Multiple::-webkit-scrollbar{width:7px;border-radius:0}
 .ModalBox .modal-dialog .Category .form-group ul li span.Numbers .form-control{ height: 35px; }
 .ModalBox .modal-dialog .Category button{padding:10px 40px;display:inline-block;background-color:#16212b;margin:0;color:#fff;-webkit-transition:0.5s all ease-in-out;transition:0.5s all ease-in-out;font-size:15px;letter-spacing:.5px;border:none;outline:0}
 .ModalBox .modal-dialog .Category button:hover{background-color:#04bad2}
+.TableList { overflow: auto; }
