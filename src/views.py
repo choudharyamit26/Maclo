@@ -2261,7 +2261,7 @@ class GetMatchesAPIView(ListAPIView):
             try:
                 if y.user.id == r_user.id:
                     if y.liked_by_me.all().last().id in final_blocked_users_list:
-                        meeting_exists = None
+                        meeting_exists = False
                         try:
                             meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
                                                                            scheduled_by=y.liked_by_me.all().last().id) | Q(
@@ -2281,7 +2281,7 @@ class GetMatchesAPIView(ListAPIView):
                              'matched_at': y.matched_at,
                              'type': 'match', 'blocked': True, 'meeting_exists': meeting_exists})
                     else:
-                        meeting_exists = None
+                        meeting_exists = False
                         try:
                             meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
                                                                            scheduled_by=y.liked_by_me.all().last().id) | Q(
@@ -2302,7 +2302,7 @@ class GetMatchesAPIView(ListAPIView):
                              'type': 'match', 'blocked': False,'meeting_exists':meeting_exists})
                 else:
                     if y.user.id in final_blocked_users_list:
-                        meeting_exists = None
+                        meeting_exists = False
                         try:
                             meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
                                                                            scheduled_by=y.liked_by_me.all().last().id) | Q(
@@ -2320,7 +2320,7 @@ class GetMatchesAPIView(ListAPIView):
                              'matched_at': y.matched_at,
                              'type': 'match', 'blocked': True,'meeting_exists':meeting_exists})
                     else:
-                        meeting_exists = None
+                        meeting_exists = False
                         try:
                             meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
                                                                            scheduled_by=y.liked_by_me.all().last().id) | Q(
@@ -2344,7 +2344,7 @@ class GetMatchesAPIView(ListAPIView):
                     try:
                         if y.user.id == r_user.id:
                             if y.liked_by_me.all().last().id in final_blocked_users_list:
-                                meeting_exists = None
+                                meeting_exists = False
                                 try:
                                     meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
                                                                                    scheduled_by=y.liked_by_me.all().last().id) | Q(
@@ -2364,7 +2364,7 @@ class GetMatchesAPIView(ListAPIView):
                                      'matched_at': y.matched_at,
                                      'type': 'match', 'blocked': True,'meeting_exists':meeting_exists})
                             else:
-                                meeting_exists = None
+                                meeting_exists = False
                                 try:
                                     meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
                                                                                    scheduled_by=y.liked_by_me.all().last().id) | Q(
@@ -2385,7 +2385,7 @@ class GetMatchesAPIView(ListAPIView):
                                      'type': 'match', 'blocked': False,'meeting_exists':meeting_exists})
                         else:
                             if y.user.id in final_blocked_users_list:
-                                meeting_exists = None
+                                meeting_exists = False
                                 try:
                                     meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
                                                                                    scheduled_by=y.liked_by_me.all().last().id) | Q(
@@ -2403,7 +2403,7 @@ class GetMatchesAPIView(ListAPIView):
                                      'matched_at': y.matched_at,
                                      'type': 'match', 'blocked': True,'meeting_exists':meeting_exists})
                             else:
-                                meeting_exists = None
+                                meeting_exists = False
                                 try:
                                     meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
                                                                                    scheduled_by=y.liked_by_me.all().last().id) | Q(
@@ -2430,7 +2430,7 @@ class GetMatchesAPIView(ListAPIView):
             try:
                 if y.user.id == r_user.id:
                     if y.super_liked_by_me.all().last().id in final_blocked_users_list:
-                        meeting_exists = None
+                        meeting_exists = False
                         try:
                             meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
                                                                            scheduled_by=y.super_liked_by_me.all().last().id) | Q(
@@ -2450,7 +2450,7 @@ class GetMatchesAPIView(ListAPIView):
                              'matched_at': y.matched_at,
                              'type': 'super_match', 'blocked': True,'meeting_exists':meeting_exists})
                     else:
-                        meeting_exists = None
+                        meeting_exists = False
                         try:
                             meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
                                                                            scheduled_by=y.super_liked_by_me.all().last().id) | Q(
@@ -2471,7 +2471,7 @@ class GetMatchesAPIView(ListAPIView):
                              'type': 'super_match', 'blocked': False,'meeting_exists':meeting_exists})
                 else:
                     if y.user.id in final_blocked_users_list:
-                        meeting_exists = None
+                        meeting_exists = False
                         try:
                             meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
                                                                            scheduled_by=y.super_liked_by_me.all().last().id) | Q(
@@ -2489,7 +2489,7 @@ class GetMatchesAPIView(ListAPIView):
                              'matched_at': y.matched_at,
                              'type': 'super_match', 'blocked': True,'meeting_exists':meeting_exists})
                     else:
-                        meeting_exists = None
+                        meeting_exists = False
                         try:
                             meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
                                                                            scheduled_by=y.super_liked_by_me.all().last().id) | Q(
@@ -2512,7 +2512,7 @@ class GetMatchesAPIView(ListAPIView):
                     if len(super_match_with | super_match_by) > 0:
                         if y.user.id == r_user.id:
                             if y.super_liked_by_me.all().last().id in final_blocked_users_list:
-                                meeting_exists = None
+                                meeting_exists = False
                                 try:
                                     meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
                                                                                    scheduled_by=y.super_liked_by_me.all().last().id) | Q(
@@ -2532,7 +2532,7 @@ class GetMatchesAPIView(ListAPIView):
                                      'matched_at': y.matched_at,
                                      'type': 'super_match', 'block': True,'meeting_exists':meeting_exists})
                             else:
-                                meeting_exists = None
+                                meeting_exists = False
                                 try:
                                     meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
                                                                                    scheduled_by=y.super_liked_by_me.all().last().id) | Q(
@@ -2553,7 +2553,7 @@ class GetMatchesAPIView(ListAPIView):
                                      'type': 'super_match', 'block': False,'meeting_exists':meeting_exists})
                         else:
                             if y.user.id in final_blocked_users_list:
-                                meeting_exists = None
+                                meeting_exists = False
                                 try:
                                     meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
                                                                                    scheduled_by=y.super_liked_by_me.all().last().id) | Q(
@@ -2571,7 +2571,7 @@ class GetMatchesAPIView(ListAPIView):
                                      'matched_at': y.matched_at,
                                      'type': 'super_match', 'blocked': True,'meeting_exists':meeting_exists})
                             else:
-                                meeting_exists = None
+                                meeting_exists = False
                                 try:
                                     meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_with=y.user.id,
                                                                                    scheduled_by=y.super_liked_by_me.all().last().id) | Q(
