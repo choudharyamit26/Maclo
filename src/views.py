@@ -177,12 +177,18 @@ class UserCreateAPIView(CreateAPIView):
         # fav_quote = self.request.data['fav_quote']
         # liked_by = RegisterUser.objects.filter(id=phone_number)
         # superliked_by = RegisterUser.objects.filter(id=phone_number)
-        pic_1 = self.request.data['pic_1']
-        pic_2 = self.request.data['pic_2']
-        pic_3 = self.request.data['pic_3']
-        pic_4 = self.request.data['pic_4']
-        pic_5 = self.request.data['pic_5']
-        pic_6 = self.request.data['pic_6']
+        # pic_1 = self.request.data['pic_1']
+        # pic_2 = self.request.data['pic_2']
+        # pic_3 = self.request.data['pic_3']
+        # pic_4 = self.request.data['pic_4']
+        # pic_5 = self.request.data['pic_5']
+        # pic_6 = self.request.data['pic_6']
+        pic_1 = self.request.data.get('pic_1')
+        pic_2 = self.request.data.get('pic_2')
+        pic_3 = self.request.data.get('pic_3')
+        pic_4 = self.request.data.get('pic_4')
+        pic_5 = self.request.data.get('pic_5')
+        pic_6 = self.request.data.get('pic_6')
         # pic_7 = self.request.data['pic_7']
         # pic_8 = self.request.data['pic_8']
         # pic_9 = self.request.data['pic_9']
