@@ -4417,6 +4417,7 @@ class UnMatchView(APIView):
                 obj.delete()
             for obj in matched_obj:
                 obj.delete()
+            match.delete()
             # print('users', [x.id for x in user_2], user_1)
             # print('users', [x.id for x in user_2][0])
             # other_matched_obj = None
