@@ -4402,7 +4402,7 @@ class UnMatchView(APIView):
             user_1 = match.user
             user_2 = match.liked_by_me.all()
             matched_obj = MatchedUser.objects.filter(
-                Q(user=r_user, liked_by_me=user_2) | Q(user=user_2, liked_by_me=r_user))
+                Q(user=r_user, liked_by_me=[x.id for x in user_2][0]) | Q(user=[x.id for x in user_2][0], liked_by_me=r_user))
 
             chat_obj = ChatRoom.objects.filter(
                 Q(sender__id=[x.id for x in user_2][0], receiver=user_1) | Q(sender=user_1,
@@ -4417,7 +4417,10 @@ class UnMatchView(APIView):
                 obj.delete()
             for obj in matched_obj:
                 obj.delete()
-            match.delete()
+            try:
+                match.delete()
+            except:
+                pass
             # print('users', [x.id for x in user_2], user_1)
             # print('users', [x.id for x in user_2][0])
             # other_matched_obj = None
