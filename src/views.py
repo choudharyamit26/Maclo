@@ -2305,7 +2305,7 @@ class GetMatchesAPIView(ListAPIView):
                              'profile_pic': RegisterUser.objects.get(
                                  id=y.liked_by_me.all().last().id).pic_1.url,
                              'matched_at': y.matched_at,
-                             'type': 'match', 'blocked': False,'meeting_exists':meeting_exists})
+                             'type': 'match', 'blocked': False, 'meeting_exists': meeting_exists})
                 else:
                     if y.user.id in final_blocked_users_list:
                         meeting_exists = False
@@ -2324,7 +2324,7 @@ class GetMatchesAPIView(ListAPIView):
                              'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                              'profile_pic': RegisterUser.objects.get(id=y.user.id).pic_1.url,
                              'matched_at': y.matched_at,
-                             'type': 'match', 'blocked': True,'meeting_exists':meeting_exists})
+                             'type': 'match', 'blocked': True, 'meeting_exists': meeting_exists})
                     else:
                         meeting_exists = False
                         try:
@@ -2342,7 +2342,7 @@ class GetMatchesAPIView(ListAPIView):
                              'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                              'profile_pic': RegisterUser.objects.get(id=y.user.id).pic_1.url,
                              'matched_at': y.matched_at,
-                             'type': 'match', 'blocked': False,'meeting_exists':meeting_exists})
+                             'type': 'match', 'blocked': False, 'meeting_exists': meeting_exists})
             except Exception as e:
                 # print('EXCEPT BLOCK Match--------------', len(match_with | match_by))
                 # print('ID BLOCK Match--------------', [x.id for x in y.liked_by_me.all()])
@@ -2368,7 +2368,7 @@ class GetMatchesAPIView(ListAPIView):
                                          id=y.liked_by_me.all().last().id).last_name,
                                      'profile_pic': '',
                                      'matched_at': y.matched_at,
-                                     'type': 'match', 'blocked': True,'meeting_exists':meeting_exists})
+                                     'type': 'match', 'blocked': True, 'meeting_exists': meeting_exists})
                             else:
                                 meeting_exists = False
                                 try:
@@ -2388,7 +2388,7 @@ class GetMatchesAPIView(ListAPIView):
                                          id=y.liked_by_me.all().last().id).last_name,
                                      'profile_pic': '',
                                      'matched_at': y.matched_at,
-                                     'type': 'match', 'blocked': False,'meeting_exists':meeting_exists})
+                                     'type': 'match', 'blocked': False, 'meeting_exists': meeting_exists})
                         else:
                             if y.user.id in final_blocked_users_list:
                                 meeting_exists = False
@@ -2407,7 +2407,7 @@ class GetMatchesAPIView(ListAPIView):
                                      'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                                      'profile_pic': '',
                                      'matched_at': y.matched_at,
-                                     'type': 'match', 'blocked': True,'meeting_exists':meeting_exists})
+                                     'type': 'match', 'blocked': True, 'meeting_exists': meeting_exists})
                             else:
                                 meeting_exists = False
                                 try:
@@ -2425,7 +2425,7 @@ class GetMatchesAPIView(ListAPIView):
                                      'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                                      'profile_pic': '',
                                      'matched_at': y.matched_at,
-                                     'type': 'match', 'blocked': False,'meeting_exists':meeting_exists})
+                                     'type': 'match', 'blocked': False, 'meeting_exists': meeting_exists})
                     except Exception as e:
                         print(e)
                         pass
@@ -2454,7 +2454,7 @@ class GetMatchesAPIView(ListAPIView):
                              'profile_pic': RegisterUser.objects.get(
                                  id=y.super_liked_by_me.all().last().id).pic_1.url,
                              'matched_at': y.matched_at,
-                             'type': 'super_match', 'blocked': True,'meeting_exists':meeting_exists})
+                             'type': 'super_match', 'blocked': True, 'meeting_exists': meeting_exists})
                     else:
                         meeting_exists = False
                         try:
@@ -2474,7 +2474,7 @@ class GetMatchesAPIView(ListAPIView):
                              'profile_pic': RegisterUser.objects.get(
                                  id=y.super_liked_by_me.all().last().id).pic_1.url,
                              'matched_at': y.matched_at,
-                             'type': 'super_match', 'blocked': False,'meeting_exists':meeting_exists})
+                             'type': 'super_match', 'blocked': False, 'meeting_exists': meeting_exists})
                 else:
                     if y.user.id in final_blocked_users_list:
                         meeting_exists = False
@@ -2493,7 +2493,7 @@ class GetMatchesAPIView(ListAPIView):
                              'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                              'profile_pic': RegisterUser.objects.get(id=y.user.id).pic_1.url,
                              'matched_at': y.matched_at,
-                             'type': 'super_match', 'blocked': True,'meeting_exists':meeting_exists})
+                             'type': 'super_match', 'blocked': True, 'meeting_exists': meeting_exists})
                     else:
                         meeting_exists = False
                         try:
@@ -2511,7 +2511,7 @@ class GetMatchesAPIView(ListAPIView):
                              'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                              'profile_pic': RegisterUser.objects.get(id=y.user.id).pic_1.url,
                              'matched_at': y.matched_at,
-                             'type': 'super_match', 'blocked': False,'meeting_exists':meeting_exists})
+                             'type': 'super_match', 'blocked': False, 'meeting_exists': meeting_exists})
             except Exception as e:
                 try:
                     print('EXCEPT BLOCK Match--------------', y)
@@ -2536,7 +2536,7 @@ class GetMatchesAPIView(ListAPIView):
                                          id=y.super_liked_by_me.all().last().id).last_name,
                                      'profile_pic': '',
                                      'matched_at': y.matched_at,
-                                     'type': 'super_match', 'block': True,'meeting_exists':meeting_exists})
+                                     'type': 'super_match', 'block': True, 'meeting_exists': meeting_exists})
                             else:
                                 meeting_exists = False
                                 try:
@@ -2556,7 +2556,7 @@ class GetMatchesAPIView(ListAPIView):
                                          id=y.super_liked_by_me.all().last().id).last_name,
                                      'profile_pic': '',
                                      'matched_at': y.matched_at,
-                                     'type': 'super_match', 'block': False,'meeting_exists':meeting_exists})
+                                     'type': 'super_match', 'block': False, 'meeting_exists': meeting_exists})
                         else:
                             if y.user.id in final_blocked_users_list:
                                 meeting_exists = False
@@ -2575,7 +2575,7 @@ class GetMatchesAPIView(ListAPIView):
                                      'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                                      'profile_pic': '',
                                      'matched_at': y.matched_at,
-                                     'type': 'super_match', 'blocked': True,'meeting_exists':meeting_exists})
+                                     'type': 'super_match', 'blocked': True, 'meeting_exists': meeting_exists})
                             else:
                                 meeting_exists = False
                                 try:
@@ -2593,7 +2593,7 @@ class GetMatchesAPIView(ListAPIView):
                                      'last_name': RegisterUser.objects.get(id=y.user.id).last_name,
                                      'profile_pic': '',
                                      'matched_at': y.matched_at,
-                                     'type': 'super_match', 'blocked': False,'meeting_exists':meeting_exists})
+                                     'type': 'super_match', 'blocked': False, 'meeting_exists': meeting_exists})
                     else:
                         pass
                 except Exception as e:
@@ -4401,39 +4401,55 @@ class UnMatchView(APIView):
             print('---', match)
             user_1 = match.user
             user_2 = match.liked_by_me.all()
-            print('users', [x.id for x in user_2], user_1)
-            print('users', [x.id for x in user_2][0])
-            other_matched_obj = None
-            other_matched_obj_2 = None
-            chat_obj = None
-            meeting_obj = None
-            users_liked_by_me = MatchedUser.objects.filter(user=user_1)
-            users_liked_me = MatchedUser.objects.filter(liked_by_me=user_1)
-            user_liked_me = RegisterUser.objects.get(id=[x.id for x in user_2][0])
-            print('USER LIKED ME', user_liked_me)
-            other_matched_obj_2 = MatchedUser.objects.get(user=user_liked_me, liked_by_me=user_1)
-            # print(users_liked_me, users_liked_by_me, other_matched_obj_2)
-            try:
-                meeting_obj = ScheduleMeeting.objects.filter(scheduled_by=user_1,
-                                                             scheduled_with__id=[x.id for x in user_2][0])
-            except Exception as e:
-                print('INSIDE MEETING OBJ EXCEPTION', e)
-                meeting_obj = ScheduleMeeting.objects.filter(scheduled_by__id=[x.id for x in user_2][0],
-                                                             scheduled_with=user_1)
+            matched_obj = MatchedUser.objects.filter(
+                Q(user=r_user, liked_by_me=user_2) | Q(user=user_2, liked_by_me=r_user))
+
+            chat_obj = ChatRoom.objects.filter(
+                Q(sender__id=[x.id for x in user_2][0], receiver=user_1) | Q(sender=user_1,
+                                                                             receiver__id=[x.id for x in user_2][0]))
+            meeting_obj = ScheduleMeeting.objects.filter(Q(scheduled_by=user_1,
+                                                           scheduled_with__id=[x.id for x in user_2][0]) | Q(
+                scheduled_by__id=[x.id for x in user_2][0],
+                scheduled_with=user_1))
             for obj in meeting_obj:
                 obj.delete()
-            try:
-                chat_obj = ChatRoom.objects.filter(sender=user_1, receiver__id=[x.id for x in user_2][0])
-            except Exception as e:
-                print('INSIDE CHAT OBJ EXCEPTIONS', e)
-                chat_obj = ChatRoom.objects.filter(sender__id=[x.id for x in user_2][0], receiver=user_1)
             for obj in chat_obj:
                 obj.delete()
-            try:
-                match.delete()
-                other_matched_obj_2.delete()
-            except:
-                print('match delete')
+            for obj in matched_obj:
+                obj.delete()
+            # print('users', [x.id for x in user_2], user_1)
+            # print('users', [x.id for x in user_2][0])
+            # other_matched_obj = None
+            # other_matched_obj_2 = None
+            # chat_obj = None
+            # meeting_obj = None
+            # users_liked_by_me = MatchedUser.objects.filter(user=user_1)
+            # users_liked_me = MatchedUser.objects.filter(liked_by_me=user_1)
+            # user_liked_me = RegisterUser.objects.get(id=[x.id for x in user_2][0])
+            # print('USER LIKED ME', user_liked_me)
+            # other_matched_obj_2 = MatchedUser.objects.get(user=user_liked_me, liked_by_me=user_1)
+            # # print(users_liked_me, users_liked_by_me, other_matched_obj_2)
+            # try:
+            #     meeting_obj = ScheduleMeeting.objects.filter(scheduled_by=user_1,
+            #                                                  scheduled_with__id=[x.id for x in user_2][0])
+            # except Exception as e:
+            #     print('INSIDE MEETING OBJ EXCEPTION', e)
+            #     meeting_obj = ScheduleMeeting.objects.filter(scheduled_by__id=[x.id for x in user_2][0],
+            #                                                  scheduled_with=user_1)
+            # for obj in meeting_obj:
+            #     obj.delete()
+            # try:
+            #     chat_obj = ChatRoom.objects.filter(sender=user_1, receiver__id=[x.id for x in user_2][0])
+            # except Exception as e:
+            #     print('INSIDE CHAT OBJ EXCEPTIONS', e)
+            #     chat_obj = ChatRoom.objects.filter(sender__id=[x.id for x in user_2][0], receiver=user_1)
+            # for obj in chat_obj:
+            #     obj.delete()
+            # try:
+            #     match.delete()
+            #     other_matched_obj_2.delete()
+            # except:
+            #     print('match delete')
 
             return Response({'message': 'Unmatched successfully', 'status': HTTP_200_OK})
         except Exception as e:
