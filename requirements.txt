@@ -53,7 +53,7 @@ kombu==5.0.2
 MarkupSafe==1.1.1
 msgpack==1.0.2
 packaging==20.4
-Pillow==7.2.0
+Pillow==9.3.0
 prompt-toolkit==3.0.8
 psycopg2-binary==2.8.6
 pyasn1==0.4.8
